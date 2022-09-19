@@ -1,0 +1,17 @@
+package org.example.rest.request.user;
+
+import io.vertx.core.http.HttpMethod;
+import org.example.rest.request.Requestable;
+import org.example.rest.request.Endpoint;
+import org.example.rest.request.ImmutableRequest;
+import org.example.rest.request.Request;
+
+public class GetUserConnections implements Requestable {
+
+    @Override
+    public Request asRequest() {
+        return ImmutableRequest.builder()
+                .endpoint(Endpoint.of(HttpMethod.GET, "/users/@me/connections"))
+                .build();
+    }
+}

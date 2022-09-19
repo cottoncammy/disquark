@@ -1,0 +1,180 @@
+package org.example.rest.resources.interactions;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import org.example.rest.util.Locale;
+import org.example.rest.util.Snowflake;
+import org.example.rest.immutables.ImmutableJson;
+import org.example.rest.resources.channel.Channel;
+import org.immutables.value.Value.Enclosing;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.OptionalInt;
+
+@Enclosing
+@ImmutableJson
+public interface ApplicationCommand {
+
+    static Builder builder() {
+        return new Builder();
+    }
+
+    Snowflake id();
+
+    Optional<Type> type();
+
+    @JsonProperty("application_id")
+    Snowflake applicationId();
+
+    Snowflake guildId();
+
+    String name();
+
+    @JsonProperty("name_localizations")
+    Optional<Map<Locale, String>> nameLocalizations();
+
+    String description();
+
+    @JsonProperty("description_localizations")
+    Optional<Map<Locale, String>> descriptionLocalizations();
+
+    Optional<List<Option>> options();
+
+    @JsonProperty("default_member_permissions")
+    Optional<String> defaultMemberPermissions();
+
+    @JsonProperty("dm_permission")
+    Optional<Boolean> dmPermission();
+
+    @Deprecated
+    @JsonProperty("default_permission")
+    Optional<Boolean> defaultPermission();
+
+    Snowflake version();
+
+    enum Type {
+        CHAT_INPUT(1),
+        USER(2),
+        MESSAGE(3);
+
+        private final int value;
+
+
+        Type(int value) {
+            this.value = value;
+        }
+    }
+
+    @ImmutableJson
+    interface Option {
+
+        static Builder builder() {
+            return new Builder();
+        }
+
+        Type type();
+
+        String name();
+
+        @JsonProperty("name_localizations")
+        Optional<Map<Locale, String>> nameLocalizations();
+
+        String description();
+
+        @JsonProperty("description_localizations")
+        Optional<Map<Locale, String>> descriptionLocalizations();
+
+        Optional<Boolean> required();
+
+        Optional<List<Choice>> choices();
+
+        Optional<List<Option>> options();
+
+        @JsonProperty("channel_types")
+        Optional<List<Channel.Type>> channelTypes();
+
+        @JsonProperty("min_values")
+        OptionalInt minValues();
+
+        @JsonProperty("max_values")
+        OptionalInt maxValues();
+
+        @JsonProperty("min_length")
+        OptionalInt minLength();
+
+        @JsonProperty("max_length")
+        OptionalInt maxLength();
+
+        Optional<Boolean> autocomplete();
+
+        enum Type {
+            SUB_COMMAND(1),
+            SUB_COMMAND_GROUP(2),
+            STRING(3),
+            INTEGER(4),
+            BOOLEAN(5),
+            USER(6),
+            CHANNEL(7),
+            ROLE(8),
+            MENTIONABLE(9),
+            NUMBER(10),
+            ATTACHMENT(11);
+
+            private final int value;
+
+            Type(int value) {
+                this.value = value;
+            }
+        }
+
+        @ImmutableJson
+        interface Choice {
+
+            static Builder builder() {
+                return new Builder();
+            }
+
+            String name();
+
+            @JsonProperty("name_localizations")
+            Optional<Map<Locale, String>> nameLocalizations();
+
+            Object value();
+
+            class Builder extends ImmutableApplicationCommand.Choice.Builder {
+                protected Builder() {}
+            }
+        }
+
+        class Builder extends ImmutableApplicationCommand.Option.Builder {
+            protected Builder() {}
+        }
+    }
+
+    @ImmutableJson
+    interface InteractionDataOption {
+
+        static Builder builder() {
+            return new Builder();
+        }
+
+        String name();
+
+        Option.Type type();
+
+        Optional<Object> value();
+
+        Optional<List<Option>> options();
+
+        Optional<Boolean> focused();
+
+        class Builder extends ImmutableApplicationCommand.InteractionDataOption.Builder {
+            protected Builder() {}
+        }
+    }
+
+    class Builder extends ImmutableApplicationCommand.Builder {
+        protected Builder() {}
+    }
+}
