@@ -1,25 +1,9 @@
 package org.example.rest.response;
 
 import io.vertx.core.Future;
-import io.vertx.core.buffer.Buffer;
-import io.vertx.core.http.HttpClientResponse;
 
-public class Response {
-    private final HttpClientResponse response;
+@FunctionalInterface
+public interface Response {
 
-    public Response(HttpClientResponse response) {
-        this.response = response;
-    }
-
-    // TODO handle more response types
-    public <T> Future<T> as(Class<T> type) {
-        return response.body().map(Buffer::toJsonObject).map(json -> {
-            if (response.statusCode() == 429) {
-                throw new RateLimitException(json.mapTo(RateLimitResponse.class));
-            } else if (response.statusCode() >= 400) {
-                throw new DiscordException(json.mapTo(ErrorResponse.class));
-            }
-            return json.mapTo(type);
-        });
-    }
+    <T> Future<T> as(Class<T> type);
 }

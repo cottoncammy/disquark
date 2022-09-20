@@ -47,6 +47,7 @@
         <hamcrest.version>2.2</hamcrest.version>
         <immutables.version>2.9.1</immutables.version>
         <jackson.version>2.13.3</jackson.version>
+        <jsr305.version>3.0.2</jsr305.version>
         <junit.version>5.9.0</junit.version>
         <mockito-version>4.8.0</mockito-version>
         <rest-assured.version>5.2.0</rest-assured.version>
@@ -80,6 +81,12 @@
                 <groupId>com.github.ben-manes.caffeine</groupId>
                 <artifactId>caffeine</artifactId>
                 <version>${caffeine.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.code.findbugs</groupId>
+                <artifactId>jsr305</artifactId>
+                <version>${jsr305.version}</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>io.vertx</groupId>

@@ -1,5 +1,7 @@
 package org.example.rest.oauth2;
 
+import static java.util.Objects.requireNonNull;
+
 import io.vertx.core.Future;
 import io.vertx.core.Vertx;
 import org.example.rest.DiscordClient;
@@ -10,7 +12,6 @@ import org.example.rest.resources.User;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 public class DiscordOAuth2Client extends DiscordClient {
 
@@ -32,7 +33,7 @@ public class DiscordOAuth2Client extends DiscordClient {
 
         @Override
         public DiscordOAuth2Client build() {
-            return new DiscordOAuth2Client(Objects.requireNonNull(vertx), Objects.requireNonNull(requester));
+            return new DiscordOAuth2Client(requireNonNull(vertx), requireNonNull(requester));
         }
     }
 }

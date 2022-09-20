@@ -1,12 +1,12 @@
 package org.example.rest;
 
+import static java.util.Objects.requireNonNull;
+
 import io.vertx.core.Future;
 import io.vertx.core.Vertx;
 import org.example.rest.request.Requester;
 import org.example.rest.request.channel.message.CreateMessage;
 import org.example.rest.resources.channel.message.Message;
-
-import java.util.Objects;
 
 public class DiscordBotClient extends DiscordClient {
 
@@ -26,7 +26,7 @@ public class DiscordBotClient extends DiscordClient {
 
         @Override
         public DiscordBotClient build() {
-            return new DiscordBotClient(Objects.requireNonNull(vertx), Objects.requireNonNull(requester));
+            return new DiscordBotClient(requireNonNull(vertx), requireNonNull(requester));
         }
     }
 }

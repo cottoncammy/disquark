@@ -1,27 +1,26 @@
 package org.example.rest;
 
 import io.vertx.core.Future;
-import org.example.rest.request.TokenProvider;
+import org.example.rest.request.AccessTokenSource;
 import org.example.rest.request.TokenType;
+import org.example.rest.resources.oauth2.AccessToken;
 
-public class BotToken implements TokenProvider {
-    private final String token;
+public class BotToken implements AccessTokenSource {
+    private final Future<AccessToken> token;
 
     public static BotToken of(String token) {
         return new BotToken(token);
     }
 
     private BotToken(String token) {
-        this.token = token;
+        this.token = Future.succeededFuture(AccessToken.builder()
+                .accessToken(token)
+                .tokenType(TokenType.BOT)
+                .build());
     }
 
     @Override
-    public TokenType getTokenType() {
-        return TokenType.BOT;
-    }
-
-    @Override
-    public Future<String> getToken() {
-        return Future.succeededFuture(token);
+    public Future<AccessToken> getToken() {
+        return token;
     }
 }
