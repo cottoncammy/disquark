@@ -13,10 +13,7 @@ public class BotToken implements AccessTokenSource {
     }
 
     private BotToken(String token) {
-        this.token = Future.succeededFuture(AccessToken.builder()
-                .accessToken(token)
-                .tokenType(TokenType.BOT)
-                .build());
+        this.token = Future.succeededFuture(AccessToken.builder().accessToken(token).tokenType(TokenType.BOT).build());
     }
 
     @Override

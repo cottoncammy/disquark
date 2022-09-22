@@ -23,7 +23,7 @@ public class BearerTokenSource implements AccessTokenSource {
     @Nullable
     private final String redirectUrl;
 
-    private volatile User user;
+    private User user;
 
     public static Builder create(Vertx vertx, String clientId, String clientSecret) {
         OAuth2Options options = new OAuth2Options()

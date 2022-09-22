@@ -42,6 +42,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <bucket4j-version>8.1.0</bucket4j-version>
         <caffeine.version>3.1.1</caffeine.version>
         <gib.version>4.1.1</gib.version>
         <hamcrest.version>2.2</hamcrest.version>
@@ -72,6 +73,11 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>com.bucket4j</groupId>
+                <artifactId>bucket4j-core</artifactId>
+                <version>${bucket4j-version}</version>
+            </dependency>
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-databind</artifactId>

@@ -19,7 +19,7 @@ public class DiscordBotClient extends DiscordClient {
     }
 
     public Future<Message> createMessage(CreateMessage createMessage) {
-        return requester.request(createMessage, vertx.getOrCreateContext()).compose(res -> res.as(Message.class));
+        return requester.request(createMessage).compose(res -> res.as(Message.class));
     }
 
     public static class Builder extends DiscordClient.Builder<DiscordBotClient> {

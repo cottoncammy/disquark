@@ -24,7 +24,7 @@ public class DiscordOAuth2Client extends DiscordClient {
     }
 
     public Future<List<User.Connection>> getUserConnections() {
-        return requester.request(new GetUserConnections(), vertx.getOrCreateContext())
+        return requester.request(new GetUserConnections())
                 .compose(res -> res.as(User.Connection[].class))
                 .map(arr -> new ArrayList<>(Arrays.asList(arr)));
     }
