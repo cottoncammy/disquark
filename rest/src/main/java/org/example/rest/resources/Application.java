@@ -1,9 +1,8 @@
 package org.example.rest.resources;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.example.rest.util.Snowflake;
 import org.example.rest.immutables.ImmutableJson;
-import org.example.rest.oauth2.Scope;
+import org.example.rest.resources.oauth2.Scope;
 import org.immutables.value.Value.Enclosing;
 
 import java.util.*;

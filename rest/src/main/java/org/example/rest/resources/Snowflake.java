@@ -1,4 +1,4 @@
-package org.example.rest.util;
+package org.example.rest.resources;
 
 import java.time.Instant;
 
@@ -6,11 +6,11 @@ public class Snowflake {
     private static final long DISCORD_EPOCH = 1420070400000L;
     private final long value;
 
-    public static Snowflake of(long value) {
+    public static Snowflake from(long value) {
         return new Snowflake(value);
     }
 
-    public static Snowflake of(Instant value) {
+    public static Snowflake from(Instant value) {
         return null;
     }
 

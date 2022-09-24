@@ -1,4 +1,4 @@
-package org.example.rest.oauth2;
+package org.example.rest.resources.oauth2;
 
 public enum Scope {
     ACTIVITIES_READ("activities.read"),

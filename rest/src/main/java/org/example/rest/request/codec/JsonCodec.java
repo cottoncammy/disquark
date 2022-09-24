@@ -1,14 +1,14 @@
 package org.example.rest.request.codec;
 
-import io.vertx.core.Future;
-import io.vertx.core.buffer.Buffer;
 import io.vertx.core.json.Json;
+import io.vertx.mutiny.core.buffer.Buffer;
+import org.example.rest.request.Request;
 
 public class JsonCodec implements Codec {
 
     @Override
-    public Future<Void> serialize(RequestContext context) {
-        return context.getHttpClientRequest().write(Json.encode(context.getRequest().body().get()));
+    public Body serialize(Request request) {
+        return Body.from(Json.encode(request.body().get()));
     }
 
     @Override

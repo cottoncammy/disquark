@@ -2,7 +2,6 @@ package org.example.rest.resources.oauth2;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.example.rest.immutables.ImmutableJson;
-import org.example.rest.request.TokenType;
 import org.example.rest.resources.Webhook;
 
 import java.util.Optional;

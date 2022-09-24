@@ -1,10 +1,10 @@
 package org.example.rest.request;
 
-import io.vertx.core.Future;
+import io.smallrye.mutiny.Uni;
 import org.example.rest.resources.oauth2.AccessToken;
 
 @FunctionalInterface
 public interface AccessTokenSource {
 
-    Future<AccessToken> getToken();
+    Uni<AccessToken> getToken();
 }

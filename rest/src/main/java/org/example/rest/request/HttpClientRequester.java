@@ -2,11 +2,11 @@ package org.example.rest.request;
 
 import static java.util.Objects.requireNonNull;
 
-import io.vertx.core.Future;
-import io.vertx.core.Vertx;
-import io.vertx.core.buffer.Buffer;
-import io.vertx.core.http.HttpClient;
-import io.vertx.core.http.HttpHeaders;
+import io.smallrye.mutiny.Multi;
+import io.smallrye.mutiny.Uni;
+import io.vertx.mutiny.core.Vertx;
+import io.vertx.mutiny.core.http.HttpClient;
+import io.vertx.mutiny.core.http.HttpHeaders;
 import org.example.rest.request.codec.Codec;
 import org.example.rest.response.Response;
 
@@ -23,7 +23,6 @@ public class HttpClientRequester implements Requester {
         return new Builder(requireNonNull(vertx));
     }
 
-    // TODO retriable requests, response transformers
     protected HttpClientRequester(Vertx vertx, String baseUrl, HttpClient httpClient, Map<String, Codec> codecs, AccessTokenSource tokenSource) {
         this.vertx = vertx;
         this.baseUrl = baseUrl;
@@ -33,13 +32,13 @@ public class HttpClientRequester implements Requester {
     }
 
     @Override
-    public Future<Response> request(Requestable requestable) {
+    public Uni<Response> request(Requestable requestable) {
         Request request = requestable.asRequest();
         Endpoint endpoint = request.endpoint();
 
         return tokenSource.getToken()
-                .compose(token -> httpClient.request(endpoint.getHttpMethod(), baseUrl, endpoint.getUriTemplate().expandToString(request.variables()))
-                    .compose(req -> {
+                .flatMap(token -> httpClient.request(endpoint.getHttpMethod(), baseUrl, endpoint.getUriTemplate().expandToString(request.variables()))
+                    .flatMap(req -> {
                         req.putHeader(HttpHeaders.AUTHORIZATION, String.format("%s %s", token.tokenType(), token.accessToken()));
                         req.putHeader(HttpHeaders.USER_AGENT, "TODO");
 
@@ -52,7 +51,16 @@ public class HttpClientRequester implements Requester {
                             req.putHeader(HttpHeaders.CONTENT_TYPE, contentType);
 
                             Codec codec = requireNonNull(codecs.get(contentType));
-                            codec.serialize(new Codec.RequestContext(request, req));
+                            Codec.Body body = codec.serialize(request);
+                            if (body.asString().isPresent()) {
+                                return req.send(body.asString().get());
+                            }
+
+                            if (body.asBuffer().isPresent()) {
+                                return req.send(body.asBuffer().get());
+                            }
+
+                            return req.send(body.asReadStream().get());
                         }
 
                         return req.send();
@@ -63,11 +71,11 @@ public class HttpClientRequester implements Requester {
     public static class Builder {
         protected final Vertx vertx;
 
-        protected String baseUrl = "https://discord.com/api/v10";
+        protected String baseUrl;
         protected HttpClient httpClient;
         protected Map<String, Codec> codecs;
         protected AccessTokenSource tokenSource;
-        protected RequestTransformer requestTransformer;
+        protected RequestConsumer requestTransformer;
 
         protected Builder(Vertx vertx) {
             this.vertx = vertx;
@@ -98,13 +106,12 @@ public class HttpClientRequester implements Requester {
             return this;
         }
 
-        public Builder requestTransformer(RequestTransformer requestTransformer) {
+        public Builder requestTransformer(RequestConsumer requestTransformer) {
             this.requestTransformer = requireNonNull(requestTransformer);
             return this;
         }
 
         public HttpClientRequester build() {
-
             return new HttpClientRequester(vertx, baseUrl, httpClient, codecs, requireNonNull(tokenSource));
         }
     }

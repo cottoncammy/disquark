@@ -11,7 +11,7 @@ public class GetUserConnections implements Requestable {
     @Override
     public Request asRequest() {
         return ImmutableRequest.builder()
-                .endpoint(Endpoint.of(HttpMethod.GET, "/users/@me/connections"))
+                .endpoint(Endpoint.from(HttpMethod.GET, "/users/@me/connections"))
                 .build();
     }
 }

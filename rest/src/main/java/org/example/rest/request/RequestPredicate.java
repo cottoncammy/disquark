@@ -1,6 +1,6 @@
 package org.example.rest.request;
 
-import io.vertx.core.http.HttpClientRequest;
+import io.vertx.mutiny.core.http.HttpClientRequest;
 
 import java.util.function.Predicate;
 

@@ -44,7 +44,6 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <bucket4j-version>8.1.0</bucket4j-version>
         <caffeine.version>3.1.1</caffeine.version>
-        <gib.version>4.1.1</gib.version>
         <hamcrest.version>2.2</hamcrest.version>
         <immutables.version>2.9.1</immutables.version>
         <jackson.version>2.13.3</jackson.version>
@@ -52,11 +51,12 @@
         <junit.version>5.9.0</junit.version>
         <mockito-version>4.8.0</mockito-version>
         <rest-assured.version>5.2.0</rest-assured.version>
-        <vertx.version>4.3.3</vertx.version>
+        <smallrye-mutiny-vertx-binding.version>2.26.0 </smallrye-mutiny-vertx-binding.version>
 
         <compiler-plugin.version>3.10.1</compiler-plugin.version>
         <enforcer-plugin.version>3.1.0</enforcer-plugin.version>
         <failsafe-plugin.version>3.0.0-M7</failsafe-plugin.version>
+        <gib.version>4.1.1</gib.version>
         <gpg-plugin.version>3.0.1</gpg-plugin.version>
         <javadoc-plugin.version>3.4.1</javadoc-plugin.version>
         <nexus-staging-plugin.version>1.6.13</nexus-staging-plugin.version>
@@ -95,17 +95,22 @@
                 <scope>provided</scope>
             </dependency>
             <dependency>
-                <groupId>io.vertx</groupId>
-                <artifactId>vertx-stack-depchain</artifactId>
-                <type>pom</type>
-                <version>${vertx.version}</version>
+                <groupId>io.smallrye.reactive</groupId>
+                <artifactId>vertx-mutiny-clients-bom</artifactId>
+                <version>${smallrye-mutiny-vertx-binding.version}</version>
                 <scope>import</scope>
+                <type>pom</type>
             </dependency>
             <dependency>
                 <groupId>org.immutables</groupId>
                 <artifactId>value</artifactId>
                 <version>${immutables.version}</version>
                 <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.retry</groupId>
+                <artifactId>spring-retry</artifactId>
+                <version>${spring-retry.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.rest-assured</groupId>

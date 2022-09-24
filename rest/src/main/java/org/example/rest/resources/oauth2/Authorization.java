@@ -1,7 +1,6 @@
 package org.example.rest.resources.oauth2;
 
 import org.example.rest.immutables.ImmutableJson;
-import org.example.rest.oauth2.Scope;
 import org.example.rest.resources.Application;
 import org.example.rest.resources.User;
 

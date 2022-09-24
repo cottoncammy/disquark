@@ -1,7 +1,7 @@
 package org.example.rest.resources.channel.message;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.example.rest.util.Snowflake;
+import org.example.rest.resources.Snowflake;
 import org.example.rest.immutables.ImmutableJson;
 import org.example.rest.resources.*;
 import org.example.rest.resources.channel.Channel;

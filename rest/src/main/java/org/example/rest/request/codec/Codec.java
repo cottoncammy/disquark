@@ -1,31 +1,69 @@
 package org.example.rest.request.codec;
 
-import io.vertx.core.Future;
-import io.vertx.core.buffer.Buffer;
-import io.vertx.core.http.HttpClientRequest;
+import io.vertx.mutiny.core.buffer.Buffer;
+import io.vertx.mutiny.core.streams.ReadStream;
 import org.example.rest.request.Request;
+import org.reactivestreams.Publisher;
+
+import javax.annotation.Nullable;
+
+import java.util.Optional;
+
+import static java.util.Objects.requireNonNull;
 
 public interface Codec {
 
-    Future<Void> serialize(RequestContext context);
+    Body serialize(Request request);
 
     <T> T deserialize(Buffer buffer, Class<T> type);
 
-    class RequestContext {
-        private final Request request;
-        private final HttpClientRequest httpClientRequest;
+    class Body {
+        @Nullable
+        private final String string;
+        @Nullable
+        private final Buffer buffer;
+        @Nullable
+        private final ReadStream<Buffer> readStream;
+        @Nullable
+        private final Publisher<Buffer> publisher;
 
-        public RequestContext(Request request, HttpClientRequest httpClientRequest) {
-            this.request = request;
-            this.httpClientRequest = httpClientRequest;
+        public static Body from(String body) {
+            return new Body(requireNonNull(body), null, null, null);
         }
 
-        public Request getRequest() {
-            return request;
+        public static Body from(Buffer body) {
+            return new Body(null, requireNonNull(body), null, null);
         }
 
-        public HttpClientRequest getHttpClientRequest() {
-            return httpClientRequest;
+        public static Body from(ReadStream<Buffer> body) {
+            return new Body(null, null, requireNonNull(body), null);
+        }
+
+        public static Body from(Publisher<Buffer> body) {
+            return new Body(null, null, null, requireNonNull(body));
+        }
+
+        private Body(String string, Buffer buffer, ReadStream<Buffer> readStream, Publisher<Buffer> publisher) {
+            this.string = string;
+            this.buffer = buffer;
+            this.readStream = readStream;
+            this.publisher = publisher;
+        }
+
+        public Optional<String> asString() {
+            return Optional.ofNullable(string);
+        }
+
+        public Optional<Buffer> asBuffer() {
+            return Optional.ofNullable(buffer);
+        }
+
+        public Optional<ReadStream<Buffer>> asReadStream() {
+            return Optional.ofNullable(readStream);
+        }
+
+        public Optional<Publisher<Buffer>> asPublisher() {
+            return Optional.ofNullable(publisher);
         }
     }
 }

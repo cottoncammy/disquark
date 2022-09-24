@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.uritemplate.Variables;
 import org.example.rest.request.*;
-import org.example.rest.util.Snowflake;
+import org.example.rest.resources.Snowflake;
 import org.example.rest.immutables.ImmutableJson;
 import org.example.rest.resources.channel.message.AllowedMentions;
 import org.example.rest.resources.channel.message.Message;
@@ -49,7 +49,7 @@ public interface CreateMessage extends MultipartRequest, Requestable {
     @Override
     default Request asRequest() {
         return ImmutableRequest.builder()
-                .endpoint(Endpoint.of(HttpMethod.POST, "/channels/{channel.id}/messages"))
+                .endpoint(Endpoint.from(HttpMethod.POST, "/channels/{channel.id}/messages"))
                 .variables(Variables.variables().set("channel.id", channelId().asString()))
                 .body(this)
                 .files(files())

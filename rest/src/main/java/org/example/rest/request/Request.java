@@ -1,13 +1,19 @@
 package org.example.rest.request;
 
-import io.vertx.uritemplate.Variables;
+import io.vertx.mutiny.uritemplate.Variables;
+import org.example.rest.immutables.ImmutableStyle;
 import org.immutables.value.Value.Immutable;
 import org.immutables.value.Value.Default;
 
 import java.util.Optional;
 
 @Immutable
+@ImmutableStyle
 public interface Request extends Auditable, MultipartRequest {
+
+    static Builder builder() {
+        return new Builder();
+    }
 
     Endpoint endpoint();
 
@@ -25,5 +31,9 @@ public interface Request extends Auditable, MultipartRequest {
             return Optional.of("application/json");
         }
         return Optional.empty();
+    }
+
+    class Builder extends ImmutableRequest.Builder {
+        protected Builder() {}
     }
 }

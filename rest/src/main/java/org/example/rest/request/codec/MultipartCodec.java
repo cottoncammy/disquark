@@ -1,11 +1,14 @@
 package org.example.rest.request.codec;
 
 import io.netty.handler.codec.http.multipart.HttpPostRequestEncoder.EncoderMode;
-import io.vertx.core.Future;
-import io.vertx.core.Vertx;
-import io.vertx.core.buffer.Buffer;
+import io.smallrye.mutiny.Uni;
+import io.smallrye.mutiny.vertx.AsyncResultUni;
 import io.vertx.ext.web.client.impl.MultipartFormUpload;
-import io.vertx.ext.web.multipart.MultipartForm;
+import io.vertx.mutiny.core.Vertx;
+import io.vertx.mutiny.core.buffer.Buffer;
+import io.vertx.mutiny.core.streams.ReadStream;
+import io.vertx.mutiny.ext.web.multipart.MultipartForm;
+import org.example.rest.request.Request;
 
 import java.util.List;
 import java.util.Map;
@@ -14,33 +17,33 @@ public class MultipartCodec implements Codec {
     private final Vertx vertx;
     private final JsonCodec jsonCodec;
 
+    // TODO headers
     public MultipartCodec(Vertx vertx, JsonCodec jsonCodec) {
         this.vertx = vertx;
         this.jsonCodec = jsonCodec;
     }
 
     @Override
-    public Future<Void> serialize(RequestContext context) {
+    public Body serialize(Request request) {
         MultipartForm form = MultipartForm.create();
-        List<Map.Entry<String, Buffer>> files = context.getRequest().files().get();
+        List<Map.Entry<String, Buffer>> files = request.files().get();
         for (int i = 0; i < files.size(); i++) {
             Map.Entry<String, Buffer> file = files.get(i);
             form.binaryFileUpload(String.format("files[%d]", i), file.getKey(), file.getValue(), "application/octet-stream");
         }
 
-        if (context.getRequest().body().isPresent()) {
-            form.attribute("payload_json", jsonCodec.serialize(context).toString());
+        if (request.body().isPresent()) {
+            form.attribute("payload_json", jsonCodec.serialize(request).toString());
         }
 
         MultipartFormUpload upload;
         try {
-            upload = new MultipartFormUpload(vertx.getOrCreateContext(), form, true, EncoderMode.HTML5);
+            upload = new MultipartFormUpload(vertx.getOrCreateContext().getDelegate(), form.getDelegate(), true, EncoderMode.HTML5);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
 
-        context.getHttpClientRequest().headers().addAll(upload.headers());
-        return upload.pipeTo(context.getHttpClientRequest());
+        return Body.from(ReadStream.newInstance(upload));
     }
 
     @Override

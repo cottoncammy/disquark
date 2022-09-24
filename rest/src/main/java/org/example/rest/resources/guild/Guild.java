@@ -1,8 +1,8 @@
 package org.example.rest.resources.guild;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.example.rest.util.Locale;
-import org.example.rest.util.Snowflake;
+import org.example.rest.resources.Locale;
+import org.example.rest.resources.Snowflake;
 import org.example.rest.resources.Emoji;
 import org.example.rest.immutables.ImmutableJson;
 import org.example.rest.resources.Sticker;

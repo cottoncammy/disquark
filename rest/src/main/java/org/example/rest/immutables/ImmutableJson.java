@@ -10,15 +10,9 @@ import org.immutables.value.Value.Immutable;
 import java.lang.annotation.*;
 
 @Target({ElementType.PACKAGE, ElementType.TYPE})
-@Retention(RetentionPolicy.CLASS)
 @JsonSerialize
 @JsonInclude(Include.NON_ABSENT)
-@Style(
-        defaults = @Immutable(copy = false),
-        visibility = ImplementationVisibility.PACKAGE,
-        overshadowImplementation = true,
-        depluralize = true
-)
+@ImmutableStyle
 @Documented
 public @interface ImmutableJson {
 }

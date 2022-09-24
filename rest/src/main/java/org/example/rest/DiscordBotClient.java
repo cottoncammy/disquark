@@ -2,8 +2,8 @@ package org.example.rest;
 
 import static java.util.Objects.requireNonNull;
 
-import io.vertx.core.Future;
-import io.vertx.core.Vertx;
+import io.smallrye.mutiny.Uni;
+import io.vertx.mutiny.core.Vertx;
 import org.example.rest.request.Requester;
 import org.example.rest.request.channel.message.CreateMessage;
 import org.example.rest.resources.channel.message.Message;
@@ -18,8 +18,8 @@ public class DiscordBotClient extends DiscordClient {
         super(vertx, requester);
     }
 
-    public Future<Message> createMessage(CreateMessage createMessage) {
-        return requester.request(createMessage).compose(res -> res.as(Message.class));
+    public Uni<Message> createMessage(CreateMessage createMessage) {
+        return requester.request(createMessage).flatMap(res -> res.as(Message.class));
     }
 
     public static class Builder extends DiscordClient.Builder<DiscordBotClient> {

@@ -1,4 +1,4 @@
-package org.example.rest.request;
+package org.example.rest.resources.oauth2;
 
 public enum TokenType {
     BOT("Bot"),

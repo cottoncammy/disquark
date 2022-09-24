@@ -1,6 +1,6 @@
 package org.example.rest;
 
-import io.vertx.core.Vertx;
+import io.vertx.mutiny.core.Vertx;
 import org.example.rest.request.Requester;
 
 public abstract class DiscordClient {

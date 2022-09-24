@@ -1,10 +1,10 @@
 package org.example.rest.request;
 
-import io.vertx.core.Future;
+import io.smallrye.mutiny.Uni;
 import org.example.rest.response.Response;
 
 @FunctionalInterface
 public interface Requester {
 
-    Future<Response> request(Requestable requestable);
+    Uni<Response> request(Requestable requestable);
 }
