@@ -6,4 +6,8 @@ public class DiscordException extends RuntimeException {
     public DiscordException(ErrorResponse response) {
         this.response = response;
     }
+
+    public ErrorResponse getResponse() {
+        return response;
+    }
 }

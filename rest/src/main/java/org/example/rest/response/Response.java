@@ -37,4 +37,9 @@ public class Response {
     public Uni<Void> skip() {
         return response.end();
     }
+
+    // TODO make sure this can't be reconsumed
+    public HttpClientResponse getRaw() {
+        return response;
+    }
 }

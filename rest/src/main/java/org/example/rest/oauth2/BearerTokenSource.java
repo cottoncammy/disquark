@@ -2,14 +2,13 @@ package org.example.rest.oauth2;
 
 import static java.util.Objects.requireNonNull;
 
-import io.vertx.core.Future;
-import io.vertx.core.Promise;
-import io.vertx.core.Vertx;
-import io.vertx.ext.auth.User;
-import io.vertx.ext.auth.oauth2.OAuth2Auth;
+import io.smallrye.mutiny.Uni;
 import io.vertx.ext.auth.oauth2.OAuth2FlowType;
 import io.vertx.ext.auth.oauth2.OAuth2Options;
 import io.vertx.ext.auth.oauth2.Oauth2Credentials;
+import io.vertx.mutiny.core.Vertx;
+import io.vertx.mutiny.ext.auth.User;
+import io.vertx.mutiny.ext.auth.oauth2.OAuth2Auth;
 import org.example.rest.request.AccessTokenSource;
 import org.example.rest.resources.oauth2.AccessToken;
 
@@ -23,8 +22,9 @@ public class BearerTokenSource implements AccessTokenSource {
     @Nullable
     private final String redirectUrl;
 
-    private User user;
+    private volatile User user;
 
+    // TODO configure json codec
     public static Builder create(Vertx vertx, String clientId, String clientSecret) {
         OAuth2Options options = new OAuth2Options()
                 .setClientId(clientId)
@@ -44,34 +44,21 @@ public class BearerTokenSource implements AccessTokenSource {
     }
 
     @Override
-    public Future<AccessToken> getToken() {
-        Promise<User> promise = Promise.promise();
+    public Uni<AccessToken> getToken() {
+        Uni<User> uni = Uni.createFrom().item(user);
         if (user != null) {
             if (user.expired()) {
-                oAuth2.refresh(user)
-                    .onSuccess(user -> {
-                        this.user = user;
-                        promise.complete(user);
-                    })
-                    .onFailure(promise::fail);
-            } else {
-                promise.complete(user);
+                uni = oAuth2.refresh(user).invoke(user -> this.user = user);
             }
         } else {
             Oauth2Credentials credentials = new Oauth2Credentials().setFlow(flowType);
             if (flowType == OAuth2FlowType.AUTH_CODE) {
                 credentials.setCode(code).setRedirectUri(redirectUrl);
             }
-
-            oAuth2.authenticate(credentials)
-                .onSuccess(user -> {
-                    this.user = user;
-                    promise.complete(user);
-                })
-                .onFailure(promise::fail);
+            uni = oAuth2.authenticate(credentials).invoke(user -> this.user = user);
         }
 
-        return promise.future().map(user -> user.principal().mapTo(AccessToken.class));
+        return uni.map(user -> user.principal().mapTo(AccessToken.class));
     }
 
     public static class Builder {

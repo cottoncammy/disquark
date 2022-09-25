@@ -1,5 +1,6 @@
 package org.example.rest.request.codec;
 
+import io.vertx.mutiny.core.MultiMap;
 import io.vertx.mutiny.core.buffer.Buffer;
 import io.vertx.mutiny.core.streams.ReadStream;
 import org.example.rest.request.Request;
@@ -13,7 +14,7 @@ import static java.util.Objects.requireNonNull;
 
 public interface Codec {
 
-    Body serialize(Request request);
+    Body serialize(Request request, MultiMap headers);
 
     <T> T deserialize(Buffer buffer, Class<T> type);
 

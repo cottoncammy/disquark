@@ -48,7 +48,7 @@ public interface CreateMessage extends MultipartRequest, Requestable {
 
     @Override
     default Request asRequest() {
-        return ImmutableRequest.builder()
+        return Request.builder()
                 .endpoint(Endpoint.from(HttpMethod.POST, "/channels/{channel.id}/messages"))
                 .variables(Variables.variables().set("channel.id", channelId().asString()))
                 .body(this)

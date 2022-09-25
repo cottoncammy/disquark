@@ -1,9 +1,8 @@
 package org.example.rest.request.codec;
 
 import io.netty.handler.codec.http.multipart.HttpPostRequestEncoder.EncoderMode;
-import io.smallrye.mutiny.Uni;
-import io.smallrye.mutiny.vertx.AsyncResultUni;
 import io.vertx.ext.web.client.impl.MultipartFormUpload;
+import io.vertx.mutiny.core.MultiMap;
 import io.vertx.mutiny.core.Vertx;
 import io.vertx.mutiny.core.buffer.Buffer;
 import io.vertx.mutiny.core.streams.ReadStream;
@@ -17,14 +16,13 @@ public class MultipartCodec implements Codec {
     private final Vertx vertx;
     private final JsonCodec jsonCodec;
 
-    // TODO headers
     public MultipartCodec(Vertx vertx, JsonCodec jsonCodec) {
         this.vertx = vertx;
         this.jsonCodec = jsonCodec;
     }
 
     @Override
-    public Body serialize(Request request) {
+    public Body serialize(Request request, MultiMap headers) {
         MultipartForm form = MultipartForm.create();
         List<Map.Entry<String, Buffer>> files = request.files().get();
         for (int i = 0; i < files.size(); i++) {
@@ -33,7 +31,7 @@ public class MultipartCodec implements Codec {
         }
 
         if (request.body().isPresent()) {
-            form.attribute("payload_json", jsonCodec.serialize(request).toString());
+            form.attribute("payload_json", jsonCodec.serialize(request, headers).toString());
         }
 
         MultipartFormUpload upload;
@@ -43,6 +41,7 @@ public class MultipartCodec implements Codec {
             throw new RuntimeException(e);
         }
 
+        headers.addAll(MultiMap.newInstance(upload.headers()));
         return Body.from(ReadStream.newInstance(upload));
     }
 

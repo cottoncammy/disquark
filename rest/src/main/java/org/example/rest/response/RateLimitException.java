@@ -6,4 +6,8 @@ public class RateLimitException extends RuntimeException {
     public RateLimitException(RateLimitResponse response) {
         this.response = response;
     }
+
+    public RateLimitResponse getResponse() {
+        return response;
+    }
 }

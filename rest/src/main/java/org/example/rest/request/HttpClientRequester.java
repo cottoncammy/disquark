@@ -2,7 +2,6 @@ package org.example.rest.request;
 
 import static java.util.Objects.requireNonNull;
 
-import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
 import io.vertx.mutiny.core.Vertx;
 import io.vertx.mutiny.core.http.HttpClient;
@@ -31,6 +30,7 @@ public class HttpClientRequester implements Requester {
         this.tokenSource = tokenSource;
     }
 
+    // TODO generic headers transformer
     @Override
     public Uni<Response> request(Requestable requestable) {
         Request request = requestable.asRequest();
@@ -51,7 +51,7 @@ public class HttpClientRequester implements Requester {
                             req.putHeader(HttpHeaders.CONTENT_TYPE, contentType);
 
                             Codec codec = requireNonNull(codecs.get(contentType));
-                            Codec.Body body = codec.serialize(request);
+                            Codec.Body body = codec.serialize(request, req.headers());
                             if (body.asString().isPresent()) {
                                 return req.send(body.asString().get());
                             }
@@ -60,7 +60,11 @@ public class HttpClientRequester implements Requester {
                                 return req.send(body.asBuffer().get());
                             }
 
-                            return req.send(body.asReadStream().get());
+                            if (body.asReadStream().isPresent()) {
+                                return req.send(body.asReadStream().get());
+                            }
+
+                            return req.send(body.asPublisher().get());
                         }
 
                         return req.send();
@@ -75,7 +79,6 @@ public class HttpClientRequester implements Requester {
         protected HttpClient httpClient;
         protected Map<String, Codec> codecs;
         protected AccessTokenSource tokenSource;
-        protected RequestConsumer requestTransformer;
 
         protected Builder(Vertx vertx) {
             this.vertx = vertx;
@@ -103,11 +106,6 @@ public class HttpClientRequester implements Requester {
 
         public Builder tokenSource(AccessTokenSource tokenSource) {
             this.tokenSource = tokenSource;
-            return this;
-        }
-
-        public Builder requestTransformer(RequestConsumer requestTransformer) {
-            this.requestTransformer = requireNonNull(requestTransformer);
             return this;
         }
 
