@@ -1,22 +1,24 @@
-package org.example.rest.request;
+package org.example.rest.request.ratelimit;
 
 import io.smallrye.mutiny.Uni;
 import io.smallrye.mutiny.subscription.MultiSubscriber;
 import io.vertx.mutiny.core.Promise;
 import io.vertx.mutiny.core.http.HttpClientResponse;
+import org.example.rest.request.Request;
+import org.example.rest.request.Requester;
 import org.example.rest.response.Response;
 import org.reactivestreams.Subscription;
 
 import java.time.Duration;
 import java.time.Instant;
 
-public class RequestSubscriber implements MultiSubscriber<Request> {
+class BucketRateLimitingRequestSubscriber implements MultiSubscriber<Request> {
     private final Requester requester;
 
     private volatile int rateLimitResetAfter;
     private volatile Subscription subscription;
 
-    public RequestSubscriber(Requester requester) {
+    public BucketRateLimitingRequestSubscriber(Requester requester) {
         this.requester = requester;
     }
 
@@ -24,7 +26,7 @@ public class RequestSubscriber implements MultiSubscriber<Request> {
     public void onItem(Request item) {
         Promise<Response> promise = item.responsePromise();
 
-        requester.request(null)
+        requester.request(item)
             .call(response -> {
                 HttpClientResponse httpResponse = response.getRaw();
                 String bucket = httpResponse.getHeader("X-RateLimit-Bucket");

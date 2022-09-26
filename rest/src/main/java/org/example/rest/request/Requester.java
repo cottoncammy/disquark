@@ -6,5 +6,5 @@ import org.example.rest.response.Response;
 @FunctionalInterface
 public interface Requester {
 
-    Uni<Response> request(Requestable requestable);
+    Uni<Response> request(Request request);
 }

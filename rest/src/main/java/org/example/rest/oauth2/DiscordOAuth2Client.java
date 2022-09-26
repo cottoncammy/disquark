@@ -20,7 +20,7 @@ public class DiscordOAuth2Client extends DiscordClient {
     }
 
     public Multi<User.Connection> getUserConnections() {
-        return requester.request(new GetUserConnections())
+        return requester.request(new GetUserConnections().asRequest())
                 .flatMap(res -> res.as(User.Connection[].class))
                 .onItem().disjoint();
     }

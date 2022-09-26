@@ -19,7 +19,7 @@ public class DiscordBotClient extends DiscordClient {
     }
 
     public Uni<Message> createMessage(CreateMessage createMessage) {
-        return requester.request(createMessage).flatMap(res -> res.as(Message.class));
+        return requester.request(createMessage.asRequest()).flatMap(res -> res.as(Message.class));
     }
 
     public static class Builder extends DiscordClient.Builder<DiscordBotClient> {

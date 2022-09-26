@@ -18,6 +18,7 @@ public class HttpClientRequester implements Requester {
     private final HttpClient httpClient;
     private final Map<String, Codec> codecs;
     private final AccessTokenSource tokenSource;
+    // TODO authorized and unauthorized rate limiters
     private final GlobalRateLimiter rateLimiter;
 
     public static Builder builder(Vertx vertx) {
@@ -35,8 +36,7 @@ public class HttpClientRequester implements Requester {
 
     // TODO generic headers transformer
     @Override
-    public Uni<Response> request(Requestable requestable) {
-        Request request = requestable.asRequest();
+    public Uni<Response> request(Request request) {
         Endpoint endpoint = request.endpoint();
 
         return tokenSource.getToken()
