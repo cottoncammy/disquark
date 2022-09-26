@@ -41,6 +41,7 @@ public class Bucket4jRateLimiter extends GlobalRateLimiter {
                 .onFailure(is(RuntimeException.class).and(wasCausedBy(InterruptedException.class))).invoke(() -> bucket.addTokens(1))
                 .filter(Predicate.isEqual(true))
                 .onItem().ignoreAsUni()
+                .replaceWith(getRetryAfterDuration().flatMap())
                 .onItem().delayIt().by(getRetryAfterDuration())
                 .replaceWith(upstream);
     }

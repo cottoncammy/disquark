@@ -1,7 +1,9 @@
 package org.example.rest.request;
 
+import io.vertx.mutiny.core.Promise;
 import io.vertx.mutiny.uritemplate.Variables;
 import org.example.rest.immutables.ImmutableStyle;
+import org.example.rest.response.Response;
 import org.immutables.value.Value.Immutable;
 import org.immutables.value.Value.Default;
 
@@ -23,6 +25,10 @@ public interface Request extends Auditable, MultipartRequest {
     }
 
     Optional<Object> body();
+
+    default Promise<Response> responsePromise() {
+        return Promise.promise();
+    }
 
     default Optional<String> contentType() {
         if (files().isPresent()) {

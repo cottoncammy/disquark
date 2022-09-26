@@ -6,14 +6,14 @@ import java.time.Duration;
 import java.time.Instant;
 
 public abstract class GlobalRateLimiter {
-    protected volatile long retryAfter;
+    protected volatile int retryAfter;
 
-    public void setRetryAfter(long retryAfter) {
-        this.retryAfter = retryAfter;
+    public Uni<Void> setRetryAfter(int retryAfter) {
+        return Uni.createFrom().voidItem().invoke(() -> this.retryAfter = retryAfter);
     }
 
-    protected Duration getRetryAfterDuration() {
-        return Duration.between(Instant.now(), Instant.ofEpochSecond(retryAfter));
+    protected Uni<Duration> getRetryAfterDuration() {
+        return Uni.createFrom().item(Duration.between(Instant.now(), Instant.ofEpochSecond(retryAfter)));
     }
 
     public abstract <T> Uni<T> rateLimit(Uni<T> upstream);

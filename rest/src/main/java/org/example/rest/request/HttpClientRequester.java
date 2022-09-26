@@ -7,6 +7,7 @@ import io.vertx.mutiny.core.Vertx;
 import io.vertx.mutiny.core.http.HttpClient;
 import io.vertx.mutiny.core.http.HttpHeaders;
 import org.example.rest.request.codec.Codec;
+import org.example.rest.request.ratelimit.GlobalRateLimiter;
 import org.example.rest.response.Response;
 
 import java.util.Map;
@@ -17,17 +18,19 @@ public class HttpClientRequester implements Requester {
     private final HttpClient httpClient;
     private final Map<String, Codec> codecs;
     private final AccessTokenSource tokenSource;
+    private final GlobalRateLimiter rateLimiter;
 
     public static Builder builder(Vertx vertx) {
         return new Builder(requireNonNull(vertx));
     }
 
-    protected HttpClientRequester(Vertx vertx, String baseUrl, HttpClient httpClient, Map<String, Codec> codecs, AccessTokenSource tokenSource) {
+    protected HttpClientRequester(Vertx vertx, String baseUrl, HttpClient httpClient, Map<String, Codec> codecs, AccessTokenSource tokenSource, GlobalRateLimiter rateLimiter) {
         this.vertx = vertx;
         this.baseUrl = baseUrl;
         this.httpClient = httpClient;
         this.codecs = codecs;
         this.tokenSource = tokenSource;
+        this.rateLimiter = rateLimiter;
     }
 
     // TODO generic headers transformer
@@ -69,6 +72,12 @@ public class HttpClientRequester implements Requester {
 
                         return req.send();
                     }))
+                .call(res -> {
+                    if (Boolean.parseBoolean(res.getHeader("X-RateLimit-Global"))) {
+                        return rateLimiter.setRetryAfter(Math.round(Float.parseFloat(res.getHeader("Retry-After"))));
+                    }
+                    return Uni.createFrom().voidItem();
+                })
                 .map(res -> new Response(codecs, res));
     }
 
@@ -79,6 +88,7 @@ public class HttpClientRequester implements Requester {
         protected HttpClient httpClient;
         protected Map<String, Codec> codecs;
         protected AccessTokenSource tokenSource;
+        protected GlobalRateLimiter rateLimiter;
 
         protected Builder(Vertx vertx) {
             this.vertx = vertx;
@@ -109,8 +119,13 @@ public class HttpClientRequester implements Requester {
             return this;
         }
 
+        public Builder rateLimiter(GlobalRateLimiter rateLimiter) {
+            this.rateLimiter = requireNonNull(rateLimiter);
+            return this;
+        }
+
         public HttpClientRequester build() {
-            return new HttpClientRequester(vertx, baseUrl, httpClient, codecs, requireNonNull(tokenSource));
+            return new HttpClientRequester(vertx, baseUrl, httpClient, codecs, requireNonNull(tokenSource), rateLimiter);
         }
     }
 }
