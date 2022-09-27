@@ -12,14 +12,16 @@ import org.reactivestreams.Subscription;
 import java.time.Duration;
 import java.time.Instant;
 
-class BucketRateLimitingRequestSubscriber implements MultiSubscriber<Request> {
+public class BucketRateLimitingRequestSubscriber implements MultiSubscriber<Request> {
     private final Requester requester;
+    private final BucketCacheInserter bucketCacheInserter;
 
     private volatile int rateLimitResetAfter;
     private volatile Subscription subscription;
 
-    public BucketRateLimitingRequestSubscriber(Requester requester) {
+    public BucketRateLimitingRequestSubscriber(Requester requester, BucketCacheInserter bucketCacheInserter) {
         this.requester = requester;
+        this.bucketCacheInserter = bucketCacheInserter;
     }
 
     @Override
@@ -27,16 +29,17 @@ class BucketRateLimitingRequestSubscriber implements MultiSubscriber<Request> {
         Promise<Response> promise = item.responsePromise();
 
         requester.request(item)
-            .call(response -> {
+            .invoke(response -> {
                 HttpClientResponse httpResponse = response.getRaw();
                 String bucket = httpResponse.getHeader("X-RateLimit-Bucket");
+                if (bucket != null) {
+                    bucketCacheInserter.accept(bucket);
+                }
 
                 String remaining = httpResponse.getHeader("X-RateLimit-Remaining");
                 if (remaining != null && Integer.parseInt(remaining) == 0) {
                     rateLimitResetAfter = Math.round(Float.parseFloat(httpResponse.getHeader("X-RateLimit-Reset-After")));
                 }
-
-                return Uni.createFrom().voidItem();
             })
             .onTermination().call(() -> {
                 return Uni.createFrom().nullItem()

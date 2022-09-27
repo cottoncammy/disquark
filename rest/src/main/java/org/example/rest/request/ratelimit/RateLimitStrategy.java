@@ -1,7 +1,7 @@
 package org.example.rest.request.ratelimit;
 
-
-public interface RateLimitingStrategy {
+// TODO
+public interface RateLimitStrategy {
 
     static Object NONE = null;
 

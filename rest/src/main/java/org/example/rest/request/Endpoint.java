@@ -2,6 +2,9 @@ package org.example.rest.request;
 
 import io.vertx.core.http.HttpMethod;
 import io.vertx.mutiny.uritemplate.UriTemplate;
+import io.vertx.mutiny.uritemplate.Variables;
+
+import java.util.Optional;
 
 import static java.util.Objects.requireNonNull;
 
@@ -19,7 +22,11 @@ public class Endpoint {
         return from(httpMethod, uri, true, true);
     }
 
-    private Endpoint(HttpMethod httpMethod, UriTemplate uriTemplate, boolean globallyRateLimited, boolean requiresAuthentication) {
+    private Endpoint(
+            HttpMethod httpMethod,
+            UriTemplate uriTemplate,
+            boolean globallyRateLimited,
+            boolean requiresAuthentication) {
         this.httpMethod = httpMethod;
         this.uriTemplate = uriTemplate;
         this.globallyRateLimited = globallyRateLimited;
@@ -40,5 +47,11 @@ public class Endpoint {
 
     public boolean isAuthenticationRequired() {
         return requiresAuthentication;
+    }
+
+    public Optional<String> getTopLevelResourceValue(Variables variables) {
+        return Optional.ofNullable(variables.getSingle("channel.id"))
+                .or(() -> Optional.ofNullable(variables.getSingle("guild.id")))
+                .or(() -> Optional.ofNullable(variables.getSingle("webhook.id")));
     }
 }
