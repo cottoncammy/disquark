@@ -33,6 +33,7 @@ public class Bucket4jRateLimiter extends GlobalRateLimiter {
         this.bucket = bucket;
     }
 
+    // TODO don't infinitely retry
     @Override
     public <T> Uni<T> rateLimit(Uni<T> upstream) {
         return Multi.createBy().repeating().supplier(supplier(() -> bucket.asBlocking().tryConsume(1, 10)))
@@ -41,8 +42,8 @@ public class Bucket4jRateLimiter extends GlobalRateLimiter {
                 .onFailure(is(RuntimeException.class).and(wasCausedBy(InterruptedException.class))).invoke(() -> bucket.addTokens(1))
                 .filter(Predicate.isEqual(true))
                 .onItem().ignoreAsUni()
-                .replaceWith(getRetryAfterDuration().flatMap())
-                .onItem().delayIt().by(getRetryAfterDuration())
+                .replaceWith(getRetryAfterDuration())
+                .onItem().call(retryAfterDuration -> Uni.createFrom().voidItem().onItem().delayIt().by(retryAfterDuration))
                 .replaceWith(upstream);
     }
 }

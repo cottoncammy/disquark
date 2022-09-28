@@ -1,7 +1,9 @@
 package org.example.rest;
 
+import io.smallrye.mutiny.Uni;
 import io.vertx.mutiny.core.Vertx;
 import org.example.rest.request.Requester;
+import org.example.rest.response.Response;
 
 public abstract class DiscordClient {
     protected final Vertx vertx;

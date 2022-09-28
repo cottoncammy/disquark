@@ -3,7 +3,6 @@ package org.example.rest.response;
 import static java.util.Objects.requireNonNull;
 
 import io.smallrye.mutiny.Uni;
-import io.vertx.mutiny.core.buffer.Buffer;
 import io.vertx.mutiny.core.http.HttpClientResponse;
 import io.vertx.mutiny.core.http.HttpHeaders;
 import org.example.rest.request.codec.Codec;
@@ -20,16 +19,9 @@ public class Response {
     }
 
     public <T> Uni<T> as(Class<T> type) {
-        Buffer buffer = Buffer.buffer();
-        return response.handler(buffer::appendBuffer)
-                .end()
-                .map(x -> {
+        return response.body()
+                .map(buffer -> {
                     Codec codec = requireNonNull(codecs.get(response.getHeader(HttpHeaders.CONTENT_TYPE)));
-                    if (response.statusCode() == 429) {
-                        throw new RateLimitException(codec.deserialize(buffer, RateLimitResponse.class));
-                    } else if (response.statusCode() >= 400) {
-                        throw new DiscordException(codec.deserialize(buffer, ErrorResponse.class));
-                    }
                     return codec.deserialize(buffer, type);
                 });
     }
@@ -38,8 +30,7 @@ public class Response {
         return response.end();
     }
 
-    // TODO make sure this can't be reconsumed
-    public HttpClientResponse getRaw() {
+    public HttpClientResponse getHttpResponse() {
         return response;
     }
 }

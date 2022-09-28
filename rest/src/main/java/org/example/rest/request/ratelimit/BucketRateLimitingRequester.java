@@ -7,7 +7,6 @@ import org.example.rest.response.Response;
 
 import java.util.Map;
 
-// TODO how do we make this class distributed-aware
 public class BucketRateLimitingRequester implements Requester {
     private final Requester requester;
     private final Map<BucketCacheKey, String> bucketCache;
@@ -29,9 +28,14 @@ public class BucketRateLimitingRequester implements Requester {
 
         BucketRateLimitingRequestStream requestStream;
         if (bucket != null) {
-            // TODO check if this is null
             requestStream = requestStreamCache.get(bucket);
+            if (requestStream == null) {
+                requestStream = new BucketRateLimitingRequestStream(requester, null);
+                requestStream.subscribe();
+                requestStreamCache.put(bucket, requestStream);
+            }
         } else {
+            // TODO insert the requestStream too
             requestStream = new BucketRateLimitingRequestStream(requester, new BucketCacheInserter(key, bucketCache));
             requestStream.subscribe();
         }

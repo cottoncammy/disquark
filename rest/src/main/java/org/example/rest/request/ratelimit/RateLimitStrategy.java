@@ -1,13 +1,16 @@
 package org.example.rest.request.ratelimit;
 
-// TODO
 public interface RateLimitStrategy {
 
-    static Object NONE = null;
+    static RateLimitStrategy global() {
 
-    static Object GLOBAL = null;
+    }
 
-    static Object BUCKET = null;
+    static RateLimitStrategy bucket() {
 
-    static Object GLOBAL_AND_BUCKET = null;
+    }
+
+    static RateLimitStrategy GLOBAL_AND_BUCKET = null;
+
+    static RateLimitStrategy NO_OP = null;
 }

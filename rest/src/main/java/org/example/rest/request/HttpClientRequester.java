@@ -1,19 +1,22 @@
 package org.example.rest.request;
 
 import static java.util.Objects.requireNonNull;
+import static org.example.rest.response.DiscordException.isRetryableServerError;
+import static org.example.rest.response.DiscordException.rateLimitIsExhausted;
 
 import io.smallrye.mutiny.Uni;
 import io.vertx.mutiny.core.Vertx;
 import io.vertx.mutiny.core.http.HttpClient;
+import io.vertx.mutiny.core.http.HttpClientResponse;
 import io.vertx.mutiny.core.http.HttpHeaders;
 import org.example.rest.request.codec.Codec;
 import org.example.rest.request.ratelimit.GlobalRateLimiter;
-import org.example.rest.response.Response;
+import org.example.rest.response.*;
 
+import java.time.Duration;
 import java.util.Map;
 
 public class HttpClientRequester implements Requester {
-    private final Vertx vertx;
     private final String baseUrl;
     private final HttpClient httpClient;
     private final Map<String, Codec> codecs;
@@ -25,8 +28,7 @@ public class HttpClientRequester implements Requester {
         return new Builder(requireNonNull(vertx));
     }
 
-    protected HttpClientRequester(Vertx vertx, String baseUrl, HttpClient httpClient, Map<String, Codec> codecs, AccessTokenSource tokenSource, GlobalRateLimiter rateLimiter) {
-        this.vertx = vertx;
+    protected HttpClientRequester(String baseUrl, HttpClient httpClient, Map<String, Codec> codecs, AccessTokenSource tokenSource, GlobalRateLimiter rateLimiter) {
         this.baseUrl = baseUrl;
         this.httpClient = httpClient;
         this.codecs = codecs;
@@ -69,7 +71,6 @@ public class HttpClientRequester implements Requester {
 
                             return req.send(body.asPublisher().get());
                         }
-
                         return req.send();
                     }))
                 .call(res -> {
@@ -78,7 +79,17 @@ public class HttpClientRequester implements Requester {
                     }
                     return Uni.createFrom().voidItem();
                 })
-                .map(res -> new Response(codecs, res));
+                .map(res -> new Response(codecs, res))
+                .call(response -> {
+                    HttpClientResponse httpResponse = response.getHttpResponse();
+                    if (httpResponse.statusCode() == 429) {
+                        return response.as(RateLimitResponse.class).onItem().failWith(RateLimitException::new);
+                    } else if (httpResponse.statusCode() >= 400) {
+                       return response.as(ErrorResponse.class).onItem().failWith(res -> new DiscordException(httpResponse, res));
+                    }
+                    return Uni.createFrom().voidItem();
+                })
+                .onFailure(isRetryableServerError()).retry().withBackOff(Duration.ofSeconds(2), Duration.ofSeconds(30)).until(rateLimitIsExhausted());
     }
 
     public static class Builder {

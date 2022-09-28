@@ -30,7 +30,7 @@ public class BucketRateLimitingRequestSubscriber implements MultiSubscriber<Requ
 
         requester.request(item)
             .invoke(response -> {
-                HttpClientResponse httpResponse = response.getRaw();
+                HttpClientResponse httpResponse = response.getHttpResponse();
                 String bucket = httpResponse.getHeader("X-RateLimit-Bucket");
                 if (bucket != null) {
                     bucketCacheInserter.accept(bucket);
