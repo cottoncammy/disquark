@@ -14,9 +14,9 @@ import java.util.Map;
 
 public class MultipartCodec implements Codec {
     private final Vertx vertx;
-    private final JsonCodec jsonCodec;
+    private final Codec jsonCodec;
 
-    public MultipartCodec(Vertx vertx, JsonCodec jsonCodec) {
+    public MultipartCodec(Vertx vertx, Codec jsonCodec) {
         this.vertx = vertx;
         this.jsonCodec = jsonCodec;
     }

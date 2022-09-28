@@ -8,7 +8,7 @@ import org.example.rest.request.Request;
 import javax.annotation.Nullable;
 import java.util.Objects;
 
-public class BucketCacheKey {
+class BucketCacheKey {
     private final HttpMethod httpMethod;
     private final UriTemplate uriTemplate;
     @Nullable
@@ -16,7 +16,10 @@ public class BucketCacheKey {
 
     public static BucketCacheKey create(Request request) {
         Endpoint endpoint = request.endpoint();
-        return new BucketCacheKey(endpoint.getHttpMethod(), endpoint.getUriTemplate(), endpoint.getTopLevelResourceValue(request.variables()).get());
+        return new BucketCacheKey(
+                endpoint.getHttpMethod(),
+                endpoint.getUriTemplate(),
+                endpoint.getTopLevelResourceValue(request.variables()).get());
     }
 
     private BucketCacheKey(HttpMethod httpMethod, UriTemplate uriTemplate, String topLevelResourceValue) {
@@ -30,7 +33,9 @@ public class BucketCacheKey {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         BucketCacheKey that = (BucketCacheKey) o;
-        return httpMethod.equals(that.httpMethod) && uriTemplate.equals(that.uriTemplate) && Objects.equals(topLevelResourceValue, that.topLevelResourceValue);
+        return httpMethod.equals(that.httpMethod) &&
+                uriTemplate.equals(that.uriTemplate) &&
+                Objects.equals(topLevelResourceValue, that.topLevelResourceValue);
     }
 
     @Override

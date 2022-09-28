@@ -5,16 +5,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a5029c32-3a5b-4a65-b173-2d497ddb2a2d" name="Changes" comment="progress">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/DiscordClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/DiscordClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/immutables/ImmutableStyle.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cache/api/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cache/api/src/main/java/org/example/cache/Cache.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cache/caffeine/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cache/caffeine/src/main/java/org/example/cache/caffeine/CaffeineCache.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cache/pom.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/request/HttpClientRequester.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/request/HttpClientRequester.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/request/codec/MultipartCodec.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/request/codec/MultipartCodec.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/request/ratelimit/Bucket4jRateLimiter.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/request/ratelimit/Bucket4jRateLimiter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/request/ratelimit/BucketCacheInserter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/request/ratelimit/BucketCacheKey.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/request/ratelimit/BucketCacheKey.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/request/ratelimit/BucketRateLimitingRequestStream.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/request/ratelimit/BucketRateLimitingRequestStream.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/request/ratelimit/BucketRateLimitingRequestSubscriber.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/request/ratelimit/BucketRateLimitingRequestSubscriber.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/request/ratelimit/BucketRateLimitingRequester.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/request/ratelimit/BucketRateLimitingRequester.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/request/ratelimit/RateLimitStrategy.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/request/ratelimit/RateLimitStrategy.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/response/DiscordException.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/response/DiscordException.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/response/Response.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/response/Response.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,16 +32,28 @@
         <option value="package-info" />
         <option value="Enum" />
         <option value="AnnotationType" />
-        <option value="Class" />
         <option value="Interface" />
+        <option value="Class" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="requester" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="useMavenConfig" value="true" />
+      </MavenGeneralSettings>
+    </option>
   </component>
   <component name="ProjectId" id="2E06jkI4SVFBXjEQyGdDCoRchhJ" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
@@ -131,7 +148,14 @@
       <option name="project" value="LOCAL" />
       <updated>1664252517050</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="progress">
+      <created>1664329249499</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1664329249499</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">

@@ -7,12 +7,10 @@ import static org.example.rest.util.ExceptionPredicate.wasCausedBy;
 
 import io.github.bucket4j.Bandwidth;
 import io.github.bucket4j.Bucket;
-import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
 import io.smallrye.mutiny.infrastructure.Infrastructure;
 
 import java.time.Duration;
-import java.util.function.Predicate;
 
 public class Bucket4jRateLimiter extends GlobalRateLimiter {
     private final Bucket bucket;
@@ -33,15 +31,17 @@ public class Bucket4jRateLimiter extends GlobalRateLimiter {
         this.bucket = bucket;
     }
 
-    // TODO don't infinitely retry
     @Override
     public <T> Uni<T> rateLimit(Uni<T> upstream) {
-        return Multi.createBy().repeating().supplier(supplier(() -> bucket.asBlocking().tryConsume(1, 10)))
-                .whilst(Predicate.isEqual(false))
-                .emitOn(Infrastructure.getDefaultWorkerPool())
+        return Uni.createFrom().item(supplier(() -> bucket.asBlocking().tryConsume(1, 10)))
+                .runSubscriptionOn(Infrastructure.getDefaultWorkerPool())
+                .call(consumed -> {
+                    if (!consumed) {
+                        return Uni.createFrom().failure(new IllegalStateException());
+                    }
+                    return Uni.createFrom().voidItem();
+                })
                 .onFailure(is(RuntimeException.class).and(wasCausedBy(InterruptedException.class))).invoke(() -> bucket.addTokens(1))
-                .filter(Predicate.isEqual(true))
-                .onItem().ignoreAsUni()
                 .replaceWith(getRetryAfterDuration())
                 .onItem().call(retryAfterDuration -> Uni.createFrom().voidItem().onItem().delayIt().by(retryAfterDuration))
                 .replaceWith(upstream);

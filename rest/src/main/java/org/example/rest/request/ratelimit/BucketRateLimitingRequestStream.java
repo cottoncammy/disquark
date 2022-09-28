@@ -1,29 +1,22 @@
 package org.example.rest.request.ratelimit;
 
+import io.smallrye.mutiny.Uni;
 import io.smallrye.mutiny.operators.multi.processors.BroadcastProcessor;
 import io.vertx.mutiny.core.Promise;
 import org.example.rest.request.Request;
 import org.example.rest.request.Requester;
 
-public class BucketRateLimitingRequestStream {
+import java.time.Duration;
+
+class BucketRateLimitingRequestStream {
     private final Requester requester;
-    private final Promise<Void> completionPromise;
-    private final BroadcastProcessor<Request> processor;
-    private final BucketCacheInserter bucketCacheInserter;
+    private final Promise<String> bucketPromise = Promise.promise();
+    private final BroadcastProcessor<Request> processor = BroadcastProcessor.create();
 
-    private BucketRateLimitingRequestStream(
-            Requester requester,
-            Promise<Void> completionPromise,
-            BroadcastProcessor<Request> processor,
-            BucketCacheInserter bucketCacheInserter) {
+    private volatile boolean subscribed;
+
+    public BucketRateLimitingRequestStream(Requester requester) {
         this.requester = requester;
-        this.completionPromise = completionPromise;
-        this.processor = processor;
-        this.bucketCacheInserter = bucketCacheInserter;
-    }
-
-    public BucketRateLimitingRequestStream(Requester requester, BucketCacheInserter bucketCacheInserter) {
-        this(requester, Promise.promise(), BroadcastProcessor.create(), bucketCacheInserter);
     }
 
     public void onNext(Request request) {
@@ -31,12 +24,19 @@ public class BucketRateLimitingRequestStream {
     }
 
     public void subscribe() {
-        BucketRateLimitingRequestSubscriber subscriber = new BucketRateLimitingRequestSubscriber(requester, bucketCacheInserter);
-        processor.subscribe().withSubscriber(subscriber);
-        completionPromise.future().subscribe().with(x -> subscriber.onCompletion());
+        BucketRateLimitingRequestSubscriber s = new BucketRateLimitingRequestSubscriber(requester, bucketPromise);
+        Uni.createFrom().voidItem().invoke(() -> subscribed = true)
+                .onItem().transformToMulti(x -> processor)
+                .ifNoItem().after(Duration.ofSeconds(30)).recoverWithCompletion()
+                .onCompletion().invoke(() -> subscribed = false)
+                .subscribe().withSubscriber(s);
     }
 
-    public void complete() {
-        completionPromise.complete();
+    public boolean isSubscribed() {
+        return subscribed;
+    }
+
+    public Uni<String> getBucket() {
+        return bucketPromise.future();
     }
 }

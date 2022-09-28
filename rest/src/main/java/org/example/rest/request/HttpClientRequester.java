@@ -10,12 +10,18 @@ import io.vertx.mutiny.core.http.HttpClient;
 import io.vertx.mutiny.core.http.HttpClientResponse;
 import io.vertx.mutiny.core.http.HttpHeaders;
 import org.example.rest.request.codec.Codec;
+import org.example.rest.request.codec.JsonCodec;
+import org.example.rest.request.codec.MultipartCodec;
+import org.example.rest.request.ratelimit.Bucket4jRateLimiter;
 import org.example.rest.request.ratelimit.GlobalRateLimiter;
 import org.example.rest.response.*;
 
 import java.time.Duration;
+import java.util.HashMap;
 import java.util.Map;
 
+// TODO refactor the Requester interface
+// TODO generic headers transformer
 public class HttpClientRequester implements Requester {
     private final String baseUrl;
     private final HttpClient httpClient;
@@ -28,7 +34,12 @@ public class HttpClientRequester implements Requester {
         return new Builder(requireNonNull(vertx));
     }
 
-    protected HttpClientRequester(String baseUrl, HttpClient httpClient, Map<String, Codec> codecs, AccessTokenSource tokenSource, GlobalRateLimiter rateLimiter) {
+    protected HttpClientRequester(
+            String baseUrl,
+            HttpClient httpClient,
+            Map<String, Codec> codecs,
+            AccessTokenSource tokenSource,
+            GlobalRateLimiter rateLimiter) {
         this.baseUrl = baseUrl;
         this.httpClient = httpClient;
         this.codecs = codecs;
@@ -36,7 +47,6 @@ public class HttpClientRequester implements Requester {
         this.rateLimiter = rateLimiter;
     }
 
-    // TODO generic headers transformer
     @Override
     public Uni<Response> request(Request request) {
         Endpoint endpoint = request.endpoint();
@@ -94,15 +104,16 @@ public class HttpClientRequester implements Requester {
 
     public static class Builder {
         protected final Vertx vertx;
+        protected final Map<String, Codec> codecs;
 
         protected String baseUrl;
         protected HttpClient httpClient;
-        protected Map<String, Codec> codecs;
         protected AccessTokenSource tokenSource;
         protected GlobalRateLimiter rateLimiter;
 
         protected Builder(Vertx vertx) {
             this.vertx = vertx;
+            this.codecs = new HashMap<>();
         }
 
         public Builder baseUrl(String baseUrl) {
@@ -115,8 +126,8 @@ public class HttpClientRequester implements Requester {
             return this;
         }
 
-        public Builder codecs(Map<String, Codec> codecs) {
-            this.codecs = requireNonNull(codecs);
+        public Builder putCodecs(Map<String, Codec> codecs) {
+            this.codecs.putAll(codecs);
             return this;
         }
 
@@ -136,7 +147,15 @@ public class HttpClientRequester implements Requester {
         }
 
         public HttpClientRequester build() {
-            return new HttpClientRequester(vertx, baseUrl, httpClient, codecs, requireNonNull(tokenSource), rateLimiter);
+            codecs.putIfAbsent("application/json", new JsonCodec());
+            codecs.putIfAbsent("mutlipart/form-data", new MultipartCodec(vertx, codecs.get("application/json")));
+
+            return new HttpClientRequester(
+                baseUrl == null ? "https://discord.com/api/v10" : baseUrl,
+                httpClient == null ? vertx.createHttpClient() : httpClient,
+                codecs,
+                requireNonNull(tokenSource),
+                rateLimiter == null ? Bucket4jRateLimiter.create() : rateLimiter);
         }
     }
 }
