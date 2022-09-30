@@ -1,16 +1,58 @@
 package org.example.rest.request.ratelimit;
 
-public interface RateLimitStrategy {
+import org.example.rest.request.Requester;
 
-    static RateLimitStrategy global() {
+import java.util.function.Function;
 
-    }
+public interface RateLimitStrategy extends Function<Requester, Requester> {
 
-    static RateLimitStrategy bucket() {
+    RateLimitStrategy GLOBAL = new RateLimitStrategy() {
+        @Override
+        public Requester apply(Requester requester) {
+            return requester;
+        }
 
-    }
+        @Override
+        public GlobalRateLimiter getGlobalRateLimiter() {
+            return Bucket4jRateLimiter.create();
+        }
+    };
 
-    static RateLimitStrategy GLOBAL_AND_BUCKET = null;
+    RateLimitStrategy BUCKET = new RateLimitStrategy() {
+        @Override
+        public Requester apply(Requester requester) {
+            return new BucketRateLimitingRequester(requester);
+        }
 
-    static RateLimitStrategy NO_OP = null;
+        @Override
+        public GlobalRateLimiter getGlobalRateLimiter() {
+            return new NoOpRateLimiter();
+        }
+    };
+
+    RateLimitStrategy ALL = new RateLimitStrategy() {
+        @Override
+        public Requester apply(Requester requester) {
+            return new BucketRateLimitingRequester(requester);
+        }
+
+        @Override
+        public GlobalRateLimiter getGlobalRateLimiter() {
+            return Bucket4jRateLimiter.create();
+        }
+    };
+
+    RateLimitStrategy NONE = new RateLimitStrategy() {
+        @Override
+        public Requester apply(Requester requester) {
+            return requester;
+        }
+
+        @Override
+        public GlobalRateLimiter getGlobalRateLimiter() {
+            return new NoOpRateLimiter();
+        }
+    };
+
+    GlobalRateLimiter getGlobalRateLimiter();
 }

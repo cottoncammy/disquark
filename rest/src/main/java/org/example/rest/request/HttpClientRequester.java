@@ -27,11 +27,14 @@ public class HttpClientRequester implements Requester {
     private final HttpClient httpClient;
     private final Map<String, Codec> codecs;
     private final AccessTokenSource tokenSource;
-    // TODO authorized and unauthorized rate limiters
     private final GlobalRateLimiter rateLimiter;
 
     public static Builder builder(Vertx vertx) {
         return new Builder(requireNonNull(vertx));
+    }
+
+    public static HttpClientRequester create(Vertx vertx) {
+        return builder(vertx).build();
     }
 
     protected HttpClientRequester(
@@ -151,11 +154,11 @@ public class HttpClientRequester implements Requester {
             codecs.putIfAbsent("mutlipart/form-data", new MultipartCodec(vertx, codecs.get("application/json")));
 
             return new HttpClientRequester(
-                baseUrl == null ? "https://discord.com/api/v10" : baseUrl,
-                httpClient == null ? vertx.createHttpClient() : httpClient,
-                codecs,
-                requireNonNull(tokenSource),
-                rateLimiter == null ? Bucket4jRateLimiter.create() : rateLimiter);
+                    baseUrl == null ? "https://discord.com/api/v10" : baseUrl,
+                    httpClient == null ? vertx.createHttpClient() : httpClient,
+                    codecs,
+                    requireNonNull(tokenSource),
+                    rateLimiter == null ? Bucket4jRateLimiter.create() : rateLimiter);
         }
     }
 }

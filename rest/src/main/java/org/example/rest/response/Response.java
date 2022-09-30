@@ -9,6 +9,7 @@ import org.example.rest.request.codec.Codec;
 
 import java.util.Map;
 
+// TODO make this an interface
 public class Response {
     private final Map<String, Codec> codecs;
     private final HttpClientResponse response;

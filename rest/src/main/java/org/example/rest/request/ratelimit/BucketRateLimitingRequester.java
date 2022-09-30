@@ -8,18 +8,12 @@ import org.example.rest.response.Response;
 import java.util.HashMap;
 import java.util.Map;
 
-import static java.util.Objects.requireNonNull;
-
-public class BucketRateLimitingRequester implements Requester {
+class BucketRateLimitingRequester implements Requester {
     private final Requester requester;
     private final Map<BucketCacheKey, String> bucketCache = new HashMap<>();
     private final Map<String, BucketRateLimitingRequestStream> requestStreamCache = new HashMap<>();
 
-    public static BucketRateLimitingRequester create(Requester requester) {
-        return new BucketRateLimitingRequester(requireNonNull(requester));
-    }
-
-    private BucketRateLimitingRequester(Requester requester) {
+    public BucketRateLimitingRequester(Requester requester) {
         this.requester = requester;
     }
 
