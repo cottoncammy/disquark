@@ -2,6 +2,7 @@ package org.example.rest.resources;
 
 import java.time.Instant;
 
+// TODO
 public class Snowflake {
     private static final long DISCORD_EPOCH = 1420070400000L;
     private final long value;

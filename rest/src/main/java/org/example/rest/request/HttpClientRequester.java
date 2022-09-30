@@ -5,6 +5,7 @@ import static org.example.rest.response.DiscordException.isRetryableServerError;
 import static org.example.rest.response.DiscordException.rateLimitIsExhausted;
 
 import io.smallrye.mutiny.Uni;
+import io.vertx.core.http.HttpClientOptions;
 import io.vertx.mutiny.core.Vertx;
 import io.vertx.mutiny.core.http.HttpClient;
 import io.vertx.mutiny.core.http.HttpClientResponse;
@@ -12,7 +13,6 @@ import io.vertx.mutiny.core.http.HttpHeaders;
 import org.example.rest.request.codec.Codec;
 import org.example.rest.request.codec.JsonCodec;
 import org.example.rest.request.codec.MultipartCodec;
-import org.example.rest.request.ratelimit.Bucket4jRateLimiter;
 import org.example.rest.request.ratelimit.GlobalRateLimiter;
 import org.example.rest.response.*;
 
@@ -29,12 +29,12 @@ public class HttpClientRequester implements Requester {
     private final AccessTokenSource tokenSource;
     private final GlobalRateLimiter rateLimiter;
 
-    public static Builder builder(Vertx vertx) {
-        return new Builder(requireNonNull(vertx));
+    public static Builder builder(Vertx vertx, AccessTokenSource tokenSource, GlobalRateLimiter rateLimiter) {
+        return new Builder(requireNonNull(vertx), requireNonNull(tokenSource), requireNonNull(rateLimiter));
     }
 
-    public static HttpClientRequester create(Vertx vertx) {
-        return builder(vertx).build();
+    public static HttpClientRequester create(Vertx vertx, AccessTokenSource tokenSource, GlobalRateLimiter rateLimiter) {
+        return builder(vertx, tokenSource, rateLimiter).build();
     }
 
     protected HttpClientRequester(
@@ -45,9 +45,9 @@ public class HttpClientRequester implements Requester {
             GlobalRateLimiter rateLimiter) {
         this.baseUrl = baseUrl;
         this.httpClient = httpClient;
-        this.codecs = codecs;
         this.tokenSource = tokenSource;
         this.rateLimiter = rateLimiter;
+        this.codecs = codecs;
     }
 
     @Override
@@ -108,15 +108,17 @@ public class HttpClientRequester implements Requester {
     public static class Builder {
         protected final Vertx vertx;
         protected final Map<String, Codec> codecs;
+        protected final AccessTokenSource tokenSource;
+        protected final GlobalRateLimiter rateLimiter;
 
         protected String baseUrl;
         protected HttpClient httpClient;
-        protected AccessTokenSource tokenSource;
-        protected GlobalRateLimiter rateLimiter;
 
-        protected Builder(Vertx vertx) {
+        protected Builder(Vertx vertx, AccessTokenSource tokenSource, GlobalRateLimiter rateLimiter) {
             this.vertx = vertx;
             this.codecs = new HashMap<>();
+            this.tokenSource = tokenSource;
+            this.rateLimiter = rateLimiter;
         }
 
         public Builder baseUrl(String baseUrl) {
@@ -129,36 +131,26 @@ public class HttpClientRequester implements Requester {
             return this;
         }
 
-        public Builder putCodecs(Map<String, Codec> codecs) {
-            this.codecs.putAll(codecs);
-            return this;
-        }
-
         public Builder putCodec(String contentType, Codec codec) {
             codecs.put(contentType, requireNonNull(codec));
             return this;
         }
 
-        public Builder tokenSource(AccessTokenSource tokenSource) {
-            this.tokenSource = tokenSource;
-            return this;
-        }
-
-        public Builder rateLimiter(GlobalRateLimiter rateLimiter) {
-            this.rateLimiter = requireNonNull(rateLimiter);
+        public Builder putCodecs(Map<String, Codec> codecs) {
+            this.codecs.putAll(codecs);
             return this;
         }
 
         public HttpClientRequester build() {
             codecs.putIfAbsent("application/json", new JsonCodec());
-            codecs.putIfAbsent("mutlipart/form-data", new MultipartCodec(vertx, codecs.get("application/json")));
+            codecs.putIfAbsent("multipart/form-data", new MultipartCodec(vertx, codecs.get("application/json")));
 
             return new HttpClientRequester(
                     baseUrl == null ? "https://discord.com/api/v10" : baseUrl,
-                    httpClient == null ? vertx.createHttpClient() : httpClient,
+                    httpClient == null ? vertx.createHttpClient(new HttpClientOptions().setSsl(true)) : httpClient,
                     codecs,
-                    requireNonNull(tokenSource),
-                    rateLimiter == null ? Bucket4jRateLimiter.create() : rateLimiter);
+                    tokenSource,
+                    rateLimiter);
         }
     }
 }

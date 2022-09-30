@@ -8,7 +8,6 @@ import org.example.rest.DiscordClient;
 import org.example.rest.request.AccessTokenSource;
 import org.example.rest.request.HttpClientRequester;
 import org.example.rest.request.Requester;
-import org.example.rest.request.ratelimit.GlobalRateLimiter;
 import org.example.rest.request.ratelimit.RateLimitStrategy;
 import org.example.rest.request.user.GetUserConnections;
 import org.example.rest.resources.User;
@@ -27,12 +26,8 @@ public class DiscordOAuth2Client extends DiscordClient {
         return create(requireNonNull(tokenSource).getVertx(), tokenSource);
     }
 
-    private DiscordOAuth2Client(
-            Vertx vertx,
-            Requester requester,
-            AccessTokenSource tokenSource,
-            GlobalRateLimiter globalRateLimiter) {
-        super(vertx, requester, tokenSource, globalRateLimiter);
+    private DiscordOAuth2Client(Vertx vertx, Requester requester) {
+        super(vertx, requester);
     }
 
     public Multi<User.Connection> getUserConnections() {
@@ -50,11 +45,8 @@ public class DiscordOAuth2Client extends DiscordClient {
         @Override
         public DiscordOAuth2Client build() {
             rateLimitStrategy = rateLimitStrategy == null ? RateLimitStrategy.ALL : rateLimitStrategy;
-            return new DiscordOAuth2Client(
-                    vertx,
-                    requester == null ? rateLimitStrategy.apply(HttpClientRequester.create(vertx)) : requester,
-                    tokenSource,
-                    globalRateLimiter == null ? rateLimitStrategy.getGlobalRateLimiter() : globalRateLimiter);
+            globalRateLimiter = globalRateLimiter == null ? rateLimitStrategy.getGlobalRateLimiter() : globalRateLimiter;
+            return new DiscordOAuth2Client(vertx, requester == null ? rateLimitStrategy.apply(HttpClientRequester.create(vertx, tokenSource, globalRateLimiter)) : requester);
         }
     }
 }

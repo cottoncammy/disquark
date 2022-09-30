@@ -49,7 +49,7 @@ public interface CreateMessage extends MultipartRequest, Requestable {
     @Override
     default Request asRequest() {
         return Request.builder()
-                .endpoint(Endpoint.from(HttpMethod.POST, "/channels/{channel.id}/messages"))
+                .endpoint(Endpoint.create(HttpMethod.POST, "/channels/{channel.id}/messages"))
                 .variables(Variables.variables().set("channel.id", channelId().asString()))
                 .body(this)
                 .files(files())

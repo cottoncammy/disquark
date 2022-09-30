@@ -14,12 +14,12 @@ public class Endpoint {
     private final boolean globallyRateLimited;
     private final boolean requiresAuthentication;
 
-    public static Endpoint from(HttpMethod httpMethod, String uri, boolean globallyRateLimited, boolean requiresAuthentication) {
+    public static Endpoint create(HttpMethod httpMethod, String uri, boolean globallyRateLimited, boolean requiresAuthentication) {
         return new Endpoint(requireNonNull(httpMethod), UriTemplate.of(requireNonNull(uri)), globallyRateLimited, requiresAuthentication);
     }
 
-    public static Endpoint from(HttpMethod httpMethod, String uri) {
-        return from(httpMethod, uri, true, true);
+    public static Endpoint create(HttpMethod httpMethod, String uri) {
+        return create(httpMethod, uri, true, true);
     }
 
     private Endpoint(

@@ -11,19 +11,11 @@ import static java.util.Objects.requireNonNull;
 public abstract class DiscordClient {
     protected final Vertx vertx;
     protected final Requester requester;
-    protected final AccessTokenSource tokenSource;
-    protected final GlobalRateLimiter globalRateLimiter;
 
     // TODO we only need the tokenSource and globalRateLimiter for our AbstractRequester (which will be required instead of Requester?)
-    protected DiscordClient(
-            Vertx vertx,
-            Requester requester,
-            AccessTokenSource tokenSource,
-            GlobalRateLimiter globalRateLimiter) {
+    protected DiscordClient(Vertx vertx, Requester requester) {
         this.vertx = vertx;
         this.requester = requester;
-        this.tokenSource = tokenSource;
-        this.globalRateLimiter = globalRateLimiter;
     }
 
     protected abstract static class Builder<T extends DiscordClient> {
