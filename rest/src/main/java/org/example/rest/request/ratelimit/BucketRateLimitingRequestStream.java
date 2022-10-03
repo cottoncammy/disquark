@@ -24,12 +24,11 @@ class BucketRateLimitingRequestStream {
     }
 
     public void subscribe() {
-        BucketRateLimitingRequestSubscriber s = new BucketRateLimitingRequestSubscriber(requester, bucketPromise);
         Uni.createFrom().voidItem().invoke(() -> subscribed = true)
                 .onItem().transformToMulti(x -> processor)
                 .ifNoItem().after(Duration.ofSeconds(30)).recoverWithCompletion()
                 .onCompletion().invoke(() -> subscribed = false)
-                .subscribe().withSubscriber(s);
+                .subscribe().withSubscriber(new BucketRateLimitingRequestSubscriber(requester, bucketPromise));
     }
 
     public boolean isSubscribed() {

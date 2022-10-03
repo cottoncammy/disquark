@@ -6,15 +6,10 @@ import org.example.rest.response.HttpResponse;
 
 class CompletableRequest {
     private final Request request;
-    private final Promise<HttpResponse> promise;
-
-    private CompletableRequest(Request request, Promise<HttpResponse> promise) {
-        this.request = request;
-        this.promise = promise;
-    }
+    private final Promise<HttpResponse> promise = Promise.promise();
 
     public CompletableRequest(Request request) {
-        this(request, Promise.promise());
+        this.request = request;
     }
 
     public Request getRequest() {

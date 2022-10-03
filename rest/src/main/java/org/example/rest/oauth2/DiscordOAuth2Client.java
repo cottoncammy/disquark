@@ -44,9 +44,10 @@ public class DiscordOAuth2Client<T extends Response> extends DiscordClient<T> {
         }
 
         @Override
+        @SuppressWarnings("unchecked")
         public DiscordOAuth2Client<T> build() {
             if (requesterFactory == null) {
-                requesterFactory = RequesterFactory.HTTP_REQUESTER_FACTORY;
+                requesterFactory = (RequesterFactory<T>) RequesterFactory.DEFAULT_HTTP_REQUESTER;
             }
             return new DiscordOAuth2Client<>(vertx, requesterFactory.apply(this));
         }

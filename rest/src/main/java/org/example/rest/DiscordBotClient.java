@@ -45,9 +45,10 @@ public class DiscordBotClient<T extends Response> extends DiscordClient<T> {
         }
 
         @Override
+        @SuppressWarnings("unchecked")
         public DiscordBotClient<T> build() {
             if (requesterFactory == null) {
-                requesterFactory = RequesterFactory.HTTP_REQUESTER_FACTORY;
+                requesterFactory = (RequesterFactory<T>) RequesterFactory.DEFAULT_HTTP_REQUESTER;
             }
             return new DiscordBotClient<>(vertx, requesterFactory.apply(this));
         }

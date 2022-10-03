@@ -6,8 +6,10 @@ import static org.example.rest.response.DiscordException.rateLimitIsExhausted;
 
 import io.smallrye.mutiny.Uni;
 import io.vertx.core.http.HttpClientOptions;
+import io.vertx.mutiny.core.MultiMap;
 import io.vertx.mutiny.core.Vertx;
 import io.vertx.mutiny.core.http.HttpClient;
+import io.vertx.mutiny.core.http.HttpClientRequest;
 import io.vertx.mutiny.core.http.HttpClientResponse;
 import io.vertx.mutiny.core.http.HttpHeaders;
 import org.example.rest.request.codec.Codec;
@@ -19,15 +21,15 @@ import org.example.rest.response.*;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
 
-// TODO refactor the Requester interface (abstract class?)
-// TODO generic headers transformer
 public class HttpClientRequester implements Requester<HttpResponse> {
     private final String baseUrl;
     private final HttpClient httpClient;
     private final Map<String, Codec> codecs;
     private final AccessTokenSource tokenSource;
     private final GlobalRateLimiter rateLimiter;
+    private final Consumer<MultiMap> headersTransformer;
 
     public static Builder builder(Vertx vertx, AccessTokenSource tokenSource, GlobalRateLimiter rateLimiter) {
         return new Builder(requireNonNull(vertx), requireNonNull(tokenSource), requireNonNull(rateLimiter));
@@ -42,12 +44,14 @@ public class HttpClientRequester implements Requester<HttpResponse> {
             HttpClient httpClient,
             Map<String, Codec> codecs,
             AccessTokenSource tokenSource,
-            GlobalRateLimiter rateLimiter) {
+            GlobalRateLimiter rateLimiter,
+            Consumer<MultiMap> headersTransformer) {
         this.baseUrl = baseUrl;
         this.httpClient = httpClient;
+        this.codecs = codecs;
         this.tokenSource = tokenSource;
         this.rateLimiter = rateLimiter;
-        this.codecs = codecs;
+        this.headersTransformer = headersTransformer;
     }
 
     @Override
@@ -55,10 +59,16 @@ public class HttpClientRequester implements Requester<HttpResponse> {
         Endpoint endpoint = request.endpoint();
 
         return tokenSource.getToken()
-                .flatMap(token -> httpClient.request(endpoint.getHttpMethod(), baseUrl, endpoint.getUriTemplate().expandToString(request.variables()))
-                    .flatMap(req -> {
+                .flatMap(token -> {
+                    Uni<HttpClientRequest> uni = httpClient.request(endpoint.getHttpMethod(), baseUrl, endpoint.getUriTemplate().expandToString(request.variables()));
+                    if (endpoint.isGloballyRateLimited()) {
+                        uni = rateLimiter.rateLimit(uni);
+                    }
+
+                    return uni.flatMap(req -> {
                         req.putHeader(HttpHeaders.AUTHORIZATION, String.format("%s %s", token.tokenType(), token.accessToken()));
-                        req.putHeader(HttpHeaders.USER_AGENT, "TODO");
+                        // TODO
+                        req.putHeader(HttpHeaders.USER_AGENT, String.format("DiscordBot (%s, %s); WIP", "https://github.com/cameronprater/discord", "0.1.0"));
 
                         if (request.auditLogReason().isPresent()) {
                             req.putHeader("X-Audit-Log-Reason", request.auditLogReason().get());
@@ -70,6 +80,8 @@ public class HttpClientRequester implements Requester<HttpResponse> {
 
                             Codec codec = requireNonNull(codecs.get(contentType));
                             Codec.Body body = codec.serialize(request, req.headers());
+                            headersTransformer.accept(req.headers());
+
                             if (body.asString().isPresent()) {
                                 return req.send(body.asString().get());
                             }
@@ -84,8 +96,11 @@ public class HttpClientRequester implements Requester<HttpResponse> {
 
                             return req.send(body.asPublisher().get());
                         }
+
+                        headersTransformer.accept(req.headers());
                         return req.send();
-                    }))
+                    });
+                })
                 .call(res -> {
                     if (Boolean.parseBoolean(res.getHeader("X-RateLimit-Global"))) {
                         return rateLimiter.setRetryAfter(Math.round(Float.parseFloat(res.getHeader("Retry-After"))));
@@ -113,6 +128,7 @@ public class HttpClientRequester implements Requester<HttpResponse> {
 
         protected String baseUrl;
         protected HttpClient httpClient;
+        protected Consumer<MultiMap> headersTransformer;
 
         protected Builder(Vertx vertx, AccessTokenSource tokenSource, GlobalRateLimiter rateLimiter) {
             this.vertx = vertx;
@@ -141,6 +157,11 @@ public class HttpClientRequester implements Requester<HttpResponse> {
             return this;
         }
 
+        public Builder headersTransformer(Consumer<MultiMap> headersTransformer) {
+            this.headersTransformer = requireNonNull(headersTransformer);
+            return this;
+        }
+
         public HttpClientRequester build() {
             codecs.putIfAbsent("application/json", new JsonCodec());
             codecs.putIfAbsent("multipart/form-data", new MultipartCodec(vertx, codecs.get("application/json")));
@@ -150,7 +171,8 @@ public class HttpClientRequester implements Requester<HttpResponse> {
                     httpClient == null ? vertx.createHttpClient(new HttpClientOptions().setSsl(true)) : httpClient,
                     codecs,
                     tokenSource,
-                    rateLimiter);
+                    rateLimiter,
+                    headersTransformer == null ? x -> {} : headersTransformer);
         }
     }
 }
