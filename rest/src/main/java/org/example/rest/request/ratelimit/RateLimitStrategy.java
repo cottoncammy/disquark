@@ -1,14 +1,16 @@
 package org.example.rest.request.ratelimit;
 
 import org.example.rest.request.Requester;
+import org.example.rest.response.HttpResponse;
+import org.example.rest.response.Response;
 
 import java.util.function.Function;
 
-public interface RateLimitStrategy extends Function<Requester, Requester> {
+public interface RateLimitStrategy<T extends Response> extends Function<Requester<T>, Requester<T>> {
 
-    RateLimitStrategy GLOBAL = new RateLimitStrategy() {
+    RateLimitStrategy<Response> GLOBAL = new RateLimitStrategy<>() {
         @Override
-        public Requester apply(Requester requester) {
+        public Requester<Response> apply(Requester<Response> requester) {
             return requester;
         }
 
@@ -18,9 +20,9 @@ public interface RateLimitStrategy extends Function<Requester, Requester> {
         }
     };
 
-    RateLimitStrategy BUCKET = new RateLimitStrategy() {
+    RateLimitStrategy<HttpResponse> BUCKET = new RateLimitStrategy<>() {
         @Override
-        public Requester apply(Requester requester) {
+        public Requester<HttpResponse> apply(Requester<HttpResponse> requester) {
             return new BucketRateLimitingRequester(requester);
         }
 
@@ -30,9 +32,9 @@ public interface RateLimitStrategy extends Function<Requester, Requester> {
         }
     };
 
-    RateLimitStrategy ALL = new RateLimitStrategy() {
+    RateLimitStrategy<HttpResponse> ALL = new RateLimitStrategy<>() {
         @Override
-        public Requester apply(Requester requester) {
+        public Requester<HttpResponse> apply(Requester<HttpResponse> requester) {
             return new BucketRateLimitingRequester(requester);
         }
 
@@ -42,9 +44,9 @@ public interface RateLimitStrategy extends Function<Requester, Requester> {
         }
     };
 
-    RateLimitStrategy NONE = new RateLimitStrategy() {
+    RateLimitStrategy<Response> NONE = new RateLimitStrategy<>() {
         @Override
-        public Requester apply(Requester requester) {
+        public Requester<Response> apply(Requester<Response> requester) {
             return requester;
         }
 

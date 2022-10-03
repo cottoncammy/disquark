@@ -20,9 +20,9 @@ import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 
-// TODO refactor the Requester interface
+// TODO refactor the Requester interface (abstract class?)
 // TODO generic headers transformer
-public class HttpClientRequester implements Requester {
+public class HttpClientRequester implements Requester<HttpResponse> {
     private final String baseUrl;
     private final HttpClient httpClient;
     private final Map<String, Codec> codecs;
@@ -51,7 +51,7 @@ public class HttpClientRequester implements Requester {
     }
 
     @Override
-    public Uni<Response> request(Request request) {
+    public Uni<HttpResponse> request(Request request) {
         Endpoint endpoint = request.endpoint();
 
         return tokenSource.getToken()
@@ -92,9 +92,9 @@ public class HttpClientRequester implements Requester {
                     }
                     return Uni.createFrom().voidItem();
                 })
-                .map(res -> new Response(codecs, res))
+                .map(res -> new HttpResponse(codecs, res))
                 .call(response -> {
-                    HttpClientResponse httpResponse = response.getHttpResponse();
+                    HttpClientResponse httpResponse = response.getRaw();
                     if (httpResponse.statusCode() == 429) {
                         return response.as(RateLimitResponse.class).onItem().failWith(RateLimitException::new);
                     } else if (httpResponse.statusCode() >= 400) {

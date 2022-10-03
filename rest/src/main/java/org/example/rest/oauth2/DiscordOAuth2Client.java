@@ -6,27 +6,28 @@ import io.smallrye.mutiny.Multi;
 import io.vertx.mutiny.core.Vertx;
 import org.example.rest.DiscordClient;
 import org.example.rest.request.AccessTokenSource;
-import org.example.rest.request.HttpClientRequester;
 import org.example.rest.request.Requester;
-import org.example.rest.request.ratelimit.RateLimitStrategy;
+import org.example.rest.request.RequesterFactory;
 import org.example.rest.request.user.GetUserConnections;
 import org.example.rest.resources.User;
+import org.example.rest.response.Response;
 
-public class DiscordOAuth2Client extends DiscordClient {
+public class DiscordOAuth2Client<T extends Response> extends DiscordClient<T> {
 
-    public static Builder builder(Vertx vertx, AccessTokenSource tokenSource) {
-        return new Builder(requireNonNull(vertx), requireNonNull(tokenSource));
+    public static <T extends Response> Builder<T> builder(Vertx vertx, AccessTokenSource tokenSource) {
+        return new Builder<>(requireNonNull(vertx), requireNonNull(tokenSource));
     }
 
-    public static DiscordOAuth2Client create(Vertx vertx, AccessTokenSource tokenSource) {
-        return builder(vertx, tokenSource).build();
+    @SuppressWarnings("unchecked")
+    public static <T extends Response> DiscordOAuth2Client<T> create(Vertx vertx, AccessTokenSource tokenSource) {
+        return (DiscordOAuth2Client<T>) builder(vertx, tokenSource).build();
     }
 
-    public static DiscordOAuth2Client create(BearerTokenSource tokenSource) {
+    public static <T extends Response> DiscordOAuth2Client<T> create(BearerTokenSource tokenSource) {
         return create(requireNonNull(tokenSource).getVertx(), tokenSource);
     }
 
-    private DiscordOAuth2Client(Vertx vertx, Requester requester) {
+    private DiscordOAuth2Client(Vertx vertx, Requester<T> requester) {
         super(vertx, requester);
     }
 
@@ -36,17 +37,18 @@ public class DiscordOAuth2Client extends DiscordClient {
                 .onItem().disjoint();
     }
 
-    public static class Builder extends DiscordClient.Builder<DiscordOAuth2Client> {
+    public static class Builder<T extends Response> extends DiscordClient.Builder<T, DiscordOAuth2Client<T>> {
 
         protected Builder(Vertx vertx, AccessTokenSource tokenSource) {
             super(vertx, tokenSource);
         }
 
         @Override
-        public DiscordOAuth2Client build() {
-            rateLimitStrategy = rateLimitStrategy == null ? RateLimitStrategy.ALL : rateLimitStrategy;
-            globalRateLimiter = globalRateLimiter == null ? rateLimitStrategy.getGlobalRateLimiter() : globalRateLimiter;
-            return new DiscordOAuth2Client(vertx, requester == null ? rateLimitStrategy.apply(HttpClientRequester.create(vertx, tokenSource, globalRateLimiter)) : requester);
+        public DiscordOAuth2Client<T> build() {
+            if (requesterFactory == null) {
+                requesterFactory = RequesterFactory.HTTP_REQUESTER_FACTORY;
+            }
+            return new DiscordOAuth2Client<>(vertx, requesterFactory.apply(this));
         }
     }
 }

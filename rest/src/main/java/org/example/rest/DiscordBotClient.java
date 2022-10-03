@@ -3,29 +3,34 @@ package org.example.rest;
 import io.smallrye.mutiny.Uni;
 import io.vertx.mutiny.core.Vertx;
 import org.example.rest.request.AccessTokenSource;
-import org.example.rest.request.HttpClientRequester;
 import org.example.rest.request.Requester;
+import org.example.rest.request.RequesterFactory;
 import org.example.rest.request.channel.message.CreateMessage;
-import org.example.rest.request.ratelimit.RateLimitStrategy;
 import org.example.rest.resources.channel.message.Message;
+import org.example.rest.response.Response;
 
 import static java.util.Objects.requireNonNull;
 
-public class DiscordBotClient extends DiscordClient {
+public class DiscordBotClient<T extends Response> extends DiscordClient<T> {
 
-    public static Builder builder(Vertx vertx, AccessTokenSource tokenSource) {
-        return new Builder(requireNonNull(vertx), requireNonNull(tokenSource));
+    public static <T extends Response> Builder<T> builder(Vertx vertx, AccessTokenSource tokenSource) {
+        return new Builder<>(requireNonNull(vertx), requireNonNull(tokenSource));
     }
 
-    public static DiscordBotClient create(Vertx vertx, AccessTokenSource tokenSource) {
-        return builder(vertx, tokenSource).build();
+    public static <T extends Response> Builder<T> builder(Vertx vertx, String token) {
+        return builder(vertx, BotToken.create(requireNonNull(token)));
     }
 
-    public static DiscordBotClient create(Vertx vertx, String token) {
+    @SuppressWarnings("unchecked")
+    public static <T extends Response> DiscordBotClient<T> create(Vertx vertx, AccessTokenSource tokenSource) {
+        return (DiscordBotClient<T>) builder(vertx, tokenSource).build();
+    }
+
+    public static <T extends Response> DiscordBotClient<T> create(Vertx vertx, String token) {
         return create(vertx, BotToken.create(token));
     }
 
-    private DiscordBotClient(Vertx vertx, Requester requester) {
+    private DiscordBotClient(Vertx vertx, Requester<T> requester) {
         super(vertx, requester);
     }
 
@@ -33,17 +38,18 @@ public class DiscordBotClient extends DiscordClient {
         return requester.request(createMessage.asRequest()).flatMap(res -> res.as(Message.class));
     }
 
-    public static class Builder extends DiscordClient.Builder<DiscordBotClient> {
+    public static class Builder<T extends Response> extends DiscordClient.Builder<T, DiscordBotClient<T>> {
 
         protected Builder(Vertx vertx, AccessTokenSource tokenSource) {
             super(vertx, tokenSource);
         }
 
         @Override
-        public DiscordBotClient build() {
-            rateLimitStrategy = rateLimitStrategy == null ? RateLimitStrategy.ALL : rateLimitStrategy;
-            globalRateLimiter = globalRateLimiter == null ? rateLimitStrategy.getGlobalRateLimiter() : globalRateLimiter;
-            return new DiscordBotClient(vertx, requester == null ? rateLimitStrategy.apply(HttpClientRequester.create(vertx, tokenSource, globalRateLimiter)) : requester);
+        public DiscordBotClient<T> build() {
+            if (requesterFactory == null) {
+                requesterFactory = RequesterFactory.HTTP_REQUESTER_FACTORY;
+            }
+            return new DiscordBotClient<>(vertx, requesterFactory.apply(this));
         }
     }
 }

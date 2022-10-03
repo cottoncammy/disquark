@@ -3,17 +3,17 @@ package org.example.rest.request.ratelimit;
 import io.smallrye.mutiny.Uni;
 import org.example.rest.request.Request;
 import org.example.rest.request.Requester;
-import org.example.rest.response.Response;
+import org.example.rest.response.HttpResponse;
 
 import java.util.HashMap;
 import java.util.Map;
 
-class BucketRateLimitingRequester implements Requester {
-    private final Requester requester;
+class BucketRateLimitingRequester implements Requester<HttpResponse> {
+    private final Requester<HttpResponse> requester;
     private final Map<BucketCacheKey, String> bucketCache = new HashMap<>();
     private final Map<String, BucketRateLimitingRequestStream> requestStreamCache = new HashMap<>();
 
-    public BucketRateLimitingRequester(Requester requester) {
+    public BucketRateLimitingRequester(Requester<HttpResponse> requester) {
         this.requester = requester;
     }
 
@@ -31,10 +31,12 @@ class BucketRateLimitingRequester implements Requester {
     }
 
     @Override
-    public Uni<Response> request(Request request) {
+    public Uni<HttpResponse> request(Request request) {
         BucketCacheKey key = BucketCacheKey.create(request);
         BucketRateLimitingRequestStream requestStream = getRequestStream(key);
-        requestStream.onNext(request);
+
+        CompletableRequest completableRequest = new CompletableRequest(request);
+        requestStream.onNext(completableRequest);
 
         return requestStream.getBucket()
                 .onItem().invoke(bucket -> {
@@ -46,6 +48,6 @@ class BucketRateLimitingRequester implements Requester {
                         requestStreamCache.put(bucket, requestStream);
                     }
                 })
-                .replaceWith(request.responsePromise().future());
+                .replaceWith(completableRequest.getPromise().future());
     }
 }

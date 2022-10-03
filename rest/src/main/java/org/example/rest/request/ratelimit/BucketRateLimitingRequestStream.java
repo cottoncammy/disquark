@@ -3,23 +3,23 @@ package org.example.rest.request.ratelimit;
 import io.smallrye.mutiny.Uni;
 import io.smallrye.mutiny.operators.multi.processors.BroadcastProcessor;
 import io.vertx.mutiny.core.Promise;
-import org.example.rest.request.Request;
 import org.example.rest.request.Requester;
+import org.example.rest.response.HttpResponse;
 
 import java.time.Duration;
 
 class BucketRateLimitingRequestStream {
-    private final Requester requester;
+    private final Requester<HttpResponse> requester;
     private final Promise<String> bucketPromise = Promise.promise();
-    private final BroadcastProcessor<Request> processor = BroadcastProcessor.create();
+    private final BroadcastProcessor<CompletableRequest> processor = BroadcastProcessor.create();
 
     private volatile boolean subscribed;
 
-    public BucketRateLimitingRequestStream(Requester requester) {
+    public BucketRateLimitingRequestStream(Requester<HttpResponse> requester) {
         this.requester = requester;
     }
 
-    public void onNext(Request request) {
+    public void onNext(CompletableRequest request) {
         processor.onNext(request);
     }
 
