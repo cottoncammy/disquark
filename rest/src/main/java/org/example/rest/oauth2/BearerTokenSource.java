@@ -75,6 +75,10 @@ public class BearerTokenSource implements AccessTokenSource {
         return vertx;
     }
 
+    public Codec getJsonCodec() {
+        return jsonCodec;
+    }
+
     public static class Builder {
         final Vertx vertx;
         final OAuth2Auth oAuth2;

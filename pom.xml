@@ -44,14 +44,13 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <bucket4j-version>8.1.0</bucket4j-version>
         <caffeine.version>3.1.1</caffeine.version>
-        <hamcrest.version>2.2</hamcrest.version>
         <immutables.version>2.9.1</immutables.version>
         <jackson.version>2.13.3</jackson.version>
         <jsr305.version>3.0.2</jsr305.version>
         <junit.version>5.9.0</junit.version>
         <mockito-version>4.8.0</mockito-version>
-        <rest-assured.version>5.2.0</rest-assured.version>
-        <smallrye-mutiny-vertx-binding.version>2.26.0 </smallrye-mutiny-vertx-binding.version>
+        <smallrye-config.version>2.12.1</smallrye-config.version>
+        <smallrye-mutiny-vertx-binding.version>2.26.0</smallrye-mutiny-vertx-binding.version>
 
         <compiler-plugin.version>3.10.1</compiler-plugin.version>
         <enforcer-plugin.version>3.1.0</enforcer-plugin.version>
@@ -69,6 +68,7 @@
     <modules>
         <module>cache</module>
         <module>rest</module>
+        <module>integration-tests</module>
     </modules>
 
     <dependencyManagement>
@@ -95,6 +95,11 @@
                 <scope>provided</scope>
             </dependency>
             <dependency>
+                <groupId>io.smallrye.config</groupId>
+                <artifactId>smallrye-config</artifactId>
+                <version>${smallrye-config.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>io.smallrye.reactive</groupId>
                 <artifactId>vertx-mutiny-clients-bom</artifactId>
                 <version>${smallrye-mutiny-vertx-binding.version}</version>
@@ -108,15 +113,9 @@
                 <scope>provided</scope>
             </dependency>
             <dependency>
-                <groupId>io.rest-assured</groupId>
-                <artifactId>rest-assured</artifactId>
-                <version>${rest-assured.version}</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.hamcrest</groupId>
-                <artifactId>hamcrest</artifactId>
-                <version>${hamcrest.version}</version>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-api</artifactId>
+                <version>${junit.version}</version>
                 <scope>test</scope>
             </dependency>
             <dependency>

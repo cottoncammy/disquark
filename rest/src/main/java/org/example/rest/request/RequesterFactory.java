@@ -31,7 +31,7 @@ public interface RequesterFactory<T extends Response> extends Function<DiscordCl
 
     RequesterFactory<HttpResponse> DEFAULT_HTTP_REQUESTER = new RequesterFactory<>() {
         @Override
-        public Requester<HttpResponse> apply(DiscordClient.Builder<HttpResponse, ?> builder) {
+        public Requester<HttpResponse> apply(DiscordClient.Builder<HttpResponse, ? extends DiscordClient<HttpResponse>> builder) {
             return customHttpRequester(HttpClientRequester.Builder::build).apply(builder);
         }
     };

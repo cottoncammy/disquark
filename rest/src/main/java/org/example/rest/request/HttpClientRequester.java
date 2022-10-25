@@ -67,8 +67,7 @@ public class HttpClientRequester implements Requester<HttpResponse> {
 
                     return uni.flatMap(req -> {
                         req.putHeader(HttpHeaders.AUTHORIZATION, String.format("%s %s", token.tokenType(), token.accessToken()));
-                        // TODO
-                        req.putHeader(HttpHeaders.USER_AGENT, String.format("DiscordBot (%s, %s); WIP", "https://github.com/cameronprater/discord", "0.1.0"));
+                        req.putHeader(HttpHeaders.USER_AGENT, String.format("DiscordBot (%s, %s)", "https://github.com/cameronprater/discord-TODO", "0.1.0"));
 
                         if (request.auditLogReason().isPresent()) {
                             req.putHeader("X-Audit-Log-Reason", request.auditLogReason().get());

@@ -3,7 +3,7 @@ package org.example.rest.request.channel.message;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.vertx.core.http.HttpMethod;
-import io.vertx.uritemplate.Variables;
+import io.vertx.mutiny.uritemplate.Variables;
 import org.example.rest.request.*;
 import org.example.rest.resources.Snowflake;
 import org.example.rest.immutables.ImmutableJson;

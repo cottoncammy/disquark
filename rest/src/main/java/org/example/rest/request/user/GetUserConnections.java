@@ -9,8 +9,6 @@ public class GetUserConnections implements Requestable {
 
     @Override
     public Request asRequest() {
-        return Request.builder()
-                .endpoint(Endpoint.create(HttpMethod.GET, "/users/@me/connections"))
-                .build();
+        return Request.builder().endpoint(Endpoint.create(HttpMethod.GET, "/users/@me/connections")).build();
     }
 }
