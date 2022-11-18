@@ -19,7 +19,7 @@ class BucketCacheKey {
         return new BucketCacheKey(
                 endpoint.getHttpMethod(),
                 endpoint.getUriTemplate(),
-                endpoint.getTopLevelResourceValue(request.variables()).get());
+                endpoint.getTopLevelResourceValue(request.variables()).orElse(null));
     }
 
     private BucketCacheKey(HttpMethod httpMethod, UriTemplate uriTemplate, String topLevelResourceValue) {

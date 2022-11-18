@@ -10,6 +10,7 @@ import org.example.rest.request.Request;
 import org.example.rest.request.Requester;
 import org.example.rest.request.RequesterFactory;
 import org.example.rest.request.channel.message.CreateMessage;
+import org.example.rest.request.ratelimit.Bucket4jRateLimiter;
 import org.example.rest.request.ratelimit.RateLimitStrategy;
 import org.example.rest.resources.Snowflake;
 import org.example.rest.response.HttpResponse;
@@ -23,7 +24,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.example.it.ConfigHelper.configValue;
 
-public class RateLimitStrategyIT {
+// TODO
+class RateLimitStrategyFoo {
     private static final int MAX_REQUESTS = 50;
 
     private static Snowflake channelId;
@@ -53,7 +55,7 @@ public class RateLimitStrategyIT {
                         return new Requester<HttpResponse>() {
                             @Override
                             public Uni<HttpResponse> request(Request request) {
-                                HttpClientRequester httpRequester = HttpClientRequester.create(builder.getVertx(), builder.getTokenSource(), builder.getGlobalRateLimiter());
+                                HttpClientRequester httpRequester = HttpClientRequester.create(builder.getVertx(), builder.getTokenSource(), Bucket4jRateLimiter.create());
                                 return httpRequester.request(request).invoke(res -> remaining.set(Integer.parseInt(res.getRaw().getHeader("X-RateLimit-Remaining"))));
                             }
                         };

@@ -5,6 +5,7 @@ import org.example.rest.request.Request;
 import org.example.rest.request.Requester;
 import org.example.rest.response.HttpResponse;
 
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,7 +39,7 @@ class BucketRateLimitingRequester implements Requester<HttpResponse> {
         CompletableRequest completableRequest = new CompletableRequest(request);
         requestStream.onNext(completableRequest);
 
-        return requestStream.getBucket()
+        Uni<Void> bucketUni = requestStream.getBucket()
                 .onItem().invoke(bucket -> {
                     if (!bucketCache.containsKey(key)) {
                         bucketCache.put(key, bucket);
@@ -48,6 +49,9 @@ class BucketRateLimitingRequester implements Requester<HttpResponse> {
                         requestStreamCache.put(bucket, requestStream);
                     }
                 })
-                .replaceWith(completableRequest.getPromise().future());
+                .replaceWithVoid();
+
+        Uni<Void> delay = Uni.createFrom().voidItem().onItem().delayIt().by(Duration.ofSeconds(5));
+        return Uni.join().first(bucketUni, delay).withItem().replaceWith(completableRequest.getPromise().future());
     }
 }

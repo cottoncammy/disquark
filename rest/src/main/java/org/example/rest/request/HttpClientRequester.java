@@ -18,13 +18,14 @@ import org.example.rest.request.codec.MultipartCodec;
 import org.example.rest.request.ratelimit.GlobalRateLimiter;
 import org.example.rest.response.*;
 
+import java.net.URI;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
 public class HttpClientRequester implements Requester<HttpResponse> {
-    private final String baseUrl;
+    private final URI baseUrl;
     private final HttpClient httpClient;
     private final Map<String, Codec> codecs;
     private final AccessTokenSource tokenSource;
@@ -40,7 +41,7 @@ public class HttpClientRequester implements Requester<HttpResponse> {
     }
 
     protected HttpClientRequester(
-            String baseUrl,
+            URI baseUrl,
             HttpClient httpClient,
             Map<String, Codec> codecs,
             AccessTokenSource tokenSource,
@@ -60,12 +61,14 @@ public class HttpClientRequester implements Requester<HttpResponse> {
 
         return tokenSource.getToken()
                 .flatMap(token -> {
-                    Uni<HttpClientRequest> uni = httpClient.request(endpoint.getHttpMethod(), baseUrl, endpoint.getUriTemplate().expandToString(request.variables()));
+                    Uni<HttpClientRequest> uni = httpClient.request(endpoint.getHttpMethod(), baseUrl.getHost(), baseUrl.getPath() + endpoint.getUriTemplate().expandToString(request.variables()));
                     if (endpoint.isGloballyRateLimited()) {
                         uni = rateLimiter.rateLimit(uni);
                     }
 
                     return uni.flatMap(req -> {
+                        System.out.println("Made it here");
+
                         req.putHeader(HttpHeaders.AUTHORIZATION, String.format("%s %s", token.tokenType(), token.accessToken()));
                         req.putHeader(HttpHeaders.USER_AGENT, String.format("DiscordBot (%s, %s)", "https://github.com/cameronprater/discord-TODO", "0.1.0"));
 
@@ -116,7 +119,7 @@ public class HttpClientRequester implements Requester<HttpResponse> {
                     }
                     return Uni.createFrom().voidItem();
                 })
-                .onFailure(isRetryableServerError()).retry().withBackOff(Duration.ofSeconds(2), Duration.ofSeconds(30)).until(rateLimitIsExhausted());
+                .onFailure(isRetryableServerError()).retry().until(rateLimitIsExhausted());
     }
 
     public static class Builder {
@@ -125,7 +128,7 @@ public class HttpClientRequester implements Requester<HttpResponse> {
         protected final AccessTokenSource tokenSource;
         protected final GlobalRateLimiter rateLimiter;
 
-        protected String baseUrl;
+        protected URI baseUrl;
         protected HttpClient httpClient;
         protected Consumer<MultiMap> headersTransformer;
 
@@ -136,7 +139,7 @@ public class HttpClientRequester implements Requester<HttpResponse> {
             this.rateLimiter = rateLimiter;
         }
 
-        public Builder baseUrl(String baseUrl) {
+        public Builder baseUrl(URI baseUrl) {
             this.baseUrl = requireNonNull(baseUrl);
             return this;
         }
@@ -166,7 +169,7 @@ public class HttpClientRequester implements Requester<HttpResponse> {
             codecs.putIfAbsent("multipart/form-data", new MultipartCodec(vertx, codecs.get("application/json")));
 
             return new HttpClientRequester(
-                    baseUrl == null ? "https://discord.com/api/v10" : baseUrl,
+                    baseUrl == null ? URI.create("discord.com/api/v10") : baseUrl,
                     httpClient == null ? vertx.createHttpClient(new HttpClientOptions().setSsl(true)) : httpClient,
                     codecs,
                     tokenSource,

@@ -108,8 +108,9 @@ public interface GuildScheduledEvent {
         }
     }
 
+    // TODO
     @ImmutableJson
-    interface User {
+    interface UserFoo {
 
         static Builder builder() {
             return new Builder();
@@ -122,7 +123,7 @@ public interface GuildScheduledEvent {
 
         Optional<Guild.Member> member();
 
-        class Builder extends ImmutableGuildScheduledEvent.User.Builder {
+        class Builder extends ImmutableGuildScheduledEvent.UserFoo.Builder {
             protected Builder() {}
         }
     }

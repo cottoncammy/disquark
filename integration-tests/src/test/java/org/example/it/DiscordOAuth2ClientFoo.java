@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.example.it.ConfigHelper.configValue;
 
-public class DiscordOAuth2ClientIT {
+class DiscordOAuth2ClientFoo {
     private static DiscordOAuth2Client<HttpResponse> oAuth2Client;
 
     @BeforeAll

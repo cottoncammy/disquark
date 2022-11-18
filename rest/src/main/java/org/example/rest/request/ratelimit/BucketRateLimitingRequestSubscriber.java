@@ -15,7 +15,7 @@ class BucketRateLimitingRequestSubscriber implements MultiSubscriber<Completable
     private final Requester<HttpResponse> requester;
     private final Promise<String> bucketPromise;
 
-    private volatile int rateLimitResetAfter;
+    private volatile Duration rateLimitResetAfter;
     private Subscription subscription;
 
     public BucketRateLimitingRequestSubscriber(Requester<HttpResponse> requester, Promise<String> bucketPromise) {
@@ -34,13 +34,15 @@ class BucketRateLimitingRequestSubscriber implements MultiSubscriber<Completable
 
                 String remaining = httpResponse.getHeader("X-RateLimit-Remaining");
                 if (remaining != null && Integer.parseInt(remaining) == 0) {
-                    rateLimitResetAfter = Math.round(Float.parseFloat(httpResponse.getHeader("X-RateLimit-Reset-After")));
+                    rateLimitResetAfter = Duration.between(Instant.now(), Instant.ofEpochSecond(Math.round(Float.parseFloat(httpResponse.getHeader("X-RateLimit-Reset-After")))));
                 }
             })
             .onTermination().call(() -> {
-                return Uni.createFrom().nullItem()
-                        .onItem().delayIt().by(Duration.between(Instant.now(), Instant.ofEpochSecond(rateLimitResetAfter)))
-                        .onItem().invoke(() -> subscription.request(1));
+                Uni<Void> uni = Uni.createFrom().voidItem().onItem().invoke(() -> subscription.request(1));
+                if (!rateLimitResetAfter.isZero() && !rateLimitResetAfter.isNegative()) {
+                    return uni.onItem().delayIt().by(rateLimitResetAfter);
+                }
+                return uni;
             })
             .subscribe()
             .with(promise::complete, promise::fail);
