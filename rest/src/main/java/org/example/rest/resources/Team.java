@@ -1,6 +1,7 @@
 package org.example.rest.resources;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.example.rest.immutables.ImmutableJson;
 import org.immutables.value.Value.Enclosing;
 
@@ -9,6 +10,7 @@ import java.util.Optional;
 
 @Enclosing
 @ImmutableJson
+@JsonDeserialize(as = ImmutableTeam.class)
 public interface Team {
 
     static Builder builder() {
@@ -27,6 +29,7 @@ public interface Team {
     Snowflake ownerUserId();
 
     @ImmutableJson
+    @JsonDeserialize(as = ImmutableTeam.Member.class)
     interface Member {
 
         static Builder builder() {

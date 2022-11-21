@@ -1,6 +1,7 @@
 package org.example.rest.resources.permissions;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.example.rest.resources.Snowflake;
 import org.example.rest.immutables.ImmutableJson;
 import org.immutables.value.Value.Enclosing;
@@ -9,6 +10,7 @@ import java.util.Optional;
 
 @Enclosing
 @ImmutableJson
+@JsonDeserialize(as = ImmutableRole.class)
 public interface Role {
 
     static Builder builder() {
@@ -39,6 +41,7 @@ public interface Role {
     Optional<Tags> tags();
 
     @ImmutableJson
+    @JsonDeserialize(as = ImmutableRole.Tags.class)
     interface Tags {
 
         static Builder builder() {

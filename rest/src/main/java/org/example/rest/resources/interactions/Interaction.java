@@ -1,6 +1,7 @@
 package org.example.rest.resources.interactions;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.example.rest.resources.Locale;
 import org.example.rest.resources.Snowflake;
 import org.example.rest.immutables.ImmutableJson;
@@ -21,6 +22,7 @@ import java.util.Optional;
 
 @Enclosing
 @ImmutableJson
+@JsonDeserialize(as = ImmutableInteraction.class)
 public interface Interaction {
 
     static Builder builder() {
@@ -75,6 +77,7 @@ public interface Interaction {
     }
 
     @ImmutableJson
+    @JsonDeserialize(as = ImmutableInteraction.Data.class)
     interface Data {
 
         static Builder builder() {
@@ -113,6 +116,7 @@ public interface Interaction {
     }
 
     @ImmutableJson
+    @JsonDeserialize(as = ImmutableInteraction.ResolvedData.class)
     interface ResolvedData {
 
         static Builder builder() {
@@ -137,6 +141,7 @@ public interface Interaction {
     }
 
     @ImmutableJson
+    @JsonDeserialize(as = ImmutableInteraction.Response.class)
     interface Response {
 
         static Builder builder() {
@@ -169,6 +174,7 @@ public interface Interaction {
     }
 
     @ImmutableJson
+    @JsonDeserialize(as = ImmutableInteraction.CallbackData.class)
     interface CallbackData {
 
         static Builder builder() {

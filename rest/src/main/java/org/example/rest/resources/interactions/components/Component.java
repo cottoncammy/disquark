@@ -1,6 +1,7 @@
 package org.example.rest.resources.interactions.components;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.example.rest.resources.Emoji;
 import org.example.rest.immutables.ImmutableJson;
 
@@ -9,6 +10,7 @@ import java.util.Optional;
 import java.util.OptionalInt;
 
 @ImmutableJson
+@JsonDeserialize(as = ImmutableComponent.class)
 public interface Component {
 
     static Builder builder() {

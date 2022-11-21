@@ -15,7 +15,8 @@ class BucketRateLimitingRequestSubscriber implements MultiSubscriber<Completable
     private final Requester<HttpResponse> requester;
     private final Promise<String> bucketPromise;
 
-    private volatile Duration rateLimitResetAfter;
+    private volatile Duration rateLimitResetAfter = Duration.ZERO;
+
     private Subscription subscription;
 
     public BucketRateLimitingRequestSubscriber(Requester<HttpResponse> requester, Promise<String> bucketPromise) {

@@ -1,6 +1,7 @@
 package org.example.rest.resources;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.example.rest.immutables.ImmutableJson;
 import org.example.rest.resources.channel.Channel;
 import org.example.rest.resources.guild.Guild;
@@ -13,6 +14,7 @@ import java.util.OptionalInt;
 
 @Enclosing
 @ImmutableJson
+@JsonDeserialize(as = ImmutableInvite.class)
 public interface Invite {
 
     static Builder builder() {
@@ -64,6 +66,7 @@ public interface Invite {
     }
 
     @ImmutableJson
+    @JsonDeserialize(as = ImmutableInvite.Metadata.class)
     interface Metadata {
 
         static Builder builder() {
@@ -90,6 +93,7 @@ public interface Invite {
 
     @Deprecated
     @ImmutableJson
+    @JsonDeserialize(as = ImmutableInvite.StageInstance.class)
     interface StageInstance {
 
         static Builder builder() {

@@ -1,6 +1,7 @@
 package org.example.rest.resources.oauth2;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.example.rest.immutables.ImmutableJson;
 import org.example.rest.resources.Webhook;
 
@@ -8,6 +9,7 @@ import java.util.Optional;
 import java.util.OptionalLong;
 
 @ImmutableJson
+@JsonDeserialize(as = ImmutableAccessToken.class)
 public interface AccessToken {
 
     static Builder builder() {

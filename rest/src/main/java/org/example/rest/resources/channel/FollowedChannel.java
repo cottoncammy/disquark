@@ -1,10 +1,12 @@
 package org.example.rest.resources.channel;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.example.rest.resources.Snowflake;
 import org.example.rest.immutables.ImmutableJson;
 
 @ImmutableJson
+@JsonDeserialize(as = ImmutableFollowedChannel.class)
 public interface FollowedChannel {
 
     static Builder builder() {

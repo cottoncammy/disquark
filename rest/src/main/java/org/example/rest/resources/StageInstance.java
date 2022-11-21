@@ -1,11 +1,13 @@
 package org.example.rest.resources;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.example.rest.immutables.ImmutableJson;
 
 import java.util.Optional;
 
 @ImmutableJson
+@JsonDeserialize(as = ImmutableStageInstance.class)
 public interface StageInstance {
 
     static Builder builder() {

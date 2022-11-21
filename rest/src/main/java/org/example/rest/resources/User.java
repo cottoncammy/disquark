@@ -1,6 +1,7 @@
 package org.example.rest.resources;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.example.rest.immutables.ImmutableJson;
 import org.example.rest.resources.guild.Guild;
 import org.immutables.value.Value.Enclosing;
@@ -12,6 +13,7 @@ import java.util.OptionalInt;
 
 @Enclosing
 @ImmutableJson
+@JsonDeserialize(as = ImmutableUser.class)
 public interface User {
 
     static Builder builder() {
@@ -88,6 +90,7 @@ public interface User {
     }
 
     @ImmutableJson
+    @JsonDeserialize(as = ImmutableUser.Connection.class)
     interface Connection {
 
         static Builder builder() {

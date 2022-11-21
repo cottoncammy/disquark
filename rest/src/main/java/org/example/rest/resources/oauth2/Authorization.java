@@ -1,5 +1,6 @@
 package org.example.rest.resources.oauth2;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.example.rest.immutables.ImmutableJson;
 import org.example.rest.resources.Application;
 import org.example.rest.resources.User;
@@ -9,6 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @ImmutableJson
+@JsonDeserialize(as = ImmutableAuthorization.class)
 public interface Authorization {
 
     static Builder builder() {

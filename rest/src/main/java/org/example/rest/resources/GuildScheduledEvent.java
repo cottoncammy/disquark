@@ -1,6 +1,7 @@
 package org.example.rest.resources;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.example.rest.immutables.ImmutableJson;
 import org.example.rest.resources.guild.Guild;
 import org.immutables.value.Value.Enclosing;
@@ -11,6 +12,7 @@ import java.util.OptionalInt;
 
 @Enclosing
 @ImmutableJson
+@JsonDeserialize(as = ImmutableGuildScheduledEvent.class)
 public interface GuildScheduledEvent {
 
     static Builder builder() {
@@ -95,6 +97,7 @@ public interface GuildScheduledEvent {
     }
 
     @ImmutableJson
+    @JsonDeserialize(as = ImmutableGuildScheduledEvent.EntityMetadata.class)
     interface EntityMetadata {
 
         static Builder builder() {
@@ -110,6 +113,7 @@ public interface GuildScheduledEvent {
 
     // TODO
     @ImmutableJson
+    @JsonDeserialize(as = ImmutableGuildScheduledEvent.UserFoo.class)
     interface UserFoo {
 
         static Builder builder() {

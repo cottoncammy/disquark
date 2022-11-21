@@ -1,12 +1,14 @@
 package org.example.rest.resources.channel;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.example.rest.immutables.ImmutableJson;
 
 import java.time.Instant;
 import java.util.Optional;
 
 @ImmutableJson
+@JsonDeserialize(as = ImmutableThreadMetadata.class)
 public interface ThreadMetadata {
 
     static Builder builder() {

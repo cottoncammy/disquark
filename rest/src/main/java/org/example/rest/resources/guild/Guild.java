@@ -1,6 +1,7 @@
 package org.example.rest.resources.guild;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.example.rest.resources.Locale;
 import org.example.rest.resources.Snowflake;
 import org.example.rest.resources.Emoji;
@@ -19,6 +20,7 @@ import java.util.OptionalInt;
 
 @Enclosing
 @ImmutableJson
+@JsonDeserialize(as = ImmutableGuild.class)
 public interface Guild {
 
     static Builder builder() {
@@ -248,6 +250,7 @@ public interface Guild {
     }
 
     @ImmutableJson
+    @JsonDeserialize(as = ImmutableGuild.Preview.class)
     interface Preview {
 
         static Builder builder() {
@@ -285,6 +288,7 @@ public interface Guild {
     }
 
     @ImmutableJson
+    @JsonDeserialize(as = ImmutableGuild.WidgetSettings.class)
     interface WidgetSettings {
 
         static Builder builder() {
@@ -302,6 +306,7 @@ public interface Guild {
     }
 
     @ImmutableJson
+    @JsonDeserialize(as = ImmutableGuild.Widget.class)
     interface Widget {
 
         static Builder builder() {
@@ -328,6 +333,7 @@ public interface Guild {
     }
 
     @ImmutableJson
+    @JsonDeserialize(as = ImmutableGuild.Member.class)
     interface Member {
 
         static Builder builder() {
@@ -365,6 +371,7 @@ public interface Guild {
     }
 
     @ImmutableJson
+    @JsonDeserialize(as = ImmutableGuild.Integration.class)
     interface Integration {
 
         static Builder builder() {
@@ -419,6 +426,7 @@ public interface Guild {
         }
 
         @ImmutableJson
+        @JsonDeserialize(as = ImmutableGuild.Account.class)
         interface Account {
 
             static Builder builder() {
@@ -435,6 +443,7 @@ public interface Guild {
         }
 
         @ImmutableJson
+        @JsonDeserialize(as = ImmutableGuild.Application.class)
         interface Application {
 
             static Builder builder() {
@@ -462,6 +471,7 @@ public interface Guild {
     }
 
     @ImmutableJson
+    @JsonDeserialize(as = ImmutableGuild.Ban.class)
     interface Ban {
 
         static Builder builder() {
@@ -478,6 +488,7 @@ public interface Guild {
     }
 
     @ImmutableJson
+    @JsonDeserialize(as = ImmutableGuild.WelcomeScreen.class)
     interface WelcomeScreen {
 
         static Builder builder() {

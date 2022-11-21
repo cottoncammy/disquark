@@ -1,6 +1,7 @@
 package org.example.rest.resources.channel;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.example.rest.resources.Snowflake;
 import org.example.rest.immutables.ImmutableJson;
 import org.example.rest.resources.User;
@@ -14,6 +15,7 @@ import java.util.OptionalInt;
 
 @Enclosing
 @ImmutableJson
+@JsonDeserialize(as = ImmutableChannel.class)
 public interface Channel {
 
     static Builder builder() {
@@ -135,6 +137,7 @@ public interface Channel {
     }
 
     @ImmutableJson
+    @JsonDeserialize(as = ImmutableChannel.Overwrite.class)
     interface Overwrite {
 
         static Builder builder() {
@@ -166,6 +169,7 @@ public interface Channel {
     }
 
     @ImmutableJson
+    @JsonDeserialize(as = ImmutableChannel.Mention.class)
     interface Mention {
 
         static Builder builder() {

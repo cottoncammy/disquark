@@ -1,6 +1,8 @@
 package org.example.rest.request.channel.message;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.mutiny.uritemplate.Variables;
@@ -16,6 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 @ImmutableJson
+@JsonInclude(Include.NON_ABSENT)
 public interface CreateMessage extends MultipartRequest, Requestable {
 
     static Builder builder() {

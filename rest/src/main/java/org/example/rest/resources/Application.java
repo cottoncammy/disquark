@@ -1,6 +1,7 @@
 package org.example.rest.resources;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.example.rest.immutables.ImmutableJson;
 import org.example.rest.resources.oauth2.Scope;
 import org.immutables.value.Value.Enclosing;
@@ -9,6 +10,7 @@ import java.util.*;
 
 @Enclosing
 @ImmutableJson
+@JsonDeserialize(as = ImmutableApplication.class)
 public interface Application {
 
     static Builder builder() {
@@ -88,6 +90,7 @@ public interface Application {
     }
 
     @ImmutableJson
+    @JsonDeserialize(as = ImmutableApplication.InstallParams.class)
     interface InstallParams {
 
         static Builder builder() {

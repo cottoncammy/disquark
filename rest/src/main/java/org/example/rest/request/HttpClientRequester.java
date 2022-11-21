@@ -5,7 +5,7 @@ import static org.example.rest.response.DiscordException.isRetryableServerError;
 import static org.example.rest.response.DiscordException.rateLimitIsExhausted;
 
 import io.smallrye.mutiny.Uni;
-import io.vertx.core.http.HttpClientOptions;
+import io.vertx.core.http.RequestOptions;
 import io.vertx.mutiny.core.MultiMap;
 import io.vertx.mutiny.core.Vertx;
 import io.vertx.mutiny.core.http.HttpClient;
@@ -19,7 +19,6 @@ import org.example.rest.request.ratelimit.GlobalRateLimiter;
 import org.example.rest.response.*;
 
 import java.net.URI;
-import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -61,14 +60,17 @@ public class HttpClientRequester implements Requester<HttpResponse> {
 
         return tokenSource.getToken()
                 .flatMap(token -> {
-                    Uni<HttpClientRequest> uni = httpClient.request(endpoint.getHttpMethod(), baseUrl.getHost(), baseUrl.getPath() + endpoint.getUriTemplate().expandToString(request.variables()));
+                    RequestOptions options = new RequestOptions()
+                            .setAbsoluteURI(baseUrl + endpoint.getUriTemplate().expandToString(request.variables()))
+                            .setFollowRedirects(true)
+                            .setMethod(endpoint.getHttpMethod());
+
+                    Uni<HttpClientRequest> uni = httpClient.request(options);
                     if (endpoint.isGloballyRateLimited()) {
                         uni = rateLimiter.rateLimit(uni);
                     }
 
                     return uni.flatMap(req -> {
-                        System.out.println("Made it here");
-
                         req.putHeader(HttpHeaders.AUTHORIZATION, String.format("%s %s", token.tokenType(), token.accessToken()));
                         req.putHeader(HttpHeaders.USER_AGENT, String.format("DiscordBot (%s, %s)", "https://github.com/cameronprater/discord-TODO", "0.1.0"));
 
@@ -169,8 +171,8 @@ public class HttpClientRequester implements Requester<HttpResponse> {
             codecs.putIfAbsent("multipart/form-data", new MultipartCodec(vertx, codecs.get("application/json")));
 
             return new HttpClientRequester(
-                    baseUrl == null ? URI.create("discord.com/api/v10") : baseUrl,
-                    httpClient == null ? vertx.createHttpClient(new HttpClientOptions().setSsl(true)) : httpClient,
+                    baseUrl == null ? URI.create("https://discord.com/api/v10") : baseUrl,
+                    httpClient == null ? vertx.createHttpClient() : httpClient,
                     codecs,
                     tokenSource,
                     rateLimiter,

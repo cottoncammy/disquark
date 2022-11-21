@@ -5,6 +5,7 @@ public class RateLimitException extends RuntimeException {
     private String scope;
 
     public RateLimitException(RateLimitResponse response) {
+        super(response.message());
         this.response = response;
     }
 

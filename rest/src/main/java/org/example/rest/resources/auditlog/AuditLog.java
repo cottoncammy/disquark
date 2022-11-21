@@ -1,6 +1,7 @@
 package org.example.rest.resources.auditlog;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.example.rest.resources.Snowflake;
 import org.example.rest.resources.GuildScheduledEvent;
 import org.example.rest.immutables.ImmutableJson;
@@ -16,6 +17,7 @@ import java.util.Optional;
 
 @Enclosing
 @ImmutableJson
+@JsonDeserialize(as = ImmutableAuditLog.class)
 public interface AuditLog {
 
     static Builder builder() {
@@ -40,6 +42,7 @@ public interface AuditLog {
     List<Webhook> webhooks();
 
     @ImmutableJson
+    @JsonDeserialize(as = ImmutableAuditLog.Entry.class)
     interface Entry {
 
         static Builder builder() {
@@ -130,6 +133,7 @@ public interface AuditLog {
     }
 
     @ImmutableJson
+    @JsonDeserialize(as = ImmutableAuditLog.Change.class)
     interface Change {
 
         static Builder builder() {

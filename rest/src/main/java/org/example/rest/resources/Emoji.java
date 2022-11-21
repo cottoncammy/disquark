@@ -1,6 +1,7 @@
 package org.example.rest.resources;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.example.rest.immutables.ImmutableJson;
 import org.example.rest.resources.permissions.Role;
 
@@ -8,6 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @ImmutableJson
+@JsonDeserialize(as = ImmutableEmoji.class)
 public interface Emoji {
 
     static Builder builder() {

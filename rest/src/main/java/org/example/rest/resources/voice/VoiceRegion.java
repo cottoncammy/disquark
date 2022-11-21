@@ -1,8 +1,10 @@
 package org.example.rest.resources.voice;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.example.rest.immutables.ImmutableJson;
 
 @ImmutableJson
+@JsonDeserialize(as = ImmutableVoiceRegion.class)
 public interface VoiceRegion {
 
     static Builder builder() {

@@ -1,6 +1,7 @@
 package org.example.rest.resources;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.example.rest.immutables.ImmutableJson;
 import org.example.rest.resources.channel.Channel;
 import org.example.rest.resources.guild.Guild;
@@ -8,6 +9,7 @@ import org.example.rest.resources.guild.Guild;
 import java.util.Optional;
 
 @ImmutableJson
+@JsonDeserialize(as = ImmutableWebhook.class)
 public interface Webhook {
 
     static Builder builder() {

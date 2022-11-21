@@ -1,6 +1,7 @@
 package org.example.rest.resources.channel.message;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.example.rest.resources.Snowflake;
 import org.example.rest.immutables.ImmutableJson;
 import org.example.rest.resources.*;
@@ -17,6 +18,7 @@ import java.util.OptionalInt;
 
 @Enclosing
 @ImmutableJson
+@JsonDeserialize(as = ImmutableMessage.class)
 public interface Message {
 
     static Builder builder() {
@@ -127,6 +129,7 @@ public interface Message {
     }
 
     @ImmutableJson
+    @JsonDeserialize(as = ImmutableMessage.Activity.class)
     interface Activity {
 
         static Builder builder() {
@@ -175,6 +178,7 @@ public interface Message {
     }
 
     @ImmutableJson
+    @JsonDeserialize(as = ImmutableMessage.Reference.class)
     interface Reference {
 
         static Builder builder() {
@@ -199,6 +203,7 @@ public interface Message {
     }
 
     @ImmutableJson
+    @JsonDeserialize(as = ImmutableMessage.Reaction.class)
     interface Reaction {
 
         static Builder builder() {
@@ -217,6 +222,7 @@ public interface Message {
     }
 
     @ImmutableJson
+    @JsonDeserialize(as = ImmutableMessage.Embed.class)
     interface Embed {
 
         static Builder builder() {
@@ -259,6 +265,7 @@ public interface Message {
         }
 
         @ImmutableJson
+        @JsonDeserialize(as = ImmutableMessage.Thumbnail.class)
         interface Thumbnail {
 
             static Builder builder() {
@@ -280,6 +287,7 @@ public interface Message {
         }
 
         @ImmutableJson
+        @JsonDeserialize(as = ImmutableMessage.Video.class)
         interface Video {
 
             static Builder builder() {
@@ -301,6 +309,7 @@ public interface Message {
         }
 
         @ImmutableJson
+        @JsonDeserialize(as = ImmutableMessage.Image.class)
         interface Image {
 
             static Builder builder() {
@@ -322,6 +331,7 @@ public interface Message {
         }
 
         @ImmutableJson
+        @JsonDeserialize(as = ImmutableMessage.Provider.class)
         interface Provider {
 
             static Builder builder() {
@@ -338,6 +348,7 @@ public interface Message {
         }
 
         @ImmutableJson
+        @JsonDeserialize(as = ImmutableMessage.Author.class)
         interface Author {
 
             static Builder builder() {
@@ -360,6 +371,7 @@ public interface Message {
         }
 
         @ImmutableJson
+        @JsonDeserialize(as = ImmutableMessage.Footer.class)
         interface Footer {
 
             static Builder builder() {
@@ -380,6 +392,7 @@ public interface Message {
         }
 
         @ImmutableJson
+        @JsonDeserialize(as = ImmutableMessage.Field.class)
         interface Field {
 
             static Builder builder() {
@@ -403,6 +416,7 @@ public interface Message {
     }
 
     @ImmutableJson
+    @JsonDeserialize(as = ImmutableMessage.Attachment.class)
     interface Attachment {
 
         static Builder builder() {

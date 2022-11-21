@@ -1,10 +1,12 @@
 package org.example.rest.resources.auditlog;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.example.rest.resources.Snowflake;
 import org.example.rest.immutables.ImmutableJson;
 
 @ImmutableJson
+@JsonDeserialize(as = ImmutableOptionalAuditEntryInfo.class)
 public interface OptionalAuditEntryInfo {
 
     static Builder builder() {

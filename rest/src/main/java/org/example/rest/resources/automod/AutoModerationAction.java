@@ -1,6 +1,7 @@
 package org.example.rest.resources.automod;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.example.rest.resources.Snowflake;
 import org.example.rest.immutables.ImmutableJson;
 import org.immutables.value.Value.Enclosing;
@@ -9,6 +10,7 @@ import java.util.Optional;
 
 @Enclosing
 @ImmutableJson
+@JsonDeserialize(as = ImmutableAutoModerationAction.class)
 public interface AutoModerationAction {
 
     static Builder builder() {
@@ -32,6 +34,7 @@ public interface AutoModerationAction {
     }
 
     @ImmutableJson
+    @JsonDeserialize(as = ImmutableAutoModerationAction.Metadata.class)
     interface Metadata {
 
         static Builder builder() {
