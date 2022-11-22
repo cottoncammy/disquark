@@ -55,6 +55,10 @@ public interface Webhook {
         Type(int value) {
             this.value = value;
         }
+
+        public int getValue() {
+            return value;
+        }
     }
 
     class Builder extends ImmutableWebhook.Builder {

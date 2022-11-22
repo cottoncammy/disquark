@@ -66,6 +66,10 @@ public interface ApplicationCommand {
         Type(int value) {
             this.value = value;
         }
+
+        public int getValue() {
+            return value;
+        }
     }
 
     @ImmutableJson
@@ -129,8 +133,13 @@ public interface ApplicationCommand {
             Type(int value) {
                 this.value = value;
             }
+
+            public int getValue() {
+                return value;
+            }
         }
 
+        // TODO
         @ImmutableJson
         @JsonDeserialize(as = ImmutableApplicationCommand.Choice.class)
         interface Choice {
@@ -156,6 +165,42 @@ public interface ApplicationCommand {
         }
     }
 
+    @ImmutableJson
+    @JsonDeserialize(as = ImmutableApplicationCommand.Permissions.class)
+    interface Permissions {
+
+        static Builder builder() {
+            return new Builder();
+        }
+
+        Snowflake id();
+
+        Type type();
+
+        boolean permission();
+
+        enum Type {
+            ROLE(1),
+            USER(2),
+            CHANNEL(3);
+
+            private final int value;
+
+            Type(int value) {
+                this.value = value;
+            }
+
+            public int getValue() {
+                return value;
+            }
+        }
+
+        class Builder extends ImmutableApplicationCommand.Permissions.Builder {
+            protected Builder() {}
+        }
+    }
+
+    // TODO
     @ImmutableJson
     @JsonDeserialize(as = ImmutableApplicationCommand.InteractionDataOption.class)
     interface InteractionDataOption {

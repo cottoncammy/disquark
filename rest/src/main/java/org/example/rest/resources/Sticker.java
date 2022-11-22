@@ -55,6 +55,10 @@ public interface Sticker {
         Type(int value) {
             this.value = value;
         }
+
+        public int getValue() {
+            return value;
+        }
     }
 
     enum FormatType {
@@ -66,6 +70,10 @@ public interface Sticker {
 
         FormatType(int value) {
             this.value = value;
+        }
+
+        public int getValue() {
+            return value;
         }
     }
 

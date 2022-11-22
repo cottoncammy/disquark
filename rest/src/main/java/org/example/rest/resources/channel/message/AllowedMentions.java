@@ -32,6 +32,10 @@ public interface AllowedMentions {
         Type(String value) {
             this.value = value;
         }
+
+        public String getValue() {
+            return value;
+        }
     }
 
     class Builder extends ImmutableAllowedMentions.Builder {

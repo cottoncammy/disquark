@@ -3,8 +3,10 @@ package org.example.rest.resources.oauth2;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.example.rest.immutables.ImmutableJson;
+import org.example.rest.jackson.ScopesDeserializer;
 import org.example.rest.resources.Webhook;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.OptionalLong;
 
@@ -28,7 +30,8 @@ public interface AccessToken {
     @JsonProperty("refresh_token")
     Optional<String> refreshToken();
 
-    Optional<String> scope();
+    @JsonDeserialize(using = ScopesDeserializer.class)
+    Optional<List<Scope>> scope();
 
     Optional<Webhook> webhook();
 

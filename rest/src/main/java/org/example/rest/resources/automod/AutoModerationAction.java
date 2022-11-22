@@ -31,6 +31,10 @@ public interface AutoModerationAction {
         Type(int value) {
             this.value = value;
         }
+
+        public int getValue() {
+            return value;
+        }
     }
 
     @ImmutableJson

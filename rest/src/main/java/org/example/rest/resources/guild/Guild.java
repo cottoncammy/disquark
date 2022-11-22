@@ -9,6 +9,7 @@ import org.example.rest.immutables.ImmutableJson;
 import org.example.rest.resources.Sticker;
 import org.example.rest.resources.User;
 import org.example.rest.resources.channel.Channel;
+import org.example.rest.resources.oauth2.Scope;
 import org.example.rest.resources.permissions.Role;
 import org.immutables.value.Value.Enclosing;
 
@@ -147,6 +148,10 @@ public interface Guild {
         DefaultMessageNotificationLevel(int value) {
             this.value = value;
         }
+
+        public int getValue() {
+            return value;
+        }
     }
 
     enum ExplicitContentFilterLevel {
@@ -159,6 +164,10 @@ public interface Guild {
         ExplicitContentFilterLevel(int value) {
             this.value = value;
         }
+
+        public int getValue() {
+            return value;
+        }
     }
 
     enum MfaLevel {
@@ -169,6 +178,10 @@ public interface Guild {
 
         MfaLevel(int value) {
             this.value = value;
+        }
+
+        public int getValue() {
+            return value;
         }
     }
 
@@ -184,6 +197,10 @@ public interface Guild {
         VerificationLevel(int value) {
             this.value = value;
         }
+
+        public int getValue() {
+            return value;
+        }
     }
 
     enum NsfwLevel {
@@ -196,6 +213,10 @@ public interface Guild {
 
         NsfwLevel(int value) {
             this.value = value;
+        }
+
+        public int getValue() {
+            return value;
         }
     }
 
@@ -210,6 +231,10 @@ public interface Guild {
         PremiumTier(int value) {
             this.value = value;
         }
+
+        public int getValue() {
+            return value;
+        }
     }
 
     enum SystemChannelFlag {
@@ -223,16 +248,23 @@ public interface Guild {
         SystemChannelFlag(int value) {
             this.value = value;
         }
+
+        public int getValue() {
+            return value;
+        }
     }
 
     enum Feature {
         ANIMATED_BANNER,
         ANIMATED_ICON,
+        APPLICATION_COMMAND_PERMISSIONS_V2,
         AUTO_MODERATION,
         BANNER,
         COMMUNITY,
+        DEVELOPER_SUPPORT_SERVER,
         DISCOVERABLE,
         FEATURABLE,
+        INVITES_DISABLED,
         INVITE_SPLASH,
         MEMBER_VERIFICATION_GATE_ENABLED,
         MONETIZATION_ENABLED,
@@ -240,7 +272,6 @@ public interface Guild {
         NEWS,
         PARTNERED,
         PREVIEW_ENABLED,
-        PRIVATE_THREADS,
         ROLE_ICONS,
         TICKETED_EVENTS_ENABLED,
         VANITY_URL,
@@ -414,6 +445,8 @@ public interface Guild {
 
         Optional<Application> application();
 
+        Optional<List<Scope>> scopes();
+
         enum ExpireBehavior {
             REMOVE_ROLE(0),
             KICK(1);
@@ -422,6 +455,10 @@ public interface Guild {
 
             ExpireBehavior(int value) {
                 this.value = value;
+            }
+
+            public int getValue() {
+                return value;
             }
         }
 

@@ -3,12 +3,10 @@ package org.example.rest.oauth2;
 import static java.util.Objects.requireNonNull;
 
 import io.smallrye.mutiny.Multi;
+import io.vertx.core.http.HttpMethod;
 import io.vertx.mutiny.core.Vertx;
 import org.example.rest.DiscordClient;
-import org.example.rest.request.AccessTokenSource;
-import org.example.rest.request.Requester;
-import org.example.rest.request.RequesterFactory;
-import org.example.rest.request.user.GetUserConnections;
+import org.example.rest.request.*;
 import org.example.rest.resources.User;
 import org.example.rest.response.Response;
 
@@ -32,7 +30,7 @@ public class DiscordOAuth2Client<T extends Response> extends DiscordClient<T> {
     }
 
     public Multi<User.Connection> getUserConnections() {
-        return requester.request(new GetUserConnections().asRequest())
+        return requester.request(Request.builder().endpoint(Endpoint.create(HttpMethod.GET, "/users/@me/connections")).build())
                 .flatMap(res -> res.as(User.Connection[].class))
                 .onItem().disjoint();
     }

@@ -1,5 +1,7 @@
 package org.example.rest.resources;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.example.rest.immutables.ImmutableJson;
@@ -9,6 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @ImmutableJson
+@JsonInclude(Include.NON_ABSENT)
 @JsonDeserialize(as = ImmutableEmoji.class)
 public interface Emoji {
 

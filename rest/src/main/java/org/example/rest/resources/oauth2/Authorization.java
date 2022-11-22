@@ -2,6 +2,7 @@ package org.example.rest.resources.oauth2;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.example.rest.immutables.ImmutableJson;
+import org.example.rest.jackson.ScopesDeserializer;
 import org.example.rest.resources.Application;
 import org.example.rest.resources.User;
 
@@ -19,6 +20,7 @@ public interface Authorization {
 
     Application application();
 
+    @JsonDeserialize(using = ScopesDeserializer.class)
     List<Scope> scopes();
 
     Instant expires();

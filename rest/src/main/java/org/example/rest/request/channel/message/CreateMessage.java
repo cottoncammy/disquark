@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.mutiny.uritemplate.Variables;
 import org.example.rest.request.*;
@@ -29,6 +30,8 @@ public interface CreateMessage extends MultipartRequest, Requestable {
     Snowflake channelId();
 
     Optional<String> content();
+
+    Optional<String> nonce();
 
     Optional<Boolean> tts();
 

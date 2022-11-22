@@ -10,6 +10,7 @@ import org.example.rest.resources.Webhook;
 import org.example.rest.resources.automod.AutoModerationRule;
 import org.example.rest.resources.channel.Channel;
 import org.example.rest.resources.guild.Guild;
+import org.example.rest.resources.interactions.ApplicationCommand;
 import org.immutables.value.Value.Enclosing;
 
 import java.util.List;
@@ -23,6 +24,9 @@ public interface AuditLog {
     static Builder builder() {
         return new Builder();
     }
+
+    @JsonProperty("application_commands")
+    List<ApplicationCommand> applicationCommands();
 
     @JsonProperty("audit_log_entries")
     List<Entry> auditLogEntries();
@@ -123,15 +127,22 @@ public interface AuditLog {
         AUTO_MODERATION_RULE_CREATE(140),
         AUTO_MODERATION_RULE_UPDATE(141),
         AUTO_MODERATION_RULE_DELETE(142),
-        AUTO_MODERATION_BLOCK_MESSAGE(143);
+        AUTO_MODERATION_BLOCK_MESSAGE(143),
+        AUTO_MODERATION_FLAG_TO_CHANNEL(144),
+        AUTO_MODERATION_USER_COMMUNICATION_DISABLED(145);
 
         private final int value;
 
         Event(int value) {
             this.value = value;
         }
+
+        public int getValue() {
+            return value;
+        }
     }
 
+    // TODO
     @ImmutableJson
     @JsonDeserialize(as = ImmutableAuditLog.Change.class)
     interface Change {

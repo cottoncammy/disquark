@@ -15,6 +15,7 @@
         <option value="$PROJECT_DIR$/code-style/pom.xml" />
         <option value="$PROJECT_DIR$/gateway/pom.xml" />
         <option value="$PROJECT_DIR$/github-bot/pom.xml" />
+        <option value="$PROJECT_DIR$/gizmo-runner/pom.xml" />
         <option value="$PROJECT_DIR$/json/pom.xml" />
       </set>
     </option>

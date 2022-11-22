@@ -57,6 +57,10 @@ public interface AutoModerationRule {
         TriggerType(int value) {
             this.value = value;
         }
+
+        public int getValue() {
+            return value;
+        }
     }
 
     @ImmutableJson
@@ -69,6 +73,9 @@ public interface AutoModerationRule {
 
         @JsonProperty("keyword_filter")
         List<String> keywordFilter();
+
+        @JsonProperty("regex_patterns")
+        List<String> regexPatterns();
 
         List<KeywordPresetType> presets();
 
@@ -93,6 +100,10 @@ public interface AutoModerationRule {
         KeywordPresetType(int value) {
             this.value = value;
         }
+
+        public int getValue() {
+            return value;
+        }
     }
 
     enum EventType {
@@ -102,6 +113,10 @@ public interface AutoModerationRule {
 
         EventType(int value) {
             this.value = value;
+        }
+
+        public int getValue() {
+            return value;
         }
     }
 

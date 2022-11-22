@@ -1,7 +1,13 @@
 package org.example.rest.resources.channel.message;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.deser.std.FromStringDeserializer;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import org.example.rest.resources.Snowflake;
 import org.example.rest.immutables.ImmutableJson;
 import org.example.rest.resources.*;
@@ -58,7 +64,8 @@ public interface Message {
 
     Optional<List<Reaction>> reactions();
 
-    Optional<Object> nonce();
+    @JsonDeserialize(using = FromStringDeserializer.class)
+    Optional<String> nonce();
 
     boolean pinned();
 
@@ -126,6 +133,10 @@ public interface Message {
         Type(int value) {
             this.value = value;
         }
+
+        public int getValue() {
+            return value;
+        }
     }
 
     @ImmutableJson
@@ -152,6 +163,10 @@ public interface Message {
             Type(int value) {
                 this.value = value;
             }
+
+            public int getValue() {
+                return value;
+            }
         }
 
         class Builder extends ImmutableMessage.Activity.Builder {
@@ -175,9 +190,14 @@ public interface Message {
         Flag(int value) {
             this.value = value;
         }
+
+        public int getValue() {
+            return value;
+        }
     }
 
     @ImmutableJson
+    @JsonInclude(Include.NON_ABSENT)
     @JsonDeserialize(as = ImmutableMessage.Reference.class)
     interface Reference {
 
@@ -222,6 +242,7 @@ public interface Message {
     }
 
     @ImmutableJson
+    @JsonInclude(Include.NON_ABSENT)
     @JsonDeserialize(as = ImmutableMessage.Embed.class)
     interface Embed {
 
@@ -255,16 +276,8 @@ public interface Message {
 
         Optional<List<Field>> fields();
 
-        enum Type {
-            RICH,
-            IMAGE,
-            VIDEO,
-            GIFV,
-            ARTICLE,
-            LINK
-        }
-
         @ImmutableJson
+        @JsonInclude(Include.NON_ABSENT)
         @JsonDeserialize(as = ImmutableMessage.Thumbnail.class)
         interface Thumbnail {
 
@@ -287,6 +300,7 @@ public interface Message {
         }
 
         @ImmutableJson
+        @JsonInclude(Include.NON_ABSENT)
         @JsonDeserialize(as = ImmutableMessage.Video.class)
         interface Video {
 
@@ -309,6 +323,7 @@ public interface Message {
         }
 
         @ImmutableJson
+        @JsonInclude(Include.NON_ABSENT)
         @JsonDeserialize(as = ImmutableMessage.Image.class)
         interface Image {
 
@@ -331,6 +346,7 @@ public interface Message {
         }
 
         @ImmutableJson
+        @JsonInclude(Include.NON_ABSENT)
         @JsonDeserialize(as = ImmutableMessage.Provider.class)
         interface Provider {
 
@@ -348,6 +364,7 @@ public interface Message {
         }
 
         @ImmutableJson
+        @JsonInclude(Include.NON_ABSENT)
         @JsonDeserialize(as = ImmutableMessage.Author.class)
         interface Author {
 
@@ -371,6 +388,7 @@ public interface Message {
         }
 
         @ImmutableJson
+        @JsonInclude(Include.NON_ABSENT)
         @JsonDeserialize(as = ImmutableMessage.Footer.class)
         interface Footer {
 
@@ -392,6 +410,7 @@ public interface Message {
         }
 
         @ImmutableJson
+        @JsonInclude(Include.NON_ABSENT)
         @JsonDeserialize(as = ImmutableMessage.Field.class)
         interface Field {
 
@@ -416,6 +435,7 @@ public interface Message {
     }
 
     @ImmutableJson
+    @JsonInclude(Include.NON_ABSENT)
     @JsonDeserialize(as = ImmutableMessage.Attachment.class)
     interface Attachment {
 

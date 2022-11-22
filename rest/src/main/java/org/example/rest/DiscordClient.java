@@ -10,7 +10,6 @@ import org.example.rest.response.Response;
 
 import static java.util.Objects.requireNonNull;
 
-// TODO customize DatabindCodec
 public abstract class DiscordClient<T extends Response> {
     protected final Vertx vertx;
     protected final Requester<T> requester;

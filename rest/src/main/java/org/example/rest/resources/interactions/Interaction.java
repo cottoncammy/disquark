@@ -74,6 +74,10 @@ public interface Interaction {
         Type(int value) {
             this.value = value;
         }
+
+        public int getValue() {
+            return value;
+        }
     }
 
     @ImmutableJson
@@ -106,7 +110,7 @@ public interface Interaction {
         @JsonProperty("component_type")
         Optional<Component.Type> componentType();
 
-        Optional<List<SelectOption>> values();
+        Optional<List<String>> values();
 
         Optional<List<Component>> components();
 
@@ -170,6 +174,10 @@ public interface Interaction {
 
         CallbackType(int value) {
             this.value = value;
+        }
+
+        public int getValue() {
+            return value;
         }
     }
 

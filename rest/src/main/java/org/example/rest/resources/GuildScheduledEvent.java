@@ -69,6 +69,10 @@ public interface GuildScheduledEvent {
         PrivacyLevel(int value) {
             this.value = value;
         }
+
+        public int getValue() {
+            return value;
+        }
     }
 
     enum EntityType {
@@ -80,6 +84,10 @@ public interface GuildScheduledEvent {
 
         EntityType(int value) {
             this.value = value;
+        }
+
+        public int getValue() {
+            return value;
         }
     }
 
@@ -93,6 +101,10 @@ public interface GuildScheduledEvent {
 
         Status(int value) {
             this.value = value;
+        }
+
+        public int getValue() {
+            return value;
         }
     }
 

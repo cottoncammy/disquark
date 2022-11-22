@@ -1,5 +1,7 @@
 package org.example.rest.resources;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.example.rest.immutables.ImmutableJson;
@@ -13,6 +15,7 @@ import java.util.OptionalInt;
 
 @Enclosing
 @ImmutableJson
+@JsonInclude(Include.NON_ABSENT)
 @JsonDeserialize(as = ImmutableUser.class)
 public interface User {
 
@@ -68,24 +71,34 @@ public interface User {
         VERIFIED_BOT(16),
         VERIFIED_DEVELOPER(17),
         CERTIFIED_MODERATOR(18),
-        BOT_HTTP_INTERACTIONS(19);
+        BOT_HTTP_INTERACTIONS(19),
+        ACTIVE_DEVELOPER(22);
 
         private final int value;
 
         Flag(int value) {
             this.value = value;
         }
+
+        public int getValue() {
+            return value;
+        }
     }
 
     enum PremiumType {
         NONE(0),
         NITRO_CLASSIC(1),
-        NITRO(2);
+        NITRO(2),
+        NITRO_BASIC(3);
 
         private final int value;
 
         PremiumType(int value) {
             this.value = value;
+        }
+
+        public int getValue() {
+            return value;
         }
     }
 
@@ -115,16 +128,22 @@ public interface User {
         @JsonProperty("show_activity")
         boolean showActivity();
 
+        @JsonProperty("two_way_link")
+        boolean twoWayLink();
+
         VisibilityType visibility();
 
         enum Service {
             BATTLE_NET("battlenet"),
+            EBAY("ebay"),
             EPIC_GAMES("epicgames"),
             FACEBOOK("facebook"),
             GITHUB("github"),
             LEAGUE_OF_LEGENDS("leagueoflegends"),
+            PAYPAL("paypal"),
             PLAYSTATION("playstation"),
             REDDIT("reddit"),
+            RIOT_GAMES("riotgames"),
             SPOTIFY("spotify"),
             SKYPE("skype"),
             STEAM("steam"),
@@ -138,6 +157,10 @@ public interface User {
             Service(String value) {
                 this.value = value;
             }
+
+            public String getValue() {
+                return value;
+            }
         }
 
         enum VisibilityType {
@@ -148,6 +171,10 @@ public interface User {
 
             VisibilityType(int value) {
                 this.value = value;
+            }
+
+            public int getValue() {
+                return value;
             }
         }
 

@@ -48,4 +48,8 @@ public enum PermissionFlag {
     PermissionFlag(int value) {
         this.value = value;
     }
+
+    public int getValue() {
+        return value;
+    }
 }

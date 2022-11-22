@@ -17,6 +17,10 @@ public class Snowflake {
         return create((requireNonNull(value).toEpochMilli() - DISCORD_EPOCH) << 22);
     }
 
+    public static Snowflake create(String value) {
+        return create(Long.parseLong(requireNonNull(value)));
+    }
+
     private Snowflake(long value) {
         this.value = value;
     }

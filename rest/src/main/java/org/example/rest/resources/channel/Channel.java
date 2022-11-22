@@ -94,6 +94,21 @@ public interface Channel {
     @JsonProperty("total_message_sent")
     OptionalInt totalMessageSent();
 
+    @JsonProperty("available_tags")
+    Optional<List<ForumTag>> availableTags();
+
+    @JsonProperty("applied_tags")
+    Optional<List<Snowflake>> appliedTags();
+
+    @JsonProperty("default_reaction_emoji")
+    Optional<DefaultReaction> defaultReactionEmoji();
+
+    @JsonProperty("default_thread_rate_limit_per_user")
+    OptionalInt defaultThreadRateLimitPerUser();
+
+    @JsonProperty("default_sort_order")
+    Optional<SortOrderType> defaultSortOrder();
+
     enum Type {
         GUILD_TEXT(0),
         DM(1),
@@ -113,6 +128,10 @@ public interface Channel {
         Type(int value) {
             this.value = value;
         }
+
+        public int getValue() {
+            return value;
+        }
     }
 
     enum VideoQualityMode {
@@ -124,15 +143,39 @@ public interface Channel {
         VideoQualityMode(int value) {
             this.value = value;
         }
+
+        public int getValue() {
+            return value;
+        }
     }
 
     enum Flag {
-        PINNED(1);
+        PINNED(1),
+        REQUIRE_TAG(4);
 
         private final int value;
 
         Flag(int value) {
             this.value = value;
+        }
+
+        public int getValue() {
+            return value;
+        }
+    }
+
+    enum SortOrderType {
+        LATEST_ACTIVITY(0),
+        CREATION_DATE(1);
+
+        private final int value;
+
+        SortOrderType(int value) {
+            this.value = value;
+        }
+
+        public int getValue() {
+            return value;
         }
     }
 
@@ -160,6 +203,10 @@ public interface Channel {
 
             Type(int value) {
                 this.value = value;
+            }
+
+            public int getValue() {
+                return value;
             }
         }
 

@@ -3,6 +3,7 @@ package org.example.rest.resources;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.example.rest.immutables.ImmutableJson;
+import org.example.rest.jackson.ScopesDeserializer;
 import org.example.rest.resources.oauth2.Scope;
 import org.immutables.value.Value.Enclosing;
 
@@ -87,6 +88,10 @@ public interface Application {
         Flag(int value) {
             this.value = value;
         }
+
+        public int getValue() {
+            return value;
+        }
     }
 
     @ImmutableJson
@@ -97,6 +102,7 @@ public interface Application {
             return new Builder();
         }
 
+        @JsonDeserialize(using = ScopesDeserializer.class)
         List<Scope> scopes();
 
         String permissions();

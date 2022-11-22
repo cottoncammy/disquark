@@ -16,6 +16,12 @@ public interface OptionalAuditEntryInfo {
     @JsonProperty("application_id")
     Snowflake applicationId();
 
+    @JsonProperty("auto_moderation_rule_name")
+    String autoModerationRuleName();
+
+    @JsonProperty("auto_moderation_rule_trigger_type")
+    String autoModerationRuleTriggerType();
+
     @JsonProperty("channel_id")
     Snowflake channelId();
 

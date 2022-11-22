@@ -60,6 +60,10 @@ public interface Team {
         MembershipState(int value) {
             this.value = value;
         }
+
+        public int getValue() {
+            return value;
+        }
     }
 
     class Builder extends ImmutableTeam.Builder {
