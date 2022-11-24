@@ -13,6 +13,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.OptionalInt;
 
+import static java.util.Objects.requireNonNull;
+
 @Enclosing
 @ImmutableJson
 @JsonInclude(Include.NON_ABSENT)
@@ -76,6 +78,43 @@ public interface User {
 
         private final int value;
 
+        public static Flag create(int value) {
+            switch (value) {
+                case 0:
+                    return STAFF;
+                case 1:
+                    return PARTNER;
+                case 2:
+                    return HYPESQUAD;
+                case 3:
+                    return BUG_HUNTER_LEVEL_1;
+                case 6:
+                    return HYPESQUAD_ONLINE_HOUSE_1;
+                case 7:
+                    return HYPESQUAD_ONLINE_HOUSE_2;
+                case 8:
+                    return HYPESQUAD_ONLINE_HOUSE_3;
+                case 9:
+                    return PREMIUM_EARLY_SUPPORTER;
+                case 10:
+                    return TEAM_PSEUDO_USER;
+                case 14:
+                    return BUG_HUNTER_LEVEL_2;
+                case 16:
+                    return VERIFIED_BOT;
+                case 17:
+                    return VERIFIED_DEVELOPER;
+                case 18:
+                    return CERTIFIED_MODERATOR;
+                case 19:
+                    return BOT_HTTP_INTERACTIONS;
+                case 22:
+                    return ACTIVE_DEVELOPER;
+                default:
+                    throw new IllegalArgumentException();
+            }
+        }
+
         Flag(int value) {
             this.value = value;
         }
@@ -92,6 +131,21 @@ public interface User {
         NITRO_BASIC(3);
 
         private final int value;
+
+        public static PremiumType create(int value) {
+            switch (value) {
+                case 0:
+                    return NONE;
+                case 1:
+                    return NITRO_CLASSIC;
+                case 2:
+                    return NITRO;
+                case 3:
+                    return NITRO_BASIC;
+                default:
+                    throw new IllegalArgumentException();
+            }
+        }
 
         PremiumType(int value) {
             this.value = value;
@@ -154,6 +208,47 @@ public interface User {
 
             private final String value;
 
+            public static Service create(String value) {
+                switch (requireNonNull(value)) {
+                    case "battlenet":
+                        return BATTLE_NET;
+                    case "ebay":
+                        return EBAY;
+                    case "epicgames":
+                        return EPIC_GAMES;
+                    case "facebook":
+                        return FACEBOOK;
+                    case "github":
+                        return GITHUB;
+                    case "leagueoflegends":
+                        return LEAGUE_OF_LEGENDS;
+                    case "paypal":
+                        return PAYPAL;
+                    case "playstation":
+                        return PLAYSTATION;
+                    case "reddit":
+                        return REDDIT;
+                    case "riotgames":
+                        return RIOT_GAMES;
+                    case "spotify":
+                        return SPOTIFY;
+                    case "skype":
+                        return SKYPE;
+                    case "steam":
+                        return STEAM;
+                    case "twitch":
+                        return TWITCH;
+                    case "twitter":
+                        return TWITTER;
+                    case "xbox":
+                        return XBOX;
+                    case "youtube":
+                        return YOUTUBE;
+                    default:
+                        throw new IllegalArgumentException();
+                }
+            }
+
             Service(String value) {
                 this.value = value;
             }
@@ -168,6 +263,16 @@ public interface User {
             EVERYONE(1);
 
             private final int value;
+
+            public static VisibilityType create(int value) {
+                if (value == 0) {
+                    return NONE;
+                } else if (value == 1) {
+                    return EVERYONE;
+                } else {
+                    throw new IllegalArgumentException();
+                }
+            }
 
             VisibilityType(int value) {
                 this.value = value;

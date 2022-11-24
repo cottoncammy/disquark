@@ -5,31 +5,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a5029c32-3a5b-4a65-b173-2d497ddb2a2d" name="Changes" comment="update api def">
-      <change afterPath="$PROJECT_DIR$/javapoet-runner/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/javapoet-runner/pom.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rest/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/rest/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/DiscordClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/DiscordClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/jackson/SomeFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/jackson/SomeFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/oauth2/DiscordOAuth2Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/oauth2/DiscordOAuth2Client.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/request/HttpClientRequester.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/request/HttpClientRequester.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/request/channel/message/CreateMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/request/channel/message/CreateMessage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/request/user/GetUserConnections.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/jackson/ScopesDeserializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/jackson/ScopesDeserializer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/Application.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/Application.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/Emoji.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/Emoji.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/GuildScheduledEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/GuildScheduledEvent.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/Invite.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/Invite.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/Locale.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/Locale.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/Snowflake.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/Snowflake.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/StageInstance.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/StageInstance.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/Sticker.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/Sticker.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/Team.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/Team.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/User.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/Webhook.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/Webhook.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/auditlog/AuditLog.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/auditlog/AuditLog.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/auditlog/OptionalAuditEntryInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/auditlog/OptionalAuditEntryInfo.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/automod/AutoModerationAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/automod/AutoModerationAction.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/automod/AutoModerationRule.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/automod/AutoModerationRule.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/channel/Channel.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/channel/Channel.java" afterDir="false" />
@@ -39,13 +29,9 @@
       <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/interactions/ApplicationCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/interactions/ApplicationCommand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/interactions/Interaction.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/interactions/Interaction.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/interactions/components/Component.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/interactions/components/Component.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/interactions/components/SelectOption.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/interactions/components/SelectOption.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/oauth2/AccessToken.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/oauth2/AccessToken.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/oauth2/Authorization.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/oauth2/Authorization.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/oauth2/Scope.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/oauth2/Scope.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/oauth2/TokenType.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/oauth2/TokenType.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/permissions/PermissionFlag.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/permissions/PermissionFlag.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/permissions/Role.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/permissions/Role.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -58,8 +44,8 @@
         <option value="package-info" />
         <option value="Enum" />
         <option value="AnnotationType" />
-        <option value="Interface" />
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
@@ -99,9 +85,10 @@
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;jdk.selected.JAVA_MODULE&quot;: &quot;11&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/Cameron/IdeaProjects/quarkus-discord4j&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Problems&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.21954022&quot;
+    &quot;project.structure.side.proportion&quot;: &quot;0.21954022&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;editing.templates&quot;
   }
 }</component>
   <component name="RecentsManager">
@@ -334,7 +321,14 @@
       <option name="project" value="LOCAL" />
       <updated>1669072657305</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="update api def">
+      <created>1669099254465</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1669099254466</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -353,7 +347,8 @@
     <MESSAGE value="Progress" />
     <MESSAGE value="destruction" />
     <MESSAGE value="progress" />
-    <option name="LAST_COMMIT_MESSAGE" value="progress" />
+    <MESSAGE value="update api def" />
+    <option name="LAST_COMMIT_MESSAGE" value="update api def" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

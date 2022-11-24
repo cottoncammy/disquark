@@ -52,6 +52,19 @@ public interface Webhook {
 
         private final int value;
 
+        public static Type create(int value) {
+            switch (value) {
+                case 1:
+                    return INCOMING;
+                case 2:
+                    return CHANNEL_FOLLOWER;
+                case 3:
+                    return APPLICATION;
+                default:
+                    throw new IllegalArgumentException();
+            }
+        }
+
         Type(int value) {
             this.value = value;
         }

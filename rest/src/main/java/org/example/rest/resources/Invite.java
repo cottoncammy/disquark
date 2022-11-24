@@ -60,6 +60,16 @@ public interface Invite {
 
         private final int value;
 
+        public static TargetType create(int value) {
+            if (value == 1) {
+                return STREAM;
+            } else if (value == 2) {
+                return EMBEDDED_APPLICATION;
+            } else {
+                throw new IllegalArgumentException();
+            }
+        }
+
         TargetType(int value) {
             this.value = value;
         }

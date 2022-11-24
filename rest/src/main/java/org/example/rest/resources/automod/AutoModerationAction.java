@@ -28,6 +28,19 @@ public interface AutoModerationAction {
 
         private final int value;
 
+        public static Type create(int value) {
+            switch (value) {
+                case 1:
+                    return BLOCK_MESSAGE;
+                case 2:
+                    return SEND_ALERT_MESSAGE;
+                case 3:
+                    return TIMEOUT;
+                default:
+                    throw new IllegalArgumentException();
+            }
+        }
+
         Type(int value) {
             this.value = value;
         }

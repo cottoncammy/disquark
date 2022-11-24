@@ -57,6 +57,16 @@ public interface Team {
 
         private final int value;
 
+        public static MembershipState create(int value) {
+            if (value == 1) {
+                return INVITED;
+            } else if (value == 2) {
+                return ACCEPTED;
+            } else {
+                throw new IllegalArgumentException();
+            }
+        }
+
         MembershipState(int value) {
             this.value = value;
         }

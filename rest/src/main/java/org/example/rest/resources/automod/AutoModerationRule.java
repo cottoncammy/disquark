@@ -7,6 +7,7 @@ import org.example.rest.immutables.ImmutableJson;
 import org.immutables.value.Value.Enclosing;
 
 import java.util.List;
+import java.util.Map;
 
 @Enclosing
 @ImmutableJson
@@ -54,6 +55,21 @@ public interface AutoModerationRule {
 
         private final int value;
 
+        public static TriggerType create(int value) {
+            switch (value) {
+                case 1:
+                    return KEYWORD;
+                case 3:
+                    return SPAM;
+                case 4:
+                    return KEYWORD_PRESET;
+                case 5:
+                    return MENTION_SPAM;
+                default:
+                    throw new IllegalArgumentException();
+            }
+        }
+
         TriggerType(int value) {
             this.value = value;
         }
@@ -97,6 +113,19 @@ public interface AutoModerationRule {
 
         private final int value;
 
+        public static KeywordPresetType create(int value) {
+            switch (value) {
+                case 1:
+                    return PROFANITY;
+                case 2:
+                    return SEXUAL_CONTENT;
+                case 3:
+                    return SLURS;
+                default:
+                    throw new IllegalArgumentException();
+            }
+        }
+
         KeywordPresetType(int value) {
             this.value = value;
         }
@@ -110,6 +139,14 @@ public interface AutoModerationRule {
         MESSAGE_SEND(1);
 
         private final int value;
+
+        public static EventType create(int value) {
+            if (value == 1) {
+                return MESSAGE_SEND;
+            } else {
+                throw new IllegalArgumentException();
+            }
+        }
 
         EventType(int value) {
             this.value = value;

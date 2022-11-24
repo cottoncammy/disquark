@@ -40,6 +40,16 @@ public interface StageInstance {
 
         private final int value;
 
+        public static PrivacyLevel create(int value) {
+            if (value == 1) {
+                return PUBLIC;
+            } else if (value == 2) {
+                return GUILD_ONLY;
+            } else {
+                throw new IllegalArgumentException();
+            }
+        }
+
         PrivacyLevel(int value) {
             this.value = value;
         }

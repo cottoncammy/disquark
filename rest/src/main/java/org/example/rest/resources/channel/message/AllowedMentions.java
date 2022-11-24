@@ -6,6 +6,8 @@ import org.example.rest.immutables.ImmutableJson;
 
 import java.util.List;
 
+import static java.util.Objects.requireNonNull;
+
 @ImmutableJson
 public interface AllowedMentions {
 
@@ -28,6 +30,19 @@ public interface AllowedMentions {
         EVERYONE_MENTIONS("everyone");
 
         private final String value;
+
+        public static Type create(String value) {
+            switch (requireNonNull(value)) {
+                case "roles":
+                    return ROLE_MENTIONS;
+                case "users":
+                    return USER_MENTIONS;
+                case "everyone":
+                    return EVERYONE_MENTIONS;
+                default:
+                    throw new IllegalArgumentException();
+            }
+        }
 
         Type(String value) {
             this.value = value;

@@ -72,6 +72,29 @@ public interface Component {
 
         private final int value;
 
+        public static Type create(int value) {
+            switch (value) {
+                case 1:
+                    return ACTION_ROW;
+                case 2:
+                    return BUTTON;
+                case 3:
+                    return SELECT_MENU;
+                case 4:
+                    return TEXT_INPUT;
+                case 5:
+                    return USER_SELECT;
+                case 6:
+                    return ROLE_SELECT;
+                case 7:
+                    return MENTIONABLE_SELECT;
+                case 8:
+                    return CHANNEL_SELECT;
+                default:
+                    throw new IllegalArgumentException();
+            }
+        }
+
         Type(int value) {
             this.value = value;
         }

@@ -52,6 +52,16 @@ public interface Sticker {
 
         private final int value;
 
+        public static Type create(int value) {
+            if (value == 1) {
+                return STANDARD;
+            } else if (value == 2) {
+                return GUILD;
+            } else {
+                throw new IllegalArgumentException();
+            }
+        }
+
         Type(int value) {
             this.value = value;
         }
@@ -67,6 +77,19 @@ public interface Sticker {
         LOTTIE(3);
 
         private final int value;
+
+        public static FormatType create(int value) {
+            switch (value) {
+                case 1:
+                    return PNG;
+                case 2:
+                    return APNG;
+                case 3:
+                    return LOTTIE;
+                default:
+                    throw new IllegalArgumentException();
+            }
+        }
 
         FormatType(int value) {
             this.value = value;

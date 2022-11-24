@@ -62,6 +62,18 @@ public interface ApplicationCommand {
 
         private final int value;
 
+        public static Type create(int value) {
+            switch (value) {
+                case 1:
+                    return CHAT_INPUT;
+                case 2:
+                    return USER;
+                case 3:
+                    return MESSAGE;
+                default:
+                    throw new IllegalArgumentException();
+            }
+        }
 
         Type(int value) {
             this.value = value;
@@ -130,6 +142,35 @@ public interface ApplicationCommand {
 
             private final int value;
 
+            public static Type create(int value) {
+                switch (value) {
+                    case 1:
+                        return SUB_COMMAND;
+                    case 2:
+                        return SUB_COMMAND_GROUP;
+                    case 3:
+                        return STRING;
+                    case 4:
+                        return INTEGER;
+                    case 5:
+                        return BOOLEAN;
+                    case 6:
+                        return USER;
+                    case 7:
+                        return CHANNEL;
+                    case 8:
+                        return ROLE;
+                    case 9:
+                        return MENTIONABLE;
+                    case 10:
+                        return NUMBER;
+                    case 11:
+                        return ATTACHMENT;
+                    default:
+                        throw new IllegalArgumentException();
+                }
+            }
+
             Type(int value) {
                 this.value = value;
             }
@@ -185,6 +226,19 @@ public interface ApplicationCommand {
             CHANNEL(3);
 
             private final int value;
+
+            public static Type create(int value) {
+                switch (value) {
+                    case 1:
+                        return ROLE;
+                    case 2:
+                        return USER;
+                    case 3:
+                        return CHANNEL;
+                    default:
+                        throw new IllegalArgumentException();
+                }
+            }
 
             Type(int value) {
                 this.value = value;
