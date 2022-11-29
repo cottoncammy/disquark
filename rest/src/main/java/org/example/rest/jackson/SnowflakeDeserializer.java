@@ -1,7 +1,5 @@
 package org.example.rest.jackson;
 
-import com.fasterxml.jackson.core.JacksonException;
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
@@ -13,7 +11,7 @@ import java.io.IOException;
 public class SnowflakeDeserializer extends JsonDeserializer<Snowflake> {
 
     @Override
-    public Snowflake deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JsonParseException {
+    public Snowflake deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
         String s = p.getText();
 
         try {

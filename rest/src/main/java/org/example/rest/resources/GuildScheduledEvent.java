@@ -1,6 +1,7 @@
 package org.example.rest.resources;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.example.rest.immutables.ImmutableJson;
 import org.example.rest.resources.guild.Guild;
@@ -66,18 +67,11 @@ public interface GuildScheduledEvent {
 
         private final int value;
 
-        public static PrivacyLevel create(int value) {
-            if (value == 2) {
-                return GUILD_ONLY;
-            } else {
-                throw new IllegalArgumentException();
-            }
-        }
-
         PrivacyLevel(int value) {
             this.value = value;
         }
 
+        @JsonValue
         public int getValue() {
             return value;
         }
@@ -90,23 +84,11 @@ public interface GuildScheduledEvent {
 
         private final int value;
 
-        public static EntityType create(int value) {
-            switch (value) {
-                case 1:
-                    return STAGE_INSTANCE;
-                case 2:
-                    return VOICE;
-                case 3:
-                    return EXTERNAL;
-                default:
-                    throw new IllegalArgumentException();
-            }
-        }
-
         EntityType(int value) {
             this.value = value;
         }
 
+        @JsonValue
         public int getValue() {
             return value;
         }
@@ -120,25 +102,11 @@ public interface GuildScheduledEvent {
 
         private final int value;
 
-        public static Status create(int value) {
-            switch (value) {
-                case 1:
-                    return SCHEDULED;
-                case 2:
-                    return ACTIVE;
-                case 3:
-                    return COMPLETED;
-                case 4:
-                    return CANCELED;
-                default:
-                    throw new IllegalArgumentException();
-            }
-        }
-
         Status(int value) {
             this.value = value;
         }
 
+        @JsonValue
         public int getValue() {
             return value;
         }

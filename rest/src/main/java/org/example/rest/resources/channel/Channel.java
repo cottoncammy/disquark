@@ -1,6 +1,7 @@
 package org.example.rest.resources.channel;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.example.rest.resources.Snowflake;
 import org.example.rest.immutables.ImmutableJson;
@@ -125,41 +126,11 @@ public interface Channel {
 
         private final int value;
 
-        public static Type create(int value) {
-            switch (value) {
-                case 0:
-                    return GUILD_TEXT;
-                case 1:
-                    return DM;
-                case 2:
-                    return GUILD_VOICE;
-                case 3:
-                    return GROUP_DM;
-                case 4:
-                    return GUILD_CATEGORY;
-                case 5:
-                    return GUILD_ANNOUNCEMENT;
-                case 10:
-                    return ANNOUNCEMENT_THREAD;
-                case 11:
-                    return PUBLIC_THREAD;
-                case 12:
-                    return PRIVATE_THREAD;
-                case 13:
-                    return GUILD_STAGE_VOICE;
-                case 14:
-                    return GUILD_DIRECTORY;
-                case 15:
-                    return GUILD_FORUM;
-                default:
-                    throw new IllegalArgumentException();
-            }
-        }
-
         Type(int value) {
             this.value = value;
         }
 
+        @JsonValue
         public int getValue() {
             return value;
         }
@@ -171,20 +142,11 @@ public interface Channel {
 
         private final int value;
 
-        public static VideoQualityMode create(int value) {
-            if (value == 1) {
-                return AUTO;
-            } else if (value == 2) {
-                return FULL;
-            } else {
-                throw new IllegalArgumentException();
-            }
-        }
-
         VideoQualityMode(int value) {
             this.value = value;
         }
 
+        @JsonValue
         public int getValue() {
             return value;
         }
@@ -196,20 +158,11 @@ public interface Channel {
 
         private final int value;
 
-        public static Flag create(int value) {
-            if (value == 1) {
-                return PINNED;
-            } else if (value == 4) {
-                return REQUIRE_TAG;
-            } else {
-                throw new IllegalArgumentException();
-            }
-        }
-
         Flag(int value) {
             this.value = value;
         }
 
+        @JsonValue
         public int getValue() {
             return value;
         }
@@ -221,20 +174,11 @@ public interface Channel {
 
         private final int value;
 
-        public static SortOrderType create(int value) {
-            if (value == 0) {
-                return LATEST_ACTIVITY;
-            } else if (value == 1) {
-                return CREATION_DATE;
-            } else {
-                throw new IllegalArgumentException();
-            }
-        }
-
         SortOrderType(int value) {
             this.value = value;
         }
 
+        @JsonValue
         public int getValue() {
             return value;
         }
@@ -262,20 +206,11 @@ public interface Channel {
 
             private final int value;
 
-            public static Type create(int value) {
-                if (value == 0) {
-                    return ROLE;
-                } else if (value == 1) {
-                    return MEMBER;
-                } else {
-                    throw new IllegalArgumentException();
-                }
-            }
-
             Type(int value) {
                 this.value = value;
             }
 
+            @JsonValue
             public int getValue() {
                 return value;
             }

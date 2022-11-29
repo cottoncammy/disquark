@@ -10,7 +10,7 @@ import io.vertx.core.spi.json.JsonCodec;
 public class SomeFactory implements JsonFactory {
 
     static {
-        // TODO configure enum/enumset serialization + deserialization
+        // TODO configure enumset serialization + deserialization
         Jdk8Module module = new Jdk8Module();
         DatabindCodec.mapper().registerModule(module);
         DatabindCodec.prettyMapper().registerModule(module);

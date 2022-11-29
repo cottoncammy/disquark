@@ -1,6 +1,7 @@
 package org.example.rest.resources;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.example.rest.immutables.ImmutableJson;
 import org.example.rest.resources.channel.Channel;
@@ -52,23 +53,11 @@ public interface Webhook {
 
         private final int value;
 
-        public static Type create(int value) {
-            switch (value) {
-                case 1:
-                    return INCOMING;
-                case 2:
-                    return CHANNEL_FOLLOWER;
-                case 3:
-                    return APPLICATION;
-                default:
-                    throw new IllegalArgumentException();
-            }
-        }
-
         Type(int value) {
             this.value = value;
         }
 
+        @JsonValue
         public int getValue() {
             return value;
         }

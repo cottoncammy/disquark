@@ -1,6 +1,7 @@
 package org.example.rest.resources;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.example.rest.immutables.ImmutableJson;
 
@@ -40,20 +41,11 @@ public interface StageInstance {
 
         private final int value;
 
-        public static PrivacyLevel create(int value) {
-            if (value == 1) {
-                return PUBLIC;
-            } else if (value == 2) {
-                return GUILD_ONLY;
-            } else {
-                throw new IllegalArgumentException();
-            }
-        }
-
         PrivacyLevel(int value) {
             this.value = value;
         }
 
+        @JsonValue
         public int getValue() {
             return value;
         }

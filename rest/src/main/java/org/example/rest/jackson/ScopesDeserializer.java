@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 public class ScopesDeserializer extends JsonDeserializer<List<Scope>> {
 
     @Override
-    public List<Scope> deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JsonProcessingException {
+    public List<Scope> deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
         String s = p.getText();
 
         try {

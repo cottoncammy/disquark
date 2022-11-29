@@ -1,5 +1,7 @@
 package org.example.rest.resources;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 import static java.util.Objects.requireNonNull;
 
 public enum Locale {
@@ -36,77 +38,11 @@ public enum Locale {
 
     private final String value;
 
-    public static Locale create(String value) {
-        switch (requireNonNull(value)) {
-            case "da":
-                return DA;
-            case "de":
-                return DE;
-            case "en-GB":
-                return EN_GB;
-            case "en-US":
-                return EN_US;
-            case "es-ES":
-                return ES_ES;
-            case "fr":
-                return FR;
-            case "hr":
-                return HR;
-            case "it":
-                return IT;
-            case "lt":
-                return LT;
-            case "hu":
-                return HU;
-            case "nl":
-                return NL;
-            case "no":
-                return NO;
-            case "pl":
-                return PL;
-            case "pt-BR":
-                return PT_BR;
-            case "ro":
-                return RO;
-            case "fi":
-                return FI;
-            case "sv-SE":
-                return SV_SE;
-            case "vi":
-                return VI;
-            case "tr":
-                return TR;
-            case "cs":
-                return CS;
-            case "el":
-                return EL;
-            case "bg":
-                return BG;
-            case "ru":
-                return RU;
-            case "uk":
-                return UK;
-            case "hi":
-                return HI;
-            case "th":
-                return TH;
-            case "zh-CN":
-                return ZH_CN;
-            case "ja":
-                return JA;
-            case "zh-TW":
-                return ZH_TW;
-            case "ko":
-                return KO;
-            default:
-                throw new IllegalArgumentException();
-        }
-    }
-
     Locale(String value) {
         this.value = value;
     }
 
+    @JsonValue
     public String getValue() {
         return value;
     }

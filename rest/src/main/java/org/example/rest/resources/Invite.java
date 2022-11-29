@@ -1,6 +1,7 @@
 package org.example.rest.resources;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.example.rest.immutables.ImmutableJson;
 import org.example.rest.resources.channel.Channel;
@@ -60,20 +61,11 @@ public interface Invite {
 
         private final int value;
 
-        public static TargetType create(int value) {
-            if (value == 1) {
-                return STREAM;
-            } else if (value == 2) {
-                return EMBEDDED_APPLICATION;
-            } else {
-                throw new IllegalArgumentException();
-            }
-        }
-
         TargetType(int value) {
             this.value = value;
         }
 
+        @JsonValue
         public int getValue() {
             return value;
         }

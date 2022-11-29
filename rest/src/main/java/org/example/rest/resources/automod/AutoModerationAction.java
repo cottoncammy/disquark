@@ -1,6 +1,7 @@
 package org.example.rest.resources.automod;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.example.rest.resources.Snowflake;
 import org.example.rest.immutables.ImmutableJson;
@@ -28,23 +29,11 @@ public interface AutoModerationAction {
 
         private final int value;
 
-        public static Type create(int value) {
-            switch (value) {
-                case 1:
-                    return BLOCK_MESSAGE;
-                case 2:
-                    return SEND_ALERT_MESSAGE;
-                case 3:
-                    return TIMEOUT;
-                default:
-                    throw new IllegalArgumentException();
-            }
-        }
-
         Type(int value) {
             this.value = value;
         }
 
+        @JsonValue
         public int getValue() {
             return value;
         }

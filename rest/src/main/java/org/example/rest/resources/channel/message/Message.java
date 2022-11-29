@@ -3,6 +3,7 @@ package org.example.rest.resources.channel.message;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.deser.std.FromStringDeserializer;
 import org.example.rest.resources.Snowflake;
@@ -127,65 +128,11 @@ public interface Message {
 
         private final int value;
 
-        public static Type create(int value) {
-            switch (value) {
-                case 0:
-                    return DEFAULT;
-                case 1:
-                    return RECIPIENT_ADD;
-                case 2:
-                    return RECIPIENT_REMOVE;
-                case 3:
-                    return CALL;
-                case 4:
-                    return CHANNEL_NAME_CHANGE;
-                case 5:
-                    return CHANNEL_ICON_CHANGE;
-                case 6:
-                    return CHANNEL_PINNED_MESSAGE;
-                case 7:
-                    return USER_JOIN;
-                case 8:
-                    return GUILD_BOOST;
-                case 9:
-                    return GUILD_BOOST_TIER_1;
-                case 10:
-                    return GUILD_BOOST_TIER_2;
-                case 11:
-                    return GUILD_BOOST_TIER_3;
-                case 12:
-                    return CHANNEL_FOLLOW_ADD;
-                case 14:
-                    return GUILD_DISCOVERY_DISQUALIFIED;
-                case 15:
-                    return GUILD_DISCOVERY_REQUALIFIED;
-                case 16:
-                    return GUILD_DISCOVERY_GRACE_PERIOD_INITIAL_WARNING;
-                case 17:
-                    return GUILD_DISCOVERY_GRACE_PERIOD_FINAL_WARNING;
-                case 18:
-                    return THREAD_CREATED;
-                case 19:
-                    return REPLY;
-                case 20:
-                    return CHAT_INPUT_COMMAND;
-                case 21:
-                    return THREAD_STARTER_MESSAGE;
-                case 22:
-                    return GUILD_INVITE_REMINDER;
-                case 23:
-                    return CONTEXT_MENU_COMMAND;
-                case 24:
-                    return AUTO_MODERATION_ACTION;
-                default:
-                    throw new IllegalArgumentException();
-            }
-        }
-
         Type(int value) {
             this.value = value;
         }
 
+        @JsonValue
         public int getValue() {
             return value;
         }
@@ -212,25 +159,11 @@ public interface Message {
 
             private final int value;
 
-            public static Type create(int value) {
-                switch (value) {
-                    case 1:
-                        return JOIN;
-                    case 2:
-                        return SPECTATE;
-                    case 3:
-                        return LISTEN;
-                    case 5:
-                        return JOIN_REQUEST;
-                    default:
-                        throw new IllegalArgumentException();
-                }
-            }
-
             Type(int value) {
                 this.value = value;
             }
 
+            @JsonValue
             public int getValue() {
                 return value;
             }
@@ -254,35 +187,11 @@ public interface Message {
 
         private final int value;
 
-        public static Flag create(int value) {
-            switch (value) {
-                case 0:
-                    return CROSSPOSTED;
-                case 1:
-                    return IS_CROSSPOST;
-                case 2:
-                    return SUPPRESS_EMBEDS;
-                case 3:
-                    return SOURCE_MESSAGE_DELETED;
-                case 4:
-                    return URGENT;
-                case 5:
-                    return HAS_THREAD;
-                case 6:
-                    return EPHEMERAL;
-                case 7:
-                    return LOADING;
-                case 8:
-                    return FAILED_TO_MENTION_SOME_ROLES_IN_THREAD;
-                default:
-                    throw new IllegalArgumentException();
-            }
-        }
-
         Flag(int value) {
             this.value = value;
         }
 
+        @JsonValue
         public int getValue() {
             return value;
         }

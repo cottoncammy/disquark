@@ -1,6 +1,7 @@
 package org.example.rest.resources;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.example.rest.immutables.ImmutableJson;
 import org.example.rest.jackson.ScopesDeserializer;
@@ -85,35 +86,11 @@ public interface Application {
 
         private final int value;
 
-        public static Flag create(int value) {
-            switch (value) {
-                case 12:
-                    return GATEWAY_PRESENCE;
-                case 13:
-                    return GATEWAY_PRESENCE_LIMITED;
-                case 14:
-                    return GATEWAY_GUILD_MEMBERS;
-                case 15:
-                    return GATEWAY_GUILD_MEMBERS_LIMITED;
-                case 16:
-                    return VERIFICATION_PENDING_GUILD_LIMIT;
-                case 17:
-                    return EMBEDDED;
-                case 18:
-                    return GATEWAY_MESSAGE_CONTENT;
-                case 19:
-                    return GATEWAY_MESSAGE_CONTENT_LIMITED;
-                case 23:
-                    return APPLICATION_COMMAND_BADGE;
-                default:
-                    throw new IllegalArgumentException();
-            }
-        }
-
         Flag(int value) {
             this.value = value;
         }
 
+        @JsonValue
         public int getValue() {
             return value;
         }

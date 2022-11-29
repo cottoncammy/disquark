@@ -1,6 +1,7 @@
 package org.example.rest.resources;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.example.rest.immutables.ImmutableJson;
 import org.immutables.value.Value.Enclosing;
@@ -57,20 +58,11 @@ public interface Team {
 
         private final int value;
 
-        public static MembershipState create(int value) {
-            if (value == 1) {
-                return INVITED;
-            } else if (value == 2) {
-                return ACCEPTED;
-            } else {
-                throw new IllegalArgumentException();
-            }
-        }
-
         MembershipState(int value) {
             this.value = value;
         }
 
+        @JsonValue
         public int getValue() {
             return value;
         }

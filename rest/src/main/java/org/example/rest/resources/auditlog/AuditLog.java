@@ -1,6 +1,7 @@
 package org.example.rest.resources.auditlog;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.example.rest.resources.Snowflake;
 import org.example.rest.resources.GuildScheduledEvent;
@@ -133,125 +134,11 @@ public interface AuditLog {
 
         private final int value;
 
-        public static Event create(int value) {
-            switch (value) {
-                case 1:
-                    return GUILD_UPDATE;
-                case 10:
-                    return CHANNEL_CREATE;
-                case 11:
-                    return CHANNEL_UPDATE;
-                case 12:
-                    return CHANNEL_DELETE;
-                case 13:
-                    return CHANNEL_OVERWRITE_CREATE;
-                case 14:
-                    return CHANNEL_OVERWRITE_UPDATE;
-                case 15:
-                    return CHANNEL_OVERWRITE_DELETE;
-                case 20:
-                    return MEMBER_KICK;
-                case 21:
-                    return MEMBER_PRUNE;
-                case 22:
-                    return MEMBER_BAN_ADD;
-                case 23:
-                    return MEMBER_BAN_REMOVE;
-                case 24:
-                    return MEMBER_UPDATE;
-                case 25:
-                    return MEMBER_ROLE_UPDATE;
-                case 26:
-                    return MEMBER_MOVE;
-                case 27:
-                    return MEMBER_DISCONNECT;
-                case 28:
-                    return BOT_ADD;
-                case 30:
-                    return ROLE_CREATE;
-                case 31:
-                    return ROLE_UPDATE;
-                case 32:
-                    return ROLE_DELETE;
-                case 40:
-                    return INVITE_CREATE;
-                case 41:
-                    return INVITE_UPDATE;
-                case 42:
-                    return INVITE_DELETE;
-                case 50:
-                    return WEBHOOK_CREATE;
-                case 51:
-                    return WEBHOOK_UPDATE;
-                case 52:
-                    return WEBHOOK_DELETE;
-                case 60:
-                    return EMOJI_CREATE;
-                case 61:
-                    return EMOJI_UPDATE;
-                case 62:
-                    return EMOJI_DELETE;
-                case 72:
-                    return MESSAGE_DELETE;
-                case 73:
-                    return MESSAGE_BULK_DELETE;
-                case 74:
-                    return MESSAGE_PIN;
-                case 75:
-                    return MESSAGE_UNPIN;
-                case 80:
-                    return INTEGRATION_CREATE;
-                case 81:
-                    return INTEGRATION_UPDATE;
-                case 82:
-                    return INTEGRATION_DELETE;
-                case 83:
-                    return STAGE_INSTANCE_CREATE;
-                case 84:
-                    return STAGE_INSTANCE_UPDATE;
-                case 85:
-                    return STAGE_INSTANCE_DELETE;
-                case 90:
-                    return STICKER_CREATE;
-                case 91:
-                    return STICKER_UPDATE;
-                case 92:
-                    return STICKER_DELETE;
-                case 100:
-                    return GUILD_SCHEDULED_EVENT_CREATE;
-                case 101:
-                    return GUILD_SCHEDULED_EVENT_UPDATE;
-                case 102:
-                    return GUILD_SCHEDULED_EVENT_DELETE;
-                case 110:
-                    return THREAD_CREATE;
-                case 111:
-                    return THREAD_UPDATE;
-                case 112:
-                    return THREAD_DELETE;
-                case 121:
-                    return APPLICATION_COMMAND_PERMISSION_UPDATE;
-                case 140:
-                    return AUTO_MODERATION_RULE_CREATE;
-                case 141:
-                    return AUTO_MODERATION_RULE_UPDATE;
-                case 142:
-                    return AUTO_MODERATION_RULE_DELETE;
-                case 143:
-                    return AUTO_MODERATION_BLOCK_MESSAGE;
-                case 144:
-                    return AUTO_MODERATION_FLAG_TO_CHANNEL;
-                case 145:
-                    return AUTO_MODERATION_USER_COMMUNICATION_DISABLED;
-                default:
-                    throw new IllegalArgumentException();
-            }
-        }
-
         Event(int value) {
             this.value = value;
         }
 
+        @JsonValue
         public int getValue() {
             return value;
         }

@@ -1,6 +1,7 @@
 package org.example.rest.resources.automod;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.example.rest.resources.Snowflake;
 import org.example.rest.immutables.ImmutableJson;
@@ -55,25 +56,11 @@ public interface AutoModerationRule {
 
         private final int value;
 
-        public static TriggerType create(int value) {
-            switch (value) {
-                case 1:
-                    return KEYWORD;
-                case 3:
-                    return SPAM;
-                case 4:
-                    return KEYWORD_PRESET;
-                case 5:
-                    return MENTION_SPAM;
-                default:
-                    throw new IllegalArgumentException();
-            }
-        }
-
         TriggerType(int value) {
             this.value = value;
         }
 
+        @JsonValue
         public int getValue() {
             return value;
         }
@@ -113,23 +100,11 @@ public interface AutoModerationRule {
 
         private final int value;
 
-        public static KeywordPresetType create(int value) {
-            switch (value) {
-                case 1:
-                    return PROFANITY;
-                case 2:
-                    return SEXUAL_CONTENT;
-                case 3:
-                    return SLURS;
-                default:
-                    throw new IllegalArgumentException();
-            }
-        }
-
         KeywordPresetType(int value) {
             this.value = value;
         }
 
+        @JsonValue
         public int getValue() {
             return value;
         }
@@ -140,18 +115,11 @@ public interface AutoModerationRule {
 
         private final int value;
 
-        public static EventType create(int value) {
-            if (value == 1) {
-                return MESSAGE_SEND;
-            } else {
-                throw new IllegalArgumentException();
-            }
-        }
-
         EventType(int value) {
             this.value = value;
         }
 
+        @JsonValue
         public int getValue() {
             return value;
         }

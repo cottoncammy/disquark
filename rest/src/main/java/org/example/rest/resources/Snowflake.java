@@ -1,5 +1,7 @@
 package org.example.rest.resources;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 import java.time.Instant;
 
 import static java.util.Objects.requireNonNull;
@@ -25,6 +27,7 @@ public class Snowflake {
         this.value = value;
     }
 
+    @JsonValue
     public long getValue() {
         return value;
     }

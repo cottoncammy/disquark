@@ -1,6 +1,7 @@
 package org.example.rest.resources.guild;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.example.rest.jackson.ScopesDeserializer;
 import org.example.rest.resources.Locale;
@@ -147,20 +148,11 @@ public interface Guild {
 
         private final int value;
 
-        public static DefaultMessageNotificationLevel create(int value) {
-            if (value == 0) {
-                return ALL_MESSAGES;
-            } else if (value == 1) {
-                return ONLY_MENTIONS;
-            } else {
-                throw new IllegalArgumentException();
-            }
-        }
-
         DefaultMessageNotificationLevel(int value) {
             this.value = value;
         }
 
+        @JsonValue
         public int getValue() {
             return value;
         }
@@ -173,23 +165,11 @@ public interface Guild {
 
         private final int value;
 
-        public static ExplicitContentFilterLevel create(int value) {
-            switch (value) {
-                case 0:
-                    return DISABLED;
-                case 1:
-                    return MEMBERS_WITHOUT_ROLES;
-                case 2:
-                    return ALL_MEMBERS;
-                default:
-                    throw new IllegalArgumentException();
-            }
-        }
-
         ExplicitContentFilterLevel(int value) {
             this.value = value;
         }
 
+        @JsonValue
         public int getValue() {
             return value;
         }
@@ -201,20 +181,11 @@ public interface Guild {
 
         private final int value;
 
-        public static MfaLevel create(int value) {
-            if (value == 0) {
-                return NONE;
-            } else if (value == 1) {
-                return ELEVATED;
-            } else {
-                throw new IllegalArgumentException();
-            }
-        }
-
         MfaLevel(int value) {
             this.value = value;
         }
 
+        @JsonValue
         public int getValue() {
             return value;
         }
@@ -229,27 +200,11 @@ public interface Guild {
 
         private final int value;
 
-        public static VerificationLevel create(int value) {
-            switch (value) {
-                case 0:
-                    return NONE;
-                case 1:
-                    return LOW;
-                case 2:
-                    return MEDIUM;
-                case 3:
-                    return HIGH;
-                case 4:
-                    return VERY_HIGH;
-                default:
-                    throw new IllegalArgumentException();
-            }
-        }
-
         VerificationLevel(int value) {
             this.value = value;
         }
 
+        @JsonValue
         public int getValue() {
             return value;
         }
@@ -263,25 +218,11 @@ public interface Guild {
 
         private final int value;
 
-        public static NsfwLevel create(int value) {
-            switch (value) {
-                case 0:
-                    return DEFAULT;
-                case 1:
-                    return EXPLICIT;
-                case 2:
-                    return SAFE;
-                case 3:
-                    return AGE_RESTRICTED;
-                default:
-                    throw new IllegalArgumentException();
-            }
-        }
-
         NsfwLevel(int value) {
             this.value = value;
         }
 
+        @JsonValue
         public int getValue() {
             return value;
         }
@@ -295,25 +236,11 @@ public interface Guild {
 
         private final int value;
 
-        public static PremiumTier create(int value) {
-            switch (value) {
-                case 0:
-                    return NONE;
-                case 1:
-                    return TIER_1;
-                case 2:
-                    return TIER_2;
-                case 3:
-                    return TIER_3;
-                default:
-                    throw new IllegalArgumentException();
-            }
-        }
-
         PremiumTier(int value) {
             this.value = value;
         }
 
+        @JsonValue
         public int getValue() {
             return value;
         }
@@ -327,25 +254,11 @@ public interface Guild {
 
         private final int value;
 
-        public static SystemChannelFlag create(int value) {
-            switch (value) {
-                case 0:
-                    return SUPPRESS_JOIN_NOTIFICATIONS;
-                case 1:
-                    return SUPPRESS_PREMIUM_SUBSCRIPTIONS;
-                case 2:
-                    return SUPPRESS_GUILD_REMINDER_NOTIFICATIONS;
-                case 3:
-                    return SUPPRESS_JOIN_NOTIFICATION_REPLIES;
-                default:
-                    throw new IllegalArgumentException();
-            }
-        }
-
         SystemChannelFlag(int value) {
             this.value = value;
         }
 
+        @JsonValue
         public int getValue() {
             return value;
         }
@@ -551,20 +464,11 @@ public interface Guild {
 
             private final int value;
 
-            public static ExpireBehavior create(int value) {
-                if (value == 0) {
-                    return REMOVE_ROLE;
-                } else if (value == 1) {
-                    return KICK;
-                } else {
-                    throw new IllegalArgumentException();
-                }
-            }
-
             ExpireBehavior(int value) {
                 this.value = value;
             }
 
+            @JsonValue
             public int getValue() {
                 return value;
             }

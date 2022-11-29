@@ -1,6 +1,7 @@
 package org.example.rest.resources.interactions;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.example.rest.resources.Locale;
 import org.example.rest.resources.Snowflake;
@@ -71,27 +72,11 @@ public interface Interaction {
 
         private final int value;
 
-        public static Type create(int value) {
-            switch (value) {
-                case 1:
-                    return PING;
-                case 2:
-                    return APPLICATION_COMMAND;
-                case 3:
-                    return MESSAGE_COMPONENT;
-                case 4:
-                    return APPLICATION_COMMAND_AUTOCOMPLETE;
-                case 5:
-                    return MODAL_SUBMIT;
-                default:
-                    throw new IllegalArgumentException();
-            }
-        }
-
         Type(int value) {
             this.value = value;
         }
 
+        @JsonValue
         public int getValue() {
             return value;
         }
@@ -189,31 +174,11 @@ public interface Interaction {
 
         private final int value;
 
-        public static CallbackType create(int value) {
-            switch (value) {
-                case 1:
-                    return PONG;
-                case 4:
-                    return CHANNEL_MESSAGE_WITH_SOURCE;
-                case 5:
-                    return DEFERRED_CHANNEL_MESSAGE_WITH_SOURCE;
-                case 6:
-                    return DEFERRED_UPDATE_MESSAGE;
-                case 7:
-                    return UPDATE_MESSAGE;
-                case 8:
-                    return APPLICATION_COMMAND_AUTOCOMPLETE_RESULT;
-                case 9:
-                    return MODAL;
-                default:
-                    throw new IllegalArgumentException();
-            }
-        }
-
         CallbackType(int value) {
             this.value = value;
         }
 
+        @JsonValue
         public int getValue() {
             return value;
         }

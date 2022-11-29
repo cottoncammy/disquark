@@ -1,6 +1,7 @@
 package org.example.rest.resources;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.example.rest.immutables.ImmutableJson;
 import org.immutables.value.Value.Enclosing;
@@ -52,20 +53,11 @@ public interface Sticker {
 
         private final int value;
 
-        public static Type create(int value) {
-            if (value == 1) {
-                return STANDARD;
-            } else if (value == 2) {
-                return GUILD;
-            } else {
-                throw new IllegalArgumentException();
-            }
-        }
-
         Type(int value) {
             this.value = value;
         }
 
+        @JsonValue
         public int getValue() {
             return value;
         }
@@ -78,23 +70,11 @@ public interface Sticker {
 
         private final int value;
 
-        public static FormatType create(int value) {
-            switch (value) {
-                case 1:
-                    return PNG;
-                case 2:
-                    return APNG;
-                case 3:
-                    return LOTTIE;
-                default:
-                    throw new IllegalArgumentException();
-            }
-        }
-
         FormatType(int value) {
             this.value = value;
         }
 
+        @JsonValue
         public int getValue() {
             return value;
         }
