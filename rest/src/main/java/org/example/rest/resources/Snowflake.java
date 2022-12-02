@@ -1,5 +1,6 @@
 package org.example.rest.resources;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 import java.time.Instant;
@@ -19,6 +20,7 @@ public class Snowflake {
         return create((requireNonNull(value).toEpochMilli() - DISCORD_EPOCH) << 22);
     }
 
+    @JsonCreator
     public static Snowflake create(String value) {
         return create(Long.parseLong(requireNonNull(value)));
     }

@@ -10,10 +10,13 @@ import io.vertx.core.spi.json.JsonCodec;
 public class SomeFactory implements JsonFactory {
 
     static {
-        // TODO configure enumset serialization + deserialization
-        Jdk8Module module = new Jdk8Module();
-        DatabindCodec.mapper().registerModule(module);
-        DatabindCodec.prettyMapper().registerModule(module);
+        Jdk8Module jdk8Module = new Jdk8Module();
+        DatabindCodec.mapper().registerModule(jdk8Module);
+        DatabindCodec.prettyMapper().registerModule(jdk8Module);
+
+        SomeModule someModule = new SomeModule();
+        DatabindCodec.mapper().registerModule(someModule);
+        DatabindCodec.prettyMapper().registerModule(someModule);
 
         DatabindCodec.mapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         DatabindCodec.prettyMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);

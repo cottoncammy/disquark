@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.example.rest.immutables.ImmutableJson;
 import org.example.rest.jackson.ScopesDeserializer;
 import org.example.rest.resources.oauth2.Scope;
+import org.example.rest.util.FlagEnum;
 import org.immutables.value.Value.Enclosing;
 
 import java.util.*;
@@ -73,7 +74,7 @@ public interface Application {
     @JsonProperty("custom_install_url")
     Optional<String> customInstallUrl();
 
-    enum Flag {
+    enum Flag implements FlagEnum {
         GATEWAY_PRESENCE(12),
         GATEWAY_PRESENCE_LIMITED(13),
         GATEWAY_GUILD_MEMBERS(14),
@@ -90,7 +91,7 @@ public interface Application {
             this.value = value;
         }
 
-        @JsonValue
+        @Override
         public int getValue() {
             return value;
         }

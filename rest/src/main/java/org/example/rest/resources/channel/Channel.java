@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.example.rest.resources.Snowflake;
 import org.example.rest.immutables.ImmutableJson;
 import org.example.rest.resources.User;
+import org.example.rest.util.FlagEnum;
 import org.immutables.value.Value.Enclosing;
 
 import java.time.Instant;
@@ -152,7 +153,7 @@ public interface Channel {
         }
     }
 
-    enum Flag {
+    enum Flag implements FlagEnum {
         PINNED(1),
         REQUIRE_TAG(4);
 
@@ -162,7 +163,7 @@ public interface Channel {
             this.value = value;
         }
 
-        @JsonValue
+        @Override
         public int getValue() {
             return value;
         }

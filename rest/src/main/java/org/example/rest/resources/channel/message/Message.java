@@ -5,13 +5,14 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.deser.std.FromStringDeserializer;
+import org.example.rest.jackson.NonceDeserializer;
 import org.example.rest.resources.Snowflake;
 import org.example.rest.immutables.ImmutableJson;
 import org.example.rest.resources.*;
 import org.example.rest.resources.channel.Channel;
 import org.example.rest.resources.interactions.Interaction;
 import org.example.rest.resources.interactions.components.Component;
+import org.example.rest.util.FlagEnum;
 import org.immutables.value.Value.Enclosing;
 
 import java.time.Instant;
@@ -62,7 +63,7 @@ public interface Message {
 
     Optional<List<Reaction>> reactions();
 
-    @JsonDeserialize(using = FromStringDeserializer.class)
+    @JsonDeserialize(using = NonceDeserializer.class)
     Optional<String> nonce();
 
     boolean pinned();
@@ -174,7 +175,7 @@ public interface Message {
         }
     }
 
-    enum Flag {
+    enum Flag implements FlagEnum {
         CROSSPOSTED(0),
         IS_CROSSPOST(1),
         SUPPRESS_EMBEDS(2),
@@ -191,7 +192,7 @@ public interface Message {
             this.value = value;
         }
 
-        @JsonValue
+        @Override
         public int getValue() {
             return value;
         }

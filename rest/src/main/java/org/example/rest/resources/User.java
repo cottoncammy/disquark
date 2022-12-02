@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.example.rest.immutables.ImmutableJson;
 import org.example.rest.resources.guild.Guild;
+import org.example.rest.util.FlagEnum;
 import org.immutables.value.Value.Enclosing;
 
 import java.util.EnumSet;
@@ -60,7 +61,7 @@ public interface User {
     @JsonProperty("public_flags")
     Optional<EnumSet<Flag>> publicFlags();
 
-    enum Flag {
+    enum Flag implements FlagEnum {
         STAFF(0),
         PARTNER(1),
         HYPESQUAD(2),
@@ -83,7 +84,7 @@ public interface User {
             this.value = value;
         }
 
-        @JsonValue
+        @Override
         public int getValue() {
             return value;
         }

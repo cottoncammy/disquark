@@ -2,8 +2,6 @@ package org.example.rest.resources.oauth2;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 
-import static java.util.Objects.requireNonNull;
-
 public enum Scope {
     ACTIVITIES_READ("activities.read"),
     ACTIVITIES_WRITE("activities.write"),

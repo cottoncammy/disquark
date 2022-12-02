@@ -13,6 +13,7 @@ import org.example.rest.resources.User;
 import org.example.rest.resources.channel.Channel;
 import org.example.rest.resources.oauth2.Scope;
 import org.example.rest.resources.permissions.Role;
+import org.example.rest.util.FlagEnum;
 import org.immutables.value.Value;
 import org.immutables.value.Value.Enclosing;
 
@@ -246,7 +247,7 @@ public interface Guild {
         }
     }
 
-    enum SystemChannelFlag {
+    enum SystemChannelFlag implements FlagEnum {
         SUPPRESS_JOIN_NOTIFICATIONS(0),
         SUPPRESS_PREMIUM_SUBSCRIPTIONS(1),
         SUPPRESS_GUILD_REMINDER_NOTIFICATIONS(2),
@@ -258,7 +259,7 @@ public interface Guild {
             this.value = value;
         }
 
-        @JsonValue
+        @Override
         public int getValue() {
             return value;
         }
