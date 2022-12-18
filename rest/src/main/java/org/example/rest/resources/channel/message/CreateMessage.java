@@ -1,17 +1,15 @@
-package org.example.rest.request.channel.message;
+package org.example.rest.resources.channel.message;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.mutiny.uritemplate.Variables;
 import org.example.rest.request.*;
 import org.example.rest.resources.Snowflake;
 import org.example.rest.immutables.ImmutableJson;
-import org.example.rest.resources.channel.message.AllowedMentions;
-import org.example.rest.resources.channel.message.Message;
 import org.example.rest.resources.interactions.components.Component;
 
 import java.util.EnumSet;

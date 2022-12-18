@@ -9,7 +9,7 @@ import org.example.rest.request.HttpClientRequester;
 import org.example.rest.request.Request;
 import org.example.rest.request.Requester;
 import org.example.rest.request.RequesterFactory;
-import org.example.rest.request.channel.message.CreateMessage;
+import org.example.rest.resources.channel.message.CreateMessage;
 import org.example.rest.request.ratelimit.Bucket4jRateLimiter;
 import org.example.rest.request.ratelimit.RateLimitStrategy;
 import org.example.rest.resources.Snowflake;

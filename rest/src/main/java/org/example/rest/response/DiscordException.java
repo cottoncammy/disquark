@@ -27,7 +27,7 @@ public class DiscordException extends RuntimeException {
     }
 
     public DiscordException(HttpClientResponse httpResponse, ErrorResponse errorResponse) {
-        super(errorResponse.message());
+        super(String.format("%s (%s)", errorResponse.message(), errorResponse.errors()));
         this.httpResponse = httpResponse;
         this.errorResponse = errorResponse;
     }

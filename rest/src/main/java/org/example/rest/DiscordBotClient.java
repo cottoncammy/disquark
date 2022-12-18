@@ -5,7 +5,7 @@ import io.vertx.mutiny.core.Vertx;
 import org.example.rest.request.AccessTokenSource;
 import org.example.rest.request.Requester;
 import org.example.rest.request.RequesterFactory;
-import org.example.rest.request.channel.message.CreateMessage;
+import org.example.rest.resources.channel.message.CreateMessage;
 import org.example.rest.resources.channel.message.Message;
 import org.example.rest.response.Response;
 
