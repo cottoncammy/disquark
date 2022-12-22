@@ -6,13 +6,14 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.example.rest.resources.Locale;
 import org.example.rest.resources.Snowflake;
 import org.example.rest.immutables.ImmutableJson;
-import org.example.rest.resources.User;
+import org.example.rest.resources.application.command.ApplicationCommand;
+import org.example.rest.resources.user.User;
 import org.example.rest.resources.channel.Channel;
 import org.example.rest.resources.channel.message.AllowedMentions;
 import org.example.rest.resources.channel.message.Message;
 import org.example.rest.resources.guild.Guild;
 import org.example.rest.resources.interactions.components.Component;
-import org.example.rest.resources.interactions.components.SelectOption;
+import org.example.rest.resources.permissions.PermissionFlag;
 import org.example.rest.resources.permissions.Role;
 import org.immutables.value.Value.Enclosing;
 
@@ -56,7 +57,7 @@ public interface Interaction {
     Optional<Message> message();
 
     @JsonProperty("app_permissions")
-    Optional<String> appPermissions();
+    Optional<EnumSet<PermissionFlag>> appPermissions();
 
     Optional<Locale> locale();
 

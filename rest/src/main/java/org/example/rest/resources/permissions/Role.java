@@ -8,6 +8,7 @@ import org.example.rest.resources.Snowflake;
 import org.example.rest.immutables.ImmutableJson;
 import org.immutables.value.Value.Enclosing;
 
+import java.util.EnumSet;
 import java.util.Optional;
 
 @Enclosing
@@ -35,7 +36,7 @@ public interface Role {
 
     int position();
 
-    String permissions();
+    EnumSet<PermissionFlag> permissions();
 
     boolean managed();
 

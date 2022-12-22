@@ -1,8 +1,8 @@
 package org.example.rest.resources.permissions;
 
-import com.fasterxml.jackson.annotation.JsonValue;
+import org.example.rest.util.FlagEnum;
 
-public enum PermissionFlag {
+public enum PermissionFlag implements FlagEnum {
     CREATE_INSTANT_INVITE(0),
     KICK_MEMBERS(1),
     BAN_MEMBERS(2),
@@ -51,7 +51,7 @@ public enum PermissionFlag {
         this.value = value;
     }
 
-    @JsonValue
+    @Override
     public int getValue() {
         return value;
     }

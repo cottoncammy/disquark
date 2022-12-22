@@ -4,6 +4,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.example.rest.resources.Snowflake;
 import org.example.rest.immutables.ImmutableJson;
+import org.example.rest.resources.automod.AutoModerationRule;
+import org.example.rest.resources.channel.Channel;
+
+import java.util.Optional;
 
 @ImmutableJson
 @JsonDeserialize(as = ImmutableOptionalAuditEntryInfo.class)
@@ -14,34 +18,34 @@ public interface OptionalAuditEntryInfo {
     }
 
     @JsonProperty("application_id")
-    Snowflake applicationId();
+    Optional<Snowflake> applicationId();
 
     @JsonProperty("auto_moderation_rule_name")
-    String autoModerationRuleName();
+    Optional<String> autoModerationRuleName();
 
     @JsonProperty("auto_moderation_rule_trigger_type")
-    String autoModerationRuleTriggerType();
+    Optional<AutoModerationRule.TriggerType> autoModerationRuleTriggerType();
 
     @JsonProperty("channel_id")
-    Snowflake channelId();
+    Optional<Snowflake> channelId();
 
-    String count();
+    Optional<String> count();
 
     @JsonProperty("delete_member_days")
-    String deleteMemberDays();
+    Optional<String> deleteMemberDays();
 
-    Snowflake id();
+    Optional<Snowflake> id();
 
     @JsonProperty("members_removed")
-    String membersRemoved();
+    Optional<String> membersRemoved();
 
     @JsonProperty("message_id")
-    Snowflake messageId();
+    Optional<Snowflake> messageId();
 
     @JsonProperty("role_name")
-    String roleName();
+    Optional<String> roleName();
 
-    String type();
+    Optional<Channel.Overwrite.Type> type();
 
     class Builder extends ImmutableOptionalAuditEntryInfo.Builder {
         protected Builder() {}

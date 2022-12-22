@@ -23,6 +23,7 @@ public enum Scope {
     IDENTIFY("identify"),
     MESSAGES_READ("messages.read"),
     RELATIONSHIPS_READ("relationships.read"),
+    ROLE_CONNECTIONS_WRITE("role_connections.write"),
     RPC("rpc"),
     RPC_ACTIVITIES_READ("rpc.activities.read"),
     RPC_NOTIFICATIONS_READ("rpc.notifications.read"),

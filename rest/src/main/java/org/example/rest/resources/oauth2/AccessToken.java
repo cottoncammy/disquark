@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.example.rest.immutables.ImmutableJson;
 import org.example.rest.jackson.ScopesDeserializer;
-import org.example.rest.resources.Webhook;
+import org.example.rest.resources.webhook.Webhook;
 
 import java.util.List;
 import java.util.Optional;

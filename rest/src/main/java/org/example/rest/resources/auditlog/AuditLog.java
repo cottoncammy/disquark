@@ -2,16 +2,17 @@ package org.example.rest.resources.auditlog;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.example.rest.resources.Snowflake;
-import org.example.rest.resources.GuildScheduledEvent;
+import org.example.rest.resources.guild.scheduledevent.GuildScheduledEvent;
 import org.example.rest.immutables.ImmutableJson;
-import org.example.rest.resources.User;
-import org.example.rest.resources.Webhook;
+import org.example.rest.resources.user.User;
+import org.example.rest.resources.webhook.Webhook;
 import org.example.rest.resources.automod.AutoModerationRule;
 import org.example.rest.resources.channel.Channel;
 import org.example.rest.resources.guild.Guild;
-import org.example.rest.resources.interactions.ApplicationCommand;
+import org.example.rest.resources.application.command.ApplicationCommand;
 import org.immutables.value.Value.Enclosing;
 
 import java.util.List;
@@ -144,7 +145,6 @@ public interface AuditLog {
         }
     }
 
-    // TODO
     @ImmutableJson
     @JsonDeserialize(as = ImmutableAuditLog.Change.class)
     interface Change {
@@ -154,10 +154,10 @@ public interface AuditLog {
         }
 
         @JsonProperty("new_value")
-        Optional<Object> newValue();
+        Optional<JsonNode> newValue();
 
         @JsonProperty("old_value")
-        Optional<Object> oldValue();
+        Optional<JsonNode> oldValue();
 
         String key();
 

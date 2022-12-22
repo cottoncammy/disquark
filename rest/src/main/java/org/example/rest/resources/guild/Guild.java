@@ -6,15 +6,15 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.example.rest.jackson.ScopesDeserializer;
 import org.example.rest.resources.Locale;
 import org.example.rest.resources.Snowflake;
-import org.example.rest.resources.Emoji;
+import org.example.rest.resources.emoji.Emoji;
 import org.example.rest.immutables.ImmutableJson;
-import org.example.rest.resources.Sticker;
-import org.example.rest.resources.User;
+import org.example.rest.resources.sticker.Sticker;
+import org.example.rest.resources.user.User;
 import org.example.rest.resources.channel.Channel;
 import org.example.rest.resources.oauth2.Scope;
+import org.example.rest.resources.permissions.PermissionFlag;
 import org.example.rest.resources.permissions.Role;
 import org.example.rest.util.FlagEnum;
-import org.immutables.value.Value;
 import org.immutables.value.Value.Enclosing;
 
 import java.time.Instant;
@@ -51,7 +51,7 @@ public interface Guild {
     @JsonProperty("owner_id")
     Snowflake ownerId();
 
-    Optional<String> permissions();
+    Optional<EnumSet<PermissionFlag>> permissions();
 
     @Deprecated
     Optional<String> region();
@@ -402,7 +402,7 @@ public interface Guild {
 
         Optional<Boolean> pending();
 
-        Optional<String> permissions();
+        Optional<EnumSet<PermissionFlag>> permissions();
 
         @JsonProperty("communication_disabled_until")
         Optional<Instant> communicationDisabledUntil();

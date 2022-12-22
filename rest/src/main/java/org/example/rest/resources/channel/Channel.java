@@ -5,7 +5,12 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.example.rest.resources.Snowflake;
 import org.example.rest.immutables.ImmutableJson;
-import org.example.rest.resources.User;
+import org.example.rest.resources.channel.forum.DefaultReaction;
+import org.example.rest.resources.channel.forum.ForumTag;
+import org.example.rest.resources.channel.thread.ThreadMember;
+import org.example.rest.resources.channel.thread.ThreadMetadata;
+import org.example.rest.resources.user.User;
+import org.example.rest.resources.permissions.PermissionFlag;
 import org.example.rest.util.FlagEnum;
 import org.immutables.value.Value.Enclosing;
 
@@ -89,7 +94,7 @@ public interface Channel {
     @JsonProperty("default_auto_archive_duration")
     OptionalInt defaultAutoArchiveDuration();
 
-    Optional<String> permissions();
+    Optional<EnumSet<PermissionFlag>> permissions();
 
     Optional<EnumSet<Flag>> flags();
 
@@ -110,6 +115,9 @@ public interface Channel {
 
     @JsonProperty("default_sort_order")
     Optional<SortOrderType> defaultSortOrder();
+
+    @JsonProperty("default_forum_layout")
+    Optional<ForumLayoutType> defaultForumLayout();
 
     enum Type {
         GUILD_TEXT(0),
@@ -185,6 +193,23 @@ public interface Channel {
         }
     }
 
+    enum ForumLayoutType {
+        NOT_SET(0),
+        LIST_VIEW(1),
+        GALLERY_VIEW(2);
+
+        private final int value;
+
+        ForumLayoutType(int value) {
+            this.value = value;
+        }
+
+        @JsonValue
+        public int getValue() {
+            return value;
+        }
+    }
+
     @ImmutableJson
     @JsonDeserialize(as = ImmutableChannel.Overwrite.class)
     interface Overwrite {
@@ -197,9 +222,9 @@ public interface Channel {
 
         Type type();
 
-        String allow();
+        EnumSet<PermissionFlag> allow();
 
-        String deny();
+        EnumSet<PermissionFlag> deny();
 
         enum Type {
             ROLE(0),

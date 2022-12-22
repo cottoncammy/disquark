@@ -26,10 +26,6 @@ public class HttpResponse implements Response {
                 });
     }
 
-    public Uni<Void> skip() {
-        return response.end();
-    }
-
     public HttpClientResponse getRaw() {
         return response;
     }

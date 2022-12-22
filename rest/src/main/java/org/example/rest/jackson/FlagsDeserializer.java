@@ -32,7 +32,7 @@ public class FlagsDeserializer<E extends Enum<E> & FlagEnum> extends JsonDeseria
     @Override
     @SuppressWarnings("unchecked")
     public EnumSet<E> deserialize(JsonParser p, DeserializationContext ctx) throws IOException {
-        int flags = p.getValueAsInt();
+        long flags = p.getValueAsLong();
         EnumSet<E> set = EnumSet.noneOf((Class<E>) enumType.getRawClass());
         for (E value : (E[]) enumType.getRawClass().getEnumConstants()) {
             if ((flags & value.getValue()) != 0) {
