@@ -1,4 +1,4 @@
-package org.example.rest.resources.guild;
+package org.example.rest.resources.application.command;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -12,51 +12,41 @@ import org.example.rest.request.Endpoint;
 import org.example.rest.request.Request;
 import org.example.rest.request.Requestable;
 import org.example.rest.resources.Snowflake;
-import org.immutables.value.Value.Enclosing;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.OptionalInt;
 
-@Enclosing
 @ImmutableJson
-public interface ModifyGuildChannelPositions extends Requestable {
+public interface BulkOverwriteGlobalApplicationCommands extends Requestable {
 
     static Builder builder() {
         return new Builder();
     }
 
     @JsonIgnore
-    Snowflake guildId();
+    Snowflake applicationId();
 
     @JsonValue
-    List<GuildChannelPosition> guildChannelPositions();
+    List<GlobalApplicationCommandOverwrite> globalApplicationCommandOverwrites();
 
     @Override
     default Request asRequest() {
         return Request.builder()
-                .endpoint(Endpoint.create(HttpMethod.PATCH, "/guilds/{guild.id}/channels"))
-                .variables(Variables.variables().set("guild.id", guildId().getValueAsString()))
+                .endpoint(Endpoint.create(HttpMethod.PUT, "/applications/{application.id}/commands"))
+                .variables(Variables.variables().set("application.id", applicationId().getValueAsString()))
                 .body(this)
                 .build();
     }
 
     @ImmutableJson
     @JsonInclude(Include.NON_ABSENT)
-    interface GuildChannelPosition {
+    interface GlobalApplicationCommandOverwrite extends BulkOverwriteGuildApplicationCommands.GuildApplicationCommandOverwrite {
 
-        Snowflake id();
-
-        OptionalInt position();
-
-        @JsonProperty("lock_permissions")
-        Optional<Boolean> lockPermissions();
-
-        @JsonProperty("parent_id")
-        Optional<Snowflake> parentId();
+        @JsonProperty("dm_permission")
+        Optional<Boolean> dmPermission();
     }
 
-    class Builder extends ImmutableModifyGuildChannelPositions.Builder {
+    class Builder extends ImmutableBulkOverwriteGlobalApplicationCommands.Builder {
         protected Builder() {}
     }
 }

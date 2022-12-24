@@ -1,6 +1,8 @@
 package org.example.rest.resources.channel;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.mutiny.uritemplate.Variables;
 import org.example.rest.immutables.ImmutableJson;
@@ -10,27 +12,34 @@ import org.example.rest.request.Request;
 import org.example.rest.request.Requestable;
 import org.example.rest.resources.Snowflake;
 
-import java.util.List;
+import java.util.Optional;
 
 @ImmutableJson
-public interface BulkDeleteMessages extends Auditable, Requestable {
+@JsonInclude(Include.NON_ABSENT)
+public interface ModifyDmChannel extends Auditable, Requestable {
 
-    static BulkDeleteMessages create(Snowflake channelId, List<Snowflake> messages, String auditLogReason) {
-        return null;
+    static Builder builder() {
+        return new Builder();
     }
 
     @JsonIgnore
     Snowflake channelId();
 
-    List<Snowflake> messages();
+    Optional<String> name();
+
+    Optional<String> icon();
 
     @Override
     default Request asRequest() {
         return Request.builder()
-                .endpoint(Endpoint.create(HttpMethod.POST, "/channels/{channel.id}/messages/bulk-delete"))
+                .endpoint(Endpoint.create(HttpMethod.PATCH, "/channels/{channel.id}"))
                 .variables(Variables.variables().set("channel.id", channelId().getValueAsString()))
                 .body(this)
                 .auditLogReason(auditLogReason())
                 .build();
+    }
+
+    class Builder extends ImmutableModifyDmChannel.Builder {
+        protected Builder() {}
     }
 }

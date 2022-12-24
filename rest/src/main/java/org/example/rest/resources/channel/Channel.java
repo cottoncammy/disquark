@@ -11,7 +11,7 @@ import org.example.rest.resources.channel.thread.ThreadMember;
 import org.example.rest.resources.channel.thread.ThreadMetadata;
 import org.example.rest.resources.user.User;
 import org.example.rest.resources.permissions.PermissionFlag;
-import org.example.rest.util.FlagEnum;
+import org.example.rest.resources.FlagEnum;
 import org.immutables.value.Value.Enclosing;
 
 import java.time.Instant;

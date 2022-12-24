@@ -42,13 +42,14 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <apache-tika.version>2.6.0</apache-tika.version>
         <bucket4j-version>8.1.0</bucket4j-version>
-        <caffeine.version>3.1.1</caffeine.version>
         <immutables.version>2.9.1</immutables.version>
         <jackson.version>2.13.3</jackson.version>
         <jakarta-annotations.version>2.1.1</jakarta-annotations.version>
         <jsr305.version>3.0.2</jsr305.version>
         <junit.version>5.9.0</junit.version>
+        <mime-types.version>1.0.4</mime-types.version>
         <smallrye-config.version>3.0.0</smallrye-config.version>
         <smallrye-mutiny-vertx-binding.version>2.26.0</smallrye-mutiny-vertx-binding.version>
 
@@ -85,11 +86,6 @@
                 <type>pom</type>
             </dependency>
             <dependency>
-                <groupId>com.github.ben-manes.caffeine</groupId>
-                <artifactId>caffeine</artifactId>
-                <version>${caffeine.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>com.google.code.findbugs</groupId>
                 <artifactId>jsr305</artifactId>
                 <version>${jsr305.version}</version>
@@ -111,6 +107,11 @@
                 <groupId>jakarta.annotation</groupId>
                 <artifactId>jakarta.annotation-api</artifactId>
                 <version>${jakarta-annotations.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.tika</groupId>
+                <artifactId>tika-core</artifactId>
+                <version>${apache-tika.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.immutables</groupId>

@@ -41,6 +41,10 @@
             <artifactId>smallrye-mutiny-vertx-web-client</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.apache.tika</groupId>
+            <artifactId>tika-core</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.immutables</groupId>
             <artifactId>value</artifactId>
         </dependency>

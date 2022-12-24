@@ -1,6 +1,6 @@
 package org.example.rest.resources.permissions;
 
-import org.example.rest.util.FlagEnum;
+import org.example.rest.resources.FlagEnum;
 
 public enum PermissionFlag implements FlagEnum {
     CREATE_INSTANT_INVITE(0),

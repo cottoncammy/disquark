@@ -1,4 +1,4 @@
-package org.example.rest.resources.auditlog;
+package org.example.rest.resources.guild.prune;
 
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.json.JsonObject;
@@ -11,55 +11,45 @@ import org.example.rest.resources.Snowflake;
 import org.immutables.value.Value.Immutable;
 import org.immutables.value.Value.Default;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Immutable
 @ImmutableStyle
-public interface GetGuildAuditLog extends Requestable {
+public interface GetGuildPruneCount extends Requestable {
 
     static Builder builder() {
         return new Builder();
     }
 
-    static GetGuildAuditLog create(Snowflake guildId) {
+    static GetGuildPruneCount create(Snowflake guildId) {
         return null;
     }
 
     Snowflake guildId();
 
-    Optional<Snowflake> userId();
-
-    Optional<AuditLog.Event> actionType();
-
-    Optional<Snowflake> before();
-
     @Default
     default int limit() {
-        return 50;
+        return 7;
     }
+
+    Optional<List<Snowflake>> includeRoles();
 
     @Override
     default Request asRequest() {
         JsonObject json = JsonObject.of("guild.id", guildId().getValue(), "limit", limit());
-        if (userId().isPresent()) {
-            json.put("user_id", userId().get().getValue());
-        }
-
-        if (actionType().isPresent()) {
-            json.put("action_type", actionType().get().getValue());
-        }
-
-        if (before().isPresent()) {
-            json.put("before", before().get().getValue());
+        if (includeRoles().isPresent()) {
+            json.put("include_roles", includeRoles().get().stream().map(Snowflake::getValueAsString).collect(Collectors.joining(",")));
         }
 
         return Request.builder()
-                .endpoint(Endpoint.create(HttpMethod.GET, "/guilds/{guild.id}/audit-logs{?user_id,action_type,before,limit}"))
+                .endpoint(Endpoint.create(HttpMethod.GET, "/guilds/{guild.id}/prune{?limit,include_roles}"))
                 .variables(Variables.variables(json))
                 .build();
     }
 
-    class Builder extends ImmutableGetGuildAuditLog.Builder {
+    class Builder extends ImmutableGetGuildPruneCount.Builder {
         protected Builder() {}
     }
 }

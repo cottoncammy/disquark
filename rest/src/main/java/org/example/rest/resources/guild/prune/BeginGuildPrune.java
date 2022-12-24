@@ -1,7 +1,9 @@
-package org.example.rest.resources.guild;
+package org.example.rest.resources.guild.prune;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.mutiny.uritemplate.Variables;
 import org.example.rest.immutables.ImmutableJson;
@@ -10,45 +12,45 @@ import org.example.rest.request.Endpoint;
 import org.example.rest.request.Request;
 import org.example.rest.request.Requestable;
 import org.example.rest.resources.Snowflake;
-import org.immutables.value.Value.Enclosing;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.OptionalInt;
 
-@Enclosing
 @ImmutableJson
-public interface ModifyGuildRolePositions extends Auditable, Requestable {
+@JsonInclude(Include.NON_ABSENT)
+public interface BeginGuildPrune extends Auditable, Requestable {
 
     static Builder builder() {
         return new Builder();
     }
 
+    static BeginGuildPrune create(Snowflake guildId) {
+        return null;
+    }
+
     @JsonIgnore
     Snowflake guildId();
 
-    @JsonValue
-    List<GuildRolePosition> guildRolePositions();
+    OptionalInt days();
+
+    @JsonProperty("compute_prune_count")
+    Optional<Boolean> computePruneCount();
+
+    @JsonProperty("include_roles")
+    Optional<List<Snowflake>> includeRoles();
 
     @Override
     default Request asRequest() {
         return Request.builder()
-                .endpoint(Endpoint.create(HttpMethod.PATCH, "/guilds/{guild.id}/roles"))
+                .endpoint(Endpoint.create(HttpMethod.POST, "/guilds/{guild.id}/prune"))
                 .variables(Variables.variables().set("guild.id", guildId().getValueAsString()))
                 .body(this)
                 .auditLogReason(auditLogReason())
                 .build();
     }
 
-    @ImmutableJson
-    @JsonInclude(Include.NON_ABSENT)
-    interface GuildRolePosition {
-
-        Snowflake id();
-
-        OptionalInt position();
-    }
-
-    class Builder extends ImmutableModifyGuildRolePositions.Builder {
+    class Builder extends ImmutableBeginGuildPrune.Builder {
         protected Builder() {}
     }
 }

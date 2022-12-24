@@ -1,8 +1,9 @@
-package org.example.rest.resources.channel;
+package org.example.rest.resources.channel.message;
 
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.json.JsonObject;
 import io.vertx.mutiny.uritemplate.Variables;
+import org.example.rest.emoji.ReactionEmoji;
 import org.example.rest.immutables.ImmutableStyle;
 import org.example.rest.request.Endpoint;
 import org.example.rest.request.Request;
@@ -15,51 +16,43 @@ import java.util.Optional;
 
 @Immutable
 @ImmutableStyle
-public interface GetChannelMessages extends Requestable {
+public interface GetReactions extends Requestable {
 
     static Builder builder() {
         return new Builder();
     }
 
-    static GetChannelMessages create(Snowflake channelId) {
+    static GetReactions create(Snowflake channelId, Snowflake messageId, ReactionEmoji emoji) {
         return null;
     }
 
     Snowflake channelId();
 
-    Optional<Snowflake> around();
+    Snowflake messageId();
 
-    Optional<Snowflake> before();
+    ReactionEmoji emoji();
 
     Optional<Snowflake> after();
 
     @Default
     default int limit() {
-        return 50;
+        return 25;
     }
 
     @Override
     default Request asRequest() {
-        JsonObject json = JsonObject.of("channel.id", channelId().getValue(), "limit", limit());
-        if (around().isPresent()) {
-            json.put("around", around().get().getValue());
-        }
-
-        if (before().isPresent()) {
-            json.put("before", before().get().getValue());
-        }
-
+        JsonObject json = JsonObject.of("channel.id", channelId().getValue(), "message.id", messageId().getValue(), "emoji", emoji().getValue(), "limit", limit());
         if (after().isPresent()) {
             json.put("after", after().get().getValue());
         }
 
         return Request.builder()
-                .endpoint(Endpoint.create(HttpMethod.GET, "/channels/{channel.id}/messages{?around,before,after,limit}"))
+                .endpoint(Endpoint.create(HttpMethod.GET, "/channels/{channel.id}/messages/{message.id}/reactions/{emoji}{?after,limit}"))
                 .variables(Variables.variables(json))
                 .build();
     }
 
-    class Builder extends ImmutableGetChannelMessages.Builder {
+    class Builder extends ImmutableGetReactions.Builder {
         protected Builder() {}
     }
 }

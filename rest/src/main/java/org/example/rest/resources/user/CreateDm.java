@@ -8,12 +8,11 @@ import org.example.rest.request.Request;
 import org.example.rest.request.Requestable;
 import org.example.rest.resources.Snowflake;
 
-// TODO
 @ImmutableJson
 public interface CreateDm extends Requestable {
 
-    static Builder builder() {
-        return new Builder();
+    static CreateDm create(Snowflake recipientId) {
+        return null;
     }
 
     @JsonProperty("recipient_id")
@@ -25,9 +24,5 @@ public interface CreateDm extends Requestable {
                 .endpoint(Endpoint.create(HttpMethod.POST, "/users/@me/channels"))
                 .body(this)
                 .build();
-    }
-
-    class Builder extends ImmutableCreateDm.Builder {
-        protected Builder() {}
     }
 }

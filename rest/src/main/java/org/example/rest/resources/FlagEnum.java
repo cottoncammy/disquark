@@ -1,4 +1,4 @@
-package org.example.rest.util;
+package org.example.rest.resources;
 
 public interface FlagEnum {
 

@@ -21,6 +21,10 @@ public interface GetInvite extends Requestable {
         return new Builder();
     }
 
+    static GetInvite create(String inviteCode) {
+        return null;
+    }
+
     String inviteCode();
 
     @Default

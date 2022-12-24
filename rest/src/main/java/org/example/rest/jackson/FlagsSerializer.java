@@ -3,7 +3,7 @@ package org.example.rest.jackson;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
-import org.example.rest.util.FlagEnum;
+import org.example.rest.resources.FlagEnum;
 
 import java.io.IOException;
 import java.util.EnumSet;

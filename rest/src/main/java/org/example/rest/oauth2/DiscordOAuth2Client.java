@@ -10,6 +10,7 @@ import io.vertx.mutiny.uritemplate.Variables;
 import org.example.rest.DiscordClient;
 import org.example.rest.request.*;
 import org.example.rest.resources.Snowflake;
+import org.example.rest.resources.application.command.EditApplicationCommandPermissions;
 import org.example.rest.resources.user.UpdateUserApplicationRoleConnections;
 import org.example.rest.resources.user.User;
 import org.example.rest.resources.application.command.GuildApplicationCommandPermissions;
@@ -38,7 +39,8 @@ public class DiscordOAuth2Client<T extends Response> extends DiscordClient<T> {
     }
 
     public Uni<GuildApplicationCommandPermissions> editApplicationCommandPermissions(Snowflake applicationId, Snowflake guildId, Snowflake commandId, List<GuildApplicationCommandPermissions> permissions) {
-
+        return requester.request(EditApplicationCommandPermissions.create(applicationId, guildId, commandId, permissions).asRequest())
+                .flatMap(res -> res.as(GuildApplicationCommandPermissions.class));
     }
 
     public Multi<User.Connection> getUserConnections() {

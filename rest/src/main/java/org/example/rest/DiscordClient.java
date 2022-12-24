@@ -17,12 +17,11 @@ import org.example.rest.resources.Snowflake;
 import org.example.rest.resources.application.command.*;
 import org.example.rest.resources.guild.ModifyCurrentMember;
 import org.example.rest.resources.guild.ModifyCurrentUserVoiceState;
+import org.example.rest.resources.user.GetCurrentUserGuilds;
 import org.example.rest.resources.user.ModifyCurrentUser;
 import org.example.rest.resources.user.User;
 import org.example.rest.resources.guild.Guild;
 import org.example.rest.response.Response;
-
-import java.util.List;
 
 import static java.util.Objects.requireNonNull;
 
@@ -59,8 +58,10 @@ public abstract class DiscordClient<T extends Response> {
                 .replaceWithVoid();
     }
 
-    public Multi<ApplicationCommand> bulkOverwriteGlobalApplicationCommands() {
-
+    public Multi<ApplicationCommand> bulkOverwriteGlobalApplicationCommands(BulkOverwriteGlobalApplicationCommands bulkOverwriteGlobalApplicationCommands) {
+        return requester.request(bulkOverwriteGlobalApplicationCommands.asRequest())
+                .flatMap(res -> res.as(ApplicationCommand[].class))
+                .onItem().disjoint();
     }
 
     public Multi<ApplicationCommand> getGuildApplicationCommands(Snowflake applicationId, Snowflake guildId, boolean withLocalizations) {
@@ -87,8 +88,10 @@ public abstract class DiscordClient<T extends Response> {
                 .replaceWithVoid();
     }
 
-    public Multi<ApplicationCommand> bulkOverwriteGuildApplicationCommands() {
-
+    public Multi<ApplicationCommand> bulkOverwriteGuildApplicationCommands(BulkOverwriteGuildApplicationCommands bulkOverwriteGuildApplicationCommands) {
+        return requester.request(bulkOverwriteGuildApplicationCommands.asRequest())
+                .flatMap(res -> res.as(ApplicationCommand[].class))
+                .onItem().disjoint();
     }
 
     public Multi<GuildApplicationCommandPermissions> getGuildApplicationCommandPermissions(Snowflake applicationId, Snowflake guildId) {
@@ -118,8 +121,8 @@ public abstract class DiscordClient<T extends Response> {
         return requester.request(modifyCurrentUser.asRequest()).flatMap(res -> res.as(User.class));
     }
 
-    public Multi<Guild> getCurrentUserGuilds() {
-
+    public Multi<Guild> getCurrentUserGuilds(GetCurrentUserGuilds getCurrentUserGuilds) {
+        return requester.request(getCurrentUserGuilds.asRequest()).flatMap(res -> res.as(Guild[].class)).onItem().disjoint();
     }
 
     public Uni<Guild.Member> getCurrentUserGuildMember(Snowflake guildId) {

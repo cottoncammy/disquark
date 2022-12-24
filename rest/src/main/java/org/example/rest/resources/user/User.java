@@ -10,7 +10,7 @@ import org.example.rest.resources.ImmutableUser;
 import org.example.rest.resources.Locale;
 import org.example.rest.resources.Snowflake;
 import org.example.rest.resources.guild.Guild;
-import org.example.rest.util.FlagEnum;
+import org.example.rest.resources.FlagEnum;
 import org.immutables.value.Value.Enclosing;
 
 import java.util.*;

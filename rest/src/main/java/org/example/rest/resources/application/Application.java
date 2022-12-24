@@ -9,7 +9,7 @@ import org.example.rest.resources.Snowflake;
 import org.example.rest.resources.oauth2.Scope;
 import org.example.rest.resources.permissions.PermissionFlag;
 import org.example.rest.resources.user.User;
-import org.example.rest.util.FlagEnum;
+import org.example.rest.resources.FlagEnum;
 import org.immutables.value.Value.Enclosing;
 
 import java.util.*;

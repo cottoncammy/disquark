@@ -14,7 +14,7 @@ import org.example.rest.resources.channel.Channel;
 import org.example.rest.resources.oauth2.Scope;
 import org.example.rest.resources.permissions.PermissionFlag;
 import org.example.rest.resources.permissions.Role;
-import org.example.rest.util.FlagEnum;
+import org.example.rest.resources.FlagEnum;
 import org.immutables.value.Value.Enclosing;
 
 import java.time.Instant;

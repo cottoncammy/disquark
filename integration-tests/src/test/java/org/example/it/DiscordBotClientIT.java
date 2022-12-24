@@ -26,7 +26,11 @@ class DiscordBotClientIT {
 
     @Test
     void testCreateMessage() {
-        CreateMessage createMessage = CreateMessage.builder().channelId(channelId).content("Hello World!").flags(EnumSet.of(Message.Flag.SUPPRESS_EMBEDS)).build();
+        CreateMessage createMessage = CreateMessage.builder()
+                .channelId(channelId)
+                .content("Hello World!")
+                .flags(EnumSet.of(Message.Flag.SUPPRESS_EMBEDS))
+                .build();
         botClient.createMessage(createMessage).subscribe().withSubscriber(UniAssertSubscriber.create()).assertCompleted();
     }
 }
