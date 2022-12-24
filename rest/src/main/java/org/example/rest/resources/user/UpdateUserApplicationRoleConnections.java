@@ -15,6 +15,8 @@ import org.example.rest.resources.Snowflake;
 import java.util.Map;
 import java.util.Optional;
 
+import static org.example.rest.util.Variables.variables;
+
 @ImmutableJson
 @JsonInclude(Include.NON_ABSENT)
 public interface UpdateUserApplicationRoleConnections extends Requestable {
@@ -38,7 +40,7 @@ public interface UpdateUserApplicationRoleConnections extends Requestable {
     default Request asRequest() {
         return Request.builder()
                 .endpoint(Endpoint.create(HttpMethod.PUT, "/users/@me/applications/{application.id}/role-connection"))
-                .variables(Variables.variables().set("application.id", applicationId().getValueAsString()))
+                .variables(variables("application.id", applicationId().getValue()))
                 .body(this)
                 .build();
     }

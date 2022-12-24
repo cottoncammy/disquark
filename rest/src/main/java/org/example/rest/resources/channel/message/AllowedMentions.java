@@ -2,14 +2,14 @@ package org.example.rest.resources.channel.message;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.example.rest.resources.Snowflake;
 import org.example.rest.immutables.ImmutableJson;
 
 import java.util.List;
 
-import static java.util.Objects.requireNonNull;
-
 @ImmutableJson
+@JsonDeserialize(as = ImmutableAllowedMentions.class)
 public interface AllowedMentions {
 
     static Builder builder() {

@@ -15,6 +15,8 @@ import org.example.rest.resources.Snowflake;
 import java.time.Instant;
 import java.util.Optional;
 
+import static org.example.rest.util.Variables.variables;
+
 @ImmutableJson
 @JsonInclude(Include.NON_ABSENT)
 public interface CreateGuildScheduledEvent extends Requestable {
@@ -54,7 +56,7 @@ public interface CreateGuildScheduledEvent extends Requestable {
     default Request asRequest() {
         return Request.builder()
                 .endpoint(Endpoint.create(HttpMethod.POST, "/guilds/{guild.id}/scheduled-events"))
-                .variables(Variables.variables().set("guild.id", guildId().getValueAsString()))
+                .variables(variables("guild.id", guildId().getValue()))
                 .body(this)
                 .build();
     }

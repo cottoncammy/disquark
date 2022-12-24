@@ -16,6 +16,8 @@ import org.example.rest.resources.Snowflake;
 import java.util.List;
 import java.util.Optional;
 
+import static org.example.rest.util.Variables.variables;
+
 @ImmutableJson
 public interface BulkOverwriteGlobalApplicationCommands extends Requestable {
 
@@ -33,7 +35,7 @@ public interface BulkOverwriteGlobalApplicationCommands extends Requestable {
     default Request asRequest() {
         return Request.builder()
                 .endpoint(Endpoint.create(HttpMethod.PUT, "/applications/{application.id}/commands"))
-                .variables(Variables.variables().set("application.id", applicationId().getValueAsString()))
+                .variables(variables("application.id", applicationId().getValue()))
                 .body(this)
                 .build();
     }

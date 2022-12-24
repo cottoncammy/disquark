@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.example.rest.immutables.ImmutableJson;
 import org.example.rest.resources.application.Application;
 import org.example.rest.resources.guild.scheduledevent.GuildScheduledEvent;
-import org.example.rest.resources.ImmutableInvite;
 import org.example.rest.resources.user.User;
 import org.example.rest.resources.channel.Channel;
 import org.example.rest.resources.guild.Guild;

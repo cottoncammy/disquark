@@ -24,6 +24,7 @@ import org.example.rest.resources.guild.Guild;
 import org.example.rest.response.Response;
 
 import static java.util.Objects.requireNonNull;
+import static org.example.rest.util.Variables.variables;
 
 public abstract class DiscordClient<T extends Response> {
     protected final Vertx vertx;
@@ -35,7 +36,7 @@ public abstract class DiscordClient<T extends Response> {
     }
 
     public Multi<ApplicationCommand> getGlobalApplicationCommands(Snowflake applicationId, boolean withLocalizations) {
-        return requester.request(new EmptyRequest("/applications/{application.id}/commands{?with_localizations}", Variables.variables(JsonObject.of("application.id", applicationId.getValue(), "with_localizations", withLocalizations))))
+        return requester.request(new EmptyRequest("/applications/{application.id}/commands{?with_localizations}", variables("application.id", applicationId.getValue(), "with_localizations", withLocalizations)))
                 .flatMap(res -> res.as(ApplicationCommand[].class))
                 .onItem().disjoint();
     }
@@ -45,7 +46,7 @@ public abstract class DiscordClient<T extends Response> {
     }
 
     public Uni<ApplicationCommand> getGlobalApplicationCommand(Snowflake applicationId, Snowflake commandId) {
-        return requester.request(new EmptyRequest("/applications/{application.id}/commands/{command.id}", Variables.variables().set("application.id", applicationId.getValueAsString()).set("command.id", commandId.getValueAsString())))
+        return requester.request(new EmptyRequest("/applications/{application.id}/commands/{command.id}", variables("application.id", applicationId.getValue(), "command.id", commandId.getValue())))
                 .flatMap(res -> res.as(ApplicationCommand.class));
     }
 
@@ -54,18 +55,16 @@ public abstract class DiscordClient<T extends Response> {
     }
 
     public Uni<Void> deleteGlobalApplicationCommand(Snowflake applicationId, Snowflake commandId) {
-        return requester.request(new EmptyRequest(HttpMethod.DELETE, "/applications/{application.id}/commands/{command.id}", Variables.variables().set("application.id", applicationId.getValueAsString()).set("command.id", commandId.getValueAsString())))
+        return requester.request(new EmptyRequest(HttpMethod.DELETE, "/applications/{application.id}/commands/{command.id}", variables("application.id", applicationId.getValue(), "command.id", commandId.getValueAsString())))
                 .replaceWithVoid();
     }
 
     public Multi<ApplicationCommand> bulkOverwriteGlobalApplicationCommands(BulkOverwriteGlobalApplicationCommands bulkOverwriteGlobalApplicationCommands) {
-        return requester.request(bulkOverwriteGlobalApplicationCommands.asRequest())
-                .flatMap(res -> res.as(ApplicationCommand[].class))
-                .onItem().disjoint();
+        return requester.request(bulkOverwriteGlobalApplicationCommands.asRequest()).flatMap(res -> res.as(ApplicationCommand[].class)).onItem().disjoint();
     }
 
     public Multi<ApplicationCommand> getGuildApplicationCommands(Snowflake applicationId, Snowflake guildId, boolean withLocalizations) {
-        return requester.request(new EmptyRequest("/applications/{application.id}/guilds/{guild.id}/commands{?with_localizations}", Variables.variables(JsonObject.of("application.id", applicationId.getValue(), "guild.id", guildId.getValue(), "with_localizations", withLocalizations))))
+        return requester.request(new EmptyRequest("/applications/{application.id}/guilds/{guild.id}/commands{?with_localizations}", variables("application.id", applicationId.getValue(), "guild.id", guildId.getValue(), "with_localizations", withLocalizations)))
                 .flatMap(res -> res.as(ApplicationCommand[].class))
                 .onItem().disjoint();
     }
@@ -75,7 +74,7 @@ public abstract class DiscordClient<T extends Response> {
     }
 
     public Uni<ApplicationCommand> getGuildApplicationCommand(Snowflake applicationId, Snowflake guildId, Snowflake commandId) {
-        return requester.request(new EmptyRequest("/applications/{application.id}/guilds/{guild.id}/commands/{command.id}", Variables.variables().set("application.id", applicationId.getValueAsString()).set("guild.id", guildId.getValueAsString()).set("command.id", commandId.getValueAsString())))
+        return requester.request(new EmptyRequest("/applications/{application.id}/guilds/{guild.id}/commands/{command.id}", variables("application.id", applicationId.getValue(), "guild.id", guildId.getValue(), "command.id", commandId.getValue())))
                 .flatMap(res -> res.as(ApplicationCommand.class));
     }
 
@@ -84,7 +83,7 @@ public abstract class DiscordClient<T extends Response> {
     }
 
     public Uni<Void> deleteGuildApplicationCommand(Snowflake applicationId, Snowflake guildId, Snowflake commandId) {
-        return requester.request(new EmptyRequest(HttpMethod.DELETE, "/applications/{application.id}/guilds/{guild.id}/commands/{command.id}", Variables.variables().set("application.id", applicationId.getValueAsString()).set("guild.id", guildId.getValueAsString()).set("command.id", commandId.getValueAsString())))
+        return requester.request(new EmptyRequest(HttpMethod.DELETE, "/applications/{application.id}/guilds/{guild.id}/commands/{command.id}", variables("application.id", applicationId.getValue(), "guild.id", guildId.getValue(), "command.id", commandId.getValue())))
                 .replaceWithVoid();
     }
 
@@ -95,13 +94,13 @@ public abstract class DiscordClient<T extends Response> {
     }
 
     public Multi<GuildApplicationCommandPermissions> getGuildApplicationCommandPermissions(Snowflake applicationId, Snowflake guildId) {
-        return requester.request(new EmptyRequest("/applications/{application.id}/guilds/{guild.id}/commands/permissions", Variables.variables().set("application.id", applicationId.getValueAsString()).set("guild.id", guildId.getValueAsString())))
+        return requester.request(new EmptyRequest("/applications/{application.id}/guilds/{guild.id}/commands/permissions", variables("application.id", applicationId.getValue(), "guild.id", guildId.getValue())))
                 .flatMap(res -> res.as(GuildApplicationCommandPermissions[].class))
                 .onItem().disjoint();
     }
 
     public Uni<GuildApplicationCommandPermissions> getApplicationCommandPermissions(Snowflake applicationId, Snowflake guildId, Snowflake commandId) {
-        return requester.request(new EmptyRequest("/applications/{application.id}/guilds/{guild.id}/commands/{command.id}/permissions", Variables.variables().set("application.id", applicationId.getValueAsString()).set("guild.id", guildId.getValueAsString()).set("command.id", commandId.getValueAsString())))
+        return requester.request(new EmptyRequest("/applications/{application.id}/guilds/{guild.id}/commands/{command.id}/permissions", variables("application.id", applicationId.getValue(), "guild.id", guildId.getValue(), "command.id", commandId.getValue())))
                 .flatMap(res -> res.as(GuildApplicationCommandPermissions.class));
     }
 
@@ -126,7 +125,7 @@ public abstract class DiscordClient<T extends Response> {
     }
 
     public Uni<Guild.Member> getCurrentUserGuildMember(Snowflake guildId) {
-        return requester.request(new EmptyRequest("/users/@me/guilds/{guild.id}/member", Variables.variables().set("guild.id", guildId.getValueAsString())))
+        return requester.request(new EmptyRequest("/users/@me/guilds/{guild.id}/member", variables("guild.id", guildId.getValue())))
                 .flatMap(res -> res.as(Guild.Member.class));
     }
 

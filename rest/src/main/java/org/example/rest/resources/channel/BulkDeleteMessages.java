@@ -12,6 +12,8 @@ import org.example.rest.resources.Snowflake;
 
 import java.util.List;
 
+import static org.example.rest.util.Variables.variables;
+
 @ImmutableJson
 public interface BulkDeleteMessages extends Auditable, Requestable {
 
@@ -28,7 +30,7 @@ public interface BulkDeleteMessages extends Auditable, Requestable {
     default Request asRequest() {
         return Request.builder()
                 .endpoint(Endpoint.create(HttpMethod.POST, "/channels/{channel.id}/messages/bulk-delete"))
-                .variables(Variables.variables().set("channel.id", channelId().getValueAsString()))
+                .variables(variables("channel.id", channelId().getValue()))
                 .body(this)
                 .auditLogReason(auditLogReason())
                 .build();

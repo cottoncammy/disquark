@@ -20,6 +20,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.OptionalInt;
 
+import static org.example.rest.util.Variables.variables;
+
 @ImmutableJson
 @JsonInclude(Include.NON_ABSENT)
 public interface ModifyGuildChannel extends Auditable, Requestable {
@@ -85,7 +87,7 @@ public interface ModifyGuildChannel extends Auditable, Requestable {
     default Request asRequest() {
         return Request.builder()
                 .endpoint(Endpoint.create(HttpMethod.PATCH, "/channels/{channel.id}"))
-                .variables(Variables.variables().set("channel.id", channelId().getValueAsString()))
+                .variables(variables("channel.id", channelId().getValue()))
                 .body(this)
                 .auditLogReason(auditLogReason())
                 .build();

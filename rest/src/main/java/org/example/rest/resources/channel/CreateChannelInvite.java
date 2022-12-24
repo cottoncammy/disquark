@@ -17,6 +17,8 @@ import org.example.rest.resources.invite.Invite;
 import java.util.Optional;
 import java.util.OptionalInt;
 
+import static org.example.rest.util.Variables.variables;
+
 @ImmutableJson
 @JsonInclude(Include.NON_ABSENT)
 public interface CreateChannelInvite extends Auditable, Requestable {
@@ -51,7 +53,7 @@ public interface CreateChannelInvite extends Auditable, Requestable {
     default Request asRequest() {
         return Request.builder()
                 .endpoint(Endpoint.create(HttpMethod.POST, "/channels/{channel.id}/invites"))
-                .variables(Variables.variables().set("channel.id", channelId().getValueAsString()))
+                .variables(variables("channel.id", channelId().getValue()))
                 .body(this)
                 .auditLogReason(auditLogReason())
                 .build();

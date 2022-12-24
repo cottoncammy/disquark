@@ -15,6 +15,8 @@ import org.example.rest.resources.Snowflake;
 import java.time.Instant;
 import java.util.Optional;
 
+import static org.example.rest.util.Variables.variables;
+
 @ImmutableJson
 @JsonInclude(Include.NON_ABSENT)
 public interface ModifyCurrentUserVoiceState extends Requestable {
@@ -38,7 +40,7 @@ public interface ModifyCurrentUserVoiceState extends Requestable {
     default Request asRequest() {
         return Request.builder()
                 .endpoint(Endpoint.create(HttpMethod.PATCH, "/guilds/{guild.id}/voice-states/@me"))
-                .variables(Variables.variables().set("guild.id", guildId().getValueAsString()))
+                .variables(variables("guild.id", guildId().getValue()))
                 .body(this)
                 .build();
     }

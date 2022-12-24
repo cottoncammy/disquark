@@ -17,6 +17,8 @@ import org.example.rest.resources.channel.Channel;
 import java.util.Optional;
 import java.util.OptionalInt;
 
+import static org.example.rest.util.Variables.variables;
+
 @ImmutableJson
 @JsonInclude(Include.NON_ABSENT)
 public interface StartThreadWithoutMessage extends Auditable, Requestable {
@@ -44,7 +46,7 @@ public interface StartThreadWithoutMessage extends Auditable, Requestable {
     default Request asRequest() {
         return Request.builder()
                 .endpoint(Endpoint.create(HttpMethod.POST, "/channels/{channel.id}/threads"))
-                .variables(Variables.variables().set("channel.id", channelId().getValueAsString()))
+                .variables(variables("channel.id", channelId().getValue()))
                 .body(this)
                 .auditLogReason(auditLogReason())
                 .build();

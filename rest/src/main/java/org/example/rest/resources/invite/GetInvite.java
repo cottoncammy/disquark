@@ -41,7 +41,7 @@ public interface GetInvite extends Requestable {
 
     @Override
     default Request asRequest() {
-        JsonObject json = JsonObject.of("invite.code", inviteCode()).put("with_counts", withCounts()).put("with_expiration", withExpiration());
+        JsonObject json = JsonObject.of("invite.code", inviteCode(), "with_counts", withCounts(), "with_expiration", withExpiration());
         if (guildScheduledEventId().isPresent()) {
             json.put("guild_scheduled_event_id", guildScheduledEventId().get().getValue());
         }

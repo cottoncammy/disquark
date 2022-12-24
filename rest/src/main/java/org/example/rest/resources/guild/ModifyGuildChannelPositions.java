@@ -18,6 +18,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.OptionalInt;
 
+import static org.example.rest.util.Variables.variables;
+
 @Enclosing
 @ImmutableJson
 public interface ModifyGuildChannelPositions extends Requestable {
@@ -36,7 +38,7 @@ public interface ModifyGuildChannelPositions extends Requestable {
     default Request asRequest() {
         return Request.builder()
                 .endpoint(Endpoint.create(HttpMethod.PATCH, "/guilds/{guild.id}/channels"))
-                .variables(Variables.variables().set("guild.id", guildId().getValueAsString()))
+                .variables(variables("guild.id", guildId().getValue()))
                 .body(this)
                 .build();
     }

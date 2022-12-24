@@ -15,6 +15,8 @@ import org.example.rest.resources.Snowflake;
 
 import java.util.OptionalInt;
 
+import static org.example.rest.util.Variables.variables;
+
 @ImmutableJson
 @JsonInclude(Include.NON_ABSENT)
 public interface CreateGuildBan extends Auditable, Requestable {
@@ -39,7 +41,7 @@ public interface CreateGuildBan extends Auditable, Requestable {
     default Request asRequest() {
         return Request.builder()
                 .endpoint(Endpoint.create(HttpMethod.PUT, "/guilds/{guild.id}/bans/{user.id}"))
-                .variables(Variables.variables().set("guild.id", guildId().getValueAsString()).set("user.id", userId().getValueAsString()))
+                .variables(variables("guild.id", guildId().getValue(), "user.id", userId().getValue()))
                 .body(this)
                 .auditLogReason(auditLogReason())
                 .build();

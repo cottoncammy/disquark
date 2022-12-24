@@ -10,6 +10,8 @@ import org.example.rest.request.Request;
 import org.example.rest.request.Requestable;
 import org.example.rest.resources.Snowflake;
 
+import static org.example.rest.util.Variables.variables;
+
 @ImmutableJson
 public interface GroupDmAddRecipient extends Requestable {
 
@@ -32,7 +34,7 @@ public interface GroupDmAddRecipient extends Requestable {
     default Request asRequest() {
         return Request.builder()
                 .endpoint(Endpoint.create(HttpMethod.PUT, "/channels/{channel.id}/recipients/{user.id}"))
-                .variables(Variables.variables().set("channel.id", channelId().getValueAsString()).set("user.id", userId().getValueAsString()))
+                .variables(variables("channel.id", channelId().getValue(), "user.id", userId().getValue()))
                 .body(this)
                 .build();
     }

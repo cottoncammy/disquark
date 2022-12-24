@@ -15,6 +15,8 @@ import org.example.rest.resources.Snowflake;
 
 import java.util.OptionalInt;
 
+import static org.example.rest.util.Variables.variables;
+
 @ImmutableJson
 @JsonInclude(Include.NON_ABSENT)
 public interface StartThreadFromMessage extends Auditable, Requestable {
@@ -41,7 +43,7 @@ public interface StartThreadFromMessage extends Auditable, Requestable {
     default Request asRequest() {
         return Request.builder()
                 .endpoint(Endpoint.create(HttpMethod.POST, "/channels/{channel.id}/messages/{message.id}/threads"))
-                .variables(Variables.variables().set("channel.id", channelId().getValueAsString()).set("message.id", messageId().getValueAsString()))
+                .variables(variables("channel.id", channelId().getValue(), "message.id", messageId().getValue()))
                 .body(this)
                 .auditLogReason(auditLogReason())
                 .build();

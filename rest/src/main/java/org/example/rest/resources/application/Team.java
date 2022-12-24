@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.example.rest.immutables.ImmutableJson;
-import org.example.rest.resources.ImmutableTeam;
 import org.example.rest.resources.Snowflake;
 import org.example.rest.resources.user.User;
 import org.immutables.value.Value.Enclosing;

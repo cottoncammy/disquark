@@ -19,6 +19,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import static org.example.rest.util.Variables.variables;
+
 @ImmutableJson
 @JsonInclude(Include.NON_ABSENT)
 public interface CreateGlobalApplicationCommand extends Requestable {
@@ -59,7 +61,7 @@ public interface CreateGlobalApplicationCommand extends Requestable {
     default Request asRequest() {
         return Request.builder()
                 .endpoint(Endpoint.create(HttpMethod.POST, "/applications/{application.id}/commands"))
-                .variables(Variables.variables().set("application.id", applicationId().getValueAsString()))
+                .variables(variables("application.id", applicationId().getValue()))
                 .body(this)
                 .build();
     }

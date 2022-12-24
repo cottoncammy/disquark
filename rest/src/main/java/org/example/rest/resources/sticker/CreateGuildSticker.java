@@ -7,6 +7,8 @@ import org.example.rest.immutables.ImmutableJson;
 import org.example.rest.request.*;
 import org.example.rest.resources.Snowflake;
 
+import static org.example.rest.util.Variables.variables;
+
 @ImmutableJson
 public interface CreateGuildSticker extends Auditable, MultipartRequest, Requestable {
 
@@ -27,7 +29,7 @@ public interface CreateGuildSticker extends Auditable, MultipartRequest, Request
     default Request asRequest() {
         return Request.builder()
                 .endpoint(Endpoint.create(HttpMethod.POST, "/guilds/{guild.id}/stickers"))
-                .variables(Variables.variables().set("guild.id", guildId().getValueAsString()))
+                .variables(variables("guild.id", guildId().getValue()))
                 .body(this)
                 .auditLogReason(auditLogReason())
                 .files(files())

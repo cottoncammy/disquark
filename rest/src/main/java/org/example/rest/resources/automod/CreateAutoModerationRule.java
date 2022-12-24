@@ -16,6 +16,8 @@ import org.example.rest.resources.Snowflake;
 import java.util.List;
 import java.util.Optional;
 
+import static org.example.rest.util.Variables.variables;
+
 @ImmutableJson
 @JsonInclude(Include.NON_ABSENT)
 public interface CreateAutoModerationRule extends Auditable, Requestable {
@@ -52,7 +54,7 @@ public interface CreateAutoModerationRule extends Auditable, Requestable {
     default Request asRequest() {
         return Request.builder()
                 .endpoint(Endpoint.create(HttpMethod.POST, "/guilds/{guild.id}/auto-moderation/rules"))
-                .variables(Variables.variables().set("guild.id", guildId().getValueAsString()))
+                .variables(variables("guild.id", guildId().getValue()))
                 .body(this)
                 .auditLogReason(auditLogReason())
                 .build();

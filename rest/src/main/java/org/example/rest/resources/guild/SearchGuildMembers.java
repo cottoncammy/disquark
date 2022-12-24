@@ -11,6 +11,8 @@ import org.example.rest.resources.Snowflake;
 import org.immutables.value.Value.Immutable;
 import org.immutables.value.Value.Default;
 
+import static org.example.rest.util.Variables.variables;
+
 @Immutable
 @ImmutableStyle
 public interface SearchGuildMembers extends Requestable {
@@ -36,7 +38,7 @@ public interface SearchGuildMembers extends Requestable {
     default Request asRequest() {
         return Request.builder()
                 .endpoint(Endpoint.create(HttpMethod.GET, "/guilds/{guild.id}/members/search{?query,limit}"))
-                .variables(Variables.variables(JsonObject.of("guild.id", guildId().getValue(), "query", query(), "limit", limit())))
+                .variables(variables("guild.id", guildId().getValue(), "query", query(), "limit", limit()))
                 .build();
     }
 

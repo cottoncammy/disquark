@@ -10,6 +10,8 @@ import org.example.rest.request.Request;
 import org.example.rest.request.Requestable;
 import org.example.rest.resources.Snowflake;
 
+import static org.example.rest.util.Variables.variables;
+
 @ImmutableJson
 public interface ModifyUserVoiceState extends Requestable {
 
@@ -32,7 +34,7 @@ public interface ModifyUserVoiceState extends Requestable {
     default Request asRequest() {
         return Request.builder()
                 .endpoint(Endpoint.create(HttpMethod.PATCH, "/guilds/{guild.id}/voice-states/{user.id}"))
-                .variables(Variables.variables().set("guild.id", guildId().getValueAsString()).set("user.id", userId().getValueAsString()))
+                .variables(variables("guild.id", guildId().getValue(), "user.id", userId().getValue()))
                 .body(this)
                 .build();
     }

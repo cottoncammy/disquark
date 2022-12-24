@@ -15,6 +15,8 @@ import org.example.rest.resources.Snowflake;
 
 import java.util.Optional;
 
+import static org.example.rest.util.Variables.variables;
+
 @ImmutableJson
 @JsonInclude(Include.NON_ABSENT)
 public interface ModifyStageInstance extends Auditable, Requestable {
@@ -35,7 +37,7 @@ public interface ModifyStageInstance extends Auditable, Requestable {
     default Request asRequest() {
         return Request.builder()
                 .endpoint(Endpoint.create(HttpMethod.PATCH, "/stage-instances/{channel.id}"))
-                .variables(Variables.variables().set("channel.id", channelId().getValueAsString()))
+                .variables(variables("channel.id", channelId().getValue()))
                 .body(this)
                 .auditLogReason(auditLogReason())
                 .build();

@@ -12,6 +12,8 @@ import org.example.rest.request.Requestable;
 
 import java.util.Optional;
 
+import static org.example.rest.util.Variables.variables;
+
 @ImmutableJson
 @JsonInclude(Include.NON_ABSENT)
 public interface CreateGuildFromGuildTemplate extends Requestable {
@@ -31,7 +33,7 @@ public interface CreateGuildFromGuildTemplate extends Requestable {
     default Request asRequest() {
         return Request.builder()
                 .endpoint(Endpoint.create(HttpMethod.POST, "/guilds/templates/{template.code}"))
-                .variables(Variables.variables().set("template.code", templateCode()))
+                .variables(variables("template.code", templateCode()))
                 .body(this)
                 .build();
     }

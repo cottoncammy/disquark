@@ -16,6 +16,8 @@ import org.example.rest.resources.Snowflake;
 import java.time.Instant;
 import java.util.Optional;
 
+import static org.example.rest.util.Variables.variables;
+
 @ImmutableJson
 @JsonInclude(Include.NON_ABSENT)
 public interface ModifyGuildScheduledEvent extends Auditable, Requestable {
@@ -60,7 +62,7 @@ public interface ModifyGuildScheduledEvent extends Auditable, Requestable {
     default Request asRequest() {
         return Request.builder()
                 .endpoint(Endpoint.create(HttpMethod.PATCH, "/guilds/{guild.id}/scheduled-events/{guild_scheduled_event.id}"))
-                .variables(Variables.variables().set("guild.id", guildId().getValueAsString()).set("guild_scheduled_event.id", guildScheduledEventId().getValueAsString()))
+                .variables(variables("guild.id", guildId().getValue(), "guild_scheduled_event.id", guildScheduledEventId().getValue()))
                 .body(this)
                 .auditLogReason(auditLogReason())
                 .build();

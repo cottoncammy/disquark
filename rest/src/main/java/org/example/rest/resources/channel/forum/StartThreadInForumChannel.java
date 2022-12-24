@@ -19,6 +19,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.OptionalInt;
 
+import static org.example.rest.util.Variables.variables;
+
 // TODO deepImmutablesDetection ?
 @Enclosing
 @ImmutableJson
@@ -49,7 +51,7 @@ public interface StartThreadInForumChannel extends Auditable, MultipartRequest, 
     default Request asRequest() {
         return Request.builder()
                 .endpoint(Endpoint.create(HttpMethod.POST, "/channels/{channel.id}/threads"))
-                .variables(Variables.variables().set("channel.id", channelId().getValueAsString()))
+                .variables(variables("channel.id", channelId().getValue()))
                 .body(this)
                 .auditLogReason(auditLogReason())
                 .files(files())

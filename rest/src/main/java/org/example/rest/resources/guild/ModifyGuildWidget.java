@@ -15,6 +15,8 @@ import org.example.rest.resources.Snowflake;
 
 import java.util.Optional;
 
+import static org.example.rest.util.Variables.variables;
+
 @ImmutableJson
 @JsonInclude(Include.NON_ABSENT)
 public interface ModifyGuildWidget extends Auditable, Requestable {
@@ -35,7 +37,7 @@ public interface ModifyGuildWidget extends Auditable, Requestable {
     default Request asRequest() {
         return Request.builder()
                 .endpoint(Endpoint.create(HttpMethod.PATCH, "/guilds/{guild.id}/widget"))
-                .variables(Variables.variables().set("guild.id", guildId().getValueAsString()))
+                .variables(variables("guild.id", guildId().getValue()))
                 .body(this)
                 .auditLogReason(auditLogReason())
                 .build();

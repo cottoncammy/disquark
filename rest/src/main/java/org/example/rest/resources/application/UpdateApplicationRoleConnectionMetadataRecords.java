@@ -12,6 +12,8 @@ import org.example.rest.resources.Snowflake;
 
 import java.util.List;
 
+import static org.example.rest.util.Variables.variables;
+
 @ImmutableJson
 public interface UpdateApplicationRoleConnectionMetadataRecords extends Requestable {
 
@@ -29,7 +31,7 @@ public interface UpdateApplicationRoleConnectionMetadataRecords extends Requesta
     default Request asRequest() {
         return Request.builder()
                 .endpoint(Endpoint.create(HttpMethod.PUT, "/applications/{application.id}/role-connections/metadata"))
-                .variables(Variables.variables().set("application.id", applicationId().getValueAsString()))
+                .variables(variables("application.id", applicationId().getValue()))
                 .body(this)
                 .build();
     }

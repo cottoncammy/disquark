@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.example.rest.immutables.ImmutableJson;
-import org.example.rest.resources.ImmutableUser;
 import org.example.rest.resources.Locale;
 import org.example.rest.resources.Snowflake;
 import org.example.rest.resources.guild.Guild;
@@ -14,8 +13,6 @@ import org.example.rest.resources.FlagEnum;
 import org.immutables.value.Value.Enclosing;
 
 import java.util.*;
-
-import static java.util.Objects.requireNonNull;
 
 @Enclosing
 @ImmutableJson

@@ -9,6 +9,7 @@ import org.apache.tika.Tika;
 import java.io.IOException;
 import java.util.Base64;
 
+// TODO
 public class ImageDataSerializer extends JsonSerializer<Buffer> {
     private static final Base64.Encoder BASE64_ENCODER = Base64.getEncoder();
     private static final Tika TIKA = new Tika();

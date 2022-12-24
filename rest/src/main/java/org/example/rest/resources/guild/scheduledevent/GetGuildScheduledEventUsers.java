@@ -43,11 +43,11 @@ public interface GetGuildScheduledEventUsers extends Requestable {
     default Request asRequest() {
         JsonObject json = JsonObject.of("guild.id", guildId().getValue(), "guild_scheduled_event.id", guildScheduledEventId().getValue(), "limit", limit(), "with_member", withMember());
         if (before().isPresent()) {
-            json.put("before", before().get());
+            json.put("before", before().get().getValue());
         }
 
         if (after().isPresent()) {
-            json.put("after", after().get());
+            json.put("after", after().get().getValue());
         }
 
         return Request.builder()

@@ -15,6 +15,8 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Optional;
 
+import static org.example.rest.util.Variables.variables;
+
 @ImmutableJson
 @JsonInclude(Include.NON_ABSENT)
 public interface CreateMessage extends MultipartRequest, Requestable {
@@ -53,7 +55,7 @@ public interface CreateMessage extends MultipartRequest, Requestable {
     default Request asRequest() {
         return Request.builder()
                 .endpoint(Endpoint.create(HttpMethod.POST, "/channels/{channel.id}/messages"))
-                .variables(Variables.variables().set("channel.id", channelId().getValueAsString()))
+                .variables(variables("channel.id", channelId().getValue()))
                 .body(this)
                 .files(files())
                 .build();

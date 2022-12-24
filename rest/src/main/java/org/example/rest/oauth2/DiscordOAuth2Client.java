@@ -1,12 +1,11 @@
 package org.example.rest.oauth2;
 
 import static java.util.Objects.requireNonNull;
+import static org.example.rest.util.Variables.variables;
 
 import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
-import io.vertx.core.http.HttpMethod;
 import io.vertx.mutiny.core.Vertx;
-import io.vertx.mutiny.uritemplate.Variables;
 import org.example.rest.DiscordClient;
 import org.example.rest.request.*;
 import org.example.rest.resources.Snowflake;
@@ -44,13 +43,11 @@ public class DiscordOAuth2Client<T extends Response> extends DiscordClient<T> {
     }
 
     public Multi<User.Connection> getUserConnections() {
-        return requester.request(new EmptyRequest("/users/@me/connections"))
-                .flatMap(res -> res.as(User.Connection[].class))
-                .onItem().disjoint();
+        return requester.request(new EmptyRequest("/users/@me/connections")).flatMap(res -> res.as(User.Connection[].class)).onItem().disjoint();
     }
 
     public Uni<User.ApplicationRoleConnection> getUserApplicationRoleConnection(Snowflake applicationId) {
-        return requester.request(new EmptyRequest("/users/@me/applications/{application.id}/role-connection", Variables.variables().set("application.id", applicationId.getValueAsString())))
+        return requester.request(new EmptyRequest("/users/@me/applications/{application.id}/role-connection", variables("application.id", applicationId.getValue())))
                 .flatMap(res -> res.as(User.ApplicationRoleConnection.class));
     }
 

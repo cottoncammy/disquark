@@ -11,6 +11,8 @@ import org.example.rest.resources.Snowflake;
 
 import java.util.List;
 
+import static org.example.rest.util.Variables.variables;
+
 @ImmutableJson
 public interface EditApplicationCommandPermissions extends Requestable {
 
@@ -33,7 +35,7 @@ public interface EditApplicationCommandPermissions extends Requestable {
     default Request asRequest() {
         return Request.builder()
                 .endpoint(Endpoint.create(HttpMethod.PUT, "/applications/{application.id}/guilds/{guild.id}/commands/{command.id}/permissions"))
-                .variables(Variables.variables().set("application.id", applicationId().getValueAsString()).set("guild.id", guildId().getValueAsString()).set("command.id", commandId().getValueAsString()))
+                .variables(variables("application.id", applicationId().getValue(), "guild.id", guildId().getValue(), "command.id", commandId().getValue()))
                 .body(this)
                 .build();
     }

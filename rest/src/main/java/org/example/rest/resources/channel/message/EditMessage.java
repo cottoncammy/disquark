@@ -18,6 +18,8 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Optional;
 
+import static org.example.rest.util.Variables.variables;
+
 @ImmutableJson
 @JsonInclude(Include.NON_ABSENT)
 public interface EditMessage extends MultipartRequest, Requestable {
@@ -49,7 +51,7 @@ public interface EditMessage extends MultipartRequest, Requestable {
     default Request asRequest() {
         return Request.builder()
                 .endpoint(Endpoint.create(HttpMethod.PATCH, "/channels/{channel.id}/messages/{message.id}"))
-                .variables(Variables.variables().set("channel.id", channelId().getValueAsString()).set("message.id", messageId().getValueAsString()))
+                .variables(variables("channel.id", channelId().getValue(), "message.id", messageId().getValue()))
                 .body(this)
                 .files(files())
                 .build();

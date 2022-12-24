@@ -10,6 +10,8 @@ import org.example.rest.request.Request;
 import org.example.rest.request.Requestable;
 import org.example.rest.resources.Snowflake;
 
+import static org.example.rest.util.Variables.variables;
+
 @ImmutableJson
 public interface ModifyGuildMfaLevel extends Auditable, Requestable {
 
@@ -26,7 +28,7 @@ public interface ModifyGuildMfaLevel extends Auditable, Requestable {
     default Request asRequest() {
         return Request.builder()
                 .endpoint(Endpoint.create(HttpMethod.POST, "/guilds/{guild.id}/mfa"))
-                .variables(Variables.variables().set("guild.id", guildId().getValueAsString()))
+                .variables(variables("guild.id", guildId().getValue()))
                 .body(this)
                 .auditLogReason(auditLogReason())
                 .build();

@@ -17,6 +17,8 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
+import static org.example.rest.util.Variables.variables;
+
 @ImmutableJson
 @JsonInclude(Include.NON_ABSENT)
 public interface ModifyGuildMember extends Auditable, Requestable {
@@ -49,7 +51,7 @@ public interface ModifyGuildMember extends Auditable, Requestable {
     default Request asRequest() {
         return Request.builder()
                 .endpoint(Endpoint.create(HttpMethod.PATCH, "/guilds/{guild.id}/members/{user.id}"))
-                .variables(Variables.variables().set("guild.id", guildId().getValueAsString()).set("user.id", userId().getValueAsString()))
+                .variables(variables("guild.id", guildId().getValue(), "user.id", userId().getValue()))
                 .body(this)
                 .auditLogReason(auditLogReason())
                 .build();

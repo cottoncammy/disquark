@@ -20,6 +20,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import static org.example.rest.util.Variables.variables;
+
 @ImmutableJson
 public interface BulkOverwriteGuildApplicationCommands extends Requestable {
 
@@ -40,7 +42,7 @@ public interface BulkOverwriteGuildApplicationCommands extends Requestable {
     default Request asRequest() {
         return Request.builder()
                 .endpoint(Endpoint.create(HttpMethod.PUT, "/applications/{application.id}/guilds/{guild.id}/commands"))
-                .variables(Variables.variables().set("application.id", applicationId().getValueAsString()).set("guild.id", guildId().getValueAsString()))
+                .variables(variables("application.id", applicationId().getValue(), "guild.id", guildId().getValue()))
                 .body(this)
                 .build();
     }

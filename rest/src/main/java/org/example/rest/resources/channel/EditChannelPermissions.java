@@ -16,6 +16,8 @@ import org.example.rest.resources.permissions.PermissionFlag;
 import java.util.EnumSet;
 import java.util.Optional;
 
+import static org.example.rest.util.Variables.variables;
+
 @ImmutableJson
 @JsonInclude(Include.NON_ABSENT)
 public interface EditChannelPermissions extends Auditable, Requestable {
@@ -40,7 +42,7 @@ public interface EditChannelPermissions extends Auditable, Requestable {
     default Request asRequest() {
         return Request.builder()
                 .endpoint(Endpoint.create(HttpMethod.PUT, "/channels/{channel.id}/permissions/{overwrite.id}"))
-                .variables(Variables.variables().set("channel.id", channelId().getValueAsString()).set("overwrite.id", overwriteId().getValueAsString()))
+                .variables(variables("channel.id", channelId().getValue(), "overwrite.id", overwriteId().getValue()))
                 .body(this)
                 .auditLogReason(auditLogReason())
                 .build();

@@ -15,6 +15,8 @@ import org.example.rest.resources.Snowflake;
 
 import java.util.Optional;
 
+import static org.example.rest.util.Variables.variables;
+
 @ImmutableJson
 @JsonInclude(Include.NON_ABSENT)
 public interface ModifyWebhook extends Auditable, Requestable {
@@ -37,7 +39,7 @@ public interface ModifyWebhook extends Auditable, Requestable {
     default Request asRequest() {
         return Request.builder()
                 .endpoint(Endpoint.create(HttpMethod.PATCH, "/webhooks/{webhook.id}"))
-                .variables(Variables.variables().set("webhook.id", webhookId().getValueAsString()))
+                .variables(variables("webhook.id", webhookId().getValue()))
                 .body(this)
                 .auditLogReason(auditLogReason())
                 .build();

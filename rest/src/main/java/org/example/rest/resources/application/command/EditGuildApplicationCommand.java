@@ -19,6 +19,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import static org.example.rest.util.Variables.variables;
+
 @ImmutableJson
 @JsonInclude(Include.NON_ABSENT)
 public interface EditGuildApplicationCommand extends Requestable {
@@ -60,7 +62,7 @@ public interface EditGuildApplicationCommand extends Requestable {
     default Request asRequest() {
         return Request.builder()
                 .endpoint(Endpoint.create(HttpMethod.PATCH, "/applications/{application.id}/guilds/{guild.id}/commands/{command.id}"))
-                .variables(Variables.variables().set("application.id", applicationId().getValueAsString()).set("guild.id", guildId().getValueAsString()).set("command.id", commandId().getValueAsString()))
+                .variables(variables("application.id", applicationId().getValue(), "guild.id", guildId().getValue(), "command.id", commandId().getValue()))
                 .body(this)
                 .build();
     }

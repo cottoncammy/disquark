@@ -16,6 +16,8 @@ import org.example.rest.resources.permissions.PermissionFlag;
 
 import java.util.*;
 
+import static org.example.rest.util.Variables.variables;
+
 @ImmutableJson
 @JsonInclude(Include.NON_ABSENT)
 public interface CreateGuildApplicationCommand extends Requestable {
@@ -56,7 +58,7 @@ public interface CreateGuildApplicationCommand extends Requestable {
     default Request asRequest() {
         return Request.builder()
                 .endpoint(Endpoint.create(HttpMethod.POST, "/applications/{application.id}/guilds/{guild.id}/commands"))
-                .variables(Variables.variables().set("application.id", applicationId().getValueAsString()).set("guild.id", guildId().getValueAsString()))
+                .variables(variables("application.id", applicationId().getValue(), "guild.id", guildId().getValue()))
                 .body(this)
                 .build();
     }

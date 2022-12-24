@@ -10,6 +10,8 @@ import org.example.rest.request.Request;
 import org.example.rest.request.Requestable;
 import org.example.rest.resources.Snowflake;
 
+import static org.example.rest.util.Variables.variables;
+
 @ImmutableJson
 public interface FollowAnnouncementChannel extends Requestable {
 
@@ -28,7 +30,7 @@ public interface FollowAnnouncementChannel extends Requestable {
     default Request asRequest() {
         return Request.builder()
                 .endpoint(Endpoint.create(HttpMethod.POST, "/channels/{channel.id}/followers"))
-                .variables(Variables.variables().set("channel.id", channelId().getValueAsString()))
+                .variables(variables("channel.id", channelId().getValue()))
                 .body(this)
                 .build();
     }

@@ -13,6 +13,8 @@ import org.example.rest.resources.Snowflake;
 
 import java.util.Optional;
 
+import static org.example.rest.util.Variables.variables;
+
 @ImmutableJson
 @JsonInclude(Include.NON_ABSENT)
 public interface ModifyGuildTemplate extends Requestable {
@@ -35,7 +37,7 @@ public interface ModifyGuildTemplate extends Requestable {
     default Request asRequest() {
         return Request.builder()
                 .endpoint(Endpoint.create(HttpMethod.PATCH, "/guilds/{guild.id}/templates/{template.code}"))
-                .variables(Variables.variables().set("guild.id", guildId().getValueAsString()).set("template.code", templateCode()))
+                .variables(variables("guild.id", guildId().getValue(), "template.code", templateCode()))
                 .body(this)
                 .build();
     }

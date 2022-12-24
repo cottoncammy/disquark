@@ -7,7 +7,6 @@ import org.example.rest.resources.Locale;
 import org.example.rest.resources.Snowflake;
 import org.example.rest.immutables.ImmutableJson;
 import org.example.rest.resources.channel.Channel;
-import org.example.rest.resources.interactions.ImmutableApplicationCommand;
 import org.example.rest.resources.permissions.PermissionFlag;
 import org.immutables.value.Value.Enclosing;
 
