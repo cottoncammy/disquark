@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.example.rest.jackson.NonceDeserializer;
 import org.example.rest.resources.Snowflake;
-import org.example.rest.immutables.ImmutableJson;
+import org.example.immutables.ImmutableJson;
 import org.example.rest.resources.application.Application;
 import org.example.rest.resources.channel.Channel;
 import org.example.rest.resources.emoji.Emoji;

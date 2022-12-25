@@ -3,7 +3,7 @@ package org.example.rest.resources.voice;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.example.rest.resources.Snowflake;
-import org.example.rest.immutables.ImmutableJson;
+import org.example.immutables.ImmutableJson;
 import org.example.rest.resources.guild.Guild;
 
 import java.time.Instant;

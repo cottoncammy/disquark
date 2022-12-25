@@ -1,6 +1,6 @@
 package org.example.rest.resources.channel.thread;
 
-import org.example.rest.immutables.ImmutableStyle;
+import org.example.immutables.ImmutableBuilder;
 import org.example.rest.resources.Snowflake;
 import org.immutables.value.Value.Immutable;
 
@@ -8,8 +8,7 @@ import java.time.Instant;
 import java.util.Optional;
 import java.util.OptionalInt;
 
-@Immutable
-@ImmutableStyle
+@ImmutableBuilder
 public interface ListThreads {
 
     static Builder builder() {
@@ -17,7 +16,7 @@ public interface ListThreads {
     }
 
     static ListThreads create(Snowflake channelId) {
-        return null;
+        return ImmutableListThreads.create(channelId);
     }
 
     Snowflake channelId();

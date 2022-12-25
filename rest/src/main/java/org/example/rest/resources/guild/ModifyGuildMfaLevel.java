@@ -2,13 +2,14 @@ package org.example.rest.resources.guild;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.vertx.core.http.HttpMethod;
-import io.vertx.mutiny.uritemplate.Variables;
-import org.example.rest.immutables.ImmutableJson;
+import org.example.immutables.ImmutableJson;
 import org.example.rest.request.Auditable;
 import org.example.rest.request.Endpoint;
 import org.example.rest.request.Request;
 import org.example.rest.request.Requestable;
 import org.example.rest.resources.Snowflake;
+
+import java.util.Optional;
 
 import static org.example.rest.util.Variables.variables;
 
@@ -16,7 +17,11 @@ import static org.example.rest.util.Variables.variables;
 public interface ModifyGuildMfaLevel extends Auditable, Requestable {
 
     static ModifyGuildMfaLevel create(Snowflake guildId, Guild.MfaLevel level, String auditLogReason) {
-        return null;
+        return ImmutableModifyGuildMfaLevel.builder()
+                .guildId(guildId)
+                .level(level)
+                .auditLogReason(Optional.ofNullable(auditLogReason))
+                .build();
     }
 
     @JsonIgnore

@@ -44,7 +44,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <apache-tika.version>2.6.0</apache-tika.version>
         <bucket4j-version>8.1.0</bucket4j-version>
-        <immutables.version>2.9.1</immutables.version>
+        <immutables.version>2.9.3</immutables.version>
         <jackson.version>2.13.3</jackson.version>
         <jakarta-annotations.version>2.1.1</jakarta-annotations.version>
         <jsr305.version>3.0.2</jsr305.version>
@@ -69,6 +69,7 @@
     <modules>
         <module>rest</module>
         <module>integration-tests</module>
+        <module>immutables</module>
     </modules>
 
     <dependencyManagement>
@@ -116,6 +117,12 @@
             <dependency>
                 <groupId>org.immutables</groupId>
                 <artifactId>value</artifactId>
+                <version>${immutables.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.immutables</groupId>
+                <artifactId>value-annotations</artifactId>
                 <version>${immutables.version}</version>
                 <scope>provided</scope>
             </dependency>

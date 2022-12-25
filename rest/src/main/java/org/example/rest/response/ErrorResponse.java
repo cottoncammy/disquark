@@ -1,7 +1,7 @@
 package org.example.rest.response;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import org.example.rest.immutables.ImmutableJson;
+import org.example.immutables.ImmutableJson;
 
 import java.util.Map;
 

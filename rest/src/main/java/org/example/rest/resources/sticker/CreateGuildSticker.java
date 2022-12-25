@@ -2,8 +2,7 @@ package org.example.rest.resources.sticker;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.vertx.core.http.HttpMethod;
-import io.vertx.mutiny.uritemplate.Variables;
-import org.example.rest.immutables.ImmutableJson;
+import org.example.immutables.ImmutableJson;
 import org.example.rest.request.*;
 import org.example.rest.resources.Snowflake;
 

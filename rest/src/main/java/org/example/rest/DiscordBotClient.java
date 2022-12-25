@@ -56,12 +56,13 @@ import org.example.rest.response.Response;
 import org.example.rest.emoji.ReactionEmoji;
 
 import javax.annotation.Nullable;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import static java.time.format.DateTimeFormatter.ISO_DATE_TIME;
 import static java.util.Objects.requireNonNull;
 import static org.example.rest.util.Variables.variables;
 
-// TODO helper method to setup variables
 public class DiscordBotClient<T extends Response> extends DiscordClient<T> {
 
     public static <T extends Response> Builder<T> builder(Vertx vertx, AccessTokenSource tokenSource) {
@@ -199,8 +200,8 @@ public class DiscordBotClient<T extends Response> extends DiscordClient<T> {
                 .replaceWithVoid();
     }
 
-    public Uni<Void> bulkDeleteMessages(Snowflake channelId, List<Snowflake> messages, @Nullable String auditLogReason) {
-        return requester.request(BulkDeleteMessages.create(channelId, messages, auditLogReason).asRequest()).replaceWithVoid();
+    public Uni<Void> bulkDeleteMessages(BulkDeleteMessages bulkDeleteMessages) {
+        return requester.request(bulkDeleteMessages.asRequest()).replaceWithVoid();
     }
 
     public Uni<Void> editChannelPermissions(EditChannelPermissions editChannelPermissions) {
@@ -300,7 +301,6 @@ public class DiscordBotClient<T extends Response> extends DiscordClient<T> {
                 .onItem().disjoint();
     }
 
-    // TODO
     private Uni<ListThreadsResult> listThreads(ListThreads listThreads, String uri) {
         JsonObject json = JsonObject.of("channel.id", listThreads.channelId().getValue());
         if (listThreads.limit().isPresent()) {
@@ -308,7 +308,7 @@ public class DiscordBotClient<T extends Response> extends DiscordClient<T> {
         }
 
         if (listThreads.before().isPresent()) {
-            json.put("before", listThreads.before().get());
+            json.put("before", ISO_DATE_TIME.format(listThreads.before().get()));
         }
 
         return requester.request(new EmptyRequest(uri, Variables.variables(json))).flatMap(res -> res.as(ListThreadsResult.class));
@@ -465,8 +465,7 @@ public class DiscordBotClient<T extends Response> extends DiscordClient<T> {
     }
 
     public Uni<Guild.MfaLevel> modifyGuildMfaLevel(Snowflake guildId, Guild.MfaLevel level, @Nullable String auditLogReason) {
-        return requester.request(ModifyGuildMfaLevel.create(guildId, level, auditLogReason).asRequest())
-                .flatMap(res -> res.as(Guild.MfaLevel.class));
+        return requester.request(ModifyGuildMfaLevel.create(guildId, level, auditLogReason).asRequest()).flatMap(res -> res.as(Guild.MfaLevel.class));
     }
 
     public Uni<Void> deleteGuildRole(Snowflake guildId, Snowflake roleId, @Nullable String auditLogReason) {
@@ -565,9 +564,9 @@ public class DiscordBotClient<T extends Response> extends DiscordClient<T> {
                 .replaceWithVoid();
     }
 
-    public Multi<GuildScheduledEvent.UserFoo> getGuildScheduledEventUsers(GetGuildScheduledEventUsers getGuildScheduledEventUsers) {
+    public Multi<GuildScheduledEvent.User> getGuildScheduledEventUsers(GetGuildScheduledEventUsers getGuildScheduledEventUsers) {
         return requester.request(getGuildScheduledEventUsers.asRequest())
-                .flatMap(res -> res.as(GuildScheduledEvent.UserFoo[].class))
+                .flatMap(res -> res.as(GuildScheduledEvent.User[].class))
                 .onItem().disjoint();
     }
 

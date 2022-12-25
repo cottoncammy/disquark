@@ -3,7 +3,7 @@ package org.example.rest.resources.user;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import io.vertx.core.http.HttpMethod;
-import org.example.rest.immutables.ImmutableJson;
+import org.example.immutables.ImmutableJson;
 import org.example.rest.request.Endpoint;
 import org.example.rest.request.Request;
 import org.example.rest.request.Requestable;

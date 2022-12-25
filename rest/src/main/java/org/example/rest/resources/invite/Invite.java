@@ -3,7 +3,7 @@ package org.example.rest.resources.invite;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import org.example.rest.immutables.ImmutableJson;
+import org.example.immutables.ImmutableJson;
 import org.example.rest.resources.application.Application;
 import org.example.rest.resources.guild.scheduledevent.GuildScheduledEvent;
 import org.example.rest.resources.user.User;

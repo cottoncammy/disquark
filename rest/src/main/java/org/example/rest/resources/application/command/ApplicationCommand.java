@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.example.rest.resources.Locale;
 import org.example.rest.resources.Snowflake;
-import org.example.rest.immutables.ImmutableJson;
+import org.example.immutables.ImmutableJson;
 import org.example.rest.resources.channel.Channel;
 import org.example.rest.resources.permissions.PermissionFlag;
 import org.immutables.value.Value.Enclosing;

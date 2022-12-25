@@ -3,7 +3,7 @@ package org.example.rest.resources.guild.prune;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.json.JsonObject;
 import io.vertx.mutiny.uritemplate.Variables;
-import org.example.rest.immutables.ImmutableStyle;
+import org.example.immutables.ImmutableBuilder;
 import org.example.rest.request.Endpoint;
 import org.example.rest.request.Request;
 import org.example.rest.request.Requestable;
@@ -15,8 +15,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Immutable
-@ImmutableStyle
+@ImmutableBuilder
 public interface GetGuildPruneCount extends Requestable {
 
     static Builder builder() {
@@ -24,7 +23,7 @@ public interface GetGuildPruneCount extends Requestable {
     }
 
     static GetGuildPruneCount create(Snowflake guildId) {
-        return null;
+        return ImmutableGetGuildPruneCount.create(guildId);
     }
 
     Snowflake guildId();

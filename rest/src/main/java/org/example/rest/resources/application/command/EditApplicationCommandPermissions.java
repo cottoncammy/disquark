@@ -2,8 +2,7 @@ package org.example.rest.resources.application.command;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.vertx.core.http.HttpMethod;
-import io.vertx.mutiny.uritemplate.Variables;
-import org.example.rest.immutables.ImmutableJson;
+import org.example.immutables.ImmutableJson;
 import org.example.rest.request.Endpoint;
 import org.example.rest.request.Request;
 import org.example.rest.request.Requestable;
@@ -16,8 +15,8 @@ import static org.example.rest.util.Variables.variables;
 @ImmutableJson
 public interface EditApplicationCommandPermissions extends Requestable {
 
-    static EditApplicationCommandPermissions create(Snowflake applicationId, Snowflake guildId, Snowflake commandId, List<GuildApplicationCommandPermissions> permissions) {
-        return null;
+    static Builder builder() {
+        return new Builder();
     }
 
     @JsonIgnore
@@ -38,5 +37,9 @@ public interface EditApplicationCommandPermissions extends Requestable {
                 .variables(variables("application.id", applicationId().getValue(), "guild.id", guildId().getValue(), "command.id", commandId().getValue()))
                 .body(this)
                 .build();
+    }
+
+    class Builder extends ImmutableEditApplicationCommandPermissions.Builder {
+        protected Builder() {}
     }
 }

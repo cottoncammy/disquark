@@ -2,7 +2,7 @@ package org.example.rest.resources.guild.template;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import org.example.rest.immutables.ImmutableJson;
+import org.example.immutables.ImmutableJson;
 import org.example.rest.resources.Snowflake;
 import org.example.rest.resources.guild.Guild;
 import org.example.rest.resources.user.User;

@@ -1,9 +1,8 @@
 package org.example.rest.resources.application.command;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import org.example.rest.immutables.ImmutableJson;
+import org.example.immutables.ImmutableJson;
 import org.example.rest.resources.Snowflake;
-import org.example.rest.resources.interactions.ImmutableGuildApplicationCommandPermissions;
 
 import java.util.List;
 

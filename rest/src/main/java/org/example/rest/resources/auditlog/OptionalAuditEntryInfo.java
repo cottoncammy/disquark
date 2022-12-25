@@ -3,7 +3,7 @@ package org.example.rest.resources.auditlog;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.example.rest.resources.Snowflake;
-import org.example.rest.immutables.ImmutableJson;
+import org.example.immutables.ImmutableJson;
 import org.example.rest.resources.automod.AutoModerationRule;
 import org.example.rest.resources.channel.Channel;
 

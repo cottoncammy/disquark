@@ -1,7 +1,7 @@
 package org.example.rest.resources.voice;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import org.example.rest.immutables.ImmutableJson;
+import org.example.immutables.ImmutableJson;
 
 @ImmutableJson
 @JsonDeserialize(as = ImmutableVoiceRegion.class)

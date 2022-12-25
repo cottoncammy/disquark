@@ -60,7 +60,9 @@ public abstract class DiscordClient<T extends Response> {
     }
 
     public Multi<ApplicationCommand> bulkOverwriteGlobalApplicationCommands(BulkOverwriteGlobalApplicationCommands bulkOverwriteGlobalApplicationCommands) {
-        return requester.request(bulkOverwriteGlobalApplicationCommands.asRequest()).flatMap(res -> res.as(ApplicationCommand[].class)).onItem().disjoint();
+        return requester.request(bulkOverwriteGlobalApplicationCommands.asRequest())
+                .flatMap(res -> res.as(ApplicationCommand[].class))
+                .onItem().disjoint();
     }
 
     public Multi<ApplicationCommand> getGuildApplicationCommands(Snowflake applicationId, Snowflake guildId, boolean withLocalizations) {
@@ -106,6 +108,12 @@ public abstract class DiscordClient<T extends Response> {
 
     public Uni<Guild.Member> modifyCurrentMember(ModifyCurrentMember modifyCurrentMember) {
         return requester.request(modifyCurrentMember.asRequest()).flatMap(res -> res.as(Guild.Member.class));
+    }
+
+    // TODO
+    public Uni<Object> getGuildWidgetImage(Snowflake guildId, Guild.Widget.Style style) {
+        return requester.request(new EmptyRequest("/guilds/{guild.id}/widget.png{?style}", variables("guild.id", guildId.getValue(), "style", style.getValue())))
+                .flatMap(res -> res.as());
     }
 
     public Uni<Void> modifyCurrentUserVoiceState(ModifyCurrentUserVoiceState modifyCurrentUserVoiceState) {

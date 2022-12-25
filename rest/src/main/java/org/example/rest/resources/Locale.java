@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import static java.util.Objects.requireNonNull;
 
 public enum Locale {
+    ID("id"),
     DA("da"),
     DE("de"),
     EN_GB("en-GB"),

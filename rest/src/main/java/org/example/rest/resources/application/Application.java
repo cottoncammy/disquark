@@ -2,7 +2,7 @@ package org.example.rest.resources.application;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import org.example.rest.immutables.ImmutableJson;
+import org.example.immutables.ImmutableJson;
 import org.example.rest.jackson.ScopesDeserializer;
 import org.example.rest.resources.Snowflake;
 import org.example.rest.resources.oauth2.Scope;

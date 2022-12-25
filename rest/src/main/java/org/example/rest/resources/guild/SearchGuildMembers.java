@@ -1,20 +1,16 @@
 package org.example.rest.resources.guild;
 
 import io.vertx.core.http.HttpMethod;
-import io.vertx.core.json.JsonObject;
-import io.vertx.mutiny.uritemplate.Variables;
-import org.example.rest.immutables.ImmutableStyle;
+import org.example.immutables.ImmutableBuilder;
 import org.example.rest.request.Endpoint;
 import org.example.rest.request.Request;
 import org.example.rest.request.Requestable;
 import org.example.rest.resources.Snowflake;
-import org.immutables.value.Value.Immutable;
 import org.immutables.value.Value.Default;
 
 import static org.example.rest.util.Variables.variables;
 
-@Immutable
-@ImmutableStyle
+@ImmutableBuilder
 public interface SearchGuildMembers extends Requestable {
 
     static Builder builder() {
@@ -22,7 +18,7 @@ public interface SearchGuildMembers extends Requestable {
     }
 
     static SearchGuildMembers create(Snowflake guildId, String query) {
-        return null;
+        return ImmutableSearchGuildMembers.create(guildId, query);
     }
 
     Snowflake guildId();

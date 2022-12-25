@@ -2,11 +2,15 @@ package org.example.rest.resources.application;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import org.example.immutables.ImmutableJson;
 import org.example.rest.resources.Locale;
 
 import java.util.Map;
 import java.util.Optional;
 
+@ImmutableJson
+@JsonDeserialize(as = ImmutableApplicationRoleConnectionMetadata.class)
 public interface ApplicationRoleConnectionMetadata {
 
     static Builder builder() {

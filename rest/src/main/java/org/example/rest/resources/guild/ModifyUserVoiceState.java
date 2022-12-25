@@ -3,8 +3,7 @@ package org.example.rest.resources.guild;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.vertx.core.http.HttpMethod;
-import io.vertx.mutiny.uritemplate.Variables;
-import org.example.rest.immutables.ImmutableJson;
+import org.example.immutables.ImmutableJson;
 import org.example.rest.request.Endpoint;
 import org.example.rest.request.Request;
 import org.example.rest.request.Requestable;
@@ -16,7 +15,7 @@ import static org.example.rest.util.Variables.variables;
 public interface ModifyUserVoiceState extends Requestable {
 
     static ModifyUserVoiceState create(Snowflake guildId, Snowflake userId, Snowflake channelId, boolean suppress) {
-        return null;
+        return ImmutableModifyUserVoiceState.create(guildId, userId, channelId, suppress);
     }
 
     @JsonIgnore

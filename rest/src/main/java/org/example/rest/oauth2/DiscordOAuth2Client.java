@@ -37,13 +37,15 @@ public class DiscordOAuth2Client<T extends Response> extends DiscordClient<T> {
         super(vertx, requester);
     }
 
-    public Uni<GuildApplicationCommandPermissions> editApplicationCommandPermissions(Snowflake applicationId, Snowflake guildId, Snowflake commandId, List<GuildApplicationCommandPermissions> permissions) {
-        return requester.request(EditApplicationCommandPermissions.create(applicationId, guildId, commandId, permissions).asRequest())
+    public Uni<GuildApplicationCommandPermissions> editApplicationCommandPermissions(EditApplicationCommandPermissions editApplicationCommandPermissions) {
+        return requester.request(editApplicationCommandPermissions.asRequest())
                 .flatMap(res -> res.as(GuildApplicationCommandPermissions.class));
     }
 
     public Multi<User.Connection> getUserConnections() {
-        return requester.request(new EmptyRequest("/users/@me/connections")).flatMap(res -> res.as(User.Connection[].class)).onItem().disjoint();
+        return requester.request(new EmptyRequest("/users/@me/connections"))
+                .flatMap(res -> res.as(User.Connection[].class))
+                .onItem().disjoint();
     }
 
     public Uni<User.ApplicationRoleConnection> getUserApplicationRoleConnection(Snowflake applicationId) {
@@ -52,7 +54,8 @@ public class DiscordOAuth2Client<T extends Response> extends DiscordClient<T> {
     }
 
     public Uni<User.ApplicationRoleConnection> updateUserApplicationRoleConnection(UpdateUserApplicationRoleConnections updateUserApplicationRoleConnections) {
-        return requester.request(updateUserApplicationRoleConnections.asRequest()).flatMap(res -> res.as(User.ApplicationRoleConnection.class));
+        return requester.request(updateUserApplicationRoleConnections.asRequest())
+                .flatMap(res -> res.as(User.ApplicationRoleConnection.class));
     }
 
     public Uni<Authorization> getCurrentAuthorizationInformation() {

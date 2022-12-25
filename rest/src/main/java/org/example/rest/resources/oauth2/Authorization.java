@@ -1,7 +1,7 @@
 package org.example.rest.resources.oauth2;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import org.example.rest.immutables.ImmutableJson;
+import org.example.immutables.ImmutableJson;
 import org.example.rest.jackson.ScopesDeserializer;
 import org.example.rest.resources.application.Application;
 import org.example.rest.resources.user.User;

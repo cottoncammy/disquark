@@ -3,7 +3,7 @@ package org.example.rest.resources.guild.scheduledevent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import org.example.rest.immutables.ImmutableJson;
+import org.example.immutables.ImmutableJson;
 import org.example.rest.resources.Snowflake;
 import org.example.rest.resources.guild.Guild;
 import org.example.rest.resources.user.User;
@@ -129,10 +129,9 @@ public interface GuildScheduledEvent {
         }
     }
 
-    // TODO rename
     @ImmutableJson
-    @JsonDeserialize(as = ImmutableGuildScheduledEvent.UserFoo.class)
-    interface UserFoo {
+    @JsonDeserialize(as = ImmutableGuildScheduledEvent.User.class)
+    interface User {
 
         static Builder builder() {
             return new Builder();
@@ -141,11 +140,11 @@ public interface GuildScheduledEvent {
         @JsonProperty("guild_scheduled_event_id")
         Snowflake guildScheduledEventId();
 
-        User user();
+        org.example.rest.resources.user.User user();
 
         Optional<Guild.Member> member();
 
-        class Builder extends ImmutableGuildScheduledEvent.UserFoo.Builder {
+        class Builder extends ImmutableGuildScheduledEvent.User.Builder {
             protected Builder() {}
         }
     }

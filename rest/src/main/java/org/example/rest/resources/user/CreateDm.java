@@ -2,7 +2,7 @@ package org.example.rest.resources.user;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.vertx.core.http.HttpMethod;
-import org.example.rest.immutables.ImmutableJson;
+import org.example.immutables.ImmutableJson;
 import org.example.rest.request.Endpoint;
 import org.example.rest.request.Request;
 import org.example.rest.request.Requestable;
@@ -12,7 +12,7 @@ import org.example.rest.resources.Snowflake;
 public interface CreateDm extends Requestable {
 
     static CreateDm create(Snowflake recipientId) {
-        return null;
+        return ImmutableCreateDm.create(recipientId);
     }
 
     @JsonProperty("recipient_id")
