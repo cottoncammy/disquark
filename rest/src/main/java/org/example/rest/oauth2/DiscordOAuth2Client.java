@@ -6,7 +6,9 @@ import static org.example.rest.util.Variables.variables;
 import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
 import io.vertx.mutiny.core.Vertx;
+import org.example.rest.AuthenticatedDiscordClient;
 import org.example.rest.DiscordClient;
+import org.example.rest.interactions.DiscordInteractionsClient;
 import org.example.rest.request.*;
 import org.example.rest.resources.Snowflake;
 import org.example.rest.resources.application.command.EditApplicationCommandPermissions;
@@ -15,10 +17,11 @@ import org.example.rest.resources.user.User;
 import org.example.rest.resources.application.command.GuildApplicationCommandPermissions;
 import org.example.rest.resources.oauth2.Authorization;
 import org.example.rest.response.Response;
+import org.example.rest.webhook.DiscordWebhookClient;
 
 import java.util.List;
 
-public class DiscordOAuth2Client<T extends Response> extends DiscordClient<T> {
+public class DiscordOAuth2Client<T extends Response> extends AuthenticatedDiscordClient<T> {
 
     public static <T extends Response> Builder<T> builder(Vertx vertx, AccessTokenSource tokenSource) {
         return new Builder<>(requireNonNull(vertx), requireNonNull(tokenSource));
@@ -34,7 +37,8 @@ public class DiscordOAuth2Client<T extends Response> extends DiscordClient<T> {
     }
 
     private DiscordOAuth2Client(Vertx vertx, Requester<T> requester) {
-        super(vertx, requester);
+        // TODO reuse requester between clients, but new ratelimiter (shared) between interactions + webhook clients. this will be complex (bucketratelimitrequester can't be reused)
+        super(vertx, requester, DiscordInteractionsClient.create(vertx), DiscordWebhookClient.create(vertx));
     }
 
     public Uni<GuildApplicationCommandPermissions> editApplicationCommandPermissions(EditApplicationCommandPermissions editApplicationCommandPermissions) {

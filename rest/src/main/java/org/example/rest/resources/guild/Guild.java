@@ -369,24 +369,6 @@ public interface Guild {
         @JsonProperty("presence_count")
         int presenceCount();
 
-        enum Style {
-            SHIELD("shield"),
-            BANNER_1("banner1"),
-            BANNER_2("banner2"),
-            BANNER_3("banner3"),
-            BANNER_4("banner4");
-
-            private final String value;
-
-            Style(String value) {
-                this.value = value;
-            }
-
-            public String getValue() {
-                return value;
-            }
-        }
-
         class Builder extends ImmutableGuild.Widget.Builder {
             protected Builder() {}
         }

@@ -65,12 +65,7 @@ public class HttpClientRequester implements Requester<HttpResponse> {
                             .setFollowRedirects(true)
                             .setMethod(endpoint.getHttpMethod());
 
-                    Uni<HttpClientRequest> uni = httpClient.request(options);
-                    if (endpoint.isGloballyRateLimited()) {
-                        uni = rateLimiter.rateLimit(uni);
-                    }
-
-                    return uni.flatMap(req -> {
+                    return rateLimiter.rateLimit(httpClient.request(options)).flatMap(req -> {
                         req.putHeader(HttpHeaders.AUTHORIZATION, String.format("%s %s", token.tokenType().getValue(), token.accessToken()));
                         req.putHeader(HttpHeaders.USER_AGENT, String.format("DiscordBot (%s, %s)", "https://github.com/cameronprater/discord-TODO", "0.1.0"));
 

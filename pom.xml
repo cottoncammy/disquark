@@ -67,9 +67,9 @@
     </properties>
 
     <modules>
+        <module>immutables</module>
         <module>rest</module>
         <module>integration-tests</module>
-        <module>immutables</module>
     </modules>
 
     <dependencyManagement>

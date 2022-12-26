@@ -6,8 +6,10 @@ import io.vertx.core.http.HttpMethod;
 import io.vertx.core.json.JsonObject;
 import io.vertx.mutiny.core.Vertx;
 import io.vertx.mutiny.uritemplate.Variables;
+import org.example.rest.interactions.DiscordInteractionsClient;
 import org.example.rest.request.*;
 import org.example.rest.resources.*;
+import org.example.rest.resources.application.Application;
 import org.example.rest.resources.application.ApplicationRoleConnectionMetadata;
 import org.example.rest.resources.application.UpdateApplicationRoleConnectionMetadataRecords;
 import org.example.rest.resources.auditlog.AuditLog;
@@ -47,6 +49,7 @@ import org.example.rest.resources.sticker.CreateGuildSticker;
 import org.example.rest.resources.sticker.ModifyGuildSticker;
 import org.example.rest.resources.sticker.Sticker;
 import org.example.rest.resources.user.CreateDm;
+import org.example.rest.resources.user.ModifyCurrentUser;
 import org.example.rest.resources.user.User;
 import org.example.rest.resources.voice.VoiceRegion;
 import org.example.rest.resources.webhook.CreateWebhook;
@@ -54,6 +57,7 @@ import org.example.rest.resources.webhook.ModifyWebhook;
 import org.example.rest.resources.webhook.Webhook;
 import org.example.rest.response.Response;
 import org.example.rest.emoji.ReactionEmoji;
+import org.example.rest.webhook.DiscordWebhookClient;
 
 import javax.annotation.Nullable;
 import java.time.format.DateTimeFormatter;
@@ -63,7 +67,7 @@ import static java.time.format.DateTimeFormatter.ISO_DATE_TIME;
 import static java.util.Objects.requireNonNull;
 import static org.example.rest.util.Variables.variables;
 
-public class DiscordBotClient<T extends Response> extends DiscordClient<T> {
+public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordClient<T> {
 
     public static <T extends Response> Builder<T> builder(Vertx vertx, AccessTokenSource tokenSource) {
         return new Builder<>(requireNonNull(vertx), requireNonNull(tokenSource));
@@ -83,7 +87,7 @@ public class DiscordBotClient<T extends Response> extends DiscordClient<T> {
     }
 
     private DiscordBotClient(Vertx vertx, Requester<T> requester) {
-        super(vertx, requester);
+        super(vertx, requester, DiscordInteractionsClient.create(vertx), DiscordWebhookClient.create(vertx));
     }
 
     public Multi<ApplicationRoleConnectionMetadata> getApplicationRoleConnectionMetadataRecords(Snowflake applicationId) {
@@ -413,6 +417,10 @@ public class DiscordBotClient<T extends Response> extends DiscordClient<T> {
         return requester.request(modifyGuildMember.asRequest()).flatMap(res -> res.as(Guild.Member.class));
     }
 
+    public Uni<Guild.Member> modifyCurrentMember(ModifyCurrentMember modifyCurrentMember) {
+        return requester.request(modifyCurrentMember.asRequest()).flatMap(res -> res.as(Guild.Member.class));
+    }
+
     public Uni<Void> addGuildMemberRole(Snowflake guildId, Snowflake userId, Snowflake roleId, @Nullable String auditLogReason) {
         return requester.request(new EmptyRequest(HttpMethod.PUT, "/guilds/{guild.id}/members/{user.id}/roles/{role.id}", variables("guild.id", guildId.getValue(), "user.id", userId.getValue(), "role.id", roleId.getValue()), auditLogReason))
                 .replaceWithVoid();
@@ -534,6 +542,10 @@ public class DiscordBotClient<T extends Response> extends DiscordClient<T> {
 
     public Uni<Guild.WelcomeScreen> modifyGuildWelcomeScreen(ModifyGuildWelcomeScreen modifyGuildWelcomeScreen) {
         return requester.request(modifyGuildWelcomeScreen.asRequest()).flatMap(res -> res.as(Guild.WelcomeScreen.class));
+    }
+
+    public Uni<Void> modifyCurrentUserVoiceState(ModifyCurrentUserVoiceState modifyCurrentUserVoiceState) {
+        return requester.request(modifyCurrentUserVoiceState.asRequest()).replaceWithVoid();
     }
 
     public Uni<Void> modifyUserVoiceState(Snowflake guildId, Snowflake userId, Snowflake channelId, boolean suppress) {
@@ -663,6 +675,10 @@ public class DiscordBotClient<T extends Response> extends DiscordClient<T> {
                 .replaceWithVoid();
     }
 
+    public Uni<User> modifyCurrentUser(ModifyCurrentUser modifyCurrentUser) {
+        return requester.request(modifyCurrentUser.asRequest()).flatMap(res -> res.as(User.class));
+    }
+
     public Uni<User> getUser(Snowflake userId) {
         return requester.request(new EmptyRequest("/users/{user.id}", variables("user.id", userId.getValue())))
                 .flatMap(res -> res.as(User.class));
@@ -709,6 +725,10 @@ public class DiscordBotClient<T extends Response> extends DiscordClient<T> {
     public Uni<Void> deleteWebhook(Snowflake webhookId, @Nullable String auditLogReason) {
         return requester.request(new EmptyRequest(HttpMethod.DELETE, "/webhooks/{webhook.id}", variables("guild.id", webhookId.getValue()), auditLogReason))
                 .replaceWithVoid();
+    }
+
+    public Uni<Application> getCurrentBotApplicationInformation() {
+        return requester.request(new EmptyRequest("/oauth2/applications/@me")).flatMap(res -> res.as(Application.class));
     }
 
     public static class Builder<T extends Response> extends DiscordClient.Builder<T, DiscordBotClient<T>> {
