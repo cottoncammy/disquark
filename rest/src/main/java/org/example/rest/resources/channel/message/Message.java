@@ -91,7 +91,7 @@ public interface Message {
     @JsonProperty("referenced_message")
     Optional<Message> referencedMessage();
 
-    Optional<Interaction> interaction();
+    Optional<Interaction<Interaction.Data>> interaction();
 
     Optional<Channel> thread();
 

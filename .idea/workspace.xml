@@ -4,17 +4,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a5029c32-3a5b-4a65-b173-2d497ddb2a2d" name="Changes" comment="Update immutables">
+    <list default="true" id="a5029c32-3a5b-4a65-b173-2d497ddb2a2d" name="Changes" comment="Initial work on webhooks &amp; interactions">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rest/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/rest/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/DiscordBotClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/DiscordBotClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/DiscordClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/DiscordClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/jackson/ImageDataSerializer.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/oauth2/DiscordOAuth2Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/oauth2/DiscordOAuth2Client.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/request/Endpoint.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/request/Endpoint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/request/HttpClientRequester.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/request/HttpClientRequester.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/guild/Guild.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/guild/Guild.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/AuthenticatedDiscordClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/AuthenticatedDiscordClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/interactions/DiscordInteractionsClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/interactions/DiscordInteractionsClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/interactions/InteractionSchemaBuilder.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/interactions/InteractionsCapable.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/interactions/InteractionsCapable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/interactions/InteractionsVerticle.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/interactions/InteractionsVerticle.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/channel/message/Message.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/channel/message/Message.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/interactions/CreateFollowupMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/interactions/CreateFollowupMessage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/interactions/EditFollowupMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/interactions/EditFollowupMessage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/interactions/FollowupMessageOptions.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/interactions/Interaction.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/interactions/Interaction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/interactions/OriginalInteractionResponseOptions.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,8 +30,8 @@
         <option value="package-info" />
         <option value="Enum" />
         <option value="AnnotationType" />
-        <option value="Class" />
         <option value="Interface" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -372,7 +375,14 @@
       <option name="project" value="LOCAL" />
       <updated>1672011299889</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="Initial work on webhooks &amp; interactions">
+      <created>1672044530971</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1672044530971</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -399,7 +409,8 @@
     <MESSAGE value="Finish adding API methods" />
     <MESSAGE value="Helper" />
     <MESSAGE value="Update immutables" />
-    <option name="LAST_COMMIT_MESSAGE" value="Update immutables" />
+    <MESSAGE value="Initial work on webhooks &amp; interactions" />
+    <option name="LAST_COMMIT_MESSAGE" value="Initial work on webhooks &amp; interactions" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

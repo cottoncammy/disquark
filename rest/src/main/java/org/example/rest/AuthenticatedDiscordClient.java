@@ -12,6 +12,9 @@ import org.example.rest.resources.Snowflake;
 import org.example.rest.resources.application.command.*;
 import org.example.rest.resources.channel.message.Message;
 import org.example.rest.resources.guild.Guild;
+import org.example.rest.resources.interactions.CreateFollowupMessage;
+import org.example.rest.resources.interactions.EditFollowupMessage;
+import org.example.rest.resources.interactions.EditOriginalInteractionResponse;
 import org.example.rest.resources.user.GetCurrentUserGuilds;
 import org.example.rest.resources.user.User;
 import org.example.rest.resources.webhook.*;
@@ -104,6 +107,41 @@ public abstract class AuthenticatedDiscordClient<T extends Response> extends Dis
     public Uni<GuildApplicationCommandPermissions> getApplicationCommandPermissions(Snowflake applicationId, Snowflake guildId, Snowflake commandId) {
         return requester.request(new EmptyRequest("/applications/{application.id}/guilds/{guild.id}/commands/{command.id}/permissions", variables("application.id", applicationId.getValue(), "guild.id", guildId.getValue(), "command.id", commandId.getValue())))
                 .flatMap(res -> res.as(GuildApplicationCommandPermissions.class));
+    }
+
+    @Override
+    public Uni<Message> getOriginalInteractionResponse(Snowflake applicationId, String interactionToken) {
+        return interactionsClient.getOriginalInteractionResponse(applicationId, interactionToken);
+    }
+
+    @Override
+    public Uni<Message> editOriginalInteractionResponse(EditOriginalInteractionResponse editOriginalInteractionResponse) {
+        return interactionsClient.editOriginalInteractionResponse(editOriginalInteractionResponse);
+    }
+
+    @Override
+    public Uni<Void> deleteOriginalInteractionResponse(Snowflake applicationId, String interactionToken) {
+        return interactionsClient.deleteOriginalInteractionResponse(applicationId, interactionToken);
+    }
+
+    @Override
+    public Uni<Message> createFollowupMessage(CreateFollowupMessage createFollowupMessage) {
+        return interactionsClient.createFollowupMessage(createFollowupMessage);
+    }
+
+    @Override
+    public Uni<Message> getFollowupMessage(Snowflake applicationId, String interactionToken, Snowflake messageId) {
+        return interactionsClient.getFollowupMessage(applicationId, interactionToken, messageId);
+    }
+
+    @Override
+    public Uni<Message> editFollowupMessage(EditFollowupMessage editFollowupMessage) {
+        return interactionsClient.editFollowupMessage(editFollowupMessage);
+    }
+
+    @Override
+    public Uni<Void> deleteFollowupMessage(Snowflake applicationId, String interactionToken, Snowflake messageId) {
+        return interactionsClient.deleteFollowupMessage(applicationId, interactionToken, messageId);
     }
 
     public Uni<User> getCurrentUser() {

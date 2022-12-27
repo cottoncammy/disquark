@@ -25,7 +25,7 @@ import java.util.Optional;
 @Enclosing
 @ImmutableJson
 @JsonDeserialize(as = ImmutableInteraction.class)
-public interface Interaction {
+public interface Interaction<T> {
 
     static Builder builder() {
         return new Builder();
@@ -38,7 +38,7 @@ public interface Interaction {
 
     Type type();
 
-    Optional<Data> data();
+    Optional<T> data();
 
     @JsonProperty("guild_id")
     Optional<Snowflake> guildId();
@@ -123,6 +123,74 @@ public interface Interaction {
     }
 
     @ImmutableJson
+    @JsonDeserialize(as = ImmutableInteraction.ApplicationCommandData.class)
+    interface ApplicationCommandData {
+
+        static Builder builder() {
+            return new Builder();
+        }
+
+        Snowflake id();
+
+        String name();
+
+        ApplicationCommand.Type type();
+
+        Optional<ResolvedData> resolved();
+
+        Optional<List<ApplicationCommand.InteractionDataOption>> options();
+
+        @JsonProperty("guild_id")
+        Optional<Snowflake> guildId();
+
+        @JsonProperty("target_id")
+        Optional<Snowflake> targetId();
+
+        class Builder extends ImmutableInteraction.ApplicationCommandData.Builder {
+            protected Builder() {}
+        }
+    }
+
+    @ImmutableJson
+    @JsonDeserialize(as = ImmutableInteraction.MessageComponentData.class)
+    interface MessageComponentData {
+
+        static Builder builder() {
+            return new Builder();
+        }
+
+        @JsonProperty("custom_id")
+        String customId();
+
+        @JsonProperty("component_type")
+        Component.Type componentType();
+
+        List<String> values();
+
+        class Builder extends ImmutableInteraction.MessageComponentData.Builder {
+            protected Builder() {}
+        }
+    }
+
+    @ImmutableJson
+    @JsonDeserialize(as = ImmutableInteraction.ModalSubmitData.class)
+    interface ModalSubmitData {
+
+        static Builder builder() {
+            return new Builder();
+        }
+
+        @JsonProperty("custom_id")
+        String customId();
+
+        List<Component> components();
+
+        class Builder extends ImmutableInteraction.ModalSubmitData.Builder {
+            protected Builder() {}
+        }
+    }
+
+    @ImmutableJson
     @JsonDeserialize(as = ImmutableInteraction.ResolvedData.class)
     interface ResolvedData {
 
@@ -153,6 +221,10 @@ public interface Interaction {
 
         static Builder builder() {
             return new Builder();
+        }
+
+        static Response create(CallbackType type) {
+            return ImmutableInteraction.Response.create(type);
         }
 
         CallbackType type();

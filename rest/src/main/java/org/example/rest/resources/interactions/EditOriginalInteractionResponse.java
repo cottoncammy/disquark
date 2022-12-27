@@ -15,7 +15,6 @@ import org.example.rest.resources.channel.message.AllowedMentions;
 import org.example.rest.resources.channel.message.Message;
 import org.example.rest.resources.interactions.components.Component;
 
-import java.util.EnumSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,7 +22,7 @@ import static org.example.rest.util.Variables.variables;
 
 @ImmutableJson
 @JsonInclude(Include.NON_ABSENT)
-public interface CreateFollowupMessage extends MultipartRequest, Requestable {
+public interface EditOriginalInteractionResponse extends MultipartRequest, Requestable {
 
     static Builder builder() {
         return new Builder();
@@ -37,8 +36,6 @@ public interface CreateFollowupMessage extends MultipartRequest, Requestable {
 
     Optional<String> content();
 
-    Optional<Boolean> tts();
-
     Optional<List<Message.Embed>> embeds();
 
     @JsonProperty("allowed_mentions")
@@ -48,22 +45,17 @@ public interface CreateFollowupMessage extends MultipartRequest, Requestable {
 
     Optional<List<Message.Attachment>> attachments();
 
-    Optional<EnumSet<Message.Flag>> flags();
-
-    @JsonProperty("thread_name")
-    Optional<String> threadName();
-
     @Override
     default Request asRequest() {
         return Request.builder()
-                .endpoint(Endpoint.create(HttpMethod.POST, "/webhooks/{application.id}/{interaction.token}"))
+                .endpoint(Endpoint.create(HttpMethod.PATCH, "/webhooks/{application.id}/{interaction.token}/messages/@original"))
                 .variables(variables("application.id", applicationId().getValue(), "interaction.token", interactionToken()))
                 .body(this)
                 .files(files())
                 .build();
     }
 
-    class Builder extends ImmutableCreateFollowupMessage.Builder {
+    class Builder extends ImmutableEditOriginalInteractionResponse.Builder {
         protected Builder() {}
     }
 }
