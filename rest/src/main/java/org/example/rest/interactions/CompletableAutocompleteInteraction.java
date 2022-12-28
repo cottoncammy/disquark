@@ -2,15 +2,25 @@ package org.example.rest.interactions;
 
 import io.smallrye.mutiny.Uni;
 import io.vertx.mutiny.core.http.HttpServerResponse;
+import org.example.rest.resources.application.command.ApplicationCommand;
 import org.example.rest.resources.interactions.Interaction;
+
+import java.util.List;
 
 public class CompletableAutocompleteInteraction extends CompletableInteraction<Interaction.ApplicationCommandData> {
 
-    CompletableAutocompleteInteraction(Interaction<Interaction.ApplicationCommandData> interaction, HttpServerResponse response) {
-        super(interaction, response);
+    CompletableAutocompleteInteraction(
+            Interaction<Interaction.ApplicationCommandData> interaction,
+            HttpServerResponse response,
+            DiscordInteractionsClient<?> interactionsClient) {
+        super(interaction, response, interactionsClient);
     }
 
-    public Uni<RespondedInteraction<Interaction.ApplicationCommandData>> suggestChoices() {
-
+    public Uni<RespondedInteraction<Interaction.ApplicationCommandData>> suggestChoices(List<ApplicationCommand.Option.Choice> choices) {
+        Interaction.Response.builder()
+                .type(Interaction.CallbackType.APPLICATION_COMMAND_AUTOCOMPLETE_RESULT)
+                .data(Interaction.CallbackData.builder().choices(choices).build())
+                .build();
+        return response.end();
     }
 }

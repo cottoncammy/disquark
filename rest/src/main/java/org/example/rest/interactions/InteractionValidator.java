@@ -1,7 +1,11 @@
 package org.example.rest.interactions;
 
-@FunctionalInterface
-public interface InteractionValidator {
+public abstract class InteractionValidator {
+    protected final String verifyKey;
 
-    boolean validate(String timestamp, String body, String signature);
+    protected InteractionValidator(String verifyKey) {
+        this.verifyKey = verifyKey;
+    }
+
+    public abstract boolean validate(String timestamp, String body, String signature);
 }

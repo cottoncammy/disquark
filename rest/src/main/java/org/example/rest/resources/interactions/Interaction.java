@@ -217,19 +217,20 @@ public interface Interaction<T> {
 
     @ImmutableJson
     @JsonDeserialize(as = ImmutableInteraction.Response.class)
-    interface Response {
+    interface Response<T> {
 
         static Builder builder() {
             return new Builder();
         }
 
-        static Response create(CallbackType type) {
+        // TODO
+        static <T> Response<T> create(CallbackType type) {
             return ImmutableInteraction.Response.create(type);
         }
 
         CallbackType type();
 
-        Optional<CallbackData> data();
+        Optional<T> data();
 
         class Builder extends ImmutableInteraction.Response.Builder {
             protected Builder() {}
@@ -288,6 +289,32 @@ public interface Interaction<T> {
         Optional<String> title();
 
         class Builder extends ImmutableInteraction.CallbackData.Builder {
+            protected Builder() {}
+        }
+    }
+
+    @ImmutableJson
+    @JsonDeserialize(as = ImmutableInteraction.CallbackData.class)
+    interface MessageCallbackData {
+
+        static Builder builder() {
+            return new Builder();
+        }
+
+        Optional<Boolean> tts();
+
+        Optional<String> content();
+
+        Optional<List<Message.Embed>> embeds();
+
+        @JsonProperty("allowed_mentions")
+        Optional<AllowedMentions> allowedMentions();
+
+        Optional<EnumSet<Message.Flag>> flags();
+
+        Optional<List<Component>> components();
+
+        class Builder extends ImmutableInteraction.MessageCallbackData.Builder {
             protected Builder() {}
         }
     }

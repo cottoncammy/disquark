@@ -45,6 +45,10 @@
             <artifactId>smallrye-mutiny-vertx-web-client</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcprov-jdk15on</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.example</groupId>
             <artifactId>discord-immutables</artifactId>
             <version>${project.version}</version>

@@ -6,12 +6,15 @@ import org.example.rest.resources.interactions.Interaction;
 
 public class CompletablePingInteraction extends CompletableInteraction<Void> {
 
-    CompletablePingInteraction(Interaction<Void> interaction, HttpServerResponse response) {
-        super(interaction, response);
+    CompletablePingInteraction(
+            Interaction<Void> interaction,
+            HttpServerResponse response,
+            DiscordInteractionsClient<?> interactionsClient) {
+        super(interaction, response, interactionsClient);
     }
 
-    public Uni<Void> pong() {
-        // TODO
+    Uni<Void> pong() {
+        Interaction.Response.create(Interaction.CallbackType.PONG);
         return response.end();
     }
 }

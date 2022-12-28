@@ -6,8 +6,12 @@ import io.vertx.core.http.HttpMethod;
 import io.vertx.mutiny.core.Vertx;
 import org.example.rest.interactions.DiscordInteractionsClient;
 import org.example.rest.interactions.InteractionsCapable;
+import org.example.rest.request.AccessTokenSource;
 import org.example.rest.request.EmptyRequest;
 import org.example.rest.request.Requester;
+import org.example.rest.request.RequesterFactory;
+import org.example.rest.request.ratelimit.GlobalRateLimiter;
+import org.example.rest.request.ratelimit.RateLimitStrategy;
 import org.example.rest.resources.Snowflake;
 import org.example.rest.resources.application.command.*;
 import org.example.rest.resources.channel.message.Message;
@@ -22,6 +26,7 @@ import org.example.rest.response.Response;
 import org.example.rest.webhook.DiscordWebhookClient;
 import org.example.rest.webhook.WebhooksCapable;
 
+import static java.util.Objects.requireNonNull;
 import static org.example.rest.util.Variables.variables;
 
 public abstract class AuthenticatedDiscordClient<T extends Response> extends DiscordClient<T> implements InteractionsCapable, WebhooksCapable {
@@ -195,5 +200,36 @@ public abstract class AuthenticatedDiscordClient<T extends Response> extends Dis
     @Override
     public Uni<Void> deleteWebhookMessage(WebhookMessageOptions options) {
         return webhookClient.deleteWebhookMessage(options);
+    }
+
+    public static abstract class Builder<R extends Response, T extends AuthenticatedDiscordClient<R>> extends DiscordClient.Builder<R, T> {
+        protected DiscordInteractionsClient.Options interactionsClientOptions;
+
+        protected Builder(Vertx vertx, AccessTokenSource tokenSource) {
+            super(vertx, tokenSource);
+        }
+
+        @Override
+        public Builder<R, T> globalRateLimiter(GlobalRateLimiter globalRateLimiter) {
+            super.globalRateLimiter(globalRateLimiter);
+            return this;
+        }
+
+        @Override
+        public Builder<R, T> requesterFactory(RequesterFactory<R> requesterFactory) {
+            super.requesterFactory(requesterFactory);
+            return this;
+        }
+
+        @Override
+        public Builder<R, T> rateLimitStrategy(RateLimitStrategy<R> rateLimitStrategy) {
+            super.rateLimitStrategy(rateLimitStrategy);
+            return this;
+        }
+
+        public Builder<R, T> interactionsClientOptions(DiscordInteractionsClient.Options interactionsClientOptions) {
+            this.interactionsClientOptions = requireNonNull(interactionsClientOptions);
+            return this;
+        }
     }
 }

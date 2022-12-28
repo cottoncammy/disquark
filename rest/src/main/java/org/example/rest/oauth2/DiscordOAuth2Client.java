@@ -66,7 +66,7 @@ public class DiscordOAuth2Client<T extends Response> extends AuthenticatedDiscor
         return requester.request(new EmptyRequest("/oauth2/@me")).flatMap(res -> res.as(Authorization.class));
     }
 
-    public static class Builder<T extends Response> extends DiscordClient.Builder<T, DiscordOAuth2Client<T>> {
+    public static class Builder<T extends Response> extends AuthenticatedDiscordClient.Builder<T, DiscordOAuth2Client<T>> {
 
         protected Builder(Vertx vertx, AccessTokenSource tokenSource) {
             super(vertx, tokenSource);

@@ -58,6 +58,7 @@ public class HttpClientRequester implements Requester<HttpResponse> {
     public Uni<HttpResponse> request(Request request) {
         Endpoint endpoint = request.endpoint();
 
+        // TODO handle webhook and interactions clients, don't need access token && need separate rate limiter
         return tokenSource.getToken()
                 .flatMap(token -> {
                     RequestOptions options = new RequestOptions()

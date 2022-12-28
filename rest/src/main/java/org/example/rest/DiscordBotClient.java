@@ -731,7 +731,7 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
         return requester.request(new EmptyRequest("/oauth2/applications/@me")).flatMap(res -> res.as(Application.class));
     }
 
-    public static class Builder<T extends Response> extends DiscordClient.Builder<T, DiscordBotClient<T>> {
+    public static class Builder<T extends Response> extends AuthenticatedDiscordClient.Builder<T, DiscordBotClient<T>> {
 
         protected Builder(Vertx vertx, AccessTokenSource tokenSource) {
             super(vertx, tokenSource);

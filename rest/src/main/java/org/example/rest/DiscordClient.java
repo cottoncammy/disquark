@@ -20,10 +20,10 @@ public abstract class DiscordClient<T extends Response> {
     }
 
     public abstract static class Builder<R extends Response, T extends DiscordClient<R>> {
-        protected Vertx vertx;
-        protected RequesterFactory<R> requesterFactory;
-        protected AccessTokenSource tokenSource;
+        protected final Vertx vertx;
+        protected final AccessTokenSource tokenSource;
         protected GlobalRateLimiter globalRateLimiter;
+        protected RequesterFactory<R> requesterFactory;
         protected RateLimitStrategy<R> rateLimitStrategy;
 
         protected Builder(Vertx vertx, AccessTokenSource tokenSource) {
@@ -39,11 +39,6 @@ public abstract class DiscordClient<T extends Response> {
             return tokenSource;
         }
 
-        public Builder<R, T> requesterFactory(RequesterFactory<R> requesterFactory) {
-            this.requesterFactory = requireNonNull(requesterFactory);
-            return this;
-        }
-
         public Builder<R, T> globalRateLimiter(GlobalRateLimiter globalRateLimiter) {
             this.globalRateLimiter = requireNonNull(globalRateLimiter);
             return this;
@@ -51,6 +46,11 @@ public abstract class DiscordClient<T extends Response> {
 
         public GlobalRateLimiter getGlobalRateLimiter() {
             return globalRateLimiter;
+        }
+
+        public Builder<R, T> requesterFactory(RequesterFactory<R> requesterFactory) {
+            this.requesterFactory = requireNonNull(requesterFactory);
+            return this;
         }
 
         public Builder<R, T> rateLimitStrategy(RateLimitStrategy<R> rateLimitStrategy) {
