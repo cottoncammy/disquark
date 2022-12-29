@@ -16,16 +16,13 @@ public class CompletableModalInteraction extends CompletableInteraction<Interact
         super(interaction, response, interactionsClient);
     }
 
+    @Override
     public Uni<RespondedInteraction<Interaction.ModalSubmitData>> respond(Interaction.MessageCallbackData data) {
-        Interaction.Response.builder().type(Interaction.CallbackType.CHANNEL_MESSAGE_WITH_SOURCE).data(data).build();
-        return response.end();
+        return super.respond(data);
     }
 
+    @Override
     public Uni<RespondedInteraction<Interaction.ModalSubmitData>> deferResponse(boolean ephemeral) {
-        Interaction.Response.Builder builder = Interaction.Response.builder().type(Interaction.CallbackType.DEFERRED_CHANNEL_MESSAGE_WITH_SOURCE);
-        if (ephemeral) {
-            builder.data(Interaction.CallbackData.builder().flags(EnumSet.of(Message.Flag.EPHEMERAL)).build());
-        }
-        return response.end();
+        return super.deferResponse(ephemeral);
     }
 }

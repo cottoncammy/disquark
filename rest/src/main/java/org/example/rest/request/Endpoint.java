@@ -11,14 +11,20 @@ import static java.util.Objects.requireNonNull;
 public class Endpoint {
     private final HttpMethod httpMethod;
     private final UriTemplate uriTemplate;
+    private final boolean requiresAuthentication;
 
-    public static Endpoint create(HttpMethod httpMethod, String uri) {
-        return new Endpoint(requireNonNull(httpMethod), UriTemplate.of(requireNonNull(uri)));
+    public static Endpoint create(HttpMethod httpMethod, String uri, boolean requiresAuthentication) {
+        return new Endpoint(requireNonNull(httpMethod), UriTemplate.of(requireNonNull(uri)), requiresAuthentication);
     }
 
-    private Endpoint(HttpMethod httpMethod, UriTemplate uriTemplate) {
+    public static Endpoint create(HttpMethod httpMethod, String uri) {
+        return create(httpMethod, uri, true);
+    }
+
+    private Endpoint(HttpMethod httpMethod, UriTemplate uriTemplate, boolean requiresAuthentication) {
         this.httpMethod = httpMethod;
         this.uriTemplate = uriTemplate;
+        this.requiresAuthentication = requiresAuthentication;
     }
 
     public HttpMethod getHttpMethod() {
@@ -27,6 +33,10 @@ public class Endpoint {
 
     public UriTemplate getUriTemplate() {
         return uriTemplate;
+    }
+
+    public boolean isAuthenticationRequired() {
+        return requiresAuthentication;
     }
 
     public Optional<String> getTopLevelResourceValue(Variables variables) {

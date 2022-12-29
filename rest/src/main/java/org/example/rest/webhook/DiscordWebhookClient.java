@@ -19,8 +19,8 @@ import static org.example.rest.util.Variables.variables;
 
 public class DiscordWebhookClient<T extends Response> extends DiscordClient<T> implements WebhooksCapable {
 
-    public static <T extends Response> DiscordWebhookClient.Builder<T> builder(Vertx vertx) {
-        return new DiscordWebhookClient.Builder<>(requireNonNull(vertx), null);
+    public static <T extends Response> Builder<T> builder(Vertx vertx) {
+        return new Builder<>(requireNonNull(vertx), null);
     }
 
     @SuppressWarnings("unchecked")
@@ -99,7 +99,7 @@ public class DiscordWebhookClient<T extends Response> extends DiscordClient<T> i
 
         @Override
         public DiscordWebhookClient<T> build() {
-            return null;
+            return new DiscordWebhookClient<>(vertx, getRequesterFactory().apply(this));
         }
     }
 }

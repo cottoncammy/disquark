@@ -53,7 +53,7 @@ public interface EditFollowupMessage extends MultipartRequest, Requestable {
     @Override
     default Request asRequest() {
         return Request.builder()
-                .endpoint(Endpoint.create(HttpMethod.PATCH, "/webhooks/{application.id}/{interaction.token}/messages/{message.id}{?thread_id}"))
+                .endpoint(Endpoint.create(HttpMethod.PATCH, "/webhooks/{application.id}/{interaction.token}/messages/{message.id}{?thread_id}", false))
                 .variables(variables("application.id", applicationId().getValue(), "interaction.token", interactionToken(), "message.id", messageId().getValue()))
                 .body(this)
                 .files(files())

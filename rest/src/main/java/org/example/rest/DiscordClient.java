@@ -53,6 +53,11 @@ public abstract class DiscordClient<T extends Response> {
             return this;
         }
 
+        @SuppressWarnings("unchecked")
+        protected RequesterFactory<R> getRequesterFactory() {
+            return requesterFactory == null ? (RequesterFactory<R>) RequesterFactory.DEFAULT_HTTP_REQUESTER : requesterFactory;
+        }
+
         public Builder<R, T> rateLimitStrategy(RateLimitStrategy<R> rateLimitStrategy) {
             this.rateLimitStrategy = requireNonNull(rateLimitStrategy);
             return this;

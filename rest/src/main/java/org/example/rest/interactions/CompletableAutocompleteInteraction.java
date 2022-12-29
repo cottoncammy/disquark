@@ -17,10 +17,11 @@ public class CompletableAutocompleteInteraction extends CompletableInteraction<I
     }
 
     public Uni<RespondedInteraction<Interaction.ApplicationCommandData>> suggestChoices(List<ApplicationCommand.Option.Choice> choices) {
-        Interaction.Response.builder()
+        Interaction.Response<?> interactionResponse = Interaction.Response.builder()
                 .type(Interaction.CallbackType.APPLICATION_COMMAND_AUTOCOMPLETE_RESULT)
                 .data(Interaction.CallbackData.builder().choices(choices).build())
                 .build();
-        return response.end();
+
+        return response.end(serialize(interactionResponse)).replaceWith(new RespondedInteraction<>(interactionsClient, interaction));
     }
 }

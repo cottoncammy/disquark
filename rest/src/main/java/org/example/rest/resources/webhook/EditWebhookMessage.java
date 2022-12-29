@@ -59,7 +59,7 @@ public interface EditWebhookMessage extends MultipartRequest, Requestable {
         }
 
         return Request.builder()
-                .endpoint(Endpoint.create(HttpMethod.PATCH, "/webhooks/{webhook.id}/{webhook.token}/messages/{message.id}{?thread_id}"))
+                .endpoint(Endpoint.create(HttpMethod.PATCH, "/webhooks/{webhook.id}/{webhook.token}/messages/{message.id}{?thread_id}", false))
                 .variables(Variables.variables(json))
                 .body(this)
                 .files(files())

@@ -6,13 +6,11 @@ import io.vertx.core.http.HttpMethod;
 import io.vertx.mutiny.core.Vertx;
 import io.vertx.mutiny.core.http.HttpServer;
 import io.vertx.mutiny.ext.web.Router;
+import org.example.rest.AuthenticatedDiscordClient;
 import org.example.rest.DiscordClient;
 import org.example.rest.request.AccessTokenSource;
 import org.example.rest.request.EmptyRequest;
 import org.example.rest.request.Requester;
-import org.example.rest.request.RequesterFactory;
-import org.example.rest.request.codec.Codec;
-import org.example.rest.request.codec.JsonCodec;
 import org.example.rest.resources.Snowflake;
 import org.example.rest.resources.channel.message.Message;
 import org.example.rest.resources.interactions.CreateFollowupMessage;
@@ -26,10 +24,15 @@ import static java.util.Objects.requireNonNull;
 import static org.example.rest.util.Variables.variables;
 
 public class DiscordInteractionsClient<T extends Response> extends DiscordClient<T> implements InteractionsCapable {
+    private final Options options;
     private final InteractionsVerticle verticle;
 
-    public static <T extends Response> DiscordInteractionsClient.Builder<T> builder(Vertx vertx, String verifyKey) {
-        return new DiscordInteractionsClient.Builder<>(requireNonNull(vertx), null, requireNonNull(verifyKey));
+    protected void create(AuthenticatedDiscordClient<?> discordClient) {
+
+    }
+
+    public static <T extends Response> Builder<T> builder(Vertx vertx, String verifyKey) {
+        return new Builder<>(requireNonNull(vertx), null, requireNonNull(verifyKey));
     }
 
     @SuppressWarnings("unchecked")
@@ -39,9 +42,14 @@ public class DiscordInteractionsClient<T extends Response> extends DiscordClient
 
     private DiscordInteractionsClient(Vertx vertx, Requester<T> requester, Options options) {
         super(vertx, requester);
+        this.options = options;
         this.verticle = new InteractionsVerticle();
 
         vertx.deployVerticleAndAwait(verticle);
+    }
+
+    Options getOptions() {
+        return options;
     }
 
     public <T> Multi<CompletableInteraction<T>> on() {
@@ -90,10 +98,10 @@ public class DiscordInteractionsClient<T extends Response> extends DiscordClient
     public static class Builder<T extends Response> extends DiscordClient.Builder<T, DiscordInteractionsClient<T>> {
         protected final String verifyKey;
         protected Router router;
-        protected Codec jsonCodec;
+        protected ServerCodec jsonCodec;
         protected HttpServer httpServer;
         protected String interactionsUrl;
-        protected Function<String, InteractionValidator> validatorFactory;
+        protected Function<Uni<String>, InteractionValidator> validatorFactory;
 
         protected Builder(Vertx vertx, AccessTokenSource tokenSource, String verifyKey) {
             super(vertx, tokenSource);
@@ -105,7 +113,7 @@ public class DiscordInteractionsClient<T extends Response> extends DiscordClient
             return this;
         }
 
-        public Builder<T> jsonCodec(Codec jsonCodec) {
+        public Builder<T> jsonCodec(ServerCodec jsonCodec) {
             this.jsonCodec = requireNonNull(jsonCodec);
             return this;
         }
@@ -120,23 +128,68 @@ public class DiscordInteractionsClient<T extends Response> extends DiscordClient
             return this;
         }
 
-        public Builder<T> validatorFactory(Function<String, InteractionValidator> validatorFactory) {
+        public Builder<T> validatorFactory(Function<Uni<String>, InteractionValidator> validatorFactory) {
             this.validatorFactory = requireNonNull(validatorFactory);
             return this;
         }
 
         @Override
-        @SuppressWarnings("unchecked")
         public DiscordInteractionsClient<T> build() {
-            if (requesterFactory == null) {
-                requesterFactory = (RequesterFactory<T>) RequesterFactory.DEFAULT_HTTP_REQUESTER;
-            }
             // TODO
-            return new DiscordInteractionsClient<>(vertx, requesterFactory.apply(this), null);
+            return new DiscordInteractionsClient<>(vertx, getRequesterFactory().apply(this), null);
         }
     }
 
     public static class Options {
+        protected Router router;
+        protected ServerCodec jsonCodec;
+        protected HttpServer httpServer;
+        protected String interactionsUrl;
+        protected Function<Uni<String>, InteractionValidator> validatorFactory;
 
+        public Options router(Router router) {
+            this.router = requireNonNull(router);
+            return this;
+        }
+
+        Router getRouter() {
+            return router;
+        }
+
+        public Options jsonCodec(ServerCodec jsonCodec) {
+            this.jsonCodec = requireNonNull(jsonCodec);
+            return this;
+        }
+
+        ServerCodec getJsonCodec() {
+            return jsonCodec;
+        }
+
+        public Options httpServer(HttpServer httpServer) {
+            this.httpServer = requireNonNull(httpServer);
+            return this;
+        }
+
+        HttpServer getHttpServer() {
+            return httpServer;
+        }
+
+        public Options interactionsUrl(String interactionsUrl) {
+            this.interactionsUrl = requireNonNull(interactionsUrl);
+            return this;
+        }
+
+        String getInteractionsUrl() {
+            return interactionsUrl;
+        }
+
+        public Options validatorFactory(Function<Uni<String>, InteractionValidator> validatorFactory) {
+            this.validatorFactory = requireNonNull(validatorFactory);
+            return this;
+        }
+
+        Function<Uni<String>, InteractionValidator> getValidatorFactory() {
+            return validatorFactory;
+        }
     }
 }

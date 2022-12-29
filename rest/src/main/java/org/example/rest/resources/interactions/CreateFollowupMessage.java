@@ -56,7 +56,7 @@ public interface CreateFollowupMessage extends MultipartRequest, Requestable {
     @Override
     default Request asRequest() {
         return Request.builder()
-                .endpoint(Endpoint.create(HttpMethod.POST, "/webhooks/{application.id}/{interaction.token}"))
+                .endpoint(Endpoint.create(HttpMethod.POST, "/webhooks/{application.id}/{interaction.token}", false))
                 .variables(variables("application.id", applicationId().getValue(), "interaction.token", interactionToken()))
                 .body(this)
                 .files(files())

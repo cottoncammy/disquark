@@ -76,7 +76,7 @@ public interface ExecuteWebhook extends MultipartRequest, Requestable {
         }
 
         return Request.builder()
-                .endpoint(Endpoint.create(HttpMethod.POST, "/webhooks/{webhook.id}/{webhook.token}{?wait,thread_id}"))
+                .endpoint(Endpoint.create(HttpMethod.POST, "/webhooks/{webhook.id}/{webhook.token}{?wait,thread_id}", false))
                 .variables(Variables.variables(json))
                 .body(this)
                 .files(files())

@@ -14,7 +14,6 @@ public class CompletablePingInteraction extends CompletableInteraction<Void> {
     }
 
     Uni<Void> pong() {
-        Interaction.Response.create(Interaction.CallbackType.PONG);
-        return response.end();
+        return response.end(serialize(Interaction.Response.create(Interaction.CallbackType.PONG)));
     }
 }

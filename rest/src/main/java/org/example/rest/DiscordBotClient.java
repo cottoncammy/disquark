@@ -86,7 +86,7 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
         return create(vertx, BotToken.create(token));
     }
 
-    private DiscordBotClient(Vertx vertx, Requester<T> requester) {
+    private DiscordBotClient(Vertx vertx, Requester<T> requester, DiscordInteractionsClient.Options interactionsClientOptions) {
         super(vertx, requester, DiscordInteractionsClient.create(vertx), DiscordWebhookClient.create(vertx));
     }
 
@@ -738,12 +738,8 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
         }
 
         @Override
-        @SuppressWarnings("unchecked")
         public DiscordBotClient<T> build() {
-            if (requesterFactory == null) {
-                requesterFactory = (RequesterFactory<T>) RequesterFactory.DEFAULT_HTTP_REQUESTER;
-            }
-            return new DiscordBotClient<>(vertx, requesterFactory.apply(this));
+            return new DiscordBotClient<>(vertx, getRequesterFactory().apply(this), getInteractionsClientOptions());
         }
     }
 }

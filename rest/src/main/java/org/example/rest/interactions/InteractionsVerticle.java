@@ -5,18 +5,20 @@ import io.smallrye.mutiny.Uni;
 import io.smallrye.mutiny.operators.multi.processors.BroadcastProcessor;
 import io.smallrye.mutiny.vertx.core.AbstractVerticle;
 import io.vertx.core.http.HttpMethod;
+import io.vertx.mutiny.core.buffer.Buffer;
 import io.vertx.mutiny.core.http.HttpServer;
 import io.vertx.mutiny.core.http.HttpServerRequest;
+import io.vertx.mutiny.ext.web.Route;
 import io.vertx.mutiny.ext.web.Router;
 import io.vertx.mutiny.ext.web.RoutingContext;
-import org.example.rest.request.codec.Codec;
+import io.vertx.mutiny.ext.web.handler.ResponseContentTypeHandler;
 import org.example.rest.resources.interactions.Interaction;
 
 import java.util.function.Consumer;
 
 class InteractionsVerticle extends AbstractVerticle {
     private final Router router;
-    private final Codec jsonCodec;
+    private final ServerCodec jsonCodec;
     private final HttpServer httpServer;
     private final String interactionsUrl;
     private final InteractionValidator interactionValidator;
@@ -25,15 +27,15 @@ class InteractionsVerticle extends AbstractVerticle {
 
     public InteractionsVerticle(
             Router router,
-            Codec jsonCodec,
-            String interactionsUrl,
+            ServerCodec jsonCodec,
             HttpServer httpServer,
+            String interactionsUrl,
             InteractionValidator interactionValidator,
             DiscordInteractionsClient<?> interactionsClient) {
         this.router = router;
         this.jsonCodec = jsonCodec;
-        this.interactionsUrl = interactionsUrl;
         this.httpServer = httpServer;
+        this.interactionsUrl = interactionsUrl;
         this.interactionValidator = interactionValidator;
         this.interactionsClient = interactionsClient;
     }
@@ -49,7 +51,7 @@ class InteractionsVerticle extends AbstractVerticle {
 
                 request.body()
                         .call(body -> {
-                            if (!interactionValidator.validate(timestamp, body.toString(), signature)) {
+                            if (!interactionValidator.validate(Buffer.buffer(timestamp), body, Buffer.buffer(signature))) {
                                 return Uni.createFrom().failure(UnauthorizedException::new);
                             }
                             return Uni.createFrom().voidItem();
@@ -76,7 +78,13 @@ class InteractionsVerticle extends AbstractVerticle {
 
     @Override
     public Uni<Void> asyncStart() {
-        return Uni.createFrom().item(router.route(HttpMethod.POST, interactionsUrl).handler(requestHandler()))
+        Route route = router.route(HttpMethod.POST, interactionsUrl)
+                .consumes("application/json")
+                .produces("application/json")
+                .handler(requestHandler())
+                .handler(ResponseContentTypeHandler.create());
+
+        return Uni.createFrom().item(route)
                 .replaceWith(httpServer.requestHandler(router))
                 .call(() -> httpServer.listen())
                 .replaceWithVoid();

@@ -36,7 +36,7 @@ public class DiscordOAuth2Client<T extends Response> extends AuthenticatedDiscor
         return create(requireNonNull(tokenSource).getVertx(), tokenSource);
     }
 
-    private DiscordOAuth2Client(Vertx vertx, Requester<T> requester) {
+    private DiscordOAuth2Client(Vertx vertx, Requester<T> requester, DiscordInteractionsClient.Options interactionsClientOptions) {
         // TODO reuse requester between clients, but new ratelimiter (shared) between interactions + webhook clients. this will be complex (bucketratelimitrequester can't be reused)
         super(vertx, requester, DiscordInteractionsClient.create(vertx), DiscordWebhookClient.create(vertx));
     }
@@ -73,12 +73,8 @@ public class DiscordOAuth2Client<T extends Response> extends AuthenticatedDiscor
         }
 
         @Override
-        @SuppressWarnings("unchecked")
         public DiscordOAuth2Client<T> build() {
-            if (requesterFactory == null) {
-                requesterFactory = (RequesterFactory<T>) RequesterFactory.DEFAULT_HTTP_REQUESTER;
-            }
-            return new DiscordOAuth2Client<>(vertx, requesterFactory.apply(this));
+            return new DiscordOAuth2Client<>(vertx, getRequesterFactory().apply(this), getInteractionsClientOptions());
         }
     }
 }

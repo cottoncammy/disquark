@@ -1,5 +1,6 @@
 package org.example.rest.interactions;
 
+import io.vertx.mutiny.core.buffer.Buffer;
 import org.bouncycastle.math.ec.rfc8032.Ed25519;
 
 public class BouncyCastleInteractionValidator extends InteractionValidator {
@@ -9,7 +10,11 @@ public class BouncyCastleInteractionValidator extends InteractionValidator {
     }
 
     @Override
-    public boolean validate(String timestamp, String body, String signature) {
-        return Ed25519.verify();
+    public boolean validate(Buffer timestamp, Buffer body, Buffer signature) {
+        byte[] message = timestamp.appendBuffer(body).getBytes();
+        return Ed25519.verify(
+                signature.getBytes(), 0,
+                verifyKey.getBytes(), 0,
+                message, 0, message.length);
     }
 }

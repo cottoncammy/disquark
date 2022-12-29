@@ -231,5 +231,10 @@ public abstract class AuthenticatedDiscordClient<T extends Response> extends Dis
             this.interactionsClientOptions = requireNonNull(interactionsClientOptions);
             return this;
         }
+
+        // TODO
+        protected DiscordInteractionsClient.Options getInteractionsClientOptions() {
+            return (interactionsClientOptions == null) ? new DiscordInteractionsClient.Options() : interactionsClientOptions;
+        }
     }
 }

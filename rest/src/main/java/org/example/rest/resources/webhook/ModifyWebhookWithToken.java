@@ -35,7 +35,7 @@ public interface ModifyWebhookWithToken extends Requestable {
     @Override
     default Request asRequest() {
         return Request.builder()
-                .endpoint(Endpoint.create(HttpMethod.PATCH, "/webhooks/{webhook.id}/{webhook.token}"))
+                .endpoint(Endpoint.create(HttpMethod.PATCH, "/webhooks/{webhook.id}/{webhook.token}", false))
                 .variables(variables("webhook.id", webhookId().getValue(), "webhook.token", webhookToken()))
                 .body(this)
                 .build();

@@ -27,7 +27,7 @@ public class RespondedInteraction<T> {
 
     // TODO
     public Uni<Message> editOriginalInteractionResponse(EditOriginalInteractionResponse editOriginalInteractionResponse) {
-        return interactionsClient.editOriginalInteractionResponse();
+        return interactionsClient.editOriginalInteractionResponse(null);
     }
 
     public Uni<Void> deleteOriginalInteractionResponse() {
@@ -36,7 +36,7 @@ public class RespondedInteraction<T> {
 
     // TODO
     public Uni<Message> createFollowupMessage(CreateFollowupMessage createFollowupMessage) {
-        return interactionsClient.createFollowupMessage();
+        return interactionsClient.createFollowupMessage(null);
     }
 
     public Uni<Message> getFollowupMessage(Snowflake messageId) {
@@ -45,7 +45,7 @@ public class RespondedInteraction<T> {
 
     // TODO
     public Uni<Message> editFollowupMessage(EditFollowupMessage editFollowupMessage) {
-        return interactionsClient.editFollowupMessage();
+        return interactionsClient.editFollowupMessage(null);
     }
 
     public Uni<Void> deleteFollowupMessage(Snowflake messageId) {
