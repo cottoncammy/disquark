@@ -95,7 +95,7 @@ class InteractionsVerticle extends AbstractVerticle {
         return httpServer.close();
     }
 
-    public <T> Multi<CompletableInteraction<T>> on() {
+    public <D, T extends CompletableInteraction<D>> Multi<T> on() {
         return processor.flatMap(context -> {
             Interaction<Interaction.Data> interaction = context.get("interaction");
             // validate the interaction with the schema

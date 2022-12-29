@@ -27,12 +27,8 @@ public class DiscordInteractionsClient<T extends Response> extends DiscordClient
     private final Options options;
     private final InteractionsVerticle verticle;
 
-    protected void create(AuthenticatedDiscordClient<?> discordClient) {
-
-    }
-
     public static <T extends Response> Builder<T> builder(Vertx vertx, String verifyKey) {
-        return new Builder<>(requireNonNull(vertx), null, requireNonNull(verifyKey));
+        return new Builder<>(requireNonNull(vertx), requireNonNull(verifyKey));
     }
 
     @SuppressWarnings("unchecked")
@@ -58,7 +54,7 @@ public class DiscordInteractionsClient<T extends Response> extends DiscordClient
 
     @Override
     public Uni<Message> getOriginalInteractionResponse(Snowflake applicationId, String interactionToken) {
-        return requester.request(new EmptyRequest("/webhooks/{application.id}/{interaction.token}/messages/@original", variables("application.id", applicationId.getValue(), "interaction.token", interactionToken)))
+        return requester.request(new EmptyRequest("/webhooks/{application.id}/{interaction.token}/messages/@original", false, variables("application.id", applicationId.getValue(), "interaction.token", interactionToken)))
                 .flatMap(res -> res.as(Message.class));
     }
 
@@ -69,7 +65,7 @@ public class DiscordInteractionsClient<T extends Response> extends DiscordClient
 
     @Override
     public Uni<Void> deleteOriginalInteractionResponse(Snowflake applicationId, String interactionToken) {
-        return requester.request(new EmptyRequest(HttpMethod.DELETE, "/webhooks/{application.id}/{interaction.token}/messages/@original", variables("application.id", applicationId.getValue(), "interaction.token", interactionToken)))
+        return requester.request(new EmptyRequest(HttpMethod.DELETE, "/webhooks/{application.id}/{interaction.token}/messages/@original", false, variables("application.id", applicationId.getValue(), "interaction.token", interactionToken)))
                 .replaceWithVoid();
     }
 
@@ -80,7 +76,7 @@ public class DiscordInteractionsClient<T extends Response> extends DiscordClient
 
     @Override
     public Uni<Message> getFollowupMessage(Snowflake applicationId, String interactionToken, Snowflake messageId) {
-        return requester.request(new EmptyRequest("/webhooks/{application.id}/{interaction.token}/messages/{message.id}", variables("application.id", applicationId.getValue(), "interaction.token", interactionToken, "message.id", messageId)))
+        return requester.request(new EmptyRequest("/webhooks/{application.id}/{interaction.token}/messages/{message.id}", false, variables("application.id", applicationId.getValue(), "interaction.token", interactionToken, "message.id", messageId)))
                 .flatMap(res -> res.as(Message.class));
     }
 
@@ -91,7 +87,7 @@ public class DiscordInteractionsClient<T extends Response> extends DiscordClient
 
     @Override
     public Uni<Void> deleteFollowupMessage(Snowflake applicationId, String interactionToken, Snowflake messageId) {
-        return requester.request(new EmptyRequest(HttpMethod.DELETE, "/webhooks/{application.id}/{interaction.token}/messages/{message.id}", variables("application.id", applicationId.getValue(), "interaction.token", interactionToken, "message.id", messageId)))
+        return requester.request(new EmptyRequest(HttpMethod.DELETE, "/webhooks/{application.id}/{interaction.token}/messages/{message.id}", false, variables("application.id", applicationId.getValue(), "interaction.token", interactionToken, "message.id", messageId)))
                 .replaceWithVoid();
     }
 
@@ -103,8 +99,8 @@ public class DiscordInteractionsClient<T extends Response> extends DiscordClient
         protected String interactionsUrl;
         protected Function<Uni<String>, InteractionValidator> validatorFactory;
 
-        protected Builder(Vertx vertx, AccessTokenSource tokenSource, String verifyKey) {
-            super(vertx, tokenSource);
+        protected Builder(Vertx vertx, String verifyKey) {
+            super(vertx, AccessTokenSource.DUMMY);
             this.verifyKey = verifyKey;
         }
 
@@ -140,7 +136,10 @@ public class DiscordInteractionsClient<T extends Response> extends DiscordClient
         }
     }
 
+    // TODO make the verifyKey optional to pass. ideally we should fetch this from the api directly
+    // probably have to make the client a volatile field, wrap it in a supplier, and initialize it lazily after the oauth/bot client is created
     public static class Options {
+        protected final String verifyKey;
         protected Router router;
         protected ServerCodec jsonCodec;
         protected HttpServer httpServer;

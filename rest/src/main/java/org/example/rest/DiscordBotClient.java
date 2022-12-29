@@ -87,7 +87,7 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     private DiscordBotClient(Vertx vertx, Requester<T> requester, DiscordInteractionsClient.Options interactionsClientOptions) {
-        super(vertx, requester, DiscordInteractionsClient.create(vertx), DiscordWebhookClient.create(vertx));
+        super(vertx, requester, interactionsClientOptions);
     }
 
     public Multi<ApplicationRoleConnectionMetadata> getApplicationRoleConnectionMetadataRecords(Snowflake applicationId) {

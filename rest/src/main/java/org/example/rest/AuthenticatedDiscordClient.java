@@ -33,14 +33,14 @@ public abstract class AuthenticatedDiscordClient<T extends Response> extends Dis
     private final DiscordInteractionsClient<T> interactionsClient;
     private final DiscordWebhookClient<T> webhookClient;
 
+    @SuppressWarnings("unchecked")
     protected AuthenticatedDiscordClient(
             Vertx vertx,
             Requester<T> requester,
-            DiscordInteractionsClient<T> interactionsClient,
-            DiscordWebhookClient<T> webhookClient) {
+            DiscordInteractionsClient.Options interactionsClientOptions) {
         super(vertx, requester);
-        this.interactionsClient = interactionsClient;
-        this.webhookClient = webhookClient;
+        this.interactionsClient = DiscordInteractionsClient.;
+        this.webhookClient = ((DiscordWebhookClient.Builder<T>) DiscordWebhookClient.builder(vertx)).requesterFactory(x -> requester).build();
     }
 
     public Multi<ApplicationCommand> getGlobalApplicationCommands(Snowflake applicationId, boolean withLocalizations) {

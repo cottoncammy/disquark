@@ -13,7 +13,7 @@ public class BotToken implements AccessTokenSource {
     }
 
     private BotToken(String token) {
-        this.token = Uni.createFrom().item(AccessToken.builder().accessToken(token).tokenType(TokenType.BOT).build());
+        this.token = Uni.createFrom().item(AccessToken.builder().tokenType(TokenType.BOT).accessToken(token).build());
     }
 
     @Override

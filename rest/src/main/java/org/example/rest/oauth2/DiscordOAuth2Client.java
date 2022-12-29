@@ -37,8 +37,7 @@ public class DiscordOAuth2Client<T extends Response> extends AuthenticatedDiscor
     }
 
     private DiscordOAuth2Client(Vertx vertx, Requester<T> requester, DiscordInteractionsClient.Options interactionsClientOptions) {
-        // TODO reuse requester between clients, but new ratelimiter (shared) between interactions + webhook clients. this will be complex (bucketratelimitrequester can't be reused)
-        super(vertx, requester, DiscordInteractionsClient.create(vertx), DiscordWebhookClient.create(vertx));
+        super(vertx, requester, interactionsClientOptions);
     }
 
     public Uni<GuildApplicationCommandPermissions> editApplicationCommandPermissions(EditApplicationCommandPermissions editApplicationCommandPermissions) {

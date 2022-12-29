@@ -5,6 +5,7 @@ import io.vertx.core.http.HttpMethod;
 import io.vertx.core.json.JsonObject;
 import io.vertx.mutiny.core.Vertx;
 import io.vertx.mutiny.uritemplate.Variables;
+import org.example.rest.AuthenticatedDiscordClient;
 import org.example.rest.DiscordClient;
 import org.example.rest.request.AccessTokenSource;
 import org.example.rest.request.EmptyRequest;
@@ -20,7 +21,7 @@ import static org.example.rest.util.Variables.variables;
 public class DiscordWebhookClient<T extends Response> extends DiscordClient<T> implements WebhooksCapable {
 
     public static <T extends Response> Builder<T> builder(Vertx vertx) {
-        return new Builder<>(requireNonNull(vertx), null);
+        return new Builder<>(requireNonNull(vertx));
     }
 
     @SuppressWarnings("unchecked")
@@ -39,7 +40,7 @@ public class DiscordWebhookClient<T extends Response> extends DiscordClient<T> i
 
     @Override
     public Uni<Void> deleteWebhookWithToken(Snowflake webhookId, String webhookToken) {
-        return requester.request(new EmptyRequest(HttpMethod.DELETE, "/webhooks/{webhook.id}/{webhook.token}", variables("webhook.id", webhookId.getValue(), "webhook.token", webhookToken)))
+        return requester.request(new EmptyRequest(HttpMethod.DELETE, "/webhooks/{webhook.id}/{webhook.token}", false, variables("webhook.id", webhookId.getValue(), "webhook.token", webhookToken)))
                 .replaceWithVoid();
     }
 
@@ -54,7 +55,7 @@ public class DiscordWebhookClient<T extends Response> extends DiscordClient<T> i
             json.put("thread_id", options.threadId().get());
         }
 
-        return requester.request(new EmptyRequest(HttpMethod.POST, uri, Variables.variables(json))).flatMap(res -> res.as(Message.class));
+        return requester.request(new EmptyRequest(HttpMethod.POST, uri, false, Variables.variables(json))).flatMap(res -> res.as(Message.class));
     }
 
     @Override
@@ -73,7 +74,7 @@ public class DiscordWebhookClient<T extends Response> extends DiscordClient<T> i
             json.put("thread_id", options.threadId().get());
         }
 
-        return requester.request(new EmptyRequest(httpMethod, "/webhooks/{webhook.id}/{webhook.token}/messages/{message.id}{?thread_id}", Variables.variables(json)));
+        return requester.request(new EmptyRequest(httpMethod, "/webhooks/{webhook.id}/{webhook.token}/messages/{message.id}{?thread_id}", false, Variables.variables(json)));
     }
 
     @Override
@@ -93,8 +94,8 @@ public class DiscordWebhookClient<T extends Response> extends DiscordClient<T> i
 
     public static class Builder<T extends Response> extends DiscordClient.Builder<T, DiscordWebhookClient<T>> {
 
-        protected Builder(Vertx vertx, AccessTokenSource tokenSource) {
-            super(vertx, tokenSource);
+        protected Builder(Vertx vertx) {
+            super(vertx, AccessTokenSource.DUMMY);
         }
 
         @Override
