@@ -57,6 +57,7 @@ import org.example.rest.resources.webhook.ModifyWebhook;
 import org.example.rest.resources.webhook.Webhook;
 import org.example.rest.response.Response;
 import org.example.rest.emoji.ReactionEmoji;
+import org.example.rest.util.Hex;
 import org.example.rest.webhook.DiscordWebhookClient;
 
 import javax.annotation.Nullable;
@@ -88,6 +89,16 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
 
     private DiscordBotClient(Vertx vertx, Requester<T> requester, DiscordInteractionsClient.Options interactionsClientOptions) {
         super(vertx, requester, interactionsClientOptions);
+    }
+
+    @Override
+    protected DiscordInteractionsClient<T> buildInteractionsClient() {
+        String verifyKey = interactionsClientOptions.getVerifyKey();
+        if (verifyKey == null) {
+            verifyKey = getCurrentBotApplicationInformation().map(Application::verifyKey).map(Hex::decode).await().indefinitely();
+        }
+
+        return buildInteractionsClient(DiscordInteractionsClient.builder(vertx, verifyKey));
     }
 
     public Multi<ApplicationRoleConnectionMetadata> getApplicationRoleConnectionMetadataRecords(Snowflake applicationId) {

@@ -29,7 +29,6 @@ public class HttpClientRequester implements Requester<HttpResponse> {
     private final Map<String, Codec> codecs;
     private final AccessTokenSource tokenSource;
     private final GlobalRateLimiter rateLimiter;
-    private final Consumer<MultiMap> headersTransformer;
 
     public static Builder builder(Vertx vertx, AccessTokenSource tokenSource, GlobalRateLimiter rateLimiter) {
         return new Builder(requireNonNull(vertx), requireNonNull(tokenSource), requireNonNull(rateLimiter));
@@ -44,14 +43,12 @@ public class HttpClientRequester implements Requester<HttpResponse> {
             HttpClient httpClient,
             Map<String, Codec> codecs,
             AccessTokenSource tokenSource,
-            GlobalRateLimiter rateLimiter,
-            Consumer<MultiMap> headersTransformer) {
+            GlobalRateLimiter rateLimiter) {
         this.baseUrl = baseUrl;
         this.httpClient = httpClient;
         this.codecs = codecs;
         this.tokenSource = tokenSource;
         this.rateLimiter = rateLimiter;
-        this.headersTransformer = headersTransformer;
     }
 
     @Override
@@ -82,7 +79,6 @@ public class HttpClientRequester implements Requester<HttpResponse> {
 
                             Codec codec = requireNonNull(codecs.get(contentType));
                             Codec.Body body = codec.serialize(request, req.headers());
-                            headersTransformer.accept(req.headers());
 
                             if (body.asString().isPresent()) {
                                 return req.send(body.asString().get());
@@ -99,7 +95,6 @@ public class HttpClientRequester implements Requester<HttpResponse> {
                             return req.send(body.asPublisher().get());
                         }
 
-                        headersTransformer.accept(req.headers());
                         return req.send();
                     });
                 })
@@ -130,7 +125,6 @@ public class HttpClientRequester implements Requester<HttpResponse> {
 
         protected URI baseUrl;
         protected HttpClient httpClient;
-        protected Consumer<MultiMap> headersTransformer;
 
         protected Builder(Vertx vertx, AccessTokenSource tokenSource, GlobalRateLimiter rateLimiter) {
             this.vertx = vertx;
@@ -159,11 +153,6 @@ public class HttpClientRequester implements Requester<HttpResponse> {
             return this;
         }
 
-        public Builder headersTransformer(Consumer<MultiMap> headersTransformer) {
-            this.headersTransformer = requireNonNull(headersTransformer);
-            return this;
-        }
-
         public HttpClientRequester build() {
             codecs.putIfAbsent("application/json", new JsonCodec());
             codecs.putIfAbsent("multipart/form-data", new MultipartCodec(vertx, codecs.get("application/json")));
@@ -171,10 +160,7 @@ public class HttpClientRequester implements Requester<HttpResponse> {
             return new HttpClientRequester(
                     baseUrl == null ? URI.create("https://discord.com/api/v10") : baseUrl,
                     httpClient == null ? vertx.createHttpClient() : httpClient,
-                    codecs,
-                    tokenSource,
-                    rateLimiter,
-                    headersTransformer == null ? x -> {} : headersTransformer);
+                    codecs, tokenSource, rateLimiter);
         }
     }
 }

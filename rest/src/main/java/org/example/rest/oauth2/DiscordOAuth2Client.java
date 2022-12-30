@@ -7,7 +7,6 @@ import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
 import io.vertx.mutiny.core.Vertx;
 import org.example.rest.AuthenticatedDiscordClient;
-import org.example.rest.DiscordClient;
 import org.example.rest.interactions.DiscordInteractionsClient;
 import org.example.rest.request.*;
 import org.example.rest.resources.Snowflake;
@@ -17,9 +16,7 @@ import org.example.rest.resources.user.User;
 import org.example.rest.resources.application.command.GuildApplicationCommandPermissions;
 import org.example.rest.resources.oauth2.Authorization;
 import org.example.rest.response.Response;
-import org.example.rest.webhook.DiscordWebhookClient;
-
-import java.util.List;
+import org.example.rest.util.Hex;
 
 public class DiscordOAuth2Client<T extends Response> extends AuthenticatedDiscordClient<T> {
 
@@ -38,6 +35,16 @@ public class DiscordOAuth2Client<T extends Response> extends AuthenticatedDiscor
 
     private DiscordOAuth2Client(Vertx vertx, Requester<T> requester, DiscordInteractionsClient.Options interactionsClientOptions) {
         super(vertx, requester, interactionsClientOptions);
+    }
+
+    @Override
+    protected DiscordInteractionsClient<T> buildInteractionsClient() {
+        String verifyKey = interactionsClientOptions.getVerifyKey();
+        if (verifyKey == null) {
+            verifyKey = getCurrentAuthorizationInformation().map(auth -> Hex.decode(auth.application().verifyKey())).await().indefinitely();
+        }
+
+        return buildInteractionsClient(DiscordInteractionsClient.builder(vertx, verifyKey));
     }
 
     public Uni<GuildApplicationCommandPermissions> editApplicationCommandPermissions(EditApplicationCommandPermissions editApplicationCommandPermissions) {

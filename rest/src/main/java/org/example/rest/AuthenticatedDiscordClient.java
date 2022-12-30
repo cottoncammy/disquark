@@ -30,8 +30,10 @@ import static java.util.Objects.requireNonNull;
 import static org.example.rest.util.Variables.variables;
 
 public abstract class AuthenticatedDiscordClient<T extends Response> extends DiscordClient<T> implements InteractionsCapable, WebhooksCapable {
-    private final DiscordInteractionsClient<T> interactionsClient;
     private final DiscordWebhookClient<T> webhookClient;
+    protected final DiscordInteractionsClient.Options interactionsClientOptions;
+
+    protected volatile DiscordInteractionsClient<T> interactionsClient;
 
     @SuppressWarnings("unchecked")
     protected AuthenticatedDiscordClient(
@@ -39,8 +41,8 @@ public abstract class AuthenticatedDiscordClient<T extends Response> extends Dis
             Requester<T> requester,
             DiscordInteractionsClient.Options interactionsClientOptions) {
         super(vertx, requester);
-        this.interactionsClient = DiscordInteractionsClient.;
         this.webhookClient = ((DiscordWebhookClient.Builder<T>) DiscordWebhookClient.builder(vertx)).requesterFactory(x -> requester).build();
+        this.interactionsClientOptions = interactionsClientOptions;
     }
 
     public Multi<ApplicationCommand> getGlobalApplicationCommands(Snowflake applicationId, boolean withLocalizations) {
@@ -114,39 +116,77 @@ public abstract class AuthenticatedDiscordClient<T extends Response> extends Dis
                 .flatMap(res -> res.as(GuildApplicationCommandPermissions.class));
     }
 
+    protected DiscordInteractionsClient<T> buildInteractionsClient(DiscordInteractionsClient.Builder<T> builder) {
+        if (interactionsClientOptions.getRouter() != null) {
+            builder.router(interactionsClientOptions.getRouter());
+        }
+
+        if (interactionsClientOptions.getJsonCodec() != null) {
+            builder.jsonCodec(interactionsClientOptions.getJsonCodec());
+        }
+
+        if (interactionsClientOptions.getHttpServer() != null) {
+            builder.httpServer(interactionsClientOptions.getHttpServer());
+        }
+
+        if (interactionsClientOptions.getInteractionsUrl() != null) {
+            builder.interactionsUrl(interactionsClientOptions.getInteractionsUrl());
+        }
+
+        if (interactionsClientOptions.getValidatorFactory() != null) {
+            builder.validatorFactory(interactionsClientOptions.getValidatorFactory());
+        }
+
+        return builder.requesterFactory(x -> requester).build();
+    }
+
+    protected abstract DiscordInteractionsClient<T> buildInteractionsClient();
+
+    // TODO async
+    private DiscordInteractionsClient<T> getInteractionsClient() {
+        if (interactionsClient == null) {
+            synchronized (this) {
+                if (interactionsClient == null) {
+                    interactionsClient = buildInteractionsClient();
+                }
+            }
+        }
+        return interactionsClient;
+    }
+
     @Override
     public Uni<Message> getOriginalInteractionResponse(Snowflake applicationId, String interactionToken) {
-        return interactionsClient.getOriginalInteractionResponse(applicationId, interactionToken);
+        return getInteractionsClient().getOriginalInteractionResponse(applicationId, interactionToken);
     }
 
     @Override
     public Uni<Message> editOriginalInteractionResponse(EditOriginalInteractionResponse editOriginalInteractionResponse) {
-        return interactionsClient.editOriginalInteractionResponse(editOriginalInteractionResponse);
+        return getInteractionsClient().editOriginalInteractionResponse(editOriginalInteractionResponse);
     }
 
     @Override
     public Uni<Void> deleteOriginalInteractionResponse(Snowflake applicationId, String interactionToken) {
-        return interactionsClient.deleteOriginalInteractionResponse(applicationId, interactionToken);
+        return getInteractionsClient().deleteOriginalInteractionResponse(applicationId, interactionToken);
     }
 
     @Override
     public Uni<Message> createFollowupMessage(CreateFollowupMessage createFollowupMessage) {
-        return interactionsClient.createFollowupMessage(createFollowupMessage);
+        return getInteractionsClient().createFollowupMessage(createFollowupMessage);
     }
 
     @Override
     public Uni<Message> getFollowupMessage(Snowflake applicationId, String interactionToken, Snowflake messageId) {
-        return interactionsClient.getFollowupMessage(applicationId, interactionToken, messageId);
+        return getInteractionsClient().getFollowupMessage(applicationId, interactionToken, messageId);
     }
 
     @Override
     public Uni<Message> editFollowupMessage(EditFollowupMessage editFollowupMessage) {
-        return interactionsClient.editFollowupMessage(editFollowupMessage);
+        return getInteractionsClient().editFollowupMessage(editFollowupMessage);
     }
 
     @Override
     public Uni<Void> deleteFollowupMessage(Snowflake applicationId, String interactionToken, Snowflake messageId) {
-        return interactionsClient.deleteFollowupMessage(applicationId, interactionToken, messageId);
+        return getInteractionsClient().deleteFollowupMessage(applicationId, interactionToken, messageId);
     }
 
     public Uni<User> getCurrentUser() {
@@ -203,7 +243,7 @@ public abstract class AuthenticatedDiscordClient<T extends Response> extends Dis
     }
 
     public static abstract class Builder<R extends Response, T extends AuthenticatedDiscordClient<R>> extends DiscordClient.Builder<R, T> {
-        protected DiscordInteractionsClient.Options interactionsClientOptions;
+        private DiscordInteractionsClient.Options interactionsClientOptions;
 
         protected Builder(Vertx vertx, AccessTokenSource tokenSource) {
             super(vertx, tokenSource);
@@ -232,7 +272,6 @@ public abstract class AuthenticatedDiscordClient<T extends Response> extends Dis
             return this;
         }
 
-        // TODO
         protected DiscordInteractionsClient.Options getInteractionsClientOptions() {
             return (interactionsClientOptions == null) ? new DiscordInteractionsClient.Options() : interactionsClientOptions;
         }

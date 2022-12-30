@@ -6,11 +6,13 @@ import io.vertx.core.http.HttpMethod;
 import io.vertx.mutiny.core.Vertx;
 import io.vertx.mutiny.core.http.HttpServer;
 import io.vertx.mutiny.ext.web.Router;
-import org.example.rest.AuthenticatedDiscordClient;
 import org.example.rest.DiscordClient;
 import org.example.rest.request.AccessTokenSource;
 import org.example.rest.request.EmptyRequest;
 import org.example.rest.request.Requester;
+import org.example.rest.request.RequesterFactory;
+import org.example.rest.request.ratelimit.GlobalRateLimiter;
+import org.example.rest.request.ratelimit.RateLimitStrategy;
 import org.example.rest.resources.Snowflake;
 import org.example.rest.resources.channel.message.Message;
 import org.example.rest.resources.interactions.CreateFollowupMessage;
@@ -24,8 +26,13 @@ import static java.util.Objects.requireNonNull;
 import static org.example.rest.util.Variables.variables;
 
 public class DiscordInteractionsClient<T extends Response> extends DiscordClient<T> implements InteractionsCapable {
-    private final Options options;
-    private final InteractionsVerticle verticle;
+    private final Router router;
+    private final ServerCodec jsonCodec;
+    private final HttpServer httpServer;
+    private final String interactionsUrl;
+    private final InteractionValidator validator;
+
+    private volatile InteractionsVerticle verticle;
 
     public static <T extends Response> Builder<T> builder(Vertx vertx, String verifyKey) {
         return new Builder<>(requireNonNull(vertx), requireNonNull(verifyKey));
@@ -36,20 +43,37 @@ public class DiscordInteractionsClient<T extends Response> extends DiscordClient
         return (DiscordInteractionsClient<T>) builder(vertx, verifyKey).build();
     }
 
-    private DiscordInteractionsClient(Vertx vertx, Requester<T> requester, Options options) {
+    private DiscordInteractionsClient(
+            Vertx vertx,
+            Requester<T> requester,
+            Router router,
+            ServerCodec jsonCodec,
+            HttpServer httpServer,
+            String interactionsUrl,
+            InteractionValidator validator) {
         super(vertx, requester);
-        this.options = options;
-        this.verticle = new InteractionsVerticle();
-
-        vertx.deployVerticleAndAwait(verticle);
+        this.router = router;
+        this.jsonCodec = jsonCodec;
+        this.httpServer = httpServer;
+        this.interactionsUrl = interactionsUrl;
+        this.validator = validator;
     }
 
-    Options getOptions() {
-        return options;
+    // TODO async
+    private InteractionsVerticle getVerticle() {
+        if (verticle == null) {
+            synchronized (this) {
+                if (verticle == null) {
+                    verticle = new InteractionsVerticle(router, jsonCodec, httpServer, interactionsUrl, validator, this);
+                    vertx.deployVerticleAndAwait(verticle);
+                }
+            }
+        }
+        return verticle;
     }
 
     public <T> Multi<CompletableInteraction<T>> on() {
-        return verticle.on();
+        return getVerticle().on();
     }
 
     @Override
@@ -97,7 +121,7 @@ public class DiscordInteractionsClient<T extends Response> extends DiscordClient
         protected ServerCodec jsonCodec;
         protected HttpServer httpServer;
         protected String interactionsUrl;
-        protected Function<Uni<String>, InteractionValidator> validatorFactory;
+        protected Function<String, InteractionValidator> validatorFactory;
 
         protected Builder(Vertx vertx, String verifyKey) {
             super(vertx, AccessTokenSource.DUMMY);
@@ -124,70 +148,104 @@ public class DiscordInteractionsClient<T extends Response> extends DiscordClient
             return this;
         }
 
-        public Builder<T> validatorFactory(Function<Uni<String>, InteractionValidator> validatorFactory) {
+        @Override
+        public Builder<T> globalRateLimiter(GlobalRateLimiter globalRateLimiter) {
+            super.globalRateLimiter(globalRateLimiter);
+            return this;
+        }
+
+        @Override
+        public Builder<T> requesterFactory(RequesterFactory<T> requesterFactory) {
+            super.requesterFactory(requesterFactory);
+            return this;
+        }
+
+        @Override
+        public Builder<T> rateLimitStrategy(RateLimitStrategy<T> rateLimitStrategy) {
+            super.rateLimitStrategy(rateLimitStrategy);
+            return this;
+        }
+
+        public Builder<T> validatorFactory(Function<String, InteractionValidator> validatorFactory) {
             this.validatorFactory = requireNonNull(validatorFactory);
             return this;
         }
 
         @Override
         public DiscordInteractionsClient<T> build() {
-            // TODO
-            return new DiscordInteractionsClient<>(vertx, getRequesterFactory().apply(this), null);
+            if (validatorFactory == null) {
+                validatorFactory = BouncyCastleInteractionValidator::new;
+            }
+
+            return new DiscordInteractionsClient<>(
+                    vertx, getRequesterFactory().apply(this),
+                    router == null ? Router.router(vertx) : router,
+                    jsonCodec == null ? ServerCodec.DEFAULT_JSON_CODEC : jsonCodec,
+                    httpServer == null ? vertx.createHttpServer() : httpServer,
+                    interactionsUrl == null ? "/" : interactionsUrl,
+                    validatorFactory.apply(verifyKey));
         }
     }
 
-    // TODO make the verifyKey optional to pass. ideally we should fetch this from the api directly
-    // probably have to make the client a volatile field, wrap it in a supplier, and initialize it lazily after the oauth/bot client is created
     public static class Options {
-        protected final String verifyKey;
         protected Router router;
+        protected String verifyKey;
         protected ServerCodec jsonCodec;
         protected HttpServer httpServer;
         protected String interactionsUrl;
-        protected Function<Uni<String>, InteractionValidator> validatorFactory;
+        protected Function<String, InteractionValidator> validatorFactory;
 
-        public Options router(Router router) {
+        public Options setRouter(Router router) {
             this.router = requireNonNull(router);
             return this;
         }
 
-        Router getRouter() {
+        public Router getRouter() {
             return router;
         }
 
-        public Options jsonCodec(ServerCodec jsonCodec) {
+        public Options setVerifyKey(String verifyKey) {
+            this.verifyKey = requireNonNull(verifyKey);
+            return this;
+        }
+
+        public String getVerifyKey() {
+            return verifyKey;
+        }
+
+        public Options setJsonCodec(ServerCodec jsonCodec) {
             this.jsonCodec = requireNonNull(jsonCodec);
             return this;
         }
 
-        ServerCodec getJsonCodec() {
+        public ServerCodec getJsonCodec() {
             return jsonCodec;
         }
 
-        public Options httpServer(HttpServer httpServer) {
+        public Options setHttpServer(HttpServer httpServer) {
             this.httpServer = requireNonNull(httpServer);
             return this;
         }
 
-        HttpServer getHttpServer() {
+        public HttpServer getHttpServer() {
             return httpServer;
         }
 
-        public Options interactionsUrl(String interactionsUrl) {
+        public Options setInteractionsUrl(String interactionsUrl) {
             this.interactionsUrl = requireNonNull(interactionsUrl);
             return this;
         }
 
-        String getInteractionsUrl() {
+        public String getInteractionsUrl() {
             return interactionsUrl;
         }
 
-        public Options validatorFactory(Function<Uni<String>, InteractionValidator> validatorFactory) {
+        public Options setValidatorFactory(Function<String, InteractionValidator> validatorFactory) {
             this.validatorFactory = requireNonNull(validatorFactory);
             return this;
         }
 
-        Function<Uni<String>, InteractionValidator> getValidatorFactory() {
+        public Function<String, InteractionValidator> getValidatorFactory() {
             return validatorFactory;
         }
     }
