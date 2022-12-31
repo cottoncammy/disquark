@@ -20,7 +20,6 @@ import java.util.OptionalInt;
 
 import static org.example.rest.util.Variables.variables;
 
-// TODO deepImmutablesDetection ?
 @Enclosing
 @ImmutableJson
 @JsonInclude(Include.NON_ABSENT)

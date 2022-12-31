@@ -72,6 +72,10 @@ public class DiscordInteractionsClient<T extends Response> extends DiscordClient
         return verticle;
     }
 
+    ServerCodec getJsonCodec() {
+        return jsonCodec;
+    }
+
     public <T> Multi<CompletableInteraction<T>> on() {
         return getVerticle().on();
     }

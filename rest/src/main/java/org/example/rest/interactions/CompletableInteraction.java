@@ -22,7 +22,7 @@ public abstract class CompletableInteraction<T> {
     }
 
     protected Buffer serialize(Object obj) {
-        return interactionsClient.getOptions().getJsonCodec().serialize(obj);
+        return interactionsClient.getJsonCodec().serialize(obj);
     }
 
     protected Uni<RespondedInteraction<T>> respond(Interaction.MessageCallbackData data) {

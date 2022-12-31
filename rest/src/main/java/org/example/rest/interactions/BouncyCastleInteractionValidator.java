@@ -12,9 +12,6 @@ public class BouncyCastleInteractionValidator extends InteractionValidator {
     @Override
     public boolean validate(Buffer timestamp, Buffer body, Buffer signature) {
         byte[] message = timestamp.appendBuffer(body).getBytes();
-        return Ed25519.verify(
-                signature.getBytes(), 0,
-                verifyKey.getBytes(), 0,
-                message, 0, message.length);
+        return Ed25519.verify(signature.getBytes(), 0, verifyKey.getBytes(), 0, message, 0, message.length);
     }
 }

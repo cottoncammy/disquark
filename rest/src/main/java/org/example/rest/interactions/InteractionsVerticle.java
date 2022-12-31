@@ -12,6 +12,7 @@ import io.vertx.mutiny.ext.web.Route;
 import io.vertx.mutiny.ext.web.Router;
 import io.vertx.mutiny.ext.web.RoutingContext;
 import io.vertx.mutiny.ext.web.handler.ResponseContentTypeHandler;
+import org.example.rest.interactions.schema.InteractionSchema;
 import org.example.rest.resources.interactions.Interaction;
 
 import java.util.function.Consumer;
@@ -95,13 +96,14 @@ class InteractionsVerticle extends AbstractVerticle {
         return httpServer.close();
     }
 
-    public <D, T extends CompletableInteraction<D>> Multi<T> on() {
+    public <D, T extends CompletableInteraction<D>> Multi<T> on(InteractionSchema<D> schema) {
         return processor.flatMap(context -> {
-            Interaction<Interaction.Data> interaction = context.get("interaction");
-            // validate the interaction with the schema
+            Interaction<D> interaction = context.get("interaction");
+            if (!schema.validate(interaction)) {
+                return Uni.createFrom().voidItem();
+            }
 
-            // the schema allows you to pick the type (required)
-            // from the type, cast the data
+
             // construct the appropriate completableRequest
         });
     }
