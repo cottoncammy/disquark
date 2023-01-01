@@ -1,25 +1,51 @@
 package org.example.rest.interactions.schema;
 
+import io.smallrye.mutiny.tuples.Functions;
+import io.vertx.mutiny.core.http.HttpServerResponse;
+import org.example.rest.interactions.CompletableInteraction;
+import org.example.rest.interactions.PingInteraction;
+import org.example.rest.interactions.DiscordInteractionsClient;
 import org.example.rest.interactions.schema.dsl.*;
 import org.example.rest.resources.interactions.Interaction;
 
-public interface InteractionSchema<T> {
+import java.util.function.Predicate;
 
-    static InteractionSchema<Void> ping() {
-        return interaction -> interaction.type() == Interaction.Type.PING;
+public class InteractionSchema<D, C extends CompletableInteraction<D>> {
+    private final Predicate<Interaction<D>> interactionPredicate;
+    private final Functions.Function3<Interaction<D>, HttpServerResponse, DiscordInteractionsClient<?>, C> completableInteractionFunction;
+
+    public static InteractionSchema<Void, PingInteraction> ping() {
+        return new InteractionSchema<>(interaction -> interaction.type() == Interaction.Type.PING, PingInteraction::new);
     }
 
-    static ApplicationCommandBuilder applicationCommand() {
+    public static ApplicationCommandBuilder applicationCommand() {
         return new ApplicationCommandBuilder();
     }
 
-    static MessageComponentBuilder messageComponent() {
+    public static MessageComponentBuilder messageComponent() {
         return new MessageComponentBuilder();
     }
 
-    static ModalSubmitBuilder modalSubmit() {
+    public static ApplicationCommandAutocompleteBuilder applicationCommandAutocomplete() {
+        return new ApplicationCommandAutocompleteBuilder();
+    }
+
+    public static ModalSubmitBuilder modalSubmit() {
         return new ModalSubmitBuilder();
     }
 
-    boolean validate(Interaction<T> interaction);
+    protected InteractionSchema(
+            Predicate<Interaction<D>> interactionPredicate,
+            Functions.Function3<Interaction<D>, HttpServerResponse, DiscordInteractionsClient<?>, C> completableInteractionFunction) {
+        this.interactionPredicate = interactionPredicate;
+        this.completableInteractionFunction = completableInteractionFunction;
+    }
+
+    protected boolean validate(Interaction<D> interaction) {
+        return interactionPredicate.test(interaction);
+    }
+
+    protected C toCompletableInteraction(Interaction<D> interaction, HttpServerResponse response, DiscordInteractionsClient<?> interactionsClient) {
+        return completableInteractionFunction.apply(interaction, response, interactionsClient);
+    }
 }

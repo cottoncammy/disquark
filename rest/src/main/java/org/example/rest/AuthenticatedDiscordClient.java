@@ -4,8 +4,10 @@ import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.mutiny.core.Vertx;
+import org.example.rest.interactions.CompletableInteraction;
 import org.example.rest.interactions.DiscordInteractionsClient;
 import org.example.rest.interactions.InteractionsCapable;
+import org.example.rest.interactions.schema.InteractionSchema;
 import org.example.rest.request.AccessTokenSource;
 import org.example.rest.request.EmptyRequest;
 import org.example.rest.request.Requester;
@@ -31,6 +33,7 @@ import static org.example.rest.util.Variables.variables;
 
 public abstract class AuthenticatedDiscordClient<T extends Response> extends DiscordClient<T> implements InteractionsCapable, WebhooksCapable {
     private final DiscordWebhookClient<T> webhookClient;
+
     protected final DiscordInteractionsClient.Options interactionsClientOptions;
 
     protected volatile DiscordInteractionsClient<T> interactionsClient;
@@ -152,6 +155,11 @@ public abstract class AuthenticatedDiscordClient<T extends Response> extends Dis
             }
         }
         return interactionsClient;
+    }
+
+    @Override
+    public <D, C extends CompletableInteraction<D>> Multi<C> on(InteractionSchema<D, C> interactionSchema) {
+        return getInteractionsClient().on(interactionSchema);
     }
 
     @Override

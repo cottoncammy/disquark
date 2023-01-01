@@ -4,9 +4,9 @@ import io.smallrye.mutiny.Uni;
 import io.vertx.mutiny.core.http.HttpServerResponse;
 import org.example.rest.resources.interactions.Interaction;
 
-public class CompletablePingInteraction extends CompletableInteraction<Void> {
+public class PingInteraction extends CompletableInteraction<Void> {
 
-    CompletablePingInteraction(
+    PingInteraction(
             Interaction<Void> interaction,
             HttpServerResponse response,
             DiscordInteractionsClient<?> interactionsClient) {

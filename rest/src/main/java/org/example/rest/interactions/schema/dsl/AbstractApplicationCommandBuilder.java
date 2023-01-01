@@ -1,0 +1,79 @@
+package org.example.rest.interactions.schema.dsl;
+
+import io.smallrye.mutiny.tuples.Functions;
+import io.vertx.mutiny.core.http.HttpServerResponse;
+import org.example.rest.interactions.CompletableInteraction;
+import org.example.rest.interactions.DiscordInteractionsClient;
+import org.example.rest.interactions.schema.InteractionSchema;
+import org.example.rest.resources.Snowflake;
+import org.example.rest.resources.application.command.ApplicationCommand;
+import org.example.rest.resources.interactions.Interaction;
+
+import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.function.Predicate;
+
+public abstract class AbstractApplicationCommandBuilder<C extends CompletableInteraction<Interaction.ApplicationCommandData>, O extends AbstractApplicationCommandOptionBuilder<O>> implements Buildable<Interaction.ApplicationCommandData, C> {
+    private final Interaction.Type interactionType;
+    private final Functions.Function3<Interaction<Interaction.ApplicationCommandData>, HttpServerResponse, DiscordInteractionsClient<?>, C> completableInteractionFunction;
+
+    protected final List<O> options = new ArrayList<>();
+
+    @Nullable
+    protected Snowflake id;
+    @Nullable
+    protected String name;
+    @Nullable
+    protected ApplicationCommand.Type type;
+    protected Predicate<Optional<Snowflake>> guildIdPredicate = guildId -> true;
+
+    protected AbstractApplicationCommandBuilder(
+            Interaction.Type interactionType,
+            Functions.Function3<Interaction<Interaction.ApplicationCommandData>, HttpServerResponse, DiscordInteractionsClient<?>, C> completableInteractionFunction) {
+        this.interactionType = interactionType;
+        this.completableInteractionFunction = completableInteractionFunction;
+    }
+
+    public AbstractApplicationCommandBuilder<C, O> id(Snowflake id) {
+        this.id = id;
+        return this;
+    }
+
+    public AbstractApplicationCommandBuilder<C, O> name(String name) {
+        this.name = name;
+        return this;
+    }
+
+    public AbstractApplicationCommandBuilder<C, O> type(ApplicationCommand.Type type) {
+        this.type = type;
+        return this;
+    }
+
+    public AbstractApplicationCommandBuilder<C, O> with(O option) {
+        options.add(option);
+        return this;
+    }
+
+    public GuildIdStage<C, O, AbstractApplicationCommandBuilder<C, O>> guildId() {
+        return new GuildIdStage<>(this);
+    }
+
+    @Override
+    public InteractionSchema<Interaction.ApplicationCommandData, C> schema() {
+        return new InteractionSchema<>(
+                interaction -> {
+                    return interaction.type() == interactionType &&
+                            interaction.data().isPresent() &&
+                            Objects.equals(interaction.data().get().id(), id) &&
+                            Objects.equals(interaction.data().get().name(), name) &&
+                            Objects.equals(interaction.data().get().type(), type) &&
+                            &&
+                            guildIdPredicate.test(interaction.guildId());
+                },
+                completableInteractionFunction
+        );
+    }
+}

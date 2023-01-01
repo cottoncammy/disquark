@@ -1,17 +1,41 @@
 package org.example.rest.interactions.schema.dsl;
 
+import org.example.rest.interactions.MessageComponentInteraction;
 import org.example.rest.interactions.schema.InteractionSchema;
 import org.example.rest.resources.interactions.Interaction;
+import org.example.rest.resources.interactions.components.Component;
 
-public class MessageComponentBuilder extends InteractionBuilder<MessageComponentDataBuilder> implements InteractionSchema<Interaction.MessageComponentData> {
+import javax.annotation.Nullable;
+import java.util.Objects;
 
-    @Override
-    public MessageComponentDataBuilder data() {
-        return new MessageComponentDataBuilder(this);
+public class MessageComponentBuilder implements Buildable<Interaction.MessageComponentData, MessageComponentInteraction> {
+    @Nullable
+    private String customId;
+    @Nullable
+    private Component.Type type;
+
+    protected MessageComponentBuilder() {}
+
+    public MessageComponentBuilder customId(String customId) {
+        this.customId = customId;
+        return this;
+    }
+
+    public MessageComponentBuilder type(Component.Type type) {
+        this.type = type;
+        return this;
     }
 
     @Override
-    public boolean validate(Interaction<Interaction.MessageComponentData> interaction) {
-        return guildIdValidator.test(interaction.guildId());
+    public InteractionSchema<Interaction.MessageComponentData, MessageComponentInteraction> schema() {
+        return new InteractionSchema<>(
+                interaction -> {
+                    return interaction.type() == Interaction.Type.MESSAGE_COMPONENT &&
+                            interaction.data().isPresent() &&
+                            Objects.equals(interaction.data().get().customId(), customId) &&
+                            Objects.equals(interaction.data().get().componentType(), type);
+                },
+                MessageComponentInteraction::new
+        );
     }
 }

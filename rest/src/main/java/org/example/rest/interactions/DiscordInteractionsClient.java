@@ -7,6 +7,7 @@ import io.vertx.mutiny.core.Vertx;
 import io.vertx.mutiny.core.http.HttpServer;
 import io.vertx.mutiny.ext.web.Router;
 import org.example.rest.DiscordClient;
+import org.example.rest.interactions.schema.InteractionSchema;
 import org.example.rest.request.AccessTokenSource;
 import org.example.rest.request.EmptyRequest;
 import org.example.rest.request.Requester;
@@ -76,8 +77,9 @@ public class DiscordInteractionsClient<T extends Response> extends DiscordClient
         return jsonCodec;
     }
 
-    public <T> Multi<CompletableInteraction<T>> on() {
-        return getVerticle().on();
+    @Override
+    public <D, C extends CompletableInteraction<D>> Multi<C> on(InteractionSchema<D, C> interactionSchema) {
+        return getVerticle().on(interactionSchema);
     }
 
     @Override

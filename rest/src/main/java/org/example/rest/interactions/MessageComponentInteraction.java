@@ -7,9 +7,9 @@ import org.example.rest.resources.interactions.components.Component;
 
 import java.util.List;
 
-public class CompletableComponentInteraction extends CompletableInteraction<Interaction.MessageComponentData> {
+public class MessageComponentInteraction extends CompletableInteraction<Interaction.MessageComponentData> {
 
-    CompletableComponentInteraction(
+    MessageComponentInteraction(
             Interaction<Interaction.MessageComponentData> interaction,
             HttpServerResponse response,
             DiscordInteractionsClient<?> interactionsClient) {

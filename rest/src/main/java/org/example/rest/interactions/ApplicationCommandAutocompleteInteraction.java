@@ -7,9 +7,9 @@ import org.example.rest.resources.interactions.Interaction;
 
 import java.util.List;
 
-public class CompletableAutocompleteInteraction extends CompletableInteraction<Interaction.ApplicationCommandData> {
+public class ApplicationCommandAutocompleteInteraction extends CompletableInteraction<Interaction.ApplicationCommandData> {
 
-    CompletableAutocompleteInteraction(
+    ApplicationCommandAutocompleteInteraction(
             Interaction<Interaction.ApplicationCommandData> interaction,
             HttpServerResponse response,
             DiscordInteractionsClient<?> interactionsClient) {

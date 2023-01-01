@@ -13,6 +13,7 @@ import io.vertx.mutiny.ext.web.Router;
 import io.vertx.mutiny.ext.web.RoutingContext;
 import io.vertx.mutiny.ext.web.handler.ResponseContentTypeHandler;
 import org.example.rest.interactions.schema.InteractionSchema;
+import org.example.rest.interactions.schema.dsl.ApplicationCommandAutocompleteOptionBuilder;
 import org.example.rest.resources.interactions.Interaction;
 
 import java.util.function.Consumer;
@@ -62,7 +63,7 @@ class InteractionsVerticle extends AbstractVerticle {
                         .onFailure(IllegalArgumentException.class).invoke(() -> context.fail(400))
                         .call(interaction -> {
                             if (interaction.type() == Interaction.Type.PING) {
-                                return new CompletablePingInteraction(interaction, context.response(), interactionsClient).pong();
+                                return new PingInteraction(interaction, context.response(), interactionsClient).pong();
                             }
                             return Uni.createFrom().voidItem();
                         })
@@ -96,15 +97,14 @@ class InteractionsVerticle extends AbstractVerticle {
         return httpServer.close();
     }
 
-    public <D, T extends CompletableInteraction<D>> Multi<T> on(InteractionSchema<D> schema) {
-        return processor.flatMap(context -> {
+    public <D, C extends CompletableInteraction<D>> Multi<C> on(InteractionSchema<D> schema) {
+        return processor.onItem().transformToMultiAndMerge(context -> {
             Interaction<D> interaction = context.get("interaction");
             if (!schema.validate(interaction)) {
                 return Uni.createFrom().voidItem();
             }
 
-
-            // construct the appropriate completableRequest
+            return Uni.createFrom().item(completableInteraction);
         });
     }
 

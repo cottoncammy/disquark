@@ -1,16 +1,18 @@
 package org.example.rest.interactions.schema.dsl;
 
+import org.example.rest.interactions.CompletableInteraction;
 import org.example.rest.resources.Snowflake;
+import org.example.rest.resources.interactions.Interaction;
 
 import java.util.Objects;
 import java.util.Optional;
 
-public class GuildIdStage<T extends InteractionBuilder<?>> extends OptionalValueStage<T, Snowflake> {
+public class GuildIdStage<C extends CompletableInteraction<Interaction.ApplicationCommandData>, O extends AbstractApplicationCommandOptionBuilder<O>, T extends AbstractApplicationCommandBuilder<C, O>> extends OptionalValueStage<T, Snowflake> {
 
     protected GuildIdStage(T previousStage) {
         super(previousStage,
-                (s, expected) -> s.setGuildIdValidator(actual -> Objects.equals(expected, actual.orElse(null))),
-                s -> s.setGuildIdValidator(Optional::isPresent),
-                s -> s.setGuildIdValidator(Optional::isEmpty));
+                (t, expected) -> t.guildIdPredicate = actual -> Objects.equals(expected, actual.orElse(null)),
+                t -> t.guildIdPredicate = Optional::isPresent,
+                t -> t.guildIdPredicate = Optional::isEmpty);
     }
 }
