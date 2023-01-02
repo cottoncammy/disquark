@@ -11,7 +11,6 @@ import org.example.rest.interactions.schema.InteractionSchema;
 import org.example.rest.request.AccessTokenSource;
 import org.example.rest.request.EmptyRequest;
 import org.example.rest.request.Requester;
-import org.example.rest.request.RequesterFactory;
 import org.example.rest.request.ratelimit.GlobalRateLimiter;
 import org.example.rest.request.ratelimit.RateLimitStrategy;
 import org.example.rest.resources.Snowflake;
@@ -158,8 +157,8 @@ public abstract class AuthenticatedDiscordClient<T extends Response> extends Dis
     }
 
     @Override
-    public <D, C extends CompletableInteraction<D>> Multi<C> on(InteractionSchema<D, C> interactionSchema) {
-        return getInteractionsClient().on(interactionSchema);
+    public <D, C extends CompletableInteraction<D>> Multi<C> on(InteractionSchema<D, C> schema) {
+        return getInteractionsClient().on(schema);
     }
 
     @Override

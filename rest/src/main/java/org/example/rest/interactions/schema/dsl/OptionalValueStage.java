@@ -5,33 +5,33 @@ import java.util.function.Consumer;
 
 public class OptionalValueStage<S, T> {
     private final S previousStage;
-    private final BiConsumer<S, T> isEqualMutator;
-    private final Consumer<S> isPresentMutator;
-    private final Consumer<S> isEmptyMutator;
+    private final BiConsumer<S, T> isEqualSideEffect;
+    private final Consumer<S> isPresentSideEffect;
+    private final Consumer<S> isEmptySideEffect;
 
     protected OptionalValueStage(
             S previousStage,
-            BiConsumer<S, T> isEqualMutator,
-            Consumer<S> isPresentMutator,
-            Consumer<S> isEmptyMutator) {
+            BiConsumer<S, T> isEqualSideEffect,
+            Consumer<S> isPresentSideEffect,
+            Consumer<S> isEmptySideEffect) {
         this.previousStage = previousStage;
-        this.isEqualMutator = isEqualMutator;
-        this.isPresentMutator = isPresentMutator;
-        this.isEmptyMutator = isEmptyMutator;
+        this.isEqualSideEffect = isEqualSideEffect;
+        this.isPresentSideEffect = isPresentSideEffect;
+        this.isEmptySideEffect = isEmptySideEffect;
     }
 
     public S is(T t) {
-        isEqualMutator.accept(previousStage, t);
+        isEqualSideEffect.accept(previousStage, t);
         return previousStage;
     }
 
     public S isPresent() {
-        isPresentMutator.accept(previousStage);
+        isPresentSideEffect.accept(previousStage);
         return previousStage;
     }
 
     public S isEmpty() {
-        isEmptyMutator.accept(previousStage);
+        isEmptySideEffect.accept(previousStage);
         return previousStage;
     }
 }

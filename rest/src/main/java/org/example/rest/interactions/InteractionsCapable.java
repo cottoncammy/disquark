@@ -11,7 +11,7 @@ import org.example.rest.resources.interactions.EditOriginalInteractionResponse;
 
 public interface InteractionsCapable {
 
-    <D, C extends CompletableInteraction<D>> Multi<C> on(InteractionSchema<D, C> interactionSchema);
+    <D, C extends CompletableInteraction<D>> Multi<C> on(InteractionSchema<D, C> schema);
 
     Uni<Message> getOriginalInteractionResponse(Snowflake applicationId, String interactionToken);
 

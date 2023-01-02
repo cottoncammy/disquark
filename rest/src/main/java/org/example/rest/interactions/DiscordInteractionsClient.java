@@ -11,7 +11,7 @@ import org.example.rest.interactions.schema.InteractionSchema;
 import org.example.rest.request.AccessTokenSource;
 import org.example.rest.request.EmptyRequest;
 import org.example.rest.request.Requester;
-import org.example.rest.request.RequesterFactory;
+import org.example.rest.RequesterFactory;
 import org.example.rest.request.ratelimit.GlobalRateLimiter;
 import org.example.rest.request.ratelimit.RateLimitStrategy;
 import org.example.rest.resources.Snowflake;
@@ -78,8 +78,8 @@ public class DiscordInteractionsClient<T extends Response> extends DiscordClient
     }
 
     @Override
-    public <D, C extends CompletableInteraction<D>> Multi<C> on(InteractionSchema<D, C> interactionSchema) {
-        return getVerticle().on(interactionSchema);
+    public <D, C extends CompletableInteraction<D>> Multi<C> on(InteractionSchema<D, C> schema) {
+        return getVerticle().on(schema);
     }
 
     @Override

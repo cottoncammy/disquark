@@ -5,7 +5,7 @@ import org.example.rest.request.AccessTokenSource;
 import org.example.rest.resources.oauth2.TokenType;
 import org.example.rest.resources.oauth2.AccessToken;
 
-public class BotToken implements AccessTokenSource {
+class BotToken implements AccessTokenSource {
     private final Uni<AccessToken> token;
 
     public static BotToken create(String token) {

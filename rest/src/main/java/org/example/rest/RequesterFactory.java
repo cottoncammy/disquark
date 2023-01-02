@@ -1,6 +1,7 @@
-package org.example.rest.request;
+package org.example.rest;
 
-import org.example.rest.DiscordClient;
+import org.example.rest.request.HttpClientRequester;
+import org.example.rest.request.Requester;
 import org.example.rest.request.ratelimit.GlobalRateLimiter;
 import org.example.rest.request.ratelimit.RateLimitStrategy;
 import org.example.rest.response.HttpResponse;

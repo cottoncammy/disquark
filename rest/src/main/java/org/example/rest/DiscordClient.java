@@ -3,7 +3,6 @@ package org.example.rest;
 import io.vertx.mutiny.core.Vertx;
 import org.example.rest.request.AccessTokenSource;
 import org.example.rest.request.Requester;
-import org.example.rest.request.RequesterFactory;
 import org.example.rest.request.ratelimit.GlobalRateLimiter;
 import org.example.rest.request.ratelimit.RateLimitStrategy;
 import org.example.rest.response.Response;
@@ -31,11 +30,11 @@ public abstract class DiscordClient<T extends Response> {
             this.tokenSource = tokenSource;
         }
 
-        public Vertx getVertx() {
+        protected Vertx getVertx() {
             return vertx;
         }
 
-        public AccessTokenSource getTokenSource() {
+        protected AccessTokenSource getTokenSource() {
             return tokenSource;
         }
 
@@ -44,7 +43,7 @@ public abstract class DiscordClient<T extends Response> {
             return this;
         }
 
-        public GlobalRateLimiter getGlobalRateLimiter() {
+        protected GlobalRateLimiter getGlobalRateLimiter() {
             return globalRateLimiter;
         }
 
@@ -63,7 +62,7 @@ public abstract class DiscordClient<T extends Response> {
             return this;
         }
 
-        public RateLimitStrategy<R> getRateLimitStrategy() {
+        protected RateLimitStrategy<R> getRateLimitStrategy() {
             return rateLimitStrategy;
         }
 

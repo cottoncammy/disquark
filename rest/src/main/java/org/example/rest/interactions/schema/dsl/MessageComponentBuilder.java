@@ -35,7 +35,6 @@ public class MessageComponentBuilder implements Buildable<Interaction.MessageCom
                             Objects.equals(interaction.data().get().customId(), customId) &&
                             Objects.equals(interaction.data().get().componentType(), type);
                 },
-                MessageComponentInteraction::new
-        );
+                MessageComponentInteraction::new);
     }
 }

@@ -7,6 +7,7 @@ import org.example.rest.resources.interactions.Interaction;
 import javax.annotation.Nullable;
 import java.util.Objects;
 
+// TODO equalsIfNotNull
 public class ModalSubmitBuilder implements Buildable<Interaction.ModalSubmitData, ModalSubmitInteraction> {
     @Nullable
     private String customId;
@@ -25,9 +26,7 @@ public class ModalSubmitBuilder implements Buildable<Interaction.ModalSubmitData
                     return interaction.type() == Interaction.Type.MODAL_SUBMIT &&
                             interaction.data().isPresent() &&
                             Objects.equals(interaction.data().get().customId(), customId);
-
                 },
-                ModalSubmitInteraction::new
-        );
+                ModalSubmitInteraction::new);
     }
 }

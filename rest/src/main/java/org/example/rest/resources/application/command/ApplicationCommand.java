@@ -200,30 +200,6 @@ public interface ApplicationCommand {
         }
     }
 
-    // TODO
-    @ImmutableJson
-    @JsonDeserialize(as = ImmutableApplicationCommand.InteractionDataOption.class)
-    interface InteractionDataOption {
-
-        static Builder builder() {
-            return new Builder();
-        }
-
-        String name();
-
-        Option.Type type();
-
-        Optional<Object> value();
-
-        Optional<List<Option>> options();
-
-        Optional<Boolean> focused();
-
-        class Builder extends ImmutableApplicationCommand.InteractionDataOption.Builder {
-            protected Builder() {}
-        }
-    }
-
     class Builder extends ImmutableApplicationCommand.Builder {
         protected Builder() {}
     }

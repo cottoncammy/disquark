@@ -99,7 +99,7 @@ public interface Interaction<T> {
 
         Optional<ResolvedData> resolved();
 
-        Optional<List<ApplicationCommand.InteractionDataOption>> options();
+        Optional<List<ApplicationCommandInteractionDataOption>> options();
 
         @JsonProperty("guild_id")
         Optional<Snowflake> guildId();
@@ -138,7 +138,7 @@ public interface Interaction<T> {
 
         Optional<ResolvedData> resolved();
 
-        Optional<List<ApplicationCommand.InteractionDataOption>> options();
+        Optional<List<ApplicationCommandInteractionDataOption>> options();
 
         @JsonProperty("guild_id")
         Optional<Snowflake> guildId();

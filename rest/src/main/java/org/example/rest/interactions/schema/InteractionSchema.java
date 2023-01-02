@@ -45,7 +45,7 @@ public class InteractionSchema<D, C extends CompletableInteraction<D>> {
         return interactionPredicate.test(interaction);
     }
 
-    protected C toCompletableInteraction(Interaction<D> interaction, HttpServerResponse response, DiscordInteractionsClient<?> interactionsClient) {
+    protected C getCompletableInteraction(Interaction<D> interaction, HttpServerResponse response, DiscordInteractionsClient<?> interactionsClient) {
         return completableInteractionFunction.apply(interaction, response, interactionsClient);
     }
 }

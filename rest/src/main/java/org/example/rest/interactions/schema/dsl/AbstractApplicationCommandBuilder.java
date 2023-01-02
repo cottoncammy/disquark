@@ -7,13 +7,11 @@ import org.example.rest.interactions.DiscordInteractionsClient;
 import org.example.rest.interactions.schema.InteractionSchema;
 import org.example.rest.resources.Snowflake;
 import org.example.rest.resources.application.command.ApplicationCommand;
+import org.example.rest.resources.interactions.ApplicationCommandInteractionDataOption;
 import org.example.rest.resources.interactions.Interaction;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Predicate;
 
 public abstract class AbstractApplicationCommandBuilder<C extends CompletableInteraction<Interaction.ApplicationCommandData>, O extends AbstractApplicationCommandOptionBuilder<O>> implements Buildable<Interaction.ApplicationCommandData, C> {
@@ -65,15 +63,31 @@ public abstract class AbstractApplicationCommandBuilder<C extends CompletableInt
     public InteractionSchema<Interaction.ApplicationCommandData, C> schema() {
         return new InteractionSchema<>(
                 interaction -> {
+                    List<ApplicationCommandInteractionDataOption> interactionOptions = interaction.data()
+                            .flatMap(Interaction.ApplicationCommandData::options)
+                            .orElse(Collections.emptyList());
+
+                    for (O option : options) {
+                        boolean hasOption = false;
+                        for (ApplicationCommandInteractionDataOption interactionOption : interactionOptions) {
+                            if (option.test(interactionOption)) {
+                                hasOption = true;
+                                break;
+                            }
+                        }
+
+                        if (!hasOption) {
+                            return false;
+                        }
+                    }
+
                     return interaction.type() == interactionType &&
                             interaction.data().isPresent() &&
                             Objects.equals(interaction.data().get().id(), id) &&
                             Objects.equals(interaction.data().get().name(), name) &&
                             Objects.equals(interaction.data().get().type(), type) &&
-                            &&
                             guildIdPredicate.test(interaction.guildId());
                 },
-                completableInteractionFunction
-        );
+                completableInteractionFunction);
     }
 }
