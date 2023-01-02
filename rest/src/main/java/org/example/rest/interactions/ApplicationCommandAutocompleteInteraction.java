@@ -22,6 +22,6 @@ public class ApplicationCommandAutocompleteInteraction extends CompletableIntera
                 .data(Interaction.CallbackData.builder().choices(choices).build())
                 .build();
 
-        return response.end(serialize(interactionResponse)).replaceWith(new RespondedInteraction<>(interactionsClient, interaction));
+        return response.end(serialize(interactionResponse)).replaceWith(new RespondedInteraction<>(interaction, interactionsClient));
     }
 }

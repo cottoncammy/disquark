@@ -28,12 +28,12 @@ public class MessageComponentInteraction extends CompletableInteraction<Interact
 
     public Uni<RespondedInteraction<Interaction.MessageComponentData>> deferEdit() {
         return response.end(serialize(Interaction.Response.create(Interaction.CallbackType.DEFERRED_UPDATE_MESSAGE)))
-                .replaceWith(new RespondedInteraction<>(interactionsClient, interaction));
+                .replaceWith(new RespondedInteraction<>(interaction, interactionsClient));
     }
 
     public Uni<RespondedInteraction<Interaction.MessageComponentData>> edit(Interaction.MessageCallbackData data) {
         return response.end(serialize(Interaction.Response.builder().type(Interaction.CallbackType.UPDATE_MESSAGE).data(data).build()))
-                .replaceWith(new RespondedInteraction<>(interactionsClient, interaction));
+                .replaceWith(new RespondedInteraction<>(interaction, interactionsClient));
     }
 
     @Override

@@ -27,7 +27,7 @@ public abstract class CompletableInteraction<T> {
 
     protected Uni<RespondedInteraction<T>> respond(Interaction.MessageCallbackData data) {
         return response.end(serialize(Interaction.Response.builder().type(Interaction.CallbackType.CHANNEL_MESSAGE_WITH_SOURCE).data(data).build()))
-                .replaceWith(new RespondedInteraction<>(interactionsClient, interaction));
+                .replaceWith(new RespondedInteraction<>(interaction, interactionsClient));
     }
 
     protected Uni<RespondedInteraction<T>> deferResponse(boolean ephemeral) {
@@ -35,7 +35,7 @@ public abstract class CompletableInteraction<T> {
         if (ephemeral) {
             builder.data(Interaction.CallbackData.builder().flags(EnumSet.of(Message.Flag.EPHEMERAL)).build());
         }
-        return response.end(serialize(builder.build())).replaceWith(new RespondedInteraction<>(interactionsClient, interaction));
+        return response.end(serialize(builder.build())).replaceWith(new RespondedInteraction<>(interaction, interactionsClient));
     }
 
     protected Uni<RespondedInteraction<T>> popUpModal(String customId, String title, List<Component> components) {
@@ -44,7 +44,7 @@ public abstract class CompletableInteraction<T> {
                 .data(Interaction.CallbackData.builder().customId(customId).title(title).components(components).build())
                 .build();
 
-        return response.end(serialize(interactionResponse)).replaceWith(new RespondedInteraction<>(interactionsClient, interaction));
+        return response.end(serialize(interactionResponse)).replaceWith(new RespondedInteraction<>(interaction, interactionsClient));
     }
 
     public Interaction<T> getInteraction() {

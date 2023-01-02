@@ -3,8 +3,8 @@ package org.example.rest.interactions.dsl;
 import io.smallrye.mutiny.tuples.Functions;
 import io.vertx.mutiny.core.http.HttpServerResponse;
 import org.example.rest.interactions.CompletableInteraction;
-import org.example.rest.interactions.PingInteraction;
 import org.example.rest.interactions.DiscordInteractionsClient;
+import org.example.rest.interactions.PingInteraction;
 import org.example.rest.resources.interactions.Interaction;
 
 import java.util.function.Predicate;
@@ -40,11 +40,11 @@ public class InteractionSchema<D, C extends CompletableInteraction<D>> {
         this.completableInteractionFunction = completableInteractionFunction;
     }
 
-    protected boolean validate(Interaction<D> interaction) {
+    public boolean validate(Interaction<D> interaction) {
         return interactionPredicate.test(interaction);
     }
 
-    protected C getCompletableInteraction(Interaction<D> interaction, HttpServerResponse response, DiscordInteractionsClient<?> interactionsClient) {
+    public C getCompletableInteraction(Interaction<D> interaction, HttpServerResponse response, DiscordInteractionsClient<?> interactionsClient) {
         return completableInteractionFunction.apply(interaction, response, interactionsClient);
     }
 }

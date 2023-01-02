@@ -45,6 +45,7 @@
         <bouncycastle.version>1.70</bouncycastle.version>
         <bucket4j-version>8.1.0</bucket4j-version>
         <immutables.version>2.9.3</immutables.version>
+        <jboss-logging.version>3.5.0.Final</jboss-logging.version>
         <jackson.version>2.13.3</jackson.version>
         <jakarta-annotations.version>2.1.1</jakarta-annotations.version>
         <jsr305.version>3.0.2</jsr305.version>
@@ -124,6 +125,11 @@
                 <artifactId>value-annotations</artifactId>
                 <version>${immutables.version}</version>
                 <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.logging</groupId>
+                <artifactId>jboss-logging</artifactId>
+                <version>${jboss-logging.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.junit.jupiter</groupId>

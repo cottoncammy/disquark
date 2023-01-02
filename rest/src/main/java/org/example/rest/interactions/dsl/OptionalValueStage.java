@@ -3,7 +3,7 @@ package org.example.rest.interactions.dsl;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
-public class OptionalValueStage<S, T> {
+class OptionalValueStage<S, T> {
     private final S previousStage;
     private final BiConsumer<S, T> isEqualSideEffect;
     private final Consumer<S> isPresentSideEffect;

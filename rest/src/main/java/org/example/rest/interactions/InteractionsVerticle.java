@@ -5,7 +5,6 @@ import io.smallrye.mutiny.Uni;
 import io.smallrye.mutiny.operators.multi.processors.BroadcastProcessor;
 import io.smallrye.mutiny.vertx.core.AbstractVerticle;
 import io.vertx.core.http.HttpMethod;
-import io.vertx.core.json.Json;
 import io.vertx.mutiny.core.buffer.Buffer;
 import io.vertx.mutiny.core.http.HttpServer;
 import io.vertx.mutiny.core.http.HttpServerRequest;
@@ -95,12 +94,11 @@ class InteractionsVerticle extends AbstractVerticle {
     }
 
     public <D, C extends CompletableInteraction<D>> Multi<C> on(InteractionSchema<D, C> schema) {
-        return processor.onItem().transformToMultiAndMerge(context -> {
+        return processor.onItem().transformToUniAndMerge(context -> {
             Interaction<D> interaction = context.get("interaction");
             if (!schema.validate(interaction)) {
-                return Uni.createFrom().voidItem();
+                return Uni.createFrom().nullItem();
             }
-
             return Uni.createFrom().item(schema.getCompletableInteraction(interaction, context.response(), interactionsClient));
         });
     }

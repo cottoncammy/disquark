@@ -41,6 +41,8 @@ import org.example.rest.resources.guild.template.GuildTemplate;
 import org.example.rest.resources.guild.template.ModifyGuildTemplate;
 import org.example.rest.resources.invite.GetInvite;
 import org.example.rest.resources.invite.Invite;
+import org.example.rest.resources.oauth2.AccessToken;
+import org.example.rest.resources.oauth2.TokenType;
 import org.example.rest.resources.permissions.Role;
 import org.example.rest.resources.stageinstance.CreateStageInstance;
 import org.example.rest.resources.stageinstance.ModifyStageInstance;
@@ -75,7 +77,7 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public static <T extends Response> Builder<T> builder(Vertx vertx, String token) {
-        return builder(vertx, BotToken.create(requireNonNull(token)));
+        return builder(vertx, BotToken.create(token));
     }
 
     @SuppressWarnings("unchecked")
@@ -751,6 +753,23 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
         @Override
         public DiscordBotClient<T> build() {
             return new DiscordBotClient<>(vertx, getRequesterFactory().apply(this), getInteractionsClientOptions());
+        }
+    }
+
+    private static class BotToken implements AccessTokenSource {
+        private final Uni<AccessToken> token;
+
+        public static BotToken create(String token) {
+            return new BotToken(requireNonNull(token));
+        }
+
+        private BotToken(String token) {
+            this.token = Uni.createFrom().item(AccessToken.builder().tokenType(TokenType.BOT).accessToken(token).build());
+        }
+
+        @Override
+        public Uni<AccessToken> getToken() {
+            return token;
         }
     }
 }
