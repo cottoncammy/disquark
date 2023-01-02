@@ -3,7 +3,7 @@ package org.example.rest.response;
 import io.smallrye.mutiny.Uni;
 import io.vertx.mutiny.core.http.HttpClientResponse;
 import io.vertx.mutiny.core.http.HttpHeaders;
-import org.example.rest.request.codec.Codec;
+import org.example.rest.request.Codec;
 
 import java.util.Map;
 

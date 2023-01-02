@@ -1,4 +1,4 @@
-package org.example.rest.request.codec;
+package org.example.rest.request;
 
 import io.netty.handler.codec.http.multipart.HttpPostRequestEncoder.EncoderMode;
 import io.vertx.ext.web.client.impl.MultipartFormUpload;
@@ -7,12 +7,11 @@ import io.vertx.mutiny.core.Vertx;
 import io.vertx.mutiny.core.buffer.Buffer;
 import io.vertx.mutiny.core.streams.ReadStream;
 import io.vertx.mutiny.ext.web.multipart.MultipartForm;
-import org.example.rest.request.Request;
 
 import java.util.List;
 import java.util.Map;
 
-public class MultipartCodec implements Codec {
+class MultipartCodec implements Codec {
     private final Vertx vertx;
     private final Codec jsonCodec;
 

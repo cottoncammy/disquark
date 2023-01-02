@@ -1,13 +1,12 @@
-package org.example.rest.interactions.schema.dsl;
+package org.example.rest.interactions.dsl;
 
 import org.example.rest.interactions.ModalSubmitInteraction;
-import org.example.rest.interactions.schema.InteractionSchema;
 import org.example.rest.resources.interactions.Interaction;
 
 import javax.annotation.Nullable;
 import java.util.Objects;
+import java.util.Optional;
 
-// TODO equalsIfNotNull
 public class ModalSubmitBuilder implements Buildable<Interaction.ModalSubmitData, ModalSubmitInteraction> {
     @Nullable
     private String customId;
@@ -23,9 +22,9 @@ public class ModalSubmitBuilder implements Buildable<Interaction.ModalSubmitData
     public InteractionSchema<Interaction.ModalSubmitData, ModalSubmitInteraction> schema() {
         return new InteractionSchema<>(
                 interaction -> {
+                    Optional<Interaction.ModalSubmitData> data = interaction.data();
                     return interaction.type() == Interaction.Type.MODAL_SUBMIT &&
-                            interaction.data().isPresent() &&
-                            Objects.equals(interaction.data().get().customId(), customId);
+                            (customId == null || Objects.equals(customId, data.map(Interaction.ModalSubmitData::customId).orElse(null)));
                 },
                 ModalSubmitInteraction::new);
     }

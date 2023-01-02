@@ -1,7 +1,7 @@
 package org.example.rest.interactions;
 
 import io.smallrye.mutiny.Uni;
-import io.vertx.mutiny.core.buffer.Buffer;
+import io.vertx.core.json.Json;
 import io.vertx.mutiny.core.http.HttpServerResponse;
 import org.example.rest.resources.channel.message.Message;
 import org.example.rest.resources.interactions.Interaction;
@@ -21,8 +21,8 @@ public abstract class CompletableInteraction<T> {
         this.interactionsClient = interactionsClient;
     }
 
-    protected Buffer serialize(Object obj) {
-        return interactionsClient.getJsonCodec().serialize(obj);
+    protected String serialize(Object obj) {
+        return Json.encode(obj);
     }
 
     protected Uni<RespondedInteraction<T>> respond(Interaction.MessageCallbackData data) {
@@ -31,7 +31,7 @@ public abstract class CompletableInteraction<T> {
     }
 
     protected Uni<RespondedInteraction<T>> deferResponse(boolean ephemeral) {
-        Interaction.Response.Builder builder = Interaction.Response.builder().type(Interaction.CallbackType.DEFERRED_CHANNEL_MESSAGE_WITH_SOURCE);
+        Interaction.Response.Builder<Interaction.CallbackData> builder = Interaction.Response.<Interaction.CallbackData>builder().type(Interaction.CallbackType.DEFERRED_CHANNEL_MESSAGE_WITH_SOURCE);
         if (ephemeral) {
             builder.data(Interaction.CallbackData.builder().flags(EnumSet.of(Message.Flag.EPHEMERAL)).build());
         }

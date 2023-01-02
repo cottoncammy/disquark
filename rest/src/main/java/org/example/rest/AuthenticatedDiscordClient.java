@@ -7,7 +7,7 @@ import io.vertx.mutiny.core.Vertx;
 import org.example.rest.interactions.CompletableInteraction;
 import org.example.rest.interactions.DiscordInteractionsClient;
 import org.example.rest.interactions.InteractionsCapable;
-import org.example.rest.interactions.schema.InteractionSchema;
+import org.example.rest.interactions.dsl.InteractionSchema;
 import org.example.rest.request.AccessTokenSource;
 import org.example.rest.request.EmptyRequest;
 import org.example.rest.request.Requester;
@@ -121,10 +121,6 @@ public abstract class AuthenticatedDiscordClient<T extends Response> extends Dis
     protected DiscordInteractionsClient<T> buildInteractionsClient(DiscordInteractionsClient.Builder<T> builder) {
         if (interactionsClientOptions.getRouter() != null) {
             builder.router(interactionsClientOptions.getRouter());
-        }
-
-        if (interactionsClientOptions.getJsonCodec() != null) {
-            builder.jsonCodec(interactionsClientOptions.getJsonCodec());
         }
 
         if (interactionsClientOptions.getHttpServer() != null) {

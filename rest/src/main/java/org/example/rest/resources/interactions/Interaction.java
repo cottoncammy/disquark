@@ -27,8 +27,8 @@ import java.util.Optional;
 @JsonDeserialize(as = ImmutableInteraction.class)
 public interface Interaction<T> {
 
-    static Builder builder() {
-        return new Builder();
+    static <T> Builder<T> builder() {
+        return new Builder<>();
     }
 
     Snowflake id();
@@ -219,11 +219,10 @@ public interface Interaction<T> {
     @JsonDeserialize(as = ImmutableInteraction.Response.class)
     interface Response<T> {
 
-        static Builder builder() {
-            return new Builder();
+        static <T> Builder<T> builder() {
+            return new Builder<>();
         }
 
-        // TODO
         static <T> Response<T> create(CallbackType type) {
             return ImmutableInteraction.Response.create(type);
         }
@@ -232,7 +231,7 @@ public interface Interaction<T> {
 
         Optional<T> data();
 
-        class Builder extends ImmutableInteraction.Response.Builder {
+        class Builder<T> extends ImmutableInteraction.Response.Builder<T> {
             protected Builder() {}
         }
     }
@@ -319,7 +318,7 @@ public interface Interaction<T> {
         }
     }
 
-    class Builder extends ImmutableInteraction.Builder {
+    class Builder<T> extends ImmutableInteraction.Builder<T> {
         protected Builder() {}
     }
 }

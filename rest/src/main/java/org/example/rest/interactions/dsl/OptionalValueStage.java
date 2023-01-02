@@ -1,4 +1,4 @@
-package org.example.rest.interactions.schema.dsl;
+package org.example.rest.interactions.dsl;
 
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;

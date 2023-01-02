@@ -7,7 +7,7 @@ import io.vertx.mutiny.core.Vertx;
 import io.vertx.mutiny.core.http.HttpServer;
 import io.vertx.mutiny.ext.web.Router;
 import org.example.rest.DiscordClient;
-import org.example.rest.interactions.schema.InteractionSchema;
+import org.example.rest.interactions.dsl.InteractionSchema;
 import org.example.rest.request.AccessTokenSource;
 import org.example.rest.request.EmptyRequest;
 import org.example.rest.request.Requester;
@@ -28,7 +28,6 @@ import static org.example.rest.util.Variables.variables;
 
 public class DiscordInteractionsClient<T extends Response> extends DiscordClient<T> implements InteractionsCapable {
     private final Router router;
-    private final ServerCodec jsonCodec;
     private final HttpServer httpServer;
     private final String interactionsUrl;
     private final InteractionValidator validator;
@@ -48,13 +47,11 @@ public class DiscordInteractionsClient<T extends Response> extends DiscordClient
             Vertx vertx,
             Requester<T> requester,
             Router router,
-            ServerCodec jsonCodec,
             HttpServer httpServer,
             String interactionsUrl,
             InteractionValidator validator) {
         super(vertx, requester);
         this.router = router;
-        this.jsonCodec = jsonCodec;
         this.httpServer = httpServer;
         this.interactionsUrl = interactionsUrl;
         this.validator = validator;
@@ -65,16 +62,12 @@ public class DiscordInteractionsClient<T extends Response> extends DiscordClient
         if (verticle == null) {
             synchronized (this) {
                 if (verticle == null) {
-                    verticle = new InteractionsVerticle(router, jsonCodec, httpServer, interactionsUrl, validator, this);
+                    verticle = new InteractionsVerticle(router, httpServer, interactionsUrl, validator, this);
                     vertx.deployVerticleAndAwait(verticle);
                 }
             }
         }
         return verticle;
-    }
-
-    ServerCodec getJsonCodec() {
-        return jsonCodec;
     }
 
     @Override
@@ -124,7 +117,6 @@ public class DiscordInteractionsClient<T extends Response> extends DiscordClient
     public static class Builder<T extends Response> extends DiscordClient.Builder<T, DiscordInteractionsClient<T>> {
         protected final String verifyKey;
         protected Router router;
-        protected ServerCodec jsonCodec;
         protected HttpServer httpServer;
         protected String interactionsUrl;
         protected Function<String, InteractionValidator> validatorFactory;
@@ -136,11 +128,6 @@ public class DiscordInteractionsClient<T extends Response> extends DiscordClient
 
         public Builder<T> router(Router router) {
             this.router = requireNonNull(router);
-            return this;
-        }
-
-        public Builder<T> jsonCodec(ServerCodec jsonCodec) {
-            this.jsonCodec = requireNonNull(jsonCodec);
             return this;
         }
 
@@ -184,9 +171,9 @@ public class DiscordInteractionsClient<T extends Response> extends DiscordClient
             }
 
             return new DiscordInteractionsClient<>(
-                    vertx, getRequesterFactory().apply(this),
+                    vertx,
+                    getRequesterFactory().apply(this),
                     router == null ? Router.router(vertx) : router,
-                    jsonCodec == null ? ServerCodec.DEFAULT_JSON_CODEC : jsonCodec,
                     httpServer == null ? vertx.createHttpServer() : httpServer,
                     interactionsUrl == null ? "/" : interactionsUrl,
                     validatorFactory.apply(verifyKey));
@@ -196,7 +183,6 @@ public class DiscordInteractionsClient<T extends Response> extends DiscordClient
     public static class Options {
         protected Router router;
         protected String verifyKey;
-        protected ServerCodec jsonCodec;
         protected HttpServer httpServer;
         protected String interactionsUrl;
         protected Function<String, InteractionValidator> validatorFactory;
@@ -217,15 +203,6 @@ public class DiscordInteractionsClient<T extends Response> extends DiscordClient
 
         public String getVerifyKey() {
             return verifyKey;
-        }
-
-        public Options setJsonCodec(ServerCodec jsonCodec) {
-            this.jsonCodec = requireNonNull(jsonCodec);
-            return this;
-        }
-
-        public ServerCodec getJsonCodec() {
-            return jsonCodec;
         }
 
         public Options setHttpServer(HttpServer httpServer) {

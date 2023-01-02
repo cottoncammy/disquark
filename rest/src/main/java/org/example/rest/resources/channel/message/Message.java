@@ -11,7 +11,7 @@ import org.example.immutables.ImmutableJson;
 import org.example.rest.resources.application.Application;
 import org.example.rest.resources.channel.Channel;
 import org.example.rest.resources.emoji.Emoji;
-import org.example.rest.resources.interactions.Interaction;
+import org.example.rest.resources.interactions.MessageInteraction;
 import org.example.rest.resources.interactions.components.Component;
 import org.example.rest.resources.sticker.Sticker;
 import org.example.rest.resources.user.User;
@@ -91,7 +91,7 @@ public interface Message {
     @JsonProperty("referenced_message")
     Optional<Message> referencedMessage();
 
-    Optional<Interaction<Interaction.Data>> interaction();
+    Optional<MessageInteraction> interaction();
 
     Optional<Channel> thread();
 

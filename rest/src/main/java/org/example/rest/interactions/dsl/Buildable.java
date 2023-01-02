@@ -1,7 +1,6 @@
-package org.example.rest.interactions.schema.dsl;
+package org.example.rest.interactions.dsl;
 
 import org.example.rest.interactions.CompletableInteraction;
-import org.example.rest.interactions.schema.InteractionSchema;
 
 public interface Buildable<D, C extends CompletableInteraction<D>> {
 

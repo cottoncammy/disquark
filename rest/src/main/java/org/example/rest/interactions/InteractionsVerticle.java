@@ -5,6 +5,7 @@ import io.smallrye.mutiny.Uni;
 import io.smallrye.mutiny.operators.multi.processors.BroadcastProcessor;
 import io.smallrye.mutiny.vertx.core.AbstractVerticle;
 import io.vertx.core.http.HttpMethod;
+import io.vertx.core.json.Json;
 import io.vertx.mutiny.core.buffer.Buffer;
 import io.vertx.mutiny.core.http.HttpServer;
 import io.vertx.mutiny.core.http.HttpServerRequest;
@@ -12,14 +13,13 @@ import io.vertx.mutiny.ext.web.Route;
 import io.vertx.mutiny.ext.web.Router;
 import io.vertx.mutiny.ext.web.RoutingContext;
 import io.vertx.mutiny.ext.web.handler.ResponseContentTypeHandler;
-import org.example.rest.interactions.schema.InteractionSchema;
+import org.example.rest.interactions.dsl.InteractionSchema;
 import org.example.rest.resources.interactions.Interaction;
 
 import java.util.function.Consumer;
 
 class InteractionsVerticle extends AbstractVerticle {
     private final Router router;
-    private final ServerCodec jsonCodec;
     private final HttpServer httpServer;
     private final String interactionsUrl;
     private final InteractionValidator interactionValidator;
@@ -28,13 +28,11 @@ class InteractionsVerticle extends AbstractVerticle {
 
     public InteractionsVerticle(
             Router router,
-            ServerCodec jsonCodec,
             HttpServer httpServer,
             String interactionsUrl,
             InteractionValidator interactionValidator,
             DiscordInteractionsClient<?> interactionsClient) {
         this.router = router;
-        this.jsonCodec = jsonCodec;
         this.httpServer = httpServer;
         this.interactionsUrl = interactionsUrl;
         this.interactionValidator = interactionValidator;
@@ -58,7 +56,7 @@ class InteractionsVerticle extends AbstractVerticle {
                             return Uni.createFrom().voidItem();
                         })
                         .onFailure(UnauthorizedException.class).invoke(() -> context.fail(401))
-                        .map(body -> jsonCodec.deserialize(body, Interaction.class))
+                        .map(body -> body.toJsonObject().mapTo(Interaction.class))
                         .onFailure(IllegalArgumentException.class).invoke(() -> context.fail(400))
                         .call(interaction -> {
                             if (interaction.type() == Interaction.Type.PING) {

@@ -1,4 +1,4 @@
-package org.example.rest.interactions.schema.dsl;
+package org.example.rest.interactions.dsl;
 
 import org.example.rest.interactions.ApplicationCommandInteraction;
 import org.example.rest.resources.interactions.Interaction;

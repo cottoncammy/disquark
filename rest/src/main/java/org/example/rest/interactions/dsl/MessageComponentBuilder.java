@@ -1,12 +1,12 @@
-package org.example.rest.interactions.schema.dsl;
+package org.example.rest.interactions.dsl;
 
 import org.example.rest.interactions.MessageComponentInteraction;
-import org.example.rest.interactions.schema.InteractionSchema;
 import org.example.rest.resources.interactions.Interaction;
 import org.example.rest.resources.interactions.components.Component;
 
 import javax.annotation.Nullable;
 import java.util.Objects;
+import java.util.Optional;
 
 public class MessageComponentBuilder implements Buildable<Interaction.MessageComponentData, MessageComponentInteraction> {
     @Nullable
@@ -30,10 +30,10 @@ public class MessageComponentBuilder implements Buildable<Interaction.MessageCom
     public InteractionSchema<Interaction.MessageComponentData, MessageComponentInteraction> schema() {
         return new InteractionSchema<>(
                 interaction -> {
+                    Optional<Interaction.MessageComponentData> data = interaction.data();
                     return interaction.type() == Interaction.Type.MESSAGE_COMPONENT &&
-                            interaction.data().isPresent() &&
-                            Objects.equals(interaction.data().get().customId(), customId) &&
-                            Objects.equals(interaction.data().get().componentType(), type);
+                            (customId == null || Objects.equals(customId, data.map(Interaction.MessageComponentData::customId).orElse(null))) &&
+                            (type == null || Objects.equals(type, data.map(Interaction.MessageComponentData::componentType).orElse(null)));
                 },
                 MessageComponentInteraction::new);
     }

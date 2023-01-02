@@ -1,10 +1,9 @@
-package org.example.rest.interactions.schema.dsl;
+package org.example.rest.interactions.dsl;
 
 import io.smallrye.mutiny.tuples.Functions;
 import io.vertx.mutiny.core.http.HttpServerResponse;
 import org.example.rest.interactions.CompletableInteraction;
 import org.example.rest.interactions.DiscordInteractionsClient;
-import org.example.rest.interactions.schema.InteractionSchema;
 import org.example.rest.resources.Snowflake;
 import org.example.rest.resources.application.command.ApplicationCommand;
 import org.example.rest.resources.interactions.ApplicationCommandInteractionDataOption;
@@ -81,11 +80,11 @@ public abstract class AbstractApplicationCommandBuilder<C extends CompletableInt
                         }
                     }
 
+                    Optional<Interaction.ApplicationCommandData> data = interaction.data();
                     return interaction.type() == interactionType &&
-                            interaction.data().isPresent() &&
-                            Objects.equals(interaction.data().get().id(), id) &&
-                            Objects.equals(interaction.data().get().name(), name) &&
-                            Objects.equals(interaction.data().get().type(), type) &&
+                            (id == null || Objects.equals(id, data.map(Interaction.ApplicationCommandData::id).orElse(null))) &&
+                            (name == null || Objects.equals(name, data.map(Interaction.ApplicationCommandData::name).orElse(null))) &&
+                            (type == null || Objects.equals(type, data.map(Interaction.ApplicationCommandData::type).orElse(null))) &&
                             guildIdPredicate.test(interaction.guildId());
                 },
                 completableInteractionFunction);

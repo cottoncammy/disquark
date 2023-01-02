@@ -9,7 +9,7 @@ import java.util.List;
 
 public class ApplicationCommandAutocompleteInteraction extends CompletableInteraction<Interaction.ApplicationCommandData> {
 
-    ApplicationCommandAutocompleteInteraction(
+    public ApplicationCommandAutocompleteInteraction(
             Interaction<Interaction.ApplicationCommandData> interaction,
             HttpServerResponse response,
             DiscordInteractionsClient<?> interactionsClient) {

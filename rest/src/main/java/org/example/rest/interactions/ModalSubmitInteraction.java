@@ -6,7 +6,7 @@ import org.example.rest.resources.interactions.Interaction;
 
 public class ModalSubmitInteraction extends CompletableInteraction<Interaction.ModalSubmitData> {
 
-    ModalSubmitInteraction(
+    public ModalSubmitInteraction(
             Interaction<Interaction.ModalSubmitData> interaction,
             HttpServerResponse response,
             DiscordInteractionsClient<?> interactionsClient) {

@@ -3,7 +3,7 @@ package org.example.rest.interactions;
 import io.vertx.mutiny.core.buffer.Buffer;
 import org.bouncycastle.math.ec.rfc8032.Ed25519;
 
-public class BouncyCastleInteractionValidator extends InteractionValidator {
+class BouncyCastleInteractionValidator extends InteractionValidator {
 
     BouncyCastleInteractionValidator(String verifyKey) {
         super(verifyKey);

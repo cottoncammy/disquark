@@ -1,11 +1,10 @@
-package org.example.rest.interactions.schema;
+package org.example.rest.interactions.dsl;
 
 import io.smallrye.mutiny.tuples.Functions;
 import io.vertx.mutiny.core.http.HttpServerResponse;
 import org.example.rest.interactions.CompletableInteraction;
 import org.example.rest.interactions.PingInteraction;
 import org.example.rest.interactions.DiscordInteractionsClient;
-import org.example.rest.interactions.schema.dsl.*;
 import org.example.rest.resources.interactions.Interaction;
 
 import java.util.function.Predicate;

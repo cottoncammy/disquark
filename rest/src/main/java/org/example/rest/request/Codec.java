@@ -1,4 +1,4 @@
-package org.example.rest.request.codec;
+package org.example.rest.request;
 
 import io.vertx.mutiny.core.MultiMap;
 import io.vertx.mutiny.core.buffer.Buffer;

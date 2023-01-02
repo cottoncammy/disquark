@@ -1,4 +1,4 @@
-package org.example.rest.interactions.schema.dsl;
+package org.example.rest.interactions.dsl;
 
 import org.example.rest.resources.application.command.ApplicationCommand;
 import org.example.rest.resources.interactions.ApplicationCommandInteractionDataOption;
@@ -7,7 +7,6 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.function.Predicate;
 
 public abstract class AbstractApplicationCommandOptionBuilder<O extends AbstractApplicationCommandOptionBuilder<O>> implements Predicate<ApplicationCommandInteractionDataOption> {
@@ -38,11 +37,11 @@ public abstract class AbstractApplicationCommandOptionBuilder<O extends Abstract
     @Override
     public boolean test(ApplicationCommandInteractionDataOption interactionOption) {
         for (O option : options) {
-            if (!interactionOption.options().orElse(Collections.emptyList()).stream().anyMatch(option)) {
+            if (interactionOption.options().orElse(Collections.emptyList()).stream().noneMatch(option)) {
                 return false;
             }
         }
 
-        return Objects.equals(interactionOption.name(), name) && Objects.equals(interactionOption.type(), type);
+        return (name == null || name.equals(interactionOption.name())) && (type == null || type.equals(interactionOption.type()));
     }
 }

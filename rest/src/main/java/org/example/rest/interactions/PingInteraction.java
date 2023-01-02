@@ -6,7 +6,7 @@ import org.example.rest.resources.interactions.Interaction;
 
 public class PingInteraction extends CompletableInteraction<Void> {
 
-    PingInteraction(
+    public PingInteraction(
             Interaction<Void> interaction,
             HttpServerResponse response,
             DiscordInteractionsClient<?> interactionsClient) {

@@ -6,22 +6,16 @@ import static org.example.rest.response.DiscordException.rateLimitIsExhausted;
 
 import io.smallrye.mutiny.Uni;
 import io.vertx.core.http.RequestOptions;
-import io.vertx.mutiny.core.MultiMap;
 import io.vertx.mutiny.core.Vertx;
 import io.vertx.mutiny.core.http.HttpClient;
-import io.vertx.mutiny.core.http.HttpClientRequest;
 import io.vertx.mutiny.core.http.HttpClientResponse;
 import io.vertx.mutiny.core.http.HttpHeaders;
-import org.example.rest.request.codec.Codec;
-import org.example.rest.request.codec.JsonCodec;
-import org.example.rest.request.codec.MultipartCodec;
 import org.example.rest.request.ratelimit.GlobalRateLimiter;
 import org.example.rest.response.*;
 
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Consumer;
 
 public class HttpClientRequester implements Requester<HttpResponse> {
     private final URI baseUrl;

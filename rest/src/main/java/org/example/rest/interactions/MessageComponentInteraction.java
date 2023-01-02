@@ -9,7 +9,7 @@ import java.util.List;
 
 public class MessageComponentInteraction extends CompletableInteraction<Interaction.MessageComponentData> {
 
-    MessageComponentInteraction(
+    public MessageComponentInteraction(
             Interaction<Interaction.MessageComponentData> interaction,
             HttpServerResponse response,
             DiscordInteractionsClient<?> interactionsClient) {
