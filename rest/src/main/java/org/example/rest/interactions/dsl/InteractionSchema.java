@@ -1,6 +1,5 @@
 package org.example.rest.interactions.dsl;
 
-import io.smallrye.mutiny.tuples.Functions;
 import io.vertx.mutiny.core.http.HttpServerResponse;
 import org.example.rest.interactions.CompletableInteraction;
 import org.example.rest.interactions.DiscordInteractionsClient;
@@ -9,42 +8,39 @@ import org.example.rest.resources.interactions.Interaction;
 
 import java.util.function.Predicate;
 
-public class InteractionSchema<D, C extends CompletableInteraction<D>> {
-    private final Predicate<Interaction<D>> interactionPredicate;
-    private final Functions.Function3<Interaction<D>, HttpServerResponse, DiscordInteractionsClient<?>, C> completableInteractionFunction;
+public interface InteractionSchema<D, C extends CompletableInteraction<D>> {
 
-    public static InteractionSchema<Void, PingInteraction> ping() {
-        return new InteractionSchema<>(interaction -> interaction.type() == Interaction.Type.PING, PingInteraction::new);
+    static InteractionSchema<Void, PingInteraction> ping() {
+        return new InteractionSchema<>() {
+            @Override
+            public boolean validate(Interaction<Void> interaction) {
+                return interaction.type() == Interaction.Type.PING;
+            }
+
+            @Override
+            public PingInteraction getCompletableInteraction(Interaction<Void> interaction, HttpServerResponse response, DiscordInteractionsClient<?> interactionsClient) {
+                return new PingInteraction(interaction, response, interactionsClient);
+            }
+        };
     }
 
-    public static ApplicationCommandBuilder applicationCommand() {
+    static ApplicationCommandBuilder applicationCommand() {
         return new ApplicationCommandBuilder();
     }
 
-    public static MessageComponentBuilder messageComponent() {
+    static MessageComponentBuilder messageComponent() {
         return new MessageComponentBuilder();
     }
 
-    public static ApplicationCommandAutocompleteBuilder applicationCommandAutocomplete() {
+    static ApplicationCommandAutocompleteBuilder applicationCommandAutocomplete() {
         return new ApplicationCommandAutocompleteBuilder();
     }
 
-    public static ModalSubmitBuilder modalSubmit() {
+    static ModalSubmitBuilder modalSubmit() {
         return new ModalSubmitBuilder();
     }
 
-    protected InteractionSchema(
-            Predicate<Interaction<D>> interactionPredicate,
-            Functions.Function3<Interaction<D>, HttpServerResponse, DiscordInteractionsClient<?>, C> completableInteractionFunction) {
-        this.interactionPredicate = interactionPredicate;
-        this.completableInteractionFunction = completableInteractionFunction;
-    }
+    boolean validate(Interaction<D> interaction);
 
-    public boolean validate(Interaction<D> interaction) {
-        return interactionPredicate.test(interaction);
-    }
-
-    public C getCompletableInteraction(Interaction<D> interaction, HttpServerResponse response, DiscordInteractionsClient<?> interactionsClient) {
-        return completableInteractionFunction.apply(interaction, response, interactionsClient);
-    }
+    C getCompletableInteraction(Interaction<D> interaction, HttpServerResponse response, DiscordInteractionsClient<?> interactionsClient);
 }

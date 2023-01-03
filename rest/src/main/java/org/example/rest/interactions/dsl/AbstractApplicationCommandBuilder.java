@@ -13,7 +13,7 @@ import javax.annotation.Nullable;
 import java.util.*;
 import java.util.function.Predicate;
 
-public abstract class AbstractApplicationCommandBuilder<C extends CompletableInteraction<Interaction.ApplicationCommandData>, O extends AbstractApplicationCommandOptionBuilder<O>> implements Buildable<Interaction.ApplicationCommandData, C> {
+public abstract class AbstractApplicationCommandBuilder<C extends CompletableInteraction<Interaction.ApplicationCommandData>, O extends AbstractApplicationCommandOptionBuilder<O>> implements InteractionSchema<Interaction.ApplicationCommandData, C> {
     private final Interaction.Type interactionType;
     private final Functions.Function3<Interaction<Interaction.ApplicationCommandData>, HttpServerResponse, DiscordInteractionsClient<?>, C> completableInteractionFunction;
 
@@ -59,34 +59,35 @@ public abstract class AbstractApplicationCommandBuilder<C extends CompletableInt
     }
 
     @Override
-    public InteractionSchema<Interaction.ApplicationCommandData, C> schema() {
-        return new InteractionSchema<>(
-                interaction -> {
-                    List<ApplicationCommandInteractionDataOption> interactionOptions = interaction.data()
-                            .flatMap(Interaction.ApplicationCommandData::options)
-                            .orElse(Collections.emptyList());
+    public boolean validate(Interaction<Interaction.ApplicationCommandData> interaction) {
+        List<ApplicationCommandInteractionDataOption> interactionOptions = interaction.data()
+                .flatMap(Interaction.ApplicationCommandData::options)
+                .orElse(Collections.emptyList());
 
-                    for (O option : options) {
-                        boolean hasOption = false;
-                        for (ApplicationCommandInteractionDataOption interactionOption : interactionOptions) {
-                            if (option.test(interactionOption)) {
-                                hasOption = true;
-                                break;
-                            }
-                        }
+        for (O option : options) {
+            boolean hasOption = false;
+            for (ApplicationCommandInteractionDataOption interactionOption : interactionOptions) {
+                if (option.test(interactionOption)) {
+                    hasOption = true;
+                    break;
+                }
+            }
 
-                        if (!hasOption) {
-                            return false;
-                        }
-                    }
+            if (!hasOption) {
+                return false;
+            }
+        }
 
-                    Optional<Interaction.ApplicationCommandData> data = interaction.data();
-                    return interaction.type() == interactionType &&
-                            (id == null || Objects.equals(id, data.map(Interaction.ApplicationCommandData::id).orElse(null))) &&
-                            (name == null || Objects.equals(name, data.map(Interaction.ApplicationCommandData::name).orElse(null))) &&
-                            (type == null || Objects.equals(type, data.map(Interaction.ApplicationCommandData::type).orElse(null))) &&
-                            guildIdPredicate.test(interaction.guildId());
-                },
-                completableInteractionFunction);
+        Optional<Interaction.ApplicationCommandData> data = interaction.data();
+        return interaction.type() == interactionType &&
+                (id == null || Objects.equals(id, data.map(Interaction.ApplicationCommandData::id).orElse(null))) &&
+                (name == null || Objects.equals(name, data.map(Interaction.ApplicationCommandData::name).orElse(null))) &&
+                (type == null || Objects.equals(type, data.map(Interaction.ApplicationCommandData::type).orElse(null))) &&
+                guildIdPredicate.test(interaction.guildId());
+    }
+
+    @Override
+    public C getCompletableInteraction(Interaction<Interaction.ApplicationCommandData> interaction, HttpServerResponse response, DiscordInteractionsClient<?> interactionsClient) {
+        return completableInteractionFunction.apply(interaction, response, interactionsClient);
     }
 }
