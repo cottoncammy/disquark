@@ -1,8 +1,8 @@
-package org.example.rest.resources.channel.thread;
+package org.example.rest.resources.channel;
 
 import org.example.immutables.ImmutableBuilder;
 import org.example.rest.resources.Snowflake;
-import org.immutables.value.Value.Immutable;
+import org.example.rest.resources.channel.thread.ImmutableListThreads;
 
 import java.time.Instant;
 import java.util.Optional;

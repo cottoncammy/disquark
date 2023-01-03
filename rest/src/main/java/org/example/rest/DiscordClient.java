@@ -19,6 +19,14 @@ public abstract class DiscordClient<T extends Response> {
         this.requester = requester;
     }
 
+    public Vertx getVertx() {
+        return vertx;
+    }
+
+    public Requester<T> getRequester() {
+        return requester;
+    }
+
     public abstract static class Builder<R extends Response, T extends DiscordClient<R>> {
         protected final Vertx vertx;
         protected final AccessTokenSource tokenSource;

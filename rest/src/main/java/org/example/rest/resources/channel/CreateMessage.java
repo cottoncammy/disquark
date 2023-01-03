@@ -1,4 +1,4 @@
-package org.example.rest.resources.channel.message;
+package org.example.rest.resources.channel;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -8,6 +8,9 @@ import io.vertx.core.http.HttpMethod;
 import org.example.rest.request.*;
 import org.example.rest.resources.Snowflake;
 import org.example.immutables.ImmutableJson;
+import org.example.rest.resources.channel.message.AllowedMentions;
+import org.example.rest.resources.channel.message.ImmutableCreateMessage;
+import org.example.rest.resources.channel.message.Message;
 import org.example.rest.resources.interactions.components.Component;
 
 import java.util.EnumSet;

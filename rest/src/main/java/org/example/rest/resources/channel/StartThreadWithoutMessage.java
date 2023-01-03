@@ -1,4 +1,4 @@
-package org.example.rest.resources.channel.thread;
+package org.example.rest.resources.channel;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -11,14 +11,17 @@ import org.example.rest.request.Endpoint;
 import org.example.rest.request.Request;
 import org.example.rest.request.Requestable;
 import org.example.rest.resources.Snowflake;
+import org.example.rest.resources.channel.Channel;
+import org.example.rest.resources.channel.thread.ImmutableStartThreadWithoutMessage;
 
+import java.util.Optional;
 import java.util.OptionalInt;
 
 import static org.example.rest.util.Variables.variables;
 
 @ImmutableJson
 @JsonInclude(Include.NON_ABSENT)
-public interface StartThreadFromMessage extends Auditable, Requestable {
+public interface StartThreadWithoutMessage extends Auditable, Requestable {
 
     static Builder builder() {
         return new Builder();
@@ -27,13 +30,14 @@ public interface StartThreadFromMessage extends Auditable, Requestable {
     @JsonIgnore
     Snowflake channelId();
 
-    @JsonIgnore
-    Snowflake messageId();
-
     String name();
 
     @JsonProperty("auto_archive_duration")
     OptionalInt autoArchiveDuration();
+
+    Optional<Channel.Type> type();
+
+    Optional<Boolean> invitable();
 
     @JsonProperty("rate_limit_per_user")
     OptionalInt rateLimitPerUser();
@@ -41,14 +45,14 @@ public interface StartThreadFromMessage extends Auditable, Requestable {
     @Override
     default Request asRequest() {
         return Request.builder()
-                .endpoint(Endpoint.create(HttpMethod.POST, "/channels/{channel.id}/messages/{message.id}/threads"))
-                .variables(variables("channel.id", channelId().getValue(), "message.id", messageId().getValue()))
+                .endpoint(Endpoint.create(HttpMethod.POST, "/channels/{channel.id}/threads"))
+                .variables(variables("channel.id", channelId().getValue()))
                 .body(this)
                 .auditLogReason(auditLogReason())
                 .build();
     }
 
-    class Builder extends ImmutableStartThreadFromMessage.Builder {
+    class Builder extends ImmutableStartThreadWithoutMessage.Builder {
         protected Builder() {}
     }
 }

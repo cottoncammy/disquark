@@ -26,6 +26,10 @@ public interface CreateChannelInvite extends Auditable, Requestable {
         return new Builder();
     }
 
+    static CreateChannelInvite create(Snowflake channelId) {
+        return ImmutableCreateChannelInvite.create(channelId);
+    }
+
     @JsonIgnore
     Snowflake channelId();
 

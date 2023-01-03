@@ -8,7 +8,6 @@ import org.example.rest.request.Endpoint;
 import org.example.rest.request.Request;
 import org.example.rest.request.Requestable;
 import org.example.rest.resources.Snowflake;
-import org.immutables.value.Value.Immutable;
 import org.immutables.value.Value.Default;
 
 import java.util.Optional;
