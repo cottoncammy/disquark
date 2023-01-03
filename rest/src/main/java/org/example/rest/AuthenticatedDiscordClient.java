@@ -11,6 +11,7 @@ import org.example.rest.interactions.dsl.InteractionSchema;
 import org.example.rest.request.AccessTokenSource;
 import org.example.rest.request.EmptyRequest;
 import org.example.rest.request.Requester;
+import org.example.rest.request.RequesterFactory;
 import org.example.rest.request.ratelimit.GlobalRateLimiter;
 import org.example.rest.request.ratelimit.RateLimitStrategy;
 import org.example.rest.resources.Snowflake;
@@ -203,6 +204,11 @@ public abstract class AuthenticatedDiscordClient<T extends Response> extends Dis
     public Uni<Guild.Member> getCurrentUserGuildMember(Snowflake guildId) {
         return requester.request(new EmptyRequest("/users/@me/guilds/{guild.id}/member", variables("guild.id", guildId.getValue())))
                 .flatMap(res -> res.as(Guild.Member.class));
+    }
+
+    @Override
+    public Uni<Webhook> getWebhookWithToken(Snowflake webhookId, String webhookToken) {
+        return webhookClient.getWebhookWithToken(webhookId, webhookToken);
     }
 
     @Override

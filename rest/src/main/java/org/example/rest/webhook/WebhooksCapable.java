@@ -7,6 +7,8 @@ import org.example.rest.resources.webhook.*;
 
 public interface WebhooksCapable {
 
+    Uni<Webhook> getWebhookWithToken(Snowflake webhookId, String webhookToken);
+
     Uni<Webhook> modifyWebhookWithToken(ModifyWebhookWithToken modifyWebhookWithToken);
 
     Uni<Void> deleteWebhookWithToken(Snowflake webhookId, String webhookToken);

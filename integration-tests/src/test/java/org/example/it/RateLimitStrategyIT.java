@@ -8,7 +8,7 @@ import org.example.rest.DiscordClient;
 import org.example.rest.request.HttpClientRequester;
 import org.example.rest.request.Request;
 import org.example.rest.request.Requester;
-import org.example.rest.RequesterFactory;
+import org.example.rest.request.RequesterFactory;
 import org.example.rest.resources.channel.message.CreateMessage;
 import org.example.rest.request.ratelimit.Bucket4jRateLimiter;
 import org.example.rest.request.ratelimit.RateLimitStrategy;
@@ -17,6 +17,7 @@ import org.example.rest.response.HttpResponse;
 import org.example.rest.response.RateLimitException;
 import org.example.rest.response.Response;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.atomic.AtomicInteger;
@@ -25,7 +26,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.example.it.ConfigHelper.configValue;
 
 // TODO
-class RateLimitStrategyFoo {
+@Disabled
+class RateLimitStrategyIT {
     private static final int MAX_REQUESTS = 50;
 
     private static Snowflake channelId;
@@ -49,10 +51,10 @@ class RateLimitStrategyFoo {
         AtomicInteger remaining = new AtomicInteger();
 
         DiscordBotClient<HttpResponse> botClient = DiscordBotClient.<HttpResponse>builder(Vertx.vertx(), configValue("DISCORD_TOKEN", String.class))
-                .requesterFactory(new RequesterFactory<HttpResponse>() {
+                .requesterFactory(new RequesterFactory<>() {
                     @Override
                     public Requester<HttpResponse> apply(DiscordClient.Builder<HttpResponse, ? extends DiscordClient<HttpResponse>> builder) {
-                        return new Requester<HttpResponse>() {
+                        return new Requester<>() {
                             @Override
                             public Uni<HttpResponse> request(Request request) {
                                 HttpClientRequester httpRequester = HttpClientRequester.create(builder.getVertx(), builder.getTokenSource(), Bucket4jRateLimiter.create());

@@ -20,6 +20,10 @@ public interface GetCurrentUserGuilds extends Requestable {
         return new Builder();
     }
 
+    static GetCurrentUserGuilds create() {
+        return builder().build();
+    }
+
     Optional<Snowflake> before();
 
     Optional<Snowflake> after();

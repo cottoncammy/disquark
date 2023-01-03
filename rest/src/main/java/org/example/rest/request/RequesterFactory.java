@@ -1,7 +1,6 @@
-package org.example.rest;
+package org.example.rest.request;
 
-import org.example.rest.request.HttpClientRequester;
-import org.example.rest.request.Requester;
+import org.example.rest.DiscordClient;
 import org.example.rest.request.ratelimit.GlobalRateLimiter;
 import org.example.rest.request.ratelimit.RateLimitStrategy;
 import org.example.rest.response.HttpResponse;
@@ -12,7 +11,7 @@ import java.util.function.Function;
 public interface RequesterFactory<T extends Response> extends Function<DiscordClient.Builder<T, ? extends DiscordClient<T>>, Requester<T>> {
 
     static RequesterFactory<HttpResponse> customHttpRequester(Function<HttpClientRequester.Builder, HttpClientRequester> requesterBuilder) {
-        return new RequesterFactory<HttpResponse>() {
+        return new RequesterFactory<>() {
             @Override
             public Requester<HttpResponse> apply(DiscordClient.Builder<HttpResponse, ? extends DiscordClient<HttpResponse>> builder) {
                 RateLimitStrategy<HttpResponse> rateLimitStrategy = builder.getRateLimitStrategy();

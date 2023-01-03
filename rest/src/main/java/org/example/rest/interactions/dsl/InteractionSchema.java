@@ -6,8 +6,6 @@ import org.example.rest.interactions.DiscordInteractionsClient;
 import org.example.rest.interactions.PingInteraction;
 import org.example.rest.resources.interactions.Interaction;
 
-import java.util.function.Predicate;
-
 public interface InteractionSchema<D, C extends CompletableInteraction<D>> {
 
     static InteractionSchema<Void, PingInteraction> ping() {

@@ -20,6 +20,10 @@ public interface GetGuildScheduledEventUsers extends Requestable {
         return new Builder();
     }
 
+    static GetGuildScheduledEventUsers create(Snowflake guildId, Snowflake guildScheduledEventId) {
+        return ImmutableGetGuildScheduledEventUsers.create(guildId, guildScheduledEventId);
+    }
+
     Snowflake guildId();
 
     Snowflake guildScheduledEventId();
