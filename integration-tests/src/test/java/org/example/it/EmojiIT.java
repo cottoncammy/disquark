@@ -28,14 +28,9 @@ class EmojiIT {
     @Test
     @Order(2)
     void testCreateGuildEmoji(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_GUILD_ID") Snowflake guildId) {
-        CreateGuildEmoji createGuildEmoji = CreateGuildEmoji.builder()
-                .name("foo")
-                .image("")
-                .build();
-
-        emojiId = botClient.createGuildEmoji(createGuildEmoji)
+        emojiId = botClient.createGuildEmoji(CreateGuildEmoji.builder().guildId(guildId).name("foo").image("").build())
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
-                .assertCompleted()
+                .awaitItem()
                 .getItem()
                 .id()
                 .get();
@@ -50,13 +45,9 @@ class EmojiIT {
     @Test
     @Order(4)
     void testModifyGuildEmoji(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_GUILD_ID") Snowflake guildId) {
-        ModifyGuildEmoji modifyGuildEmoji = ModifyGuildEmoji.builder()
-                .guildId(guildId)
-                .emojiId(emojiId)
-                .name("bar")
-                .build();
-
-        botClient.modifyGuildEmoji(modifyGuildEmoji).subscribe().withSubscriber(UniAssertSubscriber.create()).assertCompleted();
+        botClient.modifyGuildEmoji(ModifyGuildEmoji.builder().guildId(guildId).emojiId(emojiId).name("bar").build())
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .assertCompleted();
     }
 
     @Test

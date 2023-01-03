@@ -23,13 +23,9 @@ class WebhookIT {
     @Test
     @Order(1)
     void testCreateWebhook(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_CHANNEL_ID") Snowflake channelId) {
-        CreateWebhook createWebhook = CreateWebhook.builder()
-                .name("foo")
-                .build();
-
-        Webhook webhook = botClient.createWebhook(createWebhook)
+        Webhook webhook = botClient.createWebhook(CreateWebhook.builder().channelId(channelId).name("foo").build())
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
-                .assertCompleted()
+                .awaitItem()
                 .getItem();
 
         webhookId = webhook.id();
@@ -45,7 +41,7 @@ class WebhookIT {
     @Test
     @Order(3)
     void testGetGuildWebhooks(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_GUILD_ID") Snowflake guildId) {
-        botClient.getGuildWebhooks(webhookId).subscribe().withSubscriber(AssertSubscriber.create()).assertCompleted();
+        botClient.getGuildWebhooks(guildId).subscribe().withSubscriber(AssertSubscriber.create()).assertCompleted();
     }
 
     @Test
@@ -57,18 +53,17 @@ class WebhookIT {
     @Test
     @Order(5)
     void testGetWebhookWithToken(DiscordBotClient<?> botClient) {
-        botClient.getWebhookWithToken(webhookId, webhookToken).subscribe().withSubscriber(UniAssertSubscriber.create()).assertCompleted();
+        botClient.getWebhookWithToken(webhookId, webhookToken)
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .assertCompleted();
     }
 
     @Test
     @Order(6)
     void testModifyWebhook(DiscordBotClient<?> botClient) {
-        ModifyWebhook modifyWebhook = ModifyWebhook.builder()
-                .webhookId(webhookId)
-                .name("bar")
-                .build();
-
-        botClient.modifyWebhook(modifyWebhook).subscribe().withSubscriber(UniAssertSubscriber.create());
+        botClient.modifyWebhook(ModifyWebhook.builder().webhookId(webhookId).name("bar").build())
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .assertCompleted();
     }
 
     @Test
@@ -96,7 +91,7 @@ class WebhookIT {
 
         messageId = botClient.executeWebhook(executeWebhook)
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
-                .assertCompleted()
+                .awaitItem()
                 .getItem()
                 .id();
     }
@@ -116,10 +111,12 @@ class WebhookIT {
                 .webhookId(webhookId)
                 .webhookToken(webhookToken)
                 .messageId(messageId)
-                .content("Goodbye cruel world")
+                .content("Goodbye Cruel World...")
                 .build();
 
-        botClient.editWebhookMessage(editWebhookMessage).subscribe().withSubscriber(UniAssertSubscriber.create()).assertCompleted();
+        botClient.editWebhookMessage(editWebhookMessage)
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .assertCompleted();
     }
 
     @Test
@@ -139,12 +136,7 @@ class WebhookIT {
     @Test
     @Order(13)
     void testDeleteWebhookWithToken(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_CHANNEL_ID") Snowflake channelId) {
-        CreateWebhook createWebhook = CreateWebhook.builder()
-                .channelId(channelId)
-                .name("alice")
-                .build();
-
-        botClient.createWebhook(createWebhook)
+        botClient.createWebhook(CreateWebhook.builder().channelId(channelId).name("alice").build())
                 .flatMap(webhook -> botClient.deleteWebhookWithToken(webhook.id(), webhook.token().get()))
                 .subscribe().withSubscriber(UniAssertSubscriber.create()).assertCompleted();
     }

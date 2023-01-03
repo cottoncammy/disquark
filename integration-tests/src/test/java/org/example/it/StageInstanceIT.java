@@ -20,12 +20,7 @@ class StageInstanceIT {
     @Test
     @Order(1)
     void testCreateStageInstance(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_STAGE_CHANNEL_ID") Snowflake channelId) {
-        CreateStageInstance createStageInstance = CreateStageInstance.builder()
-                .channelId(channelId)
-                .topic("foo")
-                .build();
-
-        botClient.createStageInstance(createStageInstance)
+        botClient.createStageInstance(CreateStageInstance.builder().channelId(channelId).topic("foo").build())
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .assertCompleted();
     }
@@ -39,12 +34,7 @@ class StageInstanceIT {
     @Test
     @Order(3)
     void testModifyStageInstance(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_STAGE_CHANNEL_ID") Snowflake channelId) {
-        ModifyStageInstance modifyStageInstance = ModifyStageInstance.builder()
-                .channelId(channelId)
-                .topic("bar")
-                .build();
-
-        botClient.modifyStageInstance(modifyStageInstance)
+        botClient.modifyStageInstance(ModifyStageInstance.builder().channelId(channelId).topic("bar").build())
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .assertCompleted();
     }

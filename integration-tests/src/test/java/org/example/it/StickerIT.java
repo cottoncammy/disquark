@@ -53,7 +53,7 @@ class StickerIT {
 
         stickerId = botClient.createGuildSticker(createGuildSticker)
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
-                .assertCompleted()
+                .awaitItem()
                 .getItem()
                 .id();
     }
@@ -61,7 +61,9 @@ class StickerIT {
     @Test
     @Order(5)
     void testGetGuildSticker(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_GUILD_ID") Snowflake guildId) {
-        botClient.getGuildSticker(guildId, stickerId).subscribe().withSubscriber(UniAssertSubscriber.create()).assertCompleted();
+        botClient.getGuildSticker(guildId, stickerId)
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .assertCompleted();
     }
 
     @Test
@@ -73,12 +75,16 @@ class StickerIT {
                 .name("alice")
                 .build();
 
-        botClient.modifyGuildSticker(modifyGuildSticker).subscribe().withSubscriber(UniAssertSubscriber.create()).assertCompleted();
+        botClient.modifyGuildSticker(modifyGuildSticker)
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .assertCompleted();
     }
 
     @Test
     @Order(7)
     void testDeleteGuildSticker(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_GUILD_ID") Snowflake guildId) {
-        botClient.deleteGuildSticker(guildId, stickerId, null).subscribe().withSubscriber(UniAssertSubscriber.create()).assertCompleted();
+        botClient.deleteGuildSticker(guildId, stickerId, null)
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .assertCompleted();
     }
 }

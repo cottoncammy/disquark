@@ -1,198 +1,367 @@
 package org.example.it;
 
+import io.smallrye.mutiny.Uni;
+import io.smallrye.mutiny.helpers.test.AssertSubscriber;
+import io.smallrye.mutiny.helpers.test.UniAssertSubscriber;
+import org.example.it.extension.ConfigValue;
 import org.example.it.extension.SomeExtension2;
 import org.example.rest.DiscordBotClient;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.example.rest.emoji.ReactionEmoji;
+import org.example.rest.resources.Snowflake;
+import org.example.rest.resources.channel.*;
+import org.example.rest.resources.channel.forum.StartThreadInForumChannel;
+import org.example.rest.resources.channel.message.EditMessage;
+import org.example.rest.resources.channel.message.GetReactions;
+import org.example.rest.resources.channel.message.Message;
+import org.example.rest.resources.channel.message.StartThreadFromMessage;
+import org.example.rest.resources.guild.CreateGuildChannel;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
+
+import java.util.List;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @ExtendWith(SomeExtension2.class)
 class ChannelIT {
+    private static final String ROBOT_EMOJI = "\uD83E\uDD16";
+
+    private Snowflake channelId;
+    private Snowflake messageId;
+    private Snowflake dmChannelId;
+    private Snowflake threadId;
+
+    private Uni<Message> createMessage(DiscordBotClient<?> botClient, Snowflake channelId, String content) {
+        return botClient.createMessage(CreateMessage.builder().channelId(channelId).content(content).build());
+    }
+
+    @BeforeAll
+    void init(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_GUILD_ID") Snowflake guildId) {
+        channelId = botClient.createGuildChannel(CreateGuildChannel.builder().guildId(guildId).name("foo").build())
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
+                .getItem()
+                .id();
+    }
 
     @Test
+    @Order(1)
     void testGetChannel(DiscordBotClient<?> botClient) {
-
+        botClient.getChannel(channelId).subscribe().withSubscriber(UniAssertSubscriber.create()).assertCompleted();
     }
 
     @Test
-    void testModifyChannel(DiscordBotClient<?> botClient) {
-
+    @Order(1)
+    void testModifyDmChannel(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_USER_ID") Snowflake userId, @ConfigValue("DISCORD_USER_ID_2") Snowflake userId2) {
+        ModifyDmChannel.Builder builder = ModifyDmChannel.builder().name("foo");
+        dmChannelId = botClient.createDm(userId)
+                .call(channel -> botClient.groupDmAddRecipient(channel.id(), userId2, "", null))
+                .call(channel -> botClient.modifyChannel(builder.channelId(channel.id()).build()))
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
+                .getItem()
+                .id();
     }
 
     @Test
+    @Order(1)
+    void testModifyGuildChannel(DiscordBotClient<?> botClient) {
+        botClient.modifyChannel(ModifyGuildChannel.builder().channelId(channelId).name("bar").build())
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .assertCompleted();
+    }
+
+    @Test
+    @Order(1)
     void testDeleteOrCloseChannel(DiscordBotClient<?> botClient) {
-
+        botClient.deleteOrCloseChannel(channelId, null).subscribe()
+                .withSubscriber(UniAssertSubscriber.create())
+                .assertCompleted();
     }
 
     @Test
+    @Order(1)
     void testGetChannelMessages(DiscordBotClient<?> botClient) {
-
+        botClient.getChannelMessages(GetChannelMessages.create(channelId))
+                .subscribe().withSubscriber(AssertSubscriber.create())
+                .assertCompleted();
     }
 
     @Test
+    @Order(1)
     void testGetChannelMessage(DiscordBotClient<?> botClient) {
-
+        botClient.getChannelMessage(channelId, messageId)
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .assertCompleted();
     }
 
     @Test
-    void testCreateMessage(DiscordBotClient<?> botClient) {
-
+    @Order(1)
+    void testCrosspostMessage(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_ANNOUNCEMENT_CHANNEL_ID") Snowflake announcementChannelId) {
+        createMessage(botClient, announcementChannelId, "Hello World!")
+                .flatMap(message -> botClient.crosspostMessage(announcementChannelId, messageId))
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .assertCompleted();
     }
 
     @Test
-    void testCrosspostMessage(DiscordBotClient<?> botClient) {
-
-    }
-
-    @Test
+    @Order(1)
     void testCreateReaction(DiscordBotClient<?> botClient) {
-
+        botClient.createReaction(channelId, messageId, ReactionEmoji.create(ROBOT_EMOJI))
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .assertCompleted();
     }
 
     @Test
+    @Order(1)
     void testDeleteOwnReaction(DiscordBotClient<?> botClient) {
-
+        botClient.deleteOwnReaction(channelId, messageId, ReactionEmoji.create(ROBOT_EMOJI))
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .assertCompleted();
     }
 
     @Test
-    void testDeleteUserReaction(DiscordBotClient<?> botClient) {
-
+    @Order(1)
+    void testDeleteUserReaction(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_USER_ID") Snowflake userId) {
+        botClient.createReaction(channelId, messageId, ReactionEmoji.create(ROBOT_EMOJI))
+                .call(() -> botClient.deleteUserReaction(channelId, messageId, ReactionEmoji.create(ROBOT_EMOJI), userId))
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .assertCompleted();
     }
 
     @Test
+    @Order(1)
     void testGetReactions(DiscordBotClient<?> botClient) {
-
+        botClient.getReactions(GetReactions.create(channelId, messageId, ReactionEmoji.create(ROBOT_EMOJI)))
+                .subscribe().withSubscriber(AssertSubscriber.create())
+                .assertCompleted();
     }
 
     @Test
+    @Order(1)
     void testDeleteAllReactions(DiscordBotClient<?> botClient) {
-
+        botClient.deleteAllReactions(channelId, messageId)
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .assertCompleted();
     }
 
     @Test
+    @Order(1)
     void testDeleteAllReactionsForEmoji(DiscordBotClient<?> botClient) {
-
+        botClient.deleteAllReactionsForEmoji(channelId, messageId, ReactionEmoji.create(ROBOT_EMOJI))
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .assertCompleted();
     }
 
     @Test
+    @Order(1)
     void testEditMessage(DiscordBotClient<?> botClient) {
+        EditMessage editMessage = EditMessage.builder()
+                .channelId(channelId)
+                .messageId(messageId)
+                .content("Goodbye Cruel World...")
+                .build();
 
+        botClient.editMessage(editMessage).subscribe().withSubscriber(UniAssertSubscriber.create()).assertCompleted();
     }
 
     @Test
+    @Order(1)
     void testDeleteMessage(DiscordBotClient<?> botClient) {
-
+        botClient.deleteMessage(channelId, messageId, null)
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .assertCompleted();
     }
 
     @Test
+    @Order(1)
     void testBulkDeleteMessages(DiscordBotClient<?> botClient) {
-
+        BulkDeleteMessages.Builder builder = BulkDeleteMessages.builder().channelId(channelId);
+        Uni.combine()
+                .all().unis(
+                        createMessage(botClient, channelId, "One"),
+                        createMessage(botClient, channelId, "Two"),
+                        createMessage(botClient, channelId, "Three"))
+                .combinedWith((m1, m2, m3) -> List.of(m1.id(), m2.id(), m3.id()))
+                .flatMap(messages -> botClient.bulkDeleteMessages(builder.messages(messages).build()))
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .assertCompleted();
     }
 
     @Test
-    void testEditChannelPermissions(DiscordBotClient<?> botClient) {
+    @Order(1)
+    void testEditChannelPermissions(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_USER_ID") Snowflake userId) {
+        EditChannelPermissions editChannelPermissions = EditChannelPermissions.builder()
+                .channelId(channelId)
+                .overwriteId(userId)
+                .build();
 
+        botClient.editChannelPermissions(editChannelPermissions)
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .assertCompleted();
     }
 
     @Test
+    @Order(1)
     void testGetChannelInvites(DiscordBotClient<?> botClient) {
-
+        botClient.getChannelInvites(channelId).subscribe().withSubscriber(AssertSubscriber.create()).assertCompleted();
     }
 
     @Test
-    void testDeleteChannelPermission(DiscordBotClient<?> botClient) {
-
+    @Order(1)
+    void testDeleteChannelPermission(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_USER_ID") Snowflake userId) {
+        botClient.deleteChannelPermission(channelId, userId, null)
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .assertCompleted();
     }
 
     @Test
-    void testFollowAnnouncementChannel(DiscordBotClient<?> botClient) {
-
+    @Order(1)
+    void testFollowAnnouncementChannel(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_ANNOUNCEMENT_CHANNEL_ID") Snowflake announcementChannelId) {
+        botClient.followAnnouncementChannel(announcementChannelId, channelId)
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .assertCompleted();
     }
 
     @Test
+    @Order(1)
     void testTriggerTypingIndicator(DiscordBotClient<?> botClient) {
-
+        messageId = botClient.triggerTypingIndicator(channelId)
+                .replaceWith(createMessage(botClient, channelId, "Hello World!"))
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
+                .getItem()
+                .id();
     }
 
     @Test
+    @Order(1)
     void testGetPinnedMessages(DiscordBotClient<?> botClient) {
-
+        botClient.getPinnedMessages(channelId).subscribe().withSubscriber(AssertSubscriber.create()).assertCompleted();
     }
 
     @Test
+    @Order(1)
     void testPinMessage(DiscordBotClient<?> botClient) {
-
+        botClient.pinMessage(channelId, messageId, null)
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .assertCompleted();
     }
 
     @Test
+    @Order(1)
     void testUnpinMessage(DiscordBotClient<?> botClient) {
-
+        botClient.unpinMessage(channelId, messageId, null)
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .assertCompleted();
     }
 
     @Test
-    void testGroupDmAddRecipient(DiscordBotClient<?> botClient) {
-
+    @Order(1)
+    void testGroupDmRemoveRecipient(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_USER_ID") Snowflake userId) {
+        botClient.groupDmRemoveRecipient(dmChannelId, userId)
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .assertCompleted();
     }
 
     @Test
-    void testGroupDmRemoveRecipient(DiscordBotClient<?> botClient) {
-
-    }
-
-    @Test
+    @Order(1)
     void testStartThreadFromMessage(DiscordBotClient<?> botClient) {
+        StartThreadFromMessage startThreadFromMessage = StartThreadFromMessage.builder()
+                .channelId(channelId)
+                .messageId(messageId)
+                .name("foo")
+                .build();
 
+        botClient.startThreadFromMessage(startThreadFromMessage)
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .assertCompleted();
     }
 
     @Test
+    @Order(1)
     void testStartThreadWithoutMessage(DiscordBotClient<?> botClient) {
+        StartThreadWithoutMessage startThreadWithoutMessage = StartThreadWithoutMessage.builder()
+                .channelId(channelId)
+                .name("foo")
+                .build();
 
+        botClient.startThreadWithoutMessage(startThreadWithoutMessage)
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .assertCompleted();
     }
 
     @Test
-    void testStartThreadInForumChannel(DiscordBotClient<?> botClient) {
+    @Order(1)
+    void testStartThreadInForumChannel(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_FORUM_CHANNEL_ID") Snowflake forumChannelId) {
+        StartThreadInForumChannel startThreadInForumChannel = StartThreadInForumChannel.builder()
+                .channelId(forumChannelId)
+                .message(StartThreadInForumChannel.ForumThreadMessageParams.builder().content("Hello World!").build())
+                .build();
 
+        threadId = botClient.startThreadInForumChannel(startThreadInForumChannel)
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
+                .getItem()
+                .id();
     }
 
     @Test
+    @Order(1)
     void testJoinThread(DiscordBotClient<?> botClient) {
-
+        botClient.joinThread(threadId).subscribe().withSubscriber(UniAssertSubscriber.create()).assertCompleted();
     }
 
     @Test
-    void testAddThreadMember(DiscordBotClient<?> botClient) {
-
+    @Order(1)
+    void testAddThreadMember(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_USER_ID") Snowflake userId) {
+        botClient.addThreadMember(threadId, userId).subscribe().withSubscriber(UniAssertSubscriber.create()).assertCompleted();
     }
 
     @Test
-    void testRemoveThreadMember(DiscordBotClient<?> botClient) {
-
+    @Order(1)
+    void leaveThread(DiscordBotClient<?> botClient) {
+        botClient.leaveThread(threadId).subscribe().withSubscriber(UniAssertSubscriber.create()).assertCompleted();
     }
 
     @Test
-    void testGetThreadMember(DiscordBotClient<?> botClient) {
-
+    @Order(1)
+    void testRemoveThreadMember(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_USER_ID") Snowflake userId) {
+        botClient.removeThreadMember(threadId, userId).subscribe().withSubscriber(UniAssertSubscriber.create()).assertCompleted();
     }
 
     @Test
+    @Order(1)
+    void testGetThreadMember(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_USER_ID") Snowflake userId) {
+        botClient.getThreadMember(threadId, userId).subscribe().withSubscriber(UniAssertSubscriber.create()).assertCompleted();
+    }
+
+    @Test
+    @Order(1)
     void testListThreadMembers(DiscordBotClient<?> botClient) {
-
+        botClient.listThreadMembers(threadId).subscribe().withSubscriber(AssertSubscriber.create()).assertCompleted();
     }
 
     @Test
+    @Order(1)
     void testListPublicArchivedThreads(DiscordBotClient<?> botClient) {
-
+        botClient.listPublicArchivedThreads(ListThreads.create(channelId))
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .assertCompleted();
     }
 
     @Test
+    @Order(1)
     void testListPrivateArchivedThreads(DiscordBotClient<?> botClient) {
-
+        botClient.listPrivateArchivedThreads(ListThreads.create(channelId))
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .assertCompleted();
     }
 
     @Test
+    @Order(1)
     void testListJoinedPrivateArchivedThreads(DiscordBotClient<?> botClient) {
-
+        botClient.listJoinedPrivateArchivedThreads(ListThreads.create(channelId))
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .assertCompleted();
     }
 }

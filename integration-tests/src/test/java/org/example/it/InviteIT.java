@@ -24,7 +24,7 @@ class InviteIT {
         inviteCode = botClient.createChannelInvite(CreateChannelInvite.create(channelId))
                 .call(invite -> botClient.getInvite(GetInvite.create(invite.code())))
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
-                .assertCompleted()
+                .awaitItem()
                 .getItem()
                 .code();
     }

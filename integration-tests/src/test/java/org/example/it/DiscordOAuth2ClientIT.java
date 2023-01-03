@@ -21,6 +21,76 @@ class DiscordOAuth2ClientIT extends AuthenticatedDiscordClientIT {
     }
 
     @Test
+    void testGetGlobalApplicationCommands(DiscordOAuth2Client<?> oAuth2Client) {
+
+    }
+
+    @Test
+    void testCreateGlobalApplicationCommand(DiscordOAuth2Client<?> oAuth2Client) {
+
+    }
+
+    @Test
+    void testGetGlobalApplicationCommand(DiscordOAuth2Client<?> oAuth2Client) {
+
+    }
+
+    @Test
+    void testEditGlobalApplicationCommand(DiscordOAuth2Client<?> oAuth2Client) {
+
+    }
+
+    @Test
+    void testDeleteGlobalApplicationCommand(DiscordOAuth2Client<?> oAuth2Client) {
+
+    }
+
+    @Test
+    void testBulkOverwriteGlobalApplicationCommands(DiscordOAuth2Client<?> oAuth2Client) {
+
+    }
+
+    @Test
+    void testGetGuildApplicationCommands(DiscordOAuth2Client<?> oAuth2Client) {
+
+    }
+
+    @Test
+    void testCreateGuildApplicationCommand(DiscordOAuth2Client<?> oAuth2Client) {
+
+    }
+
+    @Test
+    void testGetGuildApplicationCommand(DiscordOAuth2Client<?> oAuth2Client) {
+
+    }
+
+    @Test
+    void testEditGuildApplicationCommand(DiscordOAuth2Client<?> oAuth2Client) {
+
+    }
+
+    @Test
+    void testDeleteGuildApplicationCommand(DiscordOAuth2Client<?> oAuth2Client) {
+
+    }
+
+    @Test
+    void testBulkOverwriteGuildApplicationCommands(DiscordOAuth2Client<?> oAuth2Client) {
+
+    }
+
+    @Test
+    void testGetGuildApplicationCommandPermissions(DiscordOAuth2Client<?> oAuth2Client) {
+
+    }
+
+    @Test
+    void testGetApplicationCommandPermissions(DiscordOAuth2Client<?> oAuth2Client) {
+
+    }
+
+    @Test
     void testGetCurrentUser() {
         testGetCurrentUser();
     }
@@ -42,6 +112,8 @@ class DiscordOAuth2ClientIT extends AuthenticatedDiscordClientIT {
 
     @Test
     void testGetCurrentAuthorizationInformation(DiscordOAuth2Client<?> oAuth2Client) {
-        oAuth2Client.getCurrentAuthorizationInformation().subscribe().withSubscriber(UniAssertSubscriber.create()).assertCompleted();
+        oAuth2Client.getCurrentAuthorizationInformation()
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .assertCompleted();
     }
 }

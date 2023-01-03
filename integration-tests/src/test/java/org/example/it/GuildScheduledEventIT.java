@@ -39,7 +39,7 @@ class GuildScheduledEventIT {
 
         guildScheduledEventId = botClient.createGuildScheduledEvent(createGuildScheduledEvent)
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
-                .assertCompleted()
+                .awaitItem()
                 .getItem()
                 .id();
     }

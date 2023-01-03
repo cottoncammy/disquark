@@ -20,14 +20,9 @@ class GuildTemplateIT {
     @Test
     @Order(1)
     void testCreateGuildTemplate(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_GUILD_ID") Snowflake guildId) {
-        CreateGuildTemplate createGuildTemplate = CreateGuildTemplate.builder()
-                .guildId(guildId)
-                .name("foo")
-                .build();
-
-        templateCode = botClient.createGuildTemplate(createGuildTemplate)
+        templateCode = botClient.createGuildTemplate(CreateGuildTemplate.builder().guildId(guildId).name("foo").build())
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
-                .assertCompleted()
+                .awaitItem()
                 .getItem()
                 .code();
     }
@@ -41,11 +36,7 @@ class GuildTemplateIT {
     @Test
     @Order(3)
     void testCreateGuildFromGuildTemplate(DiscordBotClient<?> botClient) {
-        CreateGuildFromGuildTemplate createGuildFromGuildTemplate = CreateGuildFromGuildTemplate.builder()
-                .name("foo")
-                .build();
-
-        botClient.createGuildFromGuildTemplate(createGuildFromGuildTemplate)
+        botClient.createGuildFromGuildTemplate(CreateGuildFromGuildTemplate.builder().name("foo").build())
                 .flatMap(guild -> botClient.deleteGuild(guild.id()))
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .assertCompleted();
@@ -60,7 +51,9 @@ class GuildTemplateIT {
     @Test
     @Order(5)
     void testSyncGuildTemplate(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_GUILD_ID") Snowflake guildId) {
-        botClient.syncGuildTemplate(guildId, templateCode).subscribe().withSubscriber(UniAssertSubscriber.create()).assertCompleted();
+        botClient.syncGuildTemplate(guildId, templateCode)
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .assertCompleted();
     }
 
     @Test
@@ -72,12 +65,16 @@ class GuildTemplateIT {
                 .name("bar")
                 .build();
 
-        botClient.modifyGuildTemplate(modifyGuildTemplate).subscribe().withSubscriber(UniAssertSubscriber.create()).assertCompleted();
+        botClient.modifyGuildTemplate(modifyGuildTemplate)
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .assertCompleted();
     }
 
     @Test
     @Order(7)
     void testDeleteGuildTemplate(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_GUILD_ID") Snowflake guildId) {
-        botClient.deleteGuildTemplate(guildId, templateCode).subscribe().withSubscriber(UniAssertSubscriber.create()).assertCompleted();
+        botClient.deleteGuildTemplate(guildId, templateCode)
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .assertCompleted();
     }
 }

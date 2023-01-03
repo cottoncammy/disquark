@@ -12,6 +12,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 class GuildIT {
 
     @Test
+    void testCreateGuild(DiscordBotClient<?> botClient) {
+
+    }
+
+    @Test
     void testGetGuild(DiscordBotClient<?> botClient) {
 
     }

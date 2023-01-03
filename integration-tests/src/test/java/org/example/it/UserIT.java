@@ -25,11 +25,10 @@ class UserIT extends AuthenticatedDiscordClientIT {
 
     @Test
     void testModifyCurrentUser(DiscordBotClient<?> botClient) {
-        ModifyCurrentUser modifyCurrentUser = ModifyCurrentUser.builder()
-                .avatar("")
-                .build();
-
-        botClient.modifyCurrentUser(modifyCurrentUser)
+        ModifyCurrentUser.Builder builder = ModifyCurrentUser.builder().avatar("");
+        botClient.getCurrentUser()
+                .call(user -> botClient.modifyCurrentUser(builder.build()))
+                .flatMap(user -> botClient.modifyCurrentUser(builder.avatar("").build()))
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .assertCompleted();
     }
@@ -46,11 +45,7 @@ class UserIT extends AuthenticatedDiscordClientIT {
 
     @Test
     void testLeaveGuild(DiscordBotClient<?> botClient) {
-        CreateGuild createGuild = CreateGuild.builder()
-                .name("foo")
-                .build();
-
-        botClient.createGuild(createGuild)
+        botClient.createGuild(CreateGuild.builder().name("foo").build())
                 .flatMap(guild -> botClient.leaveGuild(guild.id()))
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .assertCompleted();
