@@ -98,6 +98,7 @@ class ChannelIT {
     }
 
     @Test
+    @Tag("announcement-channel")
     @Order(7)
     void testCrosspostMessage(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_ANNOUNCEMENT_CHANNEL_ID") Snowflake announcementChannelId) {
         createMessage(botClient, announcementChannelId, "Hello World!")
@@ -210,6 +211,7 @@ class ChannelIT {
     }
 
     @Test
+    @Tag("announcement-channel")
     @Order(19)
     void testFollowAnnouncementChannel(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_ANNOUNCEMENT_CHANNEL_ID") Snowflake announcementChannelId) {
         botClient.followAnnouncementChannel(announcementChannelId, channelId)

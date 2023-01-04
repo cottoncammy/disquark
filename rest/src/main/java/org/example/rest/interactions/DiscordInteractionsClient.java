@@ -119,7 +119,7 @@ public class DiscordInteractionsClient<T extends Response> extends DiscordClient
         protected Router router;
         protected HttpServer httpServer;
         protected String interactionsUrl;
-        protected Function<String, InteractionValidator> validatorFactory;
+        protected InteractionValidatorFactory validatorFactory;
 
         protected Builder(Vertx vertx, String verifyKey) {
             super(vertx, AccessTokenSource.DUMMY);
@@ -159,7 +159,7 @@ public class DiscordInteractionsClient<T extends Response> extends DiscordClient
             return this;
         }
 
-        public Builder<T> validatorFactory(Function<String, InteractionValidator> validatorFactory) {
+        public Builder<T> validatorFactory(InteractionValidatorFactory validatorFactory) {
             this.validatorFactory = requireNonNull(validatorFactory);
             return this;
         }
@@ -185,7 +185,7 @@ public class DiscordInteractionsClient<T extends Response> extends DiscordClient
         protected String verifyKey;
         protected HttpServer httpServer;
         protected String interactionsUrl;
-        protected Function<String, InteractionValidator> validatorFactory;
+        protected InteractionValidatorFactory validatorFactory;
 
         public Options setRouter(Router router) {
             this.router = requireNonNull(router);
@@ -223,12 +223,12 @@ public class DiscordInteractionsClient<T extends Response> extends DiscordClient
             return interactionsUrl;
         }
 
-        public Options setValidatorFactory(Function<String, InteractionValidator> validatorFactory) {
+        public Options setValidatorFactory(InteractionValidatorFactory validatorFactory) {
             this.validatorFactory = requireNonNull(validatorFactory);
             return this;
         }
 
-        public Function<String, InteractionValidator> getValidatorFactory() {
+        public InteractionValidatorFactory getValidatorFactory() {
             return validatorFactory;
         }
     }

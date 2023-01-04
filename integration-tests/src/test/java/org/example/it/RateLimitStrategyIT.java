@@ -11,12 +11,10 @@ import org.example.rest.request.Requester;
 import org.example.rest.request.RequesterFactory;
 import org.example.rest.request.ratelimit.Bucket4jRateLimiter;
 import org.example.rest.request.ratelimit.RateLimitStrategy;
-import org.example.rest.resources.Snowflake;
 import org.example.rest.response.HttpResponse;
 import org.example.rest.response.RateLimitException;
 import org.example.rest.response.Response;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.atomic.AtomicInteger;
@@ -24,7 +22,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.example.it.ConfigHelper.configValue;
 
-@Disabled
+@Tag("rate-limit")
 class RateLimitStrategyIT {
     private static final int MAX_REQUESTS = 50;
 
