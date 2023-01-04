@@ -9,7 +9,6 @@ import org.example.rest.request.HttpClientRequester;
 import org.example.rest.request.Request;
 import org.example.rest.request.Requester;
 import org.example.rest.request.RequesterFactory;
-import org.example.rest.resources.channel.CreateMessage;
 import org.example.rest.request.ratelimit.Bucket4jRateLimiter;
 import org.example.rest.request.ratelimit.RateLimitStrategy;
 import org.example.rest.resources.Snowflake;
@@ -25,22 +24,14 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.example.it.ConfigHelper.configValue;
 
-// TODO
 @Disabled
 class RateLimitStrategyIT {
     private static final int MAX_REQUESTS = 50;
 
-    private static Snowflake channelId;
-
-    @BeforeAll
-    static void init() {
-        channelId = configValue("DISCORD_CHANNEL_ID", Snowflake.class);
-    }
-
     @Test
     void testGlobalRateLimiting() {
         DiscordBotClient.create(Vertx.vertx(), configValue("DISCORD_TOKEN", String.class))
-                .createMessage(CreateMessage.builder().channelId(channelId).content("Hello World!").build())
+                .listVoiceRegions().toUni()
                 .repeat().atMost(MAX_REQUESTS + 1)
                 .subscribe().withSubscriber(AssertSubscriber.create())
                 .assertCompleted();
@@ -65,8 +56,8 @@ class RateLimitStrategyIT {
                 })
                 .build();
 
-        botClient.createMessage(CreateMessage.builder().channelId(channelId).content("Hello World!").build())
-                .map(x -> remaining.get())
+        botClient.listVoiceRegions().toUni()
+                .replaceWith(remaining.get())
                 .repeat().until(val -> val == 0)
                 .subscribe().withSubscriber(AssertSubscriber.create())
                 .request(1)
@@ -79,7 +70,7 @@ class RateLimitStrategyIT {
                 .rateLimitStrategy(RateLimitStrategy.BUCKET)
                 .build();
 
-        botClient.createMessage(CreateMessage.builder().channelId(channelId).content("Hello World!").build())
+        botClient.listVoiceRegions().toUni()
                 .repeat().atMost(MAX_REQUESTS + 1)
                 .subscribe().withSubscriber(AssertSubscriber.create())
                 .awaitItems(MAX_REQUESTS)
@@ -95,7 +86,7 @@ class RateLimitStrategyIT {
                 .rateLimitStrategy(RateLimitStrategy.GLOBAL)
                 .build();
 
-        botClient.createMessage(CreateMessage.builder().channelId(channelId).content("Hello World!").build())
+        botClient.listVoiceRegions().toUni()
                 .repeat().indefinitely()
                 .subscribe().withSubscriber(AssertSubscriber.create())
                 .awaitFailure(t -> {

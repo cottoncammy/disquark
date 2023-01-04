@@ -28,7 +28,7 @@ public interface EditApplicationCommandPermissions extends Requestable {
     @JsonIgnore
     Snowflake commandId();
 
-    List<GuildApplicationCommandPermissions> permissions();
+    List<ApplicationCommand.Permissions> permissions();
 
     @Override
     default Request asRequest() {

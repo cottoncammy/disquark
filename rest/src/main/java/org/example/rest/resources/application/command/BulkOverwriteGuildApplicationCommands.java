@@ -52,6 +52,10 @@ public interface BulkOverwriteGuildApplicationCommands extends Requestable {
     @JsonInclude(Include.NON_ABSENT)
     interface GuildApplicationCommandOverwrite {
 
+        static Builder builder() {
+            return new Builder();
+        }
+
         Optional<Snowflake> id();
 
         String name();
@@ -75,6 +79,10 @@ public interface BulkOverwriteGuildApplicationCommands extends Requestable {
         Optional<ApplicationCommand.Type> type();
 
         Optional<Boolean> nsfw();
+
+        class Builder extends ImmutableBulkOverwriteGuildApplicationCommands.GuildApplicationCommandOverwrite.Builder {
+            protected Builder() {}
+        }
     }
 
     class Builder extends ImmutableBulkOverwriteGuildApplicationCommands.Builder {

@@ -46,6 +46,10 @@ public interface ModifyGuildChannelPositions extends Requestable {
     @JsonInclude(Include.NON_ABSENT)
     interface GuildChannelPosition {
 
+        static Builder builder() {
+            return new Builder();
+        }
+
         Snowflake id();
 
         OptionalInt position();
@@ -55,6 +59,10 @@ public interface ModifyGuildChannelPositions extends Requestable {
 
         @JsonProperty("parent_id")
         Optional<Snowflake> parentId();
+
+        class Builder extends ImmutableModifyGuildChannelPositions.GuildChannelPosition.Builder {
+            protected Builder() {}
+        }
     }
 
     class Builder extends ImmutableModifyGuildChannelPositions.Builder {

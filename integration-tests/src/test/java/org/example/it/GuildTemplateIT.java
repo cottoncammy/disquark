@@ -30,7 +30,9 @@ class GuildTemplateIT {
     @Test
     @Order(2)
     void testGetGuildTemplate(DiscordBotClient<?> botClient) {
-        botClient.getGuildTemplate(templateCode).subscribe().withSubscriber(UniAssertSubscriber.create()).assertCompleted();
+        botClient.getGuildTemplate(templateCode)
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .assertCompleted();
     }
 
     @Test

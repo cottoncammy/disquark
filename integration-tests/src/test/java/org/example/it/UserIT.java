@@ -11,12 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 @ExtendWith(SomeExtension2.class)
-class UserIT extends AuthenticatedDiscordClientIT {
-
-    @Test
-    void testGetCurrentUser(DiscordBotClient<?> botClient) {
-        super.testGetCurrentUser(botClient);
-    }
+class UserIT {
 
     @Test
     void testGetUser(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_USER_ID") Snowflake userId) {
@@ -31,16 +26,6 @@ class UserIT extends AuthenticatedDiscordClientIT {
                 .flatMap(user -> botClient.modifyCurrentUser(builder.avatar("").build()))
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .assertCompleted();
-    }
-
-    @Test
-    void testGetCurrentUserGuilds(DiscordBotClient<?> botClient) {
-        super.testGetCurrentUserGuilds(botClient);
-    }
-
-    @Test
-    void testGetCurrentUserGuildMember(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_GUILD_ID") Snowflake guildId) {
-        super.testGetCurrentUserGuildMember(botClient, guildId);
     }
 
     @Test

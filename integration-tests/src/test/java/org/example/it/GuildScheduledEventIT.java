@@ -10,6 +10,7 @@ import org.example.rest.resources.guild.scheduledevent.CreateGuildScheduledEvent
 import org.example.rest.resources.guild.scheduledevent.GetGuildScheduledEventUsers;
 import org.example.rest.resources.guild.scheduledevent.GuildScheduledEvent;
 import org.example.rest.resources.guild.scheduledevent.ModifyGuildScheduledEvent;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,7 +24,9 @@ class GuildScheduledEventIT {
     @Test
     @Order(1)
     void testListScheduledEventsForGuild(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_GUILD_ID") Snowflake guildId) {
-        botClient.listScheduledEventsForGuild(guildId, false).subscribe().withSubscriber(AssertSubscriber.create()).assertCompleted();
+        botClient.listScheduledEventsForGuild(guildId, false)
+                .subscribe().withSubscriber(AssertSubscriber.create())
+                .assertCompleted();
     }
 
     @Test

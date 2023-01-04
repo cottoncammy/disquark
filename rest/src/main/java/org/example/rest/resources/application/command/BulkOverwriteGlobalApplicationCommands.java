@@ -45,8 +45,16 @@ public interface BulkOverwriteGlobalApplicationCommands extends Requestable {
     @JsonInclude(Include.NON_ABSENT)
     interface GlobalApplicationCommandOverwrite extends BulkOverwriteGuildApplicationCommands.GuildApplicationCommandOverwrite {
 
+        static Builder builder() {
+            return new Builder();
+        }
+
         @JsonProperty("dm_permission")
         Optional<Boolean> dmPermission();
+
+        class Builder extends ImmutableBulkOverwriteGlobalApplicationCommands.GlobalApplicationCommandOverwrite.Builder {
+            protected Builder() {}
+        }
     }
 
     class Builder extends ImmutableBulkOverwriteGlobalApplicationCommands.Builder {

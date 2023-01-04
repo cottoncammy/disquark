@@ -7,10 +7,7 @@ import org.example.rest.DiscordBotClient;
 import org.example.rest.resources.Snowflake;
 import org.example.rest.resources.channel.CreateChannelInvite;
 import org.example.rest.resources.invite.GetInvite;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -32,6 +29,8 @@ class InviteIT {
     @Test
     @Order(2)
     void testDeleteInvite(DiscordBotClient<?> botClient) {
-        botClient.deleteInvite(inviteCode, null).subscribe().withSubscriber(UniAssertSubscriber.create()).assertCompleted();
+        botClient.deleteInvite(inviteCode, null)
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .assertCompleted();
     }
 }

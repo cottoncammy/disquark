@@ -7,10 +7,7 @@ import org.example.rest.DiscordBotClient;
 import org.example.rest.resources.Snowflake;
 import org.example.rest.resources.stageinstance.CreateStageInstance;
 import org.example.rest.resources.stageinstance.ModifyStageInstance;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -42,6 +39,8 @@ class StageInstanceIT {
     @Test
     @Order(4)
     void testDeleteStageInstance(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_STAGE_CHANNEL_ID") Snowflake channelId) {
-        botClient.deleteStageInstance(channelId, null).subscribe().withSubscriber(UniAssertSubscriber.create()).assertCompleted();
+        botClient.deleteStageInstance(channelId, null)
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .assertCompleted();
     }
 }

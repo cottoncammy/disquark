@@ -8,10 +8,7 @@ import org.example.rest.DiscordBotClient;
 import org.example.rest.resources.Snowflake;
 import org.example.rest.resources.emoji.CreateGuildEmoji;
 import org.example.rest.resources.emoji.ModifyGuildEmoji;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -39,7 +36,9 @@ class EmojiIT {
     @Test
     @Order(3)
     void testGetGuildEmoji(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_GUILD_ID") Snowflake guildId) {
-        botClient.getGuildEmoji(guildId, emojiId).subscribe().withSubscriber(UniAssertSubscriber.create()).assertCompleted();
+        botClient.getGuildEmoji(guildId, emojiId)
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .assertCompleted();
     }
 
     @Test

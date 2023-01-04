@@ -44,9 +44,17 @@ public interface ModifyGuildRolePositions extends Auditable, Requestable {
     @JsonInclude(Include.NON_ABSENT)
     interface GuildRolePosition {
 
+        static Builder builder() {
+            return new Builder();
+        }
+
         Snowflake id();
 
         OptionalInt position();
+
+        class Builder extends ImmutableModifyGuildRolePositions.GuildRolePosition.Builder {
+            protected Builder() {}
+        }
     }
 
     class Builder extends ImmutableModifyGuildRolePositions.Builder {
