@@ -46,7 +46,7 @@ public class DiscordOAuth2Client<T extends Response> extends AuthenticatedDiscor
     protected DiscordInteractionsClient<T> buildInteractionsClient() {
         String verifyKey = interactionsClientOptions.getVerifyKey();
         if (verifyKey == null) {
-            verifyKey = getCurrentAuthorizationInformation().map(auth -> Hex.decode(auth.application().verifyKey())).await().indefinitely();
+            verifyKey = getCurrentAuthorizationInformation().map(auth -> auth.application().verifyKey()).await().indefinitely();
         }
 
         return buildInteractionsClient(DiscordInteractionsClient.builder(vertx, verifyKey));

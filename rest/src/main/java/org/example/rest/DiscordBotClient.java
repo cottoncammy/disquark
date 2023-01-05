@@ -91,7 +91,7 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     protected DiscordInteractionsClient<T> buildInteractionsClient() {
         String verifyKey = interactionsClientOptions.getVerifyKey();
         if (verifyKey == null) {
-            verifyKey = getCurrentBotApplicationInformation().map(Application::verifyKey).map(Hex::decode).await().indefinitely();
+            verifyKey = getCurrentBotApplicationInformation().map(Application::verifyKey).await().indefinitely();
         }
 
         return buildInteractionsClient(DiscordInteractionsClient.builder(vertx, verifyKey));

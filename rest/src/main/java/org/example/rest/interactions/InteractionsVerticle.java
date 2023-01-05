@@ -5,7 +5,6 @@ import io.smallrye.mutiny.Uni;
 import io.smallrye.mutiny.operators.multi.processors.BroadcastProcessor;
 import io.smallrye.mutiny.vertx.core.AbstractVerticle;
 import io.vertx.core.http.HttpMethod;
-import io.vertx.mutiny.core.buffer.Buffer;
 import io.vertx.mutiny.core.http.HttpServer;
 import io.vertx.mutiny.core.http.HttpServerRequest;
 import io.vertx.mutiny.ext.web.Route;
@@ -49,7 +48,7 @@ class InteractionsVerticle extends AbstractVerticle {
 
                 request.body()
                         .call(body -> {
-                            if (!interactionValidator.validate(Buffer.buffer(timestamp), body, Buffer.buffer(signature))) {
+                            if (!interactionValidator.validate(timestamp, body.toString(), signature)) {
                                 return Uni.createFrom().failure(UnauthorizedException::new);
                             }
                             return Uni.createFrom().voidItem();

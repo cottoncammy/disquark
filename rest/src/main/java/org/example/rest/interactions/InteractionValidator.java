@@ -1,7 +1,5 @@
 package org.example.rest.interactions;
 
-import io.vertx.mutiny.core.buffer.Buffer;
-
 public abstract class InteractionValidator {
     protected final String verifyKey;
 
@@ -9,5 +7,5 @@ public abstract class InteractionValidator {
         this.verifyKey = verifyKey;
     }
 
-    public abstract boolean validate(Buffer timestamp, Buffer body, Buffer signature);
+    public abstract boolean validate(String timestamp, String body, String signature);
 }

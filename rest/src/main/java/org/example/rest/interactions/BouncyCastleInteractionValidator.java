@@ -1,7 +1,9 @@
 package org.example.rest.interactions;
 
-import io.vertx.mutiny.core.buffer.Buffer;
 import org.bouncycastle.math.ec.rfc8032.Ed25519;
+import org.example.rest.util.Hex;
+
+import java.nio.charset.StandardCharsets;
 
 class BouncyCastleInteractionValidator extends InteractionValidator {
 
@@ -10,8 +12,8 @@ class BouncyCastleInteractionValidator extends InteractionValidator {
     }
 
     @Override
-    public boolean validate(Buffer timestamp, Buffer body, Buffer signature) {
-        byte[] message = timestamp.appendBuffer(body).getBytes();
-        return Ed25519.verify(signature.getBytes(), 0, verifyKey.getBytes(), 0, message, 0, message.length);
+    public boolean validate(String timestamp, String body, String signature) {
+        byte[] message = (timestamp + body).getBytes(StandardCharsets.UTF_8);
+        return Ed25519.verify(Hex.decode(signature), 0, Hex.decode(verifyKey), 0, message, 0, message.length);
     }
 }
