@@ -1,9 +1,8 @@
 package org.example.it.extension;
 
-import org.junit.jupiter.api.extension.Extension;
-import org.junit.jupiter.api.extension.ExtensionContext;
-import org.junit.jupiter.api.extension.TestTemplateInvocationContext;
-import org.junit.jupiter.api.extension.TestTemplateInvocationContextProvider;
+import org.example.rest.AuthenticatedDiscordClient;
+import org.example.rest.DiscordBotClient;
+import org.junit.jupiter.api.extension.*;
 
 import java.util.Collections;
 import java.util.List;
@@ -18,19 +17,34 @@ public class SomeExtension implements TestTemplateInvocationContextProvider {
 
     @Override
     public Stream<TestTemplateInvocationContext> provideTestTemplateInvocationContexts(ExtensionContext context) {
-        return Stream.of();
+        return Stream.of(invocationContext(DiscordClients.getBotClient()), invocationContext(DiscordClients.getOAuth2Client()));
     }
 
-    private TestTemplateInvocationContext idk() {
+    private TestTemplateInvocationContext invocationContext(AuthenticatedDiscordClient<?> discordClient) {
         return new TestTemplateInvocationContext() {
             @Override
             public String getDisplayName(int invocationIndex) {
-                return TestTemplateInvocationContext.super.getDisplayName(invocationIndex);
+                return String.format("AuthenticatedDiscordClientIT invocation with %s",
+                        discordClient instanceof DiscordBotClient ? "DiscordBotClient" : "DiscordOAuth2Client");
             }
 
             @Override
             public List<Extension> getAdditionalExtensions() {
-                return Collections.singletonList(new SomeExtension2());
+                return Collections.singletonList(parameterResolver(discordClient));
+            }
+        };
+    }
+
+    private ParameterResolver parameterResolver(AuthenticatedDiscordClient<?> discordClient) {
+        return new ParameterResolver() {
+            @Override
+            public boolean supportsParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
+                return true;
+            }
+
+            @Override
+            public Object resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
+                return discordClient;
             }
         };
     }

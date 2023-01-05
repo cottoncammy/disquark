@@ -39,7 +39,7 @@ class InteractionsVerticle extends AbstractVerticle {
     }
 
     private Consumer<RoutingContext> requestHandler() {
-        return new Consumer<RoutingContext>() {
+        return new Consumer<>() {
             @Override
             @SuppressWarnings("unchecked")
             public void accept(RoutingContext context) {

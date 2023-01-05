@@ -24,13 +24,18 @@ public class DiscordOAuth2Client<T extends Response> extends AuthenticatedDiscor
         return new Builder<>(requireNonNull(vertx), requireNonNull(tokenSource));
     }
 
+    public static <T extends Response> Builder<T> builder(BearerTokenSource tokenSource) {
+        return builder(requireNonNull(tokenSource).getVertx(), tokenSource);
+    }
+
     @SuppressWarnings("unchecked")
     public static <T extends Response> DiscordOAuth2Client<T> create(Vertx vertx, AccessTokenSource tokenSource) {
         return (DiscordOAuth2Client<T>) builder(vertx, tokenSource).build();
     }
 
+    @SuppressWarnings("unchecked")
     public static <T extends Response> DiscordOAuth2Client<T> create(BearerTokenSource tokenSource) {
-        return create(requireNonNull(tokenSource).getVertx(), tokenSource);
+        return (DiscordOAuth2Client<T>) builder(tokenSource).build();
     }
 
     private DiscordOAuth2Client(Vertx vertx, Requester<T> requester, DiscordInteractionsClient.Options interactionsClientOptions) {

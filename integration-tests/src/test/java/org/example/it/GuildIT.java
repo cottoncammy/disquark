@@ -312,7 +312,7 @@ class GuildIT {
     }
 
     @Test
-    @Tag("voice")
+    @Tag("stage-channel")
     @Order(37)
     void testModifyCurrentUserVoiceState(DiscordBotClient<?> botClient) {
         ModifyCurrentUserVoiceState modifyCurrentUserVoiceState = ModifyCurrentUserVoiceState.builder()
@@ -326,7 +326,7 @@ class GuildIT {
     }
 
     @Test
-    @Tag("voice")
+    @Tag("stage-channel")
     @Order(38)
     void testModifyUserVoiceState(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_USER_ID") Snowflake userId, @ConfigValue("DISCORD_STAGE_CHANNEL_ID") Snowflake channelId) {
         botClient.modifyUserVoiceState(guildId, userId, channelId, true)

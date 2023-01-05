@@ -10,7 +10,6 @@ import org.example.rest.resources.guild.scheduledevent.CreateGuildScheduledEvent
 import org.example.rest.resources.guild.scheduledevent.GetGuildScheduledEventUsers;
 import org.example.rest.resources.guild.scheduledevent.GuildScheduledEvent;
 import org.example.rest.resources.guild.scheduledevent.ModifyGuildScheduledEvent;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

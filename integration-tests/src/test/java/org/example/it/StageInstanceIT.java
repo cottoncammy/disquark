@@ -11,6 +11,7 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@Tag("stage-channel")
 @ExtendWith(SomeExtension2.class)
 class StageInstanceIT {
 

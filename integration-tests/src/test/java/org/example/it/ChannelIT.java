@@ -125,9 +125,10 @@ class ChannelIT {
 
     @Test
     @Order(10)
-    void testDeleteUserReaction(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_USER_ID") Snowflake userId) {
-        botClient.createReaction(channelId, messageId, ReactionEmoji.create(ROBOT_EMOJI))
-                .call(() -> botClient.deleteUserReaction(channelId, messageId, ReactionEmoji.create(ROBOT_EMOJI), userId))
+    void testDeleteUserReaction(DiscordBotClient<?> botClient) {
+        botClient.getCurrentUser()
+                .call(user -> botClient.createReaction(channelId, messageId, ReactionEmoji.create(ROBOT_EMOJI)))
+                .call(user -> botClient.deleteUserReaction(channelId, messageId, ReactionEmoji.create(ROBOT_EMOJI), user.id()))
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .assertCompleted();
     }
