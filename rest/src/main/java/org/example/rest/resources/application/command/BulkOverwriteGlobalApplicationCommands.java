@@ -13,6 +13,7 @@ import org.example.rest.request.Requestable;
 import org.example.rest.resources.Snowflake;
 import org.immutables.value.Value.Enclosing;
 
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,6 +27,7 @@ public interface BulkOverwriteGlobalApplicationCommands extends Requestable {
         return new Builder();
     }
 
+    @Nullable
     @JsonIgnore
     Snowflake applicationId();
 

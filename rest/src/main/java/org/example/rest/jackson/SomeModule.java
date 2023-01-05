@@ -3,6 +3,7 @@ package org.example.rest.jackson;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.module.SimpleSerializers;
 import org.example.rest.resources.FlagEnum;
+import org.example.rest.resources.permissions.PermissionFlag;
 
 import java.time.Instant;
 import java.util.EnumSet;

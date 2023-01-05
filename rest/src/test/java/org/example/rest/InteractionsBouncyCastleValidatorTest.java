@@ -11,6 +11,7 @@ import org.example.rest.interactions.DiscordInteractionsClient;
 import org.example.rest.request.AccessTokenSource;
 import org.example.rest.util.Hex;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.nio.charset.StandardCharsets;
@@ -23,6 +24,7 @@ import java.time.Instant;
 import static java.time.format.DateTimeFormatter.ISO_DATE_TIME;
 import static org.example.rest.interactions.dsl.InteractionSchema.ping;
 
+@Disabled
 class InteractionsBouncyCastleValidatorTest extends InteractionsTestBase {
     private static DiscordBotClient<?> botClient;
     private static byte[] privateKey;

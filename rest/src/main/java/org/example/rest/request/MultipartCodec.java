@@ -23,7 +23,7 @@ class MultipartCodec implements Codec {
     @Override
     public Body serialize(Request request, MultiMap headers) {
         MultipartForm form = MultipartForm.create();
-        List<Map.Entry<String, Buffer>> files = request.files().get();
+        List<Map.Entry<String, Buffer>> files = request.files();
         for (int i = 0; i < files.size(); i++) {
             Map.Entry<String, Buffer> file = files.get(i);
             form.binaryFileUpload(String.format("files[%d]", i), file.getKey(), file.getValue(), "application/octet-stream");

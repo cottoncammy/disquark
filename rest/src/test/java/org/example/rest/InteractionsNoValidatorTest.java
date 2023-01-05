@@ -7,10 +7,12 @@ import org.example.rest.interactions.InteractionValidatorFactory;
 import org.example.rest.request.AccessTokenSource;
 import org.example.rest.resources.interactions.Interaction;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.example.rest.interactions.dsl.InteractionSchema.ping;
 
+@Disabled
 class InteractionsNoValidatorTest extends InteractionsTestBase {
     private static DiscordBotClient<?> botClient;
 

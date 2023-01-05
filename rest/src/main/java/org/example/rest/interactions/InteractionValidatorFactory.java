@@ -11,7 +11,7 @@ public interface InteractionValidatorFactory extends Function<String, Interactio
         public InteractionValidator apply(String s) {
             return new InteractionValidator(s) {
                 @Override
-                public boolean validate(Buffer timestamp, Buffer body, Buffer signature) {
+                public boolean validate(String timestamp, String body, String signature) {
                     return true;
                 }
             };

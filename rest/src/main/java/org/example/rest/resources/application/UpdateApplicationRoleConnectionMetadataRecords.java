@@ -9,6 +9,7 @@ import org.example.rest.request.Request;
 import org.example.rest.request.Requestable;
 import org.example.rest.resources.Snowflake;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 import static org.example.rest.util.Variables.variables;
@@ -20,6 +21,7 @@ public interface UpdateApplicationRoleConnectionMetadataRecords extends Requesta
         return new Builder();
     }
 
+    @Nullable
     @JsonIgnore
     Snowflake applicationId();
 

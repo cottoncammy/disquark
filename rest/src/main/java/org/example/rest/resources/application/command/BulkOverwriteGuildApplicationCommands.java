@@ -15,6 +15,7 @@ import org.example.rest.resources.Snowflake;
 import org.example.rest.resources.permissions.PermissionFlag;
 import org.immutables.value.Value.Enclosing;
 
+import javax.annotation.Nullable;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
@@ -30,9 +31,11 @@ public interface BulkOverwriteGuildApplicationCommands extends Requestable {
         return new Builder();
     }
 
+    @Nullable
     @JsonIgnore
     Snowflake applicationId();
 
+    @Nullable
     @JsonIgnore
     Snowflake guildId();
 

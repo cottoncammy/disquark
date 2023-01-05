@@ -22,11 +22,11 @@ public class FlagsDeserializer<E extends Enum<E> & FlagEnum> extends JsonDeseria
 
     @Override
     public JsonDeserializer<?> createContextual(DeserializationContext ctx, BeanProperty property) {
-        JavaType type = property.getType();
+        JavaType type = property == null ? ctx.getContextualType() : property.getType();
         if (type.isTypeOrSubTypeOf(Optional.class)) {
             type = type.containedType(0);
         }
-        return new FlagsDeserializer<>(type.getContentType());
+        return new FlagsDeserializer<>(type.containedType(0));
     }
 
     @Override
@@ -35,7 +35,7 @@ public class FlagsDeserializer<E extends Enum<E> & FlagEnum> extends JsonDeseria
         long flags = p.getValueAsLong();
         EnumSet<E> set = EnumSet.noneOf((Class<E>) enumType.getRawClass());
         for (E value : (E[]) enumType.getRawClass().getEnumConstants()) {
-            if ((flags & value.getValue()) != 0) {
+            if ((flags & (1L << value.getValue())) != 0) {
                 set.add(value);
             }
         }
