@@ -166,6 +166,7 @@ public class DiscordInteractionsClient<T extends Response> extends DiscordClient
 
         @Override
         public DiscordInteractionsClient<T> build() {
+            // TODO make sure bouncy castle is present
             if (validatorFactory == null) {
                 validatorFactory = BouncyCastleInteractionValidator::new;
             }

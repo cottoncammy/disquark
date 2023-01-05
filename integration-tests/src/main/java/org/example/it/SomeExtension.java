@@ -1,4 +1,4 @@
-package org.example.it.extension;
+package org.example.it;
 
 import org.example.rest.AuthenticatedDiscordClient;
 import org.example.rest.DiscordBotClient;
@@ -24,7 +24,7 @@ public class SomeExtension implements TestTemplateInvocationContextProvider {
         return new TestTemplateInvocationContext() {
             @Override
             public String getDisplayName(int invocationIndex) {
-                return String.format("AuthenticatedDiscordClientIT invocation with %s",
+                return String.format("Test template invocation with %s",
                         discordClient instanceof DiscordBotClient ? "DiscordBotClient" : "DiscordOAuth2Client");
             }
 

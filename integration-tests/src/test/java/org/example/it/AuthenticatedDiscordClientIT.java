@@ -2,7 +2,6 @@ package org.example.it;
 
 import io.smallrye.mutiny.helpers.test.AssertSubscriber;
 import io.smallrye.mutiny.helpers.test.UniAssertSubscriber;
-import org.example.it.extension.SomeExtension;
 import org.example.rest.AuthenticatedDiscordClient;
 import org.example.rest.resources.Snowflake;
 import org.example.rest.resources.application.command.*;
@@ -10,7 +9,7 @@ import org.example.rest.resources.user.GetCurrentUserGuilds;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-import static org.example.it.ConfigHelper.configValue;
+import static org.example.it.config.ConfigHelper.configValue;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class AuthenticatedDiscordClientIT {

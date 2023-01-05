@@ -10,5 +10,5 @@ import java.util.Optional;
 public interface MultipartRequest {
 
     @JsonIgnore
-    Optional<List<Map.Entry<String, Buffer>>> files();
+    List<Map.Entry<String, Buffer>> files();
 }

@@ -1,10 +1,8 @@
 package org.example.it;
 
-import io.smallrye.mutiny.Uni;
 import io.smallrye.mutiny.helpers.test.AssertSubscriber;
 import io.smallrye.mutiny.helpers.test.UniAssertSubscriber;
-import org.example.it.extension.ConfigValue;
-import org.example.it.extension.SomeExtension2;
+import org.example.it.config.ConfigValue;
 import org.example.rest.DiscordBotClient;
 import org.example.rest.resources.Snowflake;
 import org.example.rest.resources.sticker.CreateGuildSticker;

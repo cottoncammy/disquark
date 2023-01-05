@@ -6,6 +6,7 @@
       <list>
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/cache/pom.xml" />
+        <option value="$PROJECT_DIR$/integration-tests/src/main/resources/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">
@@ -18,6 +19,7 @@
         <option value="$PROJECT_DIR$/gizmo-runner/pom.xml" />
         <option value="$PROJECT_DIR$/javapoet-runner/pom.xml" />
         <option value="$PROJECT_DIR$/json/pom.xml" />
+        <option value="$PROJECT_DIR$/junit5-internal/pom.xml" />
       </set>
     </option>
   </component>

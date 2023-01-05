@@ -1,4 +1,4 @@
-package org.example.it.extension;
+package org.example.it.config;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

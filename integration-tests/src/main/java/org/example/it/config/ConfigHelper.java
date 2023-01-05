@@ -1,4 +1,4 @@
-package org.example.it;
+package org.example.it.config;
 
 import org.eclipse.microprofile.config.ConfigProvider;
 

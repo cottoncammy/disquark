@@ -1,5 +1,7 @@
-package org.example.it.extension;
+package org.example.it;
 
+import org.example.it.config.ConfigHelper;
+import org.example.it.config.ConfigValue;
 import org.example.rest.DiscordBotClient;
 import org.example.rest.oauth2.DiscordOAuth2Client;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -9,13 +11,11 @@ import org.junit.jupiter.api.extension.ParameterResolver;
 
 import java.util.Optional;
 
-import static org.example.it.ConfigHelper.optionalConfigValue;
-
 public class SomeExtension2 implements ParameterResolver {
 
     private Optional<?> configValue(ParameterContext context) {
         return context.findAnnotation(ConfigValue.class)
-                .flatMap(annotation -> optionalConfigValue(annotation.value(), context.getParameter().getType()));
+                .flatMap(annotation -> ConfigHelper.optionalConfigValue(annotation.value(), context.getParameter().getType()));
     }
 
     @Override

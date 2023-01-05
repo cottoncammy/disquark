@@ -2,14 +2,12 @@ package org.example.it;
 
 import io.smallrye.mutiny.helpers.test.AssertSubscriber;
 import io.smallrye.mutiny.helpers.test.UniAssertSubscriber;
-import org.example.it.extension.ConfigValue;
-import org.example.it.extension.SomeExtension2;
+import org.example.it.config.ConfigValue;
 import org.example.rest.oauth2.DiscordOAuth2Client;
 import org.example.rest.resources.Snowflake;
 import org.example.rest.resources.application.command.ApplicationCommand;
 import org.example.rest.resources.application.command.CreateGuildApplicationCommand;
 import org.example.rest.resources.application.command.EditApplicationCommandPermissions;
-import org.example.rest.resources.application.command.GuildApplicationCommandPermissions;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 

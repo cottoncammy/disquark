@@ -13,22 +13,30 @@ import org.example.rest.request.ratelimit.Bucket4jRateLimiter;
 import org.example.rest.request.ratelimit.RateLimitStrategy;
 import org.example.rest.response.HttpResponse;
 import org.example.rest.response.RateLimitException;
-import org.example.rest.response.Response;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static org.example.it.config.ConfigHelper.configValue;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.example.it.ConfigHelper.configValue;
 
 @Tag("rate-limit")
 class RateLimitStrategyIT {
+    private static final Vertx VERTX = DiscordClients.getVertx();
     private static final int MAX_REQUESTS = 50;
+
+    private String token;
+
+    @BeforeAll
+    void init() {
+        token = configValue("DISCORD_TOKEN", String.class);
+    }
 
     @Test
     void testGlobalRateLimiting() {
-        DiscordBotClient.create(Vertx.vertx(), configValue("DISCORD_TOKEN", String.class))
+        DiscordBotClient.create(VERTX, token)
                 .listVoiceRegions().toUni()
                 .repeat().atMost(MAX_REQUESTS + 1)
                 .subscribe().withSubscriber(AssertSubscriber.create())
@@ -39,10 +47,10 @@ class RateLimitStrategyIT {
     void testBucketRateLimiting() {
         AtomicInteger remaining = new AtomicInteger();
 
-        DiscordBotClient<HttpResponse> botClient = DiscordBotClient.<HttpResponse>builder(Vertx.vertx(), configValue("DISCORD_TOKEN", String.class))
+        DiscordBotClient<?> botClient = DiscordBotClient.<HttpResponse>builder(VERTX, token)
                 .requesterFactory(new RequesterFactory<>() {
                     @Override
-                    public Requester<HttpResponse> apply(DiscordClient.Builder<HttpResponse, ? extends DiscordClient<HttpResponse>> builder) {
+                    public Requester<HttpResponse> apply(DiscordClient.Builder<HttpResponse, ? extends DiscordClient<?>> builder) {
                         return new Requester<>() {
                             @Override
                             public Uni<HttpResponse> request(Request request) {
@@ -64,7 +72,7 @@ class RateLimitStrategyIT {
 
     @Test
     void testNoGlobalRateLimiting() {
-        DiscordBotClient<HttpResponse> botClient = DiscordBotClient.<HttpResponse>builder(Vertx.vertx(), configValue("DISCORD_TOKEN", String.class))
+        DiscordBotClient<?> botClient = DiscordBotClient.<HttpResponse>builder(VERTX, token)
                 .rateLimitStrategy(RateLimitStrategy.BUCKET)
                 .build();
 
@@ -80,7 +88,7 @@ class RateLimitStrategyIT {
 
     @Test
     void testNoBucketRateLimiting() {
-        DiscordBotClient<Response> botClient = DiscordBotClient.builder(Vertx.vertx(), configValue("DISCORD_TOKEN", String.class))
+        DiscordBotClient<?> botClient = DiscordBotClient.builder(VERTX, token)
                 .rateLimitStrategy(RateLimitStrategy.GLOBAL)
                 .build();
 

@@ -23,7 +23,7 @@ public interface Request extends Auditable, MultipartRequest {
     Optional<Object> body();
 
     default Optional<String> contentType() {
-        if (files().isPresent()) {
+        if (!files().isEmpty()) {
             return Optional.of("multipart/form-data");
         } else if (body().isPresent()) {
             return Optional.of("application/json");

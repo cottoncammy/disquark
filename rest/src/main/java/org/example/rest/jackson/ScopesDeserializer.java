@@ -1,6 +1,5 @@
 package org.example.rest.jackson;
 
-import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
@@ -82,6 +81,7 @@ public class ScopesDeserializer extends JsonDeserializer<List<Scope>> {
     public List<Scope> deserialize(JsonParser p, DeserializationContext ctx) throws IOException {
         String s = p.getText();
 
+        // TODO
         try {
             return Arrays.stream(s.split(" ")).map(this::getScope).collect(Collectors.toList());
         } catch (IllegalArgumentException e) {
