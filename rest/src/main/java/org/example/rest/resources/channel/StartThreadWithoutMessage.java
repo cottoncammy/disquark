@@ -12,7 +12,6 @@ import org.example.rest.request.Request;
 import org.example.rest.request.Requestable;
 import org.example.rest.resources.Snowflake;
 import org.example.rest.resources.channel.Channel;
-import org.example.rest.resources.channel.thread.ImmutableStartThreadWithoutMessage;
 
 import java.util.Optional;
 import java.util.OptionalInt;

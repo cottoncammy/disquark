@@ -8,6 +8,8 @@ import org.example.rest.resources.interactions.Interaction;
 import javax.annotation.Nullable;
 import java.util.Objects;
 
+import static java.util.Objects.requireNonNull;
+
 public class ModalSubmitBuilder implements InteractionSchema<Interaction.ModalSubmitData, ModalSubmitInteraction> {
     @Nullable
     private String customId;
@@ -15,7 +17,7 @@ public class ModalSubmitBuilder implements InteractionSchema<Interaction.ModalSu
     protected ModalSubmitBuilder() {}
 
     public ModalSubmitBuilder customId(String customId) {
-        this.customId = customId;
+        this.customId = requireNonNull(customId);
         return this;
     }
 

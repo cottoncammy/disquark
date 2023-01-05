@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.example.immutables.ImmutableJson;
 import org.example.rest.resources.channel.Channel;
-import org.example.rest.resources.channel.thread.ImmutableListThreadsResult;
 import org.example.rest.resources.channel.thread.ThreadMember;
 
 import java.util.List;

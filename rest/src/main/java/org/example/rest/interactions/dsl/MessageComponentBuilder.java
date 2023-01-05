@@ -10,6 +10,8 @@ import javax.annotation.Nullable;
 import java.util.Objects;
 import java.util.Optional;
 
+import static java.util.Objects.requireNonNull;
+
 public class MessageComponentBuilder implements InteractionSchema<Interaction.MessageComponentData, MessageComponentInteraction> {
     @Nullable
     private String customId;
@@ -19,12 +21,12 @@ public class MessageComponentBuilder implements InteractionSchema<Interaction.Me
     protected MessageComponentBuilder() {}
 
     public MessageComponentBuilder customId(String customId) {
-        this.customId = customId;
+        this.customId = requireNonNull(customId);
         return this;
     }
 
     public MessageComponentBuilder type(Component.Type type) {
-        this.type = type;
+        this.type = requireNonNull(type);
         return this;
     }
 

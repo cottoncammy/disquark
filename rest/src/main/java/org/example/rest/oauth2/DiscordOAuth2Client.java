@@ -25,7 +25,7 @@ public class DiscordOAuth2Client<T extends Response> extends AuthenticatedDiscor
     }
 
     public static <T extends Response> Builder<T> builder(BearerTokenSource tokenSource) {
-        return builder(requireNonNull(tokenSource).getVertx(), tokenSource);
+        return builder(tokenSource.getVertx(), tokenSource);
     }
 
     @SuppressWarnings("unchecked")

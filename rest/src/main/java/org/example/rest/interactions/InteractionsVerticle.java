@@ -16,6 +16,8 @@ import org.example.rest.resources.interactions.Interaction;
 
 import java.util.function.Consumer;
 
+import static java.util.Objects.requireNonNull;
+
 class InteractionsVerticle extends AbstractVerticle {
     private final Router router;
     private final HttpServer httpServer;
@@ -48,11 +50,12 @@ class InteractionsVerticle extends AbstractVerticle {
 
                 request.body()
                         .call(body -> {
-                            if (!interactionValidator.validate(timestamp, body.toString(), signature)) {
+                            if (!interactionValidator.validate(requireNonNull(timestamp), body.toString(), requireNonNull(signature))) {
                                 return Uni.createFrom().failure(UnauthorizedException::new);
                             }
                             return Uni.createFrom().voidItem();
                         })
+                        .onFailure(NullPointerException.class).invoke(() -> context.fail(400))
                         .onFailure(UnauthorizedException.class).invoke(() -> context.fail(401))
                         .map(body -> body.toJsonObject().mapTo(Interaction.class))
                         .onFailure(IllegalArgumentException.class).invoke(() -> context.fail(400))

@@ -5,6 +5,7 @@ import io.vertx.mutiny.core.buffer.Buffer;
 import io.vertx.mutiny.uritemplate.Variables;
 
 import javax.annotation.Nullable;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -52,8 +53,8 @@ public class EmptyRequest implements Request {
     }
 
     @Override
-    public Optional<List<Map.Entry<String, Buffer>>> files() {
-        return Optional.empty();
+    public List<Map.Entry<String, Buffer>> files() {
+        return Collections.emptyList();
     }
 
     @Override

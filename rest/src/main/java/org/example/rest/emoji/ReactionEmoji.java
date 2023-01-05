@@ -3,6 +3,8 @@ package org.example.rest.emoji;
 import org.example.rest.resources.Snowflake;
 import org.example.rest.resources.emoji.Emoji;
 
+import static java.util.Objects.requireNonNull;
+
 public interface ReactionEmoji {
 
     static ReactionEmoji create(Emoji emoji) {
@@ -13,11 +15,11 @@ public interface ReactionEmoji {
     }
 
     static CustomReactionEmoji create(Snowflake id, String name) {
-        return new CustomReactionEmoji(id, name);
+        return new CustomReactionEmoji(requireNonNull(id), requireNonNull(name));
     }
 
     static UnicodeReactionEmoji create(String unicode) {
-        return new UnicodeReactionEmoji(unicode);
+        return new UnicodeReactionEmoji(requireNonNull(unicode));
     }
 
     String getValue();

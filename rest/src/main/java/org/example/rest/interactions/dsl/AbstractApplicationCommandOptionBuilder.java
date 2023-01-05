@@ -9,6 +9,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
 
+import static java.util.Objects.requireNonNull;
+
 public abstract class AbstractApplicationCommandOptionBuilder<O extends AbstractApplicationCommandOptionBuilder<O>> implements Predicate<ApplicationCommandInteractionDataOption> {
     protected final List<O> options = new ArrayList<>();
 
@@ -20,17 +22,17 @@ public abstract class AbstractApplicationCommandOptionBuilder<O extends Abstract
     protected AbstractApplicationCommandOptionBuilder() {}
 
     public AbstractApplicationCommandOptionBuilder<O> name(String name) {
-        this.name = name;
+        this.name = requireNonNull(name);
         return this;
     }
 
     public AbstractApplicationCommandOptionBuilder<O> type(ApplicationCommand.Option.Type type) {
-        this.type = type;
+        this.type = requireNonNull(type);
         return this;
     }
 
     public AbstractApplicationCommandOptionBuilder<O> with(O option) {
-        options.add(option);
+        options.add(requireNonNull(option));
         return this;
     }
 

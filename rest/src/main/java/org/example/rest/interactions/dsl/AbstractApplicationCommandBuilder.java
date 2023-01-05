@@ -13,6 +13,8 @@ import javax.annotation.Nullable;
 import java.util.*;
 import java.util.function.Predicate;
 
+import static java.util.Objects.requireNonNull;
+
 public abstract class AbstractApplicationCommandBuilder<C extends CompletableInteraction<Interaction.ApplicationCommandData>, O extends AbstractApplicationCommandOptionBuilder<O>> implements InteractionSchema<Interaction.ApplicationCommandData, C> {
     private final Interaction.Type interactionType;
     private final Functions.Function3<Interaction<Interaction.ApplicationCommandData>, HttpServerResponse, DiscordInteractionsClient<?>, C> completableInteractionFunction;
@@ -35,22 +37,22 @@ public abstract class AbstractApplicationCommandBuilder<C extends CompletableInt
     }
 
     public AbstractApplicationCommandBuilder<C, O> id(Snowflake id) {
-        this.id = id;
+        this.id = requireNonNull(id);
         return this;
     }
 
     public AbstractApplicationCommandBuilder<C, O> name(String name) {
-        this.name = name;
+        this.name = requireNonNull(name);
         return this;
     }
 
     public AbstractApplicationCommandBuilder<C, O> type(ApplicationCommand.Type type) {
-        this.type = type;
+        this.type = requireNonNull(type);
         return this;
     }
 
     public AbstractApplicationCommandBuilder<C, O> with(O option) {
-        options.add(option);
+        options.add(requireNonNull(option));
         return this;
     }
 
