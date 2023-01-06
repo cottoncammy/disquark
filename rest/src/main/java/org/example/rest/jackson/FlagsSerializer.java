@@ -19,13 +19,17 @@ public class FlagsSerializer extends StdSerializer<EnumSet<? extends FlagEnum>> 
 
     @Override
     public JsonSerializer<?> createContextual(SerializerProvider prov, BeanProperty property) throws JsonMappingException {
+        if (property == null) {
+            throw new IllegalStateException("Cannot construct contextual serializer for root value");
+        }
+
         JavaType type = property.getType();
         if (type.isTypeOrSubTypeOf(Optional.class)) {
             type = type.containedType(0);
         }
 
-        if (type.getRawClass() == PermissionFlag.class) {
-            return new PermissionFlagsSerializer();
+        if (type.containedType(0).getRawClass() == PermissionFlag.class) {
+            return new PermissionFlagsSerializer(type);
         }
 
         return new FlagsSerializer(type);

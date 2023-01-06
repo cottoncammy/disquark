@@ -50,7 +50,7 @@ class RateLimitStrategyIT {
         DiscordBotClient<?> botClient = DiscordBotClient.<HttpResponse>builder(VERTX, token)
                 .requesterFactory(new RequesterFactory<>() {
                     @Override
-                    public Requester<HttpResponse> apply(DiscordClient.Builder<HttpResponse, ? extends DiscordClient<?>> builder) {
+                    public Requester<HttpResponse> apply(DiscordClient.Builder<HttpResponse, ? extends DiscordClient<HttpResponse>> builder) {
                         return new Requester<>() {
                             @Override
                             public Uni<HttpResponse> request(Request request) {

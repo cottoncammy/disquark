@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
 
 import static org.example.rest.interactions.dsl.InteractionSchema.ping;
 
-@Disabled
 class InteractionsNoValidatorTest extends InteractionsTestBase {
     private static DiscordBotClient<?> botClient;
 

@@ -24,7 +24,6 @@ import java.time.Instant;
 import static java.time.format.DateTimeFormatter.ISO_DATE_TIME;
 import static org.example.rest.interactions.dsl.InteractionSchema.ping;
 
-@Disabled
 class InteractionsBouncyCastleValidatorTest extends InteractionsTestBase {
     private static DiscordBotClient<?> botClient;
     private static byte[] privateKey;

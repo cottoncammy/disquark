@@ -20,6 +20,7 @@ public class SomeModule extends SimpleModule {
         super.setupModule(context);
 
         SimpleSerializers serializers = new SimpleSerializers();
+        serializers.addSerializer(new PermissionFlagsSerializer(context.getTypeFactory().constructCollectionType(EnumSet.class, PermissionFlag.class)));
         serializers.addSerializer(new FlagsSerializer(context.getTypeFactory().constructCollectionType(EnumSet.class, FlagEnum.class)));
         context.addSerializers(serializers);
     }
