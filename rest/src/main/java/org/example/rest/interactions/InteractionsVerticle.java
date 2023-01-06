@@ -5,8 +5,10 @@ import io.smallrye.mutiny.Uni;
 import io.smallrye.mutiny.operators.multi.processors.BroadcastProcessor;
 import io.smallrye.mutiny.vertx.core.AbstractVerticle;
 import io.vertx.core.http.HttpMethod;
+import io.vertx.mutiny.core.buffer.Buffer;
 import io.vertx.mutiny.core.http.HttpServer;
 import io.vertx.mutiny.core.http.HttpServerRequest;
+import io.vertx.mutiny.core.http.HttpServerResponse;
 import io.vertx.mutiny.ext.web.Route;
 import io.vertx.mutiny.ext.web.Router;
 import io.vertx.mutiny.ext.web.RoutingContext;
@@ -47,21 +49,26 @@ class InteractionsVerticle extends AbstractVerticle {
                 HttpServerRequest request = context.request();
                 String signature = request.getHeader("X-Signature-Ed25519");
                 String timestamp = request.getHeader("X-Signature-Timestamp");
+                HttpServerResponse response = context.response();
 
                 request.body()
                         .call(body -> {
+                            if (body.length() == 0) {
+                                return Uni.createFrom().failure(IllegalArgumentException::new);
+                            }
+
                             if (!interactionValidator.validate(requireNonNull(timestamp), body.toString(), requireNonNull(signature))) {
                                 return Uni.createFrom().failure(UnauthorizedException::new);
                             }
                             return Uni.createFrom().voidItem();
                         })
-                        .onFailure(NullPointerException.class).invoke(() -> context.fail(400))
-                        .onFailure(UnauthorizedException.class).invoke(() -> context.fail(401))
+                        .onFailure(NullPointerException.class).call(() -> response.setStatusCode(401).end())
+                        .onFailure(UnauthorizedException.class).call(() -> response.setStatusCode(401).end())
                         .map(body -> body.toJsonObject().mapTo(Interaction.class))
-                        .onFailure(IllegalArgumentException.class).invoke(() -> context.fail(400))
+                        .onFailure(IllegalArgumentException.class).call(() -> response.setStatusCode(400).end())
                         .call(interaction -> {
                             if (interaction.type() == Interaction.Type.PING) {
-                                return new PingInteraction(interaction, context.response(), interactionsClient).pong();
+                                return new PingInteraction(interaction, response, interactionsClient).pong();
                             }
                             return Uni.createFrom().voidItem();
                         })
@@ -78,6 +85,7 @@ class InteractionsVerticle extends AbstractVerticle {
 
     @Override
     public Uni<Void> asyncStart() {
+        // TODO CORS
         Route route = router.route(HttpMethod.POST, interactionsUrl)
                 .consumes("application/json")
                 .produces("application/json")
