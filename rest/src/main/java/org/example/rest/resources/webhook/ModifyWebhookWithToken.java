@@ -3,8 +3,11 @@ package org.example.rest.resources.webhook;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.vertx.core.http.HttpMethod;
+import io.vertx.mutiny.core.buffer.Buffer;
 import org.example.immutables.ImmutableJson;
+import org.example.rest.jackson.ImageDataSerializer;
 import org.example.rest.request.Endpoint;
 import org.example.rest.request.Request;
 import org.example.rest.request.Requestable;
@@ -30,7 +33,8 @@ public interface ModifyWebhookWithToken extends Requestable {
 
     Optional<String> name();
 
-    Optional<String> avatar();
+    @JsonSerialize(using = ImageDataSerializer.class)
+    Optional<Buffer> avatar();
 
     @Override
     default Request asRequest() {

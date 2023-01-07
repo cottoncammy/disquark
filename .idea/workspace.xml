@@ -4,17 +4,31 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a5029c32-3a5b-4a65-b173-2d497ddb2a2d" name="Changes" comment="Test fix round three">
+    <list default="true" id="a5029c32-3a5b-4a65-b173-2d497ddb2a2d" name="Changes" comment="Test fix round four">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/integration-tests/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/integration-tests/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/integration-tests/src/main/resources/services/org.eclipse.microprofile.config.spi.Converter" beforeDir="false" afterPath="$PROJECT_DIR$/integration-tests/src/main/resources/META-INF/services/org.eclipse.microprofile.config.spi.Converter" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/integration-tests/src/test/java/org/example/it/AuthenticatedDiscordClientIT.java" beforeDir="false" afterPath="$PROJECT_DIR$/integration-tests/src/test/java/org/example/it/AuthenticatedDiscordClientIT.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/integration-tests/src/test/java/org/example/it/ChannelIT.java" beforeDir="false" afterPath="$PROJECT_DIR$/integration-tests/src/test/java/org/example/it/ChannelIT.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/integration-tests/src/test/java/org/example/it/EmojiIT.java" beforeDir="false" afterPath="$PROJECT_DIR$/integration-tests/src/test/java/org/example/it/EmojiIT.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/integration-tests/src/test/java/org/example/it/GuildIT.java" beforeDir="false" afterPath="$PROJECT_DIR$/integration-tests/src/test/java/org/example/it/GuildIT.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/integration-tests/src/test/java/org/example/it/GuildTemplateIT.java" beforeDir="false" afterPath="$PROJECT_DIR$/integration-tests/src/test/java/org/example/it/GuildTemplateIT.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/integration-tests/src/test/java/org/example/it/StickerIT.java" beforeDir="false" afterPath="$PROJECT_DIR$/integration-tests/src/test/java/org/example/it/StickerIT.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/integration-tests/src/test/java/org/example/it/UserIT.java" beforeDir="false" afterPath="$PROJECT_DIR$/integration-tests/src/test/java/org/example/it/UserIT.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/integration-tests/src/test/java/org/example/it/WebhookIT.java" beforeDir="false" afterPath="$PROJECT_DIR$/integration-tests/src/test/java/org/example/it/WebhookIT.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/interactions/InteractionsVerticle.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/interactions/InteractionsVerticle.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/jackson/SomeModule.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/jackson/SomeModule.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/util/ExceptionPredicate.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/util/ExceptionPredicate.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/util/Hex.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/util/Hex.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rest/src/test/java/org/example/rest/ApplicationFlagsTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/test/java/org/example/rest/ApplicationFlagsTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/rest/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/emoji/CreateGuildEmoji.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/emoji/CreateGuildEmoji.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/guild/CreateGuild.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/guild/CreateGuild.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/guild/CreateGuildRole.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/guild/CreateGuildRole.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/guild/ModifyGuild.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/guild/ModifyGuild.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/guild/ModifyGuildRole.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/guild/ModifyGuildRole.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/guild/template/CreateGuildFromGuildTemplate.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/guild/template/CreateGuildFromGuildTemplate.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/user/ModifyCurrentUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/user/ModifyCurrentUser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/webhook/CreateWebhook.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/webhook/CreateWebhook.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/webhook/ModifyWebhook.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/webhook/ModifyWebhook.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/webhook/ModifyWebhookWithToken.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/webhook/ModifyWebhookWithToken.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rest/src/test/java/org/example/rest/InteractionsBouncyCastleValidatorTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/test/java/org/example/rest/InteractionsBouncyCastleValidatorTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rest/src/test/java/org/example/rest/InteractionsNoValidatorTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/test/java/org/example/rest/InteractionsVerticleTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rest/src/test/java/org/example/rest/PermissionFlagsTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/test/java/org/example/rest/PermissionFlagsTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -85,11 +99,11 @@
       <recent name="C:\Users\Cameron\IdeaProjects\discord\integration-tests\src\main\resources\META-INF\services" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Cameron\IdeaProjects\discord\integration-tests\src\test\resources" />
+      <recent name="C:\Users\Cameron\IdeaProjects\discord\integration-tests\src\main\resources\META-INF" />
       <recent name="C:\Users\Cameron\IdeaProjects\discord\integration-tests" />
       <recent name="C:\Users\Cameron\IdeaProjects\discord\integration-tests\src\main\java\org\example\it" />
       <recent name="C:\Users\Cameron\IdeaProjects\discord\integration-tests\src\main\resources" />
-      <recent name="C:\Users\Cameron\IdeaProjects\discord\junit5-internal\src\main\resources" />
-      <recent name="C:\Users\Cameron\IdeaProjects\discord\rest\src\main\resources\META-INF" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="org.example.it" />
@@ -114,7 +128,15 @@
             </option>
             <option name="jreName" value="#USE_PROJECT_JDK" />
             <option name="mavenProperties">
-              <map />
+              <map>
+                <entry key="DISCORD_APPLICATION_ID" value="746219309440827454" />
+                <entry key="DISCORD_CHANNEL_ID" value="1061047368063135787" />
+                <entry key="DISCORD_CLIENT_ID" value="746219309440827454" />
+                <entry key="DISCORD_CLIENT_SECRET" value="Tvyl5NHNoluULd72T84hbED5G5U0_g4k" />
+                <entry key="DISCORD_GUILD_ID" value="1061047368063135784" />
+                <entry key="DISCORD_TOKEN" value="NzQ2MjE5MzA5NDQwODI3NDU0.GLzfD0.CfnfnCY7MjtvV8O_WIPCIIVR37R5hqr_hbxi2A" />
+                <entry key="DISCORD_USER_ID" value="417098239926599681" />
+              </map>
             </option>
             <option name="passParentEnv" value="true" />
             <option name="runMavenInBackground" value="true" />
@@ -158,6 +180,7 @@
             <option name="jreName" value="#USE_PROJECT_JDK" />
             <option name="mavenProperties">
               <map>
+                <entry key="DISCORD_APPLICATION_ID" value="746219309440827454" />
                 <entry key="DISCORD_CHANNEL_ID" value="1061047368063135787" />
                 <entry key="DISCORD_CLIENT_ID" value="746219309440827454" />
                 <entry key="DISCORD_CLIENT_SECRET" value="Tvyl5NHNoluULd72T84hbED5G5U0_g4k" />
@@ -207,13 +230,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1661720293566</updated>
-    </task>
-    <task id="LOCAL-00002" summary="Progress">
-      <created>1663659162859</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1663659162859</updated>
     </task>
     <task id="LOCAL-00003" summary="Progress">
       <created>1663811950309</created>
@@ -551,7 +567,14 @@
       <option name="project" value="LOCAL" />
       <updated>1672981767098</updated>
     </task>
-    <option name="localTasksCounter" value="51" />
+    <task id="LOCAL-00051" summary="Test fix round four">
+      <created>1673119655094</created>
+      <option name="number" value="00051" />
+      <option name="presentableId" value="LOCAL-00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1673119655095</updated>
+    </task>
+    <option name="localTasksCounter" value="52" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -587,7 +610,8 @@
     <MESSAGE value="Test fix round one" />
     <MESSAGE value="Test fix round two" />
     <MESSAGE value="Test fix round three" />
-    <option name="LAST_COMMIT_MESSAGE" value="Test fix round three" />
+    <MESSAGE value="Test fix round four" />
+    <option name="LAST_COMMIT_MESSAGE" value="Test fix round four" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

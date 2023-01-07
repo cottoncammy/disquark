@@ -42,6 +42,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <apache-tika.version>2.6.0</apache-tika.version>
         <bouncycastle.version>1.70</bouncycastle.version>
         <bucket4j-version>8.1.0</bucket4j-version>
         <caffeine.version>3.1.2</caffeine.version>
@@ -110,10 +111,16 @@
                 <scope>import</scope>
                 <type>pom</type>
             </dependency>
+            <!-- TODO remove after upgrading -->
             <dependency>
                 <groupId>jakarta.annotation</groupId>
                 <artifactId>jakarta.annotation-api</artifactId>
                 <version>${jakarta-annotations.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.tika</groupId>
+                <artifactId>tika-core</artifactId>
+                <version>${apache-tika.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.bouncycastle</groupId>

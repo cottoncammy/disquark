@@ -37,7 +37,12 @@ class GuildTemplateIT {
     @Test
     @Order(3)
     void testCreateGuildFromGuildTemplate(DiscordBotClient<?> botClient) {
-        botClient.createGuildFromGuildTemplate(CreateGuildFromGuildTemplate.builder().name("foo").build())
+        CreateGuildFromGuildTemplate createGuildFromGuildTemplate = CreateGuildFromGuildTemplate.builder()
+                .templateCode(templateCode)
+                .name("foo")
+                .build();
+
+        botClient.createGuildFromGuildTemplate(createGuildFromGuildTemplate)
                 .flatMap(guild -> botClient.deleteGuild(guild.id()))
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .assertCompleted();

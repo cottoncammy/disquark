@@ -46,6 +46,7 @@ class InteractionsBouncyCastleValidatorTest extends InteractionsTestBase {
 
     @AfterAll
     static void cleanup() {
+        Security.removeProvider(BouncyCastleProvider.PROVIDER_NAME);
         botClient.getVertx().closeAndAwait();
     }
 

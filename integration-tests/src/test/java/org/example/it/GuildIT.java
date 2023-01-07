@@ -42,7 +42,7 @@ class GuildIT {
     @Test
     @Order(4)
     void testModifyGuild(DiscordBotClient<?> botClient) {
-        botClient.modifyGuild(ModifyGuild.builder().name("bar").build())
+        botClient.modifyGuild(ModifyGuild.builder().guildId(guildId).name("bar").build())
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .assertCompleted();
     }

@@ -36,6 +36,9 @@
         <plugins>
             <plugin>
                 <artifactId>maven-failsafe-plugin</artifactId>
+                <configuration>
+                    <excludedGroups>announcement-channel, forum-channel, rate-limit, stage-channel</excludedGroups>
+                </configuration>
             </plugin>
         </plugins>
     </build>

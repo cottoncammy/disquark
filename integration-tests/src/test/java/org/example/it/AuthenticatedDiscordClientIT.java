@@ -65,6 +65,7 @@ class AuthenticatedDiscordClientIT {
     void testEditGlobalApplicationCommand(AuthenticatedDiscordClient<?> discordClient) {
         EditGlobalApplicationCommand editGlobalApplicationCommand = EditGlobalApplicationCommand.builder()
                 .applicationId(applicationId)
+                .commandId(globalCommandId)
                 .name("bar")
                 .build();
 

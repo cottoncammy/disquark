@@ -2,6 +2,7 @@ package org.example.it;
 
 import io.smallrye.mutiny.helpers.test.AssertSubscriber;
 import io.smallrye.mutiny.helpers.test.UniAssertSubscriber;
+import io.vertx.mutiny.core.buffer.Buffer;
 import org.example.it.config.ConfigValue;
 import org.example.rest.DiscordBotClient;
 import org.example.rest.resources.Snowflake;
@@ -24,7 +25,14 @@ class EmojiIT {
     @Test
     @Order(2)
     void testCreateGuildEmoji(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_GUILD_ID") Snowflake guildId) {
-        emojiId = botClient.createGuildEmoji(CreateGuildEmoji.builder().guildId(guildId).name("foo").image("").build())
+        Buffer image = botClient.getVertx().fileSystem().readFileAndAwait("emoji.png");
+        CreateGuildEmoji createGuildEmoji = CreateGuildEmoji.builder()
+                .guildId(guildId)
+                .name("foo")
+                .image(image)
+                .build();
+
+        emojiId = botClient.createGuildEmoji(createGuildEmoji)
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .awaitItem()
                 .getItem()

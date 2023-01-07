@@ -50,6 +50,7 @@ class ChannelIT {
 
     @Test
     @Order(2)
+    // TODO test
     void testModifyDmChannel(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_USER_ID") Snowflake userId, @ConfigValue("DISCORD_USER_ID_2") Snowflake userId2) {
         ModifyDmChannel.Builder builder = ModifyDmChannel.builder().name("foo");
         dmChannelId = botClient.createDm(userId)
@@ -271,12 +272,15 @@ class ChannelIT {
                 .name("foo")
                 .build();
 
-        botClient.startThreadWithoutMessage(startThreadWithoutMessage)
+        threadId = botClient.startThreadWithoutMessage(startThreadWithoutMessage)
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
-                .assertCompleted();
+                .awaitItem()
+                .getItem()
+                .id();
     }
 
     @Test
+    @Tag("forum-channel")
     @Order(26)
     void testStartThreadInForumChannel(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_FORUM_CHANNEL_ID") Snowflake forumChannelId) {
         StartThreadInForumChannel startThreadInForumChannel = StartThreadInForumChannel.builder()
@@ -284,11 +288,9 @@ class ChannelIT {
                 .message(StartThreadInForumChannel.ForumThreadMessageParams.builder().content("Hello World!").build())
                 .build();
 
-        threadId = botClient.startThreadInForumChannel(startThreadInForumChannel)
+        botClient.startThreadInForumChannel(startThreadInForumChannel)
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
-                .awaitItem()
-                .getItem()
-                .id();
+                .assertCompleted();
     }
 
     @Test

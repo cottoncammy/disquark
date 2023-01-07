@@ -126,7 +126,9 @@ class WebhookIT {
     @Test
     @Order(12)
     void testDeleteWebhook(DiscordBotClient<?> botClient) {
-        botClient.deleteWebhook(webhookId, null).subscribe().withSubscriber(UniAssertSubscriber.create()).assertCompleted();
+        botClient.deleteWebhook(webhookId, null)
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .assertCompleted();
     }
 
     @Test

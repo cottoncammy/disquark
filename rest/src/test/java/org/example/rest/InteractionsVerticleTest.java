@@ -46,7 +46,7 @@ class InteractionsVerticleTest extends InteractionsTestBase {
     @Test
     void testPingReceive() {
         botClient.on(ping())
-                .onRequest().call(() -> sendInteraction(botClient, "foo", "bar", buildPing()))
+                .onSubscription().call(() -> sendInteraction(botClient, "foo", "bar", buildPing()))
                 .onItem().transform(x -> 1)
                 .subscribe().withSubscriber(AssertSubscriber.create())
                 .awaitNextItem()

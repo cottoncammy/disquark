@@ -1,8 +1,11 @@
 package org.example.rest.resources.emoji;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.vertx.core.http.HttpMethod;
+import io.vertx.mutiny.core.buffer.Buffer;
 import org.example.immutables.ImmutableJson;
+import org.example.rest.jackson.ImageDataSerializer;
 import org.example.rest.request.Auditable;
 import org.example.rest.request.Endpoint;
 import org.example.rest.request.Request;
@@ -25,7 +28,8 @@ public interface CreateGuildEmoji extends Auditable, Requestable {
 
     String name();
 
-    String image();
+    @JsonSerialize(using = ImageDataSerializer.class)
+    Buffer image();
 
     List<Snowflake> roles();
 
