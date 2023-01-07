@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.vertx.core.json.Json;
 import io.vertx.core.json.jackson.DatabindCodec;
 import org.example.rest.resources.application.Application;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -16,7 +17,8 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ApplicationFlagsTest {
-    private static final String ALL_FLAGS = Long.toUnsignedString(Arrays.stream(Application.Flag.values()).map(Application.Flag::getValue)
+    private static final String ALL_FLAGS = Long.toUnsignedString(Arrays.stream(Application.Flag.values())
+            .map(Application.Flag::getValue)
             .mapToLong(i -> (long) i)
             .reduce(0, (left, right) -> left | (1L << right)));
 

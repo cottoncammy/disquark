@@ -8,12 +8,13 @@ import org.example.rest.interactions.DiscordInteractionsClient;
 import org.example.rest.interactions.InteractionValidatorFactory;
 import org.example.rest.request.AccessTokenSource;
 import org.example.rest.resources.interactions.Interaction;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import static org.example.rest.interactions.dsl.InteractionSchema.ping;
 
-class InteractionsNoValidatorTest extends InteractionsTestBase {
+class InteractionsVerticleTest extends InteractionsTestBase {
     private static DiscordBotClient<?> botClient;
 
     @BeforeAll
@@ -25,6 +26,11 @@ class InteractionsNoValidatorTest extends InteractionsTestBase {
                 .build();
 
         botClient.on(ping());
+    }
+
+    @AfterAll
+    static void cleanup() {
+        botClient.getVertx().closeAndAwait();
     }
 
     @Test

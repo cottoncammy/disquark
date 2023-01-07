@@ -9,6 +9,7 @@ import io.vertx.core.json.jackson.DatabindCodec;
 import org.example.rest.resources.application.Application;
 import org.example.rest.resources.permissions.PermissionFlag;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;

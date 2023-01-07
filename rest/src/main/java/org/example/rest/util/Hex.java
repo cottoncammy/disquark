@@ -1,16 +1,13 @@
 package org.example.rest.util;
 
 public class Hex {
-    private static final char[] hexArray = "0123456789ABCDEF".toCharArray();
 
-    public static String encode(byte[] b) {
-        char[] hexChars = new char[b.length * 2];
-        for (int j = 0; j < b.length; j++) {
-            int v = b[j] & 0xFF;
-            hexChars[j * 2] = hexArray[v >>> 4];
-            hexChars[j * 2 + 1] = hexArray[v & 0x0F];
+    public static String encode(byte[] buf) {
+        StringBuilder sb = new StringBuilder();
+        for (byte b : buf) {
+            sb.append(String.format("%02x", b));
         }
-        return new String(hexChars);
+        return sb.toString();
     }
 
     public static byte[] decode(String s) {

@@ -1,10 +1,12 @@
 package org.example.rest.interactions;
 
+import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
 import io.smallrye.mutiny.operators.multi.processors.BroadcastProcessor;
 import io.smallrye.mutiny.vertx.core.AbstractVerticle;
 import io.vertx.core.http.HttpMethod;
+import io.vertx.core.json.DecodeException;
 import io.vertx.mutiny.core.buffer.Buffer;
 import io.vertx.mutiny.core.http.HttpServer;
 import io.vertx.mutiny.core.http.HttpServerRequest;
@@ -19,6 +21,7 @@ import org.example.rest.resources.interactions.Interaction;
 import java.util.function.Consumer;
 
 import static java.util.Objects.requireNonNull;
+import static org.example.rest.util.ExceptionPredicate.is;
 
 class InteractionsVerticle extends AbstractVerticle {
     private final Router router;
@@ -53,19 +56,14 @@ class InteractionsVerticle extends AbstractVerticle {
 
                 request.body()
                         .call(body -> {
-                            if (body.length() == 0) {
-                                return Uni.createFrom().failure(IllegalArgumentException::new);
-                            }
-
                             if (!interactionValidator.validate(requireNonNull(timestamp), body.toString(), requireNonNull(signature))) {
                                 return Uni.createFrom().failure(UnauthorizedException::new);
                             }
                             return Uni.createFrom().voidItem();
                         })
-                        .onFailure(NullPointerException.class).call(() -> response.setStatusCode(401).end())
-                        .onFailure(UnauthorizedException.class).call(() -> response.setStatusCode(401).end())
+                        .onFailure(is(NullPointerException.class, UnauthorizedException.class)).call(() -> response.setStatusCode(401).end())
                         .map(body -> body.toJsonObject().mapTo(Interaction.class))
-                        .onFailure(IllegalArgumentException.class).call(() -> response.setStatusCode(400).end())
+                        .onFailure(is(IllegalArgumentException.class, DecodeException.class)).call(() -> response.setStatusCode(400).end())
                         .call(interaction -> {
                             if (interaction.type() == Interaction.Type.PING) {
                                 return new PingInteraction(interaction, response, interactionsClient).pong();

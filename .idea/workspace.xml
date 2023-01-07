@@ -4,12 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a5029c32-3a5b-4a65-b173-2d497ddb2a2d" name="Changes" comment="Test fix round two">
+    <list default="true" id="a5029c32-3a5b-4a65-b173-2d497ddb2a2d" name="Changes" comment="Test fix round three">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/interactions/InteractionsVerticle.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/interactions/InteractionsVerticle.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/jackson/SomeModule.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/jackson/SomeModule.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/util/ExceptionPredicate.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/util/ExceptionPredicate.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/util/Hex.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/util/Hex.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/test/java/org/example/rest/ApplicationFlagsTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/test/java/org/example/rest/ApplicationFlagsTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rest/src/test/java/org/example/rest/InteractionsBouncyCastleValidatorTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/test/java/org/example/rest/InteractionsBouncyCastleValidatorTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rest/src/test/java/org/example/rest/InteractionsNoValidatorTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/test/java/org/example/rest/InteractionsNoValidatorTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rest/src/test/java/org/example/rest/InteractionsTestBase.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/test/java/org/example/rest/InteractionsTestBase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/test/java/org/example/rest/InteractionsNoValidatorTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/test/java/org/example/rest/InteractionsVerticleTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/test/java/org/example/rest/PermissionFlagsTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/test/java/org/example/rest/PermissionFlagsTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -98,22 +103,6 @@
     </key>
   </component>
   <component name="RunManager" selected="Maven.discord-parent">
-    <configuration name="PermissionFlagsTest.testSerialization" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="discord-rest" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="org.example.rest.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="org.example.rest" />
-      <option name="MAIN_CLASS_NAME" value="org.example.rest.PermissionFlagsTest" />
-      <option name="METHOD_NAME" value="testSerialization" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="debug" type="MavenRunConfiguration" factoryName="Maven">
       <MavenSettings>
         <option name="myGeneralSettings" />
@@ -142,10 +131,6 @@
               <list>
                 <option value="-DforkCount=0" />
                 <option value="-DreuseForks=false" />
-                <option value="-DDISCORD_TOKEN=NzQ2MjE5MzA5NDQwODI3NDU0.GLzfD0.CfnfnCY7MjtvV8O_WIPCIIVR37R5hqr_hbxi2A" />
-                <option value="-DDISCORD_CHANNEL_ID=824444326829752350" />
-                <option value="-DDISCORD_CLIENT_ID=746219309440827454" />
-                <option value="-DDISCORD_CLIENT_SECRET=Tvyl5NHNoluULd72T84hbED5G5U0_g4k" />
                 <option value="clean" />
                 <option value="verify" />
               </list>
@@ -164,7 +149,29 @@
     <configuration name="discord-parent" type="MavenRunConfiguration" factoryName="Maven">
       <MavenSettings>
         <option name="myGeneralSettings" />
-        <option name="myRunnerSettings" />
+        <option name="myRunnerSettings">
+          <MavenRunnerSettings>
+            <option name="delegateBuildToMaven" value="false" />
+            <option name="environmentProperties">
+              <map />
+            </option>
+            <option name="jreName" value="#USE_PROJECT_JDK" />
+            <option name="mavenProperties">
+              <map>
+                <entry key="DISCORD_CHANNEL_ID" value="1061047368063135787" />
+                <entry key="DISCORD_CLIENT_ID" value="746219309440827454" />
+                <entry key="DISCORD_CLIENT_SECRET" value="Tvyl5NHNoluULd72T84hbED5G5U0_g4k" />
+                <entry key="DISCORD_GUILD_ID" value="1061047368063135784" />
+                <entry key="DISCORD_TOKEN" value="NzQ2MjE5MzA5NDQwODI3NDU0.GLzfD0.CfnfnCY7MjtvV8O_WIPCIIVR37R5hqr_hbxi2A" />
+                <entry key="DISCORD_USER_ID" value="417098239926599681" />
+              </map>
+            </option>
+            <option name="passParentEnv" value="true" />
+            <option name="runMavenInBackground" value="true" />
+            <option name="skipTests" value="false" />
+            <option name="vmOptions" value="" />
+          </MavenRunnerSettings>
+        </option>
         <option name="myRunnerParameters">
           <MavenRunnerParameters>
             <option name="profiles">
@@ -172,10 +179,6 @@
             </option>
             <option name="goals">
               <list>
-                <option value="-DDISCORD_TOKEN=NzQ2MjE5MzA5NDQwODI3NDU0.GLzfD0.CfnfnCY7MjtvV8O_WIPCIIVR37R5hqr_hbxi2A" />
-                <option value="-DDISCORD_CHANNEL_ID=824444326829752350" />
-                <option value="-DDISCORD_CLIENT_ID=746219309440827454" />
-                <option value="-DDISCORD_CLIENT_SECRET=Tvyl5NHNoluULd72T84hbED5G5U0_g4k" />
                 <option value="clean" />
                 <option value="install" />
               </list>
@@ -192,15 +195,9 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="JUnit.PermissionFlagsTest.testSerialization" />
       <item itemvalue="Maven.debug" />
       <item itemvalue="Maven.discord-parent" />
     </list>
-    <recent_temporary>
-      <list>
-        <item itemvalue="JUnit.PermissionFlagsTest.testSerialization" />
-      </list>
-    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -210,13 +207,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1661720293566</updated>
-    </task>
-    <task id="LOCAL-00001" summary="Initial commit">
-      <created>1663576789165</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1663576789165</updated>
     </task>
     <task id="LOCAL-00002" summary="Progress">
       <created>1663659162859</created>
@@ -554,7 +544,14 @@
       <option name="project" value="LOCAL" />
       <updated>1672968250167</updated>
     </task>
-    <option name="localTasksCounter" value="50" />
+    <task id="LOCAL-00050" summary="Test fix round three">
+      <created>1672981767098</created>
+      <option name="number" value="00050" />
+      <option name="presentableId" value="LOCAL-00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1672981767098</updated>
+    </task>
+    <option name="localTasksCounter" value="51" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -589,15 +586,21 @@
     <MESSAGE value="Start adding tests" />
     <MESSAGE value="Test fix round one" />
     <MESSAGE value="Test fix round two" />
-    <option name="LAST_COMMIT_MESSAGE" value="Test fix round two" />
+    <MESSAGE value="Test fix round three" />
+    <option name="LAST_COMMIT_MESSAGE" value="Test fix round three" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <breakpoint type="java-exception">
-          <properties class="java.lang.IllegalArgumentException" package="java.lang" />
-          <option name="timeStamp" value="141" />
-        </breakpoint>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-databind/2.13.3/jackson-databind-2.13.3-sources.jar!/com/fasterxml/jackson/databind/deser/std/StdDeserializer.java</url>
+          <line>256</line>
+          <properties class="com.fasterxml.jackson.databind.deser.std.StdDeserializer" method="_deserializeFromString">
+            <option name="EMULATED" value="true" />
+            <option name="WATCH_EXIT" value="false" />
+          </properties>
+          <option name="timeStamp" value="156" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
     <pin-to-top-manager>
