@@ -55,7 +55,8 @@ public abstract class AuthenticatedDiscordClient<T extends Response> extends Dis
     }
 
     public Uni<ApplicationCommand> createGlobalApplicationCommand(CreateGlobalApplicationCommand createGlobalApplicationCommand) {
-        return requester.request(createGlobalApplicationCommand.asRequest()).flatMap(res -> res.as(ApplicationCommand.class));
+        return requester.request(requireNonNull(createGlobalApplicationCommand, "createGlobalApplicationCommand").asRequest())
+                .flatMap(res -> res.as(ApplicationCommand.class));
     }
 
     public Uni<ApplicationCommand> getGlobalApplicationCommand(Snowflake applicationId, Snowflake commandId) {
@@ -64,7 +65,8 @@ public abstract class AuthenticatedDiscordClient<T extends Response> extends Dis
     }
 
     public Uni<ApplicationCommand> editGlobalApplicationCommand(EditGlobalApplicationCommand editGlobalApplicationCommand) {
-        return requester.request(editGlobalApplicationCommand.asRequest()).flatMap(res -> res.as(ApplicationCommand.class));
+        return requester.request(requireNonNull(editGlobalApplicationCommand, "editGlobalApplicationCommand").asRequest())
+                .flatMap(res -> res.as(ApplicationCommand.class));
     }
 
     public Uni<Void> deleteGlobalApplicationCommand(Snowflake applicationId, Snowflake commandId) {
@@ -73,7 +75,7 @@ public abstract class AuthenticatedDiscordClient<T extends Response> extends Dis
     }
 
     public Multi<ApplicationCommand> bulkOverwriteGlobalApplicationCommands(BulkOverwriteGlobalApplicationCommands bulkOverwriteGlobalApplicationCommands) {
-        return requester.request(bulkOverwriteGlobalApplicationCommands.asRequest())
+        return requester.request(requireNonNull(bulkOverwriteGlobalApplicationCommands, "bulkOverwriteGlobalApplicationCommands").asRequest())
                 .flatMap(res -> res.as(ApplicationCommand[].class))
                 .onItem().disjoint();
     }
@@ -85,7 +87,8 @@ public abstract class AuthenticatedDiscordClient<T extends Response> extends Dis
     }
 
     public Uni<ApplicationCommand> createGuildApplicationCommand(CreateGuildApplicationCommand createGuildApplicationCommand) {
-        return requester.request(createGuildApplicationCommand.asRequest()).flatMap(res -> res.as(ApplicationCommand.class));
+        return requester.request(requireNonNull(createGuildApplicationCommand, "createGuildApplicationCommand").asRequest())
+                .flatMap(res -> res.as(ApplicationCommand.class));
     }
 
     public Uni<ApplicationCommand> getGuildApplicationCommand(Snowflake applicationId, Snowflake guildId, Snowflake commandId) {
@@ -94,7 +97,8 @@ public abstract class AuthenticatedDiscordClient<T extends Response> extends Dis
     }
 
     public Uni<ApplicationCommand> editGuildApplicationCommand(EditGuildApplicationCommand editGuildApplicationCommand) {
-        return requester.request(editGuildApplicationCommand.asRequest()).flatMap(res -> res.as(ApplicationCommand.class));
+        return requester.request(requireNonNull(editGuildApplicationCommand, "editGuildApplicationCommand").asRequest())
+                .flatMap(res -> res.as(ApplicationCommand.class));
     }
 
     public Uni<Void> deleteGuildApplicationCommand(Snowflake applicationId, Snowflake guildId, Snowflake commandId) {
@@ -103,7 +107,7 @@ public abstract class AuthenticatedDiscordClient<T extends Response> extends Dis
     }
 
     public Multi<ApplicationCommand> bulkOverwriteGuildApplicationCommands(BulkOverwriteGuildApplicationCommands bulkOverwriteGuildApplicationCommands) {
-        return requester.request(bulkOverwriteGuildApplicationCommands.asRequest())
+        return requester.request(requireNonNull(bulkOverwriteGuildApplicationCommands, "bulkOverwriteGuildApplicationCommands").asRequest())
                 .flatMap(res -> res.as(ApplicationCommand[].class))
                 .onItem().disjoint();
     }
@@ -198,7 +202,8 @@ public abstract class AuthenticatedDiscordClient<T extends Response> extends Dis
     }
 
     public Multi<Guild> getCurrentUserGuilds(GetCurrentUserGuilds getCurrentUserGuilds) {
-        return requester.request(getCurrentUserGuilds.asRequest()).flatMap(res -> res.as(Guild[].class)).onItem().disjoint();
+        return requester.request(requireNonNull(getCurrentUserGuilds, "getCurrentUserGuilds").asRequest())
+                .flatMap(res -> res.as(Guild[].class)).onItem().disjoint();
     }
 
     public Uni<Guild.Member> getCurrentUserGuildMember(Snowflake guildId) {
@@ -277,7 +282,7 @@ public abstract class AuthenticatedDiscordClient<T extends Response> extends Dis
         }
 
         public Builder<R, T> interactionsClientOptions(DiscordInteractionsClient.Options interactionsClientOptions) {
-            this.interactionsClientOptions = requireNonNull(interactionsClientOptions);
+            this.interactionsClientOptions = requireNonNull(interactionsClientOptions, "interactionsClientOptions");
             return this;
         }
 

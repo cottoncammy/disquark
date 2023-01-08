@@ -25,7 +25,7 @@ public class HttpClientRequester implements Requester<HttpResponse> {
     private final GlobalRateLimiter rateLimiter;
 
     public static Builder builder(Vertx vertx, AccessTokenSource tokenSource, GlobalRateLimiter rateLimiter) {
-        return new Builder(requireNonNull(vertx), requireNonNull(tokenSource), requireNonNull(rateLimiter));
+        return new Builder(requireNonNull(vertx, "vertx"), requireNonNull(tokenSource, "tokenSource"), requireNonNull(rateLimiter, "rateLimiter"));
     }
 
     public static HttpClientRequester create(Vertx vertx, AccessTokenSource tokenSource, GlobalRateLimiter rateLimiter) {
@@ -128,22 +128,22 @@ public class HttpClientRequester implements Requester<HttpResponse> {
         }
 
         public Builder baseUrl(URI baseUrl) {
-            this.baseUrl = requireNonNull(baseUrl);
+            this.baseUrl = requireNonNull(baseUrl, "baseUrl");
             return this;
         }
 
         public Builder httpClient(HttpClient httpClient) {
-            this.httpClient = requireNonNull(httpClient);
+            this.httpClient = requireNonNull(httpClient, "httpClient");
             return this;
         }
 
         public Builder putCodec(String contentType, Codec codec) {
-            codecs.put(contentType, requireNonNull(codec));
+            codecs.put(requireNonNull(contentType, "contentType"), requireNonNull(codec, "codec"));
             return this;
         }
 
         public Builder putCodecs(Map<String, Codec> codecs) {
-            this.codecs.putAll(codecs);
+            this.codecs.putAll(requireNonNull(codecs, "codecs"));
             return this;
         }
 
@@ -154,7 +154,9 @@ public class HttpClientRequester implements Requester<HttpResponse> {
             return new HttpClientRequester(
                     baseUrl == null ? URI.create("https://discord.com/api/v10") : baseUrl,
                     httpClient == null ? vertx.createHttpClient() : httpClient,
-                    codecs, tokenSource, rateLimiter);
+                    codecs,
+                    tokenSource,
+                    rateLimiter);
         }
     }
 }

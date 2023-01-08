@@ -8,9 +8,11 @@ import org.example.rest.response.Response;
 
 import java.util.function.Function;
 
+import static java.util.Objects.requireNonNull;
+
 public interface RequesterFactory<T extends Response> extends Function<DiscordClient.Builder<T, ? extends DiscordClient<T>>, Requester<T>> {
 
-    static RequesterFactory<HttpResponse> customHttpRequester(Function<HttpClientRequester.Builder, HttpClientRequester> requesterBuilder) {
+    static RequesterFactory<HttpResponse> customHttpRequester(Function<HttpClientRequester.Builder, HttpClientRequester> httpRequesterFactory) {
         return new RequesterFactory<>() {
             @Override
             public Requester<HttpResponse> apply(DiscordClient.Builder<HttpResponse, ? extends DiscordClient<HttpResponse>> builder) {
@@ -24,7 +26,8 @@ public interface RequesterFactory<T extends Response> extends Function<DiscordCl
                     globalRateLimiter = rateLimitStrategy.getGlobalRateLimiter();
                 }
 
-                return rateLimitStrategy.apply(requesterBuilder.apply(HttpClientRequester.builder(builder.getVertx(), builder.getTokenSource(), globalRateLimiter)));
+                return rateLimitStrategy.apply(requireNonNull(httpRequesterFactory, "httpRequesterFactory")
+                        .apply(HttpClientRequester.builder(builder.getVertx(), builder.getTokenSource(), globalRateLimiter)));
             }
         };
     }

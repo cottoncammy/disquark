@@ -21,12 +21,12 @@ public class MessageComponentBuilder implements InteractionSchema<Interaction.Me
     protected MessageComponentBuilder() {}
 
     public MessageComponentBuilder customId(String customId) {
-        this.customId = requireNonNull(customId);
+        this.customId = requireNonNull(customId, "customId");
         return this;
     }
 
     public MessageComponentBuilder type(Component.Type type) {
-        this.type = requireNonNull(type);
+        this.type = requireNonNull(type, "type");
         return this;
     }
 

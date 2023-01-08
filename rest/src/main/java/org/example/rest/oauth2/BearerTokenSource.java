@@ -27,13 +27,13 @@ public class BearerTokenSource implements AccessTokenSource {
 
     public static Builder create(Vertx vertx, String clientId, String clientSecret) {
         OAuth2Options options = new OAuth2Options()
-                .setClientId(requireNonNull(clientId))
-                .setClientSecret(requireNonNull(clientSecret))
+                .setClientId(requireNonNull(clientId, "clientId"))
+                .setClientSecret(requireNonNull(clientSecret, "clientSecret"))
                 .setSite("https://discord.com/api/oauth2")
                 .setAuthorizationPath("/authorize")
                 .setTokenPath("/token")
                 .setRevocationPath("/token/revoke");
-        return new Builder(requireNonNull(vertx), OAuth2Auth.create(vertx, options));
+        return new Builder(requireNonNull(vertx, "vertx"), OAuth2Auth.create(vertx, options));
     }
 
     private BearerTokenSource(Vertx vertx, OAuth2Auth oAuth2, OAuth2FlowType flowType, String code, String redirectUrl) {
@@ -80,8 +80,8 @@ public class BearerTokenSource implements AccessTokenSource {
                     vertx,
                     oAuth2,
                     OAuth2FlowType.AUTH_CODE,
-                    requireNonNull(code),
-                    requireNonNull(redirectUrl));
+                    requireNonNull(code, "code"),
+                    requireNonNull(redirectUrl, "redirectUrl"));
         }
 
         public BearerTokenSource fromClientCredentials() {

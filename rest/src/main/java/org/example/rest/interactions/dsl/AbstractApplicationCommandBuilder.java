@@ -37,22 +37,22 @@ public abstract class AbstractApplicationCommandBuilder<C extends CompletableInt
     }
 
     public AbstractApplicationCommandBuilder<C, O> id(Snowflake id) {
-        this.id = requireNonNull(id);
+        this.id = requireNonNull(id, "id");
         return this;
     }
 
     public AbstractApplicationCommandBuilder<C, O> name(String name) {
-        this.name = requireNonNull(name);
+        this.name = requireNonNull(name, "name");
         return this;
     }
 
     public AbstractApplicationCommandBuilder<C, O> type(ApplicationCommand.Type type) {
-        this.type = requireNonNull(type);
+        this.type = requireNonNull(type, "type");
         return this;
     }
 
     public AbstractApplicationCommandBuilder<C, O> with(O option) {
-        options.add(requireNonNull(option));
+        options.add(requireNonNull(option, "option"));
         return this;
     }
 

@@ -35,7 +35,7 @@ public class DiscordInteractionsClient<T extends Response> extends DiscordClient
     private volatile InteractionsVerticle verticle;
 
     public static <T extends Response> Builder<T> builder(Vertx vertx, String verifyKey) {
-        return new Builder<>(requireNonNull(vertx), requireNonNull(verifyKey));
+        return new Builder<>(requireNonNull(vertx, "vertx"), requireNonNull(verifyKey, "verifyKey"));
     }
 
     @SuppressWarnings("unchecked")
@@ -72,7 +72,7 @@ public class DiscordInteractionsClient<T extends Response> extends DiscordClient
 
     @Override
     public <D, C extends CompletableInteraction<D>> Multi<C> on(InteractionSchema<D, C> schema) {
-        return getVerticle().on(schema);
+        return getVerticle().on(requireNonNull(schema, "schema"));
     }
 
     @Override
@@ -83,7 +83,8 @@ public class DiscordInteractionsClient<T extends Response> extends DiscordClient
 
     @Override
     public Uni<Message> editOriginalInteractionResponse(EditOriginalInteractionResponse editOriginalInteractionResponse) {
-        return requester.request(editOriginalInteractionResponse.asRequest()).flatMap(res -> res.as(Message.class));
+        return requester.request(requireNonNull(editOriginalInteractionResponse, "editOriginalInteractionResponse").asRequest())
+                .flatMap(res -> res.as(Message.class));
     }
 
     @Override
@@ -94,7 +95,8 @@ public class DiscordInteractionsClient<T extends Response> extends DiscordClient
 
     @Override
     public Uni<Message> createFollowupMessage(CreateFollowupMessage createFollowupMessage) {
-        return requester.request(createFollowupMessage.asRequest()).flatMap(res -> res.as(Message.class));
+        return requester.request(requireNonNull(createFollowupMessage, "createFollowupMessage").asRequest())
+                .flatMap(res -> res.as(Message.class));
     }
 
     @Override
@@ -105,7 +107,8 @@ public class DiscordInteractionsClient<T extends Response> extends DiscordClient
 
     @Override
     public Uni<Message> editFollowupMessage(EditFollowupMessage editFollowupMessage) {
-        return requester.request(editFollowupMessage.asRequest()).flatMap(res -> res.as(Message.class));
+        return requester.request(requireNonNull(editFollowupMessage, "editFollowupMessage").asRequest())
+                .flatMap(res -> res.as(Message.class));
     }
 
     @Override
@@ -127,17 +130,17 @@ public class DiscordInteractionsClient<T extends Response> extends DiscordClient
         }
 
         public Builder<T> router(Router router) {
-            this.router = requireNonNull(router);
+            this.router = requireNonNull(router, "router");
             return this;
         }
 
         public Builder<T> httpServer(HttpServer httpServer) {
-            this.httpServer = requireNonNull(httpServer);
+            this.httpServer = requireNonNull(httpServer, "httpServer");
             return this;
         }
 
         public Builder<T> interactionsUrl(String interactionsUrl) {
-            this.interactionsUrl = requireNonNull(interactionsUrl);
+            this.interactionsUrl = requireNonNull(interactionsUrl, "interactionsUrl");
             return this;
         }
 
@@ -160,7 +163,7 @@ public class DiscordInteractionsClient<T extends Response> extends DiscordClient
         }
 
         public Builder<T> validatorFactory(InteractionValidatorFactory validatorFactory) {
-            this.validatorFactory = requireNonNull(validatorFactory);
+            this.validatorFactory = requireNonNull(validatorFactory, "validatorFactory");
             return this;
         }
 
@@ -189,7 +192,7 @@ public class DiscordInteractionsClient<T extends Response> extends DiscordClient
         protected InteractionValidatorFactory validatorFactory;
 
         public Options setRouter(Router router) {
-            this.router = requireNonNull(router);
+            this.router = requireNonNull(router, "router");
             return this;
         }
 
@@ -198,7 +201,7 @@ public class DiscordInteractionsClient<T extends Response> extends DiscordClient
         }
 
         public Options setVerifyKey(String verifyKey) {
-            this.verifyKey = requireNonNull(verifyKey);
+            this.verifyKey = requireNonNull(verifyKey, "verifyKey");
             return this;
         }
 
@@ -207,7 +210,7 @@ public class DiscordInteractionsClient<T extends Response> extends DiscordClient
         }
 
         public Options setHttpServer(HttpServer httpServer) {
-            this.httpServer = requireNonNull(httpServer);
+            this.httpServer = requireNonNull(httpServer, "httpServer");
             return this;
         }
 
@@ -216,7 +219,7 @@ public class DiscordInteractionsClient<T extends Response> extends DiscordClient
         }
 
         public Options setInteractionsUrl(String interactionsUrl) {
-            this.interactionsUrl = requireNonNull(interactionsUrl);
+            this.interactionsUrl = requireNonNull(interactionsUrl, "interactionsUrl");
             return this;
         }
 
@@ -225,7 +228,7 @@ public class DiscordInteractionsClient<T extends Response> extends DiscordClient
         }
 
         public Options setValidatorFactory(InteractionValidatorFactory validatorFactory) {
-            this.validatorFactory = requireNonNull(validatorFactory);
+            this.validatorFactory = requireNonNull(validatorFactory, "validatorFactory");
             return this;
         }
 

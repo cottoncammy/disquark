@@ -17,7 +17,7 @@ public class ModalSubmitBuilder implements InteractionSchema<Interaction.ModalSu
     protected ModalSubmitBuilder() {}
 
     public ModalSubmitBuilder customId(String customId) {
-        this.customId = requireNonNull(customId);
+        this.customId = requireNonNull(customId, "customId");
         return this;
     }
 

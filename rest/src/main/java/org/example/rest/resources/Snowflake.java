@@ -17,12 +17,12 @@ public class Snowflake {
     }
 
     public static Snowflake create(Instant value) {
-        return create((requireNonNull(value).toEpochMilli() - DISCORD_EPOCH) << 22);
+        return create((requireNonNull(value, "value").toEpochMilli() - DISCORD_EPOCH) << 22);
     }
 
     @JsonCreator
     public static Snowflake create(String value) {
-        return create(Long.parseLong(requireNonNull(value)));
+        return create(Long.parseLong(requireNonNull(value, "value")));
     }
 
     private Snowflake(long value) {

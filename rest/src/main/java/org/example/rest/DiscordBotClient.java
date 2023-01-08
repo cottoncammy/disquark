@@ -67,7 +67,7 @@ import static org.example.rest.util.Variables.variables;
 public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordClient<T> {
 
     public static <T extends Response> Builder<T> builder(Vertx vertx, AccessTokenSource tokenSource) {
-        return new Builder<>(requireNonNull(vertx), requireNonNull(tokenSource));
+        return new Builder<>(requireNonNull(vertx, "vertx"), requireNonNull(tokenSource, "tokenSource"));
     }
 
     public static <T extends Response> Builder<T> builder(Vertx vertx, String token) {
@@ -104,13 +104,14 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public Multi<ApplicationRoleConnectionMetadata> updateApplicationRoleConnectionMetadataRecords(UpdateApplicationRoleConnectionMetadataRecords updateApplicationRoleConnectionMetadataRecords) {
-        return requester.request(updateApplicationRoleConnectionMetadataRecords.asRequest())
+        return requester.request(requireNonNull(updateApplicationRoleConnectionMetadataRecords, "updateApplicationRoleConnectionMetadataRecords").asRequest())
                 .flatMap(res -> res.as(ApplicationRoleConnectionMetadata[].class))
                 .onItem().disjoint();
     }
 
     public Uni<AuditLog> getGuildAuditLog(GetGuildAuditLog getGuildAuditLog) {
-        return requester.request(getGuildAuditLog.asRequest()).flatMap(res -> res.as(AuditLog.class));
+        return requester.request(requireNonNull(getGuildAuditLog, "getGuildAuditLog").asRequest())
+                .flatMap(res -> res.as(AuditLog.class));
     }
 
     public Multi<AutoModerationRule> listAutoModerationRulesForGuild(Snowflake guildId) {
@@ -125,11 +126,13 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public Uni<AutoModerationRule> createAutoModerationRule(CreateAutoModerationRule createAutoModerationRule) {
-        return requester.request(createAutoModerationRule.asRequest()).flatMap(res -> res.as(AutoModerationRule.class));
+        return requester.request(requireNonNull(createAutoModerationRule, "createAutoModerationRule").asRequest())
+                .flatMap(res -> res.as(AutoModerationRule.class));
     }
 
     public Uni<AutoModerationRule> modifyAutoModerationRule(ModifyAutoModerationRule modifyAutoModerationRule) {
-        return requester.request(modifyAutoModerationRule.asRequest()).flatMap(res -> res.as(AutoModerationRule.class));
+        return requester.request(requireNonNull(modifyAutoModerationRule, "modifyAutoModerationRule").asRequest())
+                .flatMap(res -> res.as(AutoModerationRule.class));
     }
 
     public Uni<Void> deleteAutoModerationRule(Snowflake guildId, Snowflake autoModerationRuleId, @Nullable String auditLogReason) {
@@ -143,11 +146,13 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public Uni<Channel> modifyChannel(ModifyDmChannel modifyDmChannel) {
-        return requester.request(modifyDmChannel.asRequest()).flatMap(res -> res.as(Channel.class));
+        return requester.request(requireNonNull(modifyDmChannel, "modifyDmChannel").asRequest())
+                .flatMap(res -> res.as(Channel.class));
     }
 
     public Uni<Channel> modifyChannel(ModifyGuildChannel modifyGuildChannel) {
-        return requester.request(modifyGuildChannel.asRequest()).flatMap(res -> res.as(Channel.class));
+        return requester.request(requireNonNull(modifyGuildChannel, "modifyGuildChannel").asRequest())
+                .flatMap(res -> res.as(Channel.class));
     }
 
     public Uni<Channel> deleteOrCloseChannel(Snowflake channelId, @Nullable String auditLogReason) {
@@ -156,7 +161,8 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public Multi<Message> getChannelMessages(GetChannelMessages getChannelMessages) {
-        return requester.request(getChannelMessages.asRequest()).flatMap(res -> res.as(Message[].class)).onItem().disjoint();
+        return requester.request(requireNonNull(getChannelMessages, "getChannelMessages").asRequest())
+                .flatMap(res -> res.as(Message[].class)).onItem().disjoint();
     }
 
     public Uni<Message> getChannelMessage(Snowflake channelId, Snowflake messageId) {
@@ -165,7 +171,8 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public Uni<Message> createMessage(CreateMessage createMessage) {
-        return requester.request(createMessage.asRequest()).flatMap(res -> res.as(Message.class));
+        return requester.request(requireNonNull(createMessage, "createMessage").asRequest())
+                .flatMap(res -> res.as(Message.class));
     }
 
     public Uni<Message> crosspostMessage(Snowflake channelId, Snowflake messageId) {
@@ -189,7 +196,8 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public Multi<User> getReactions(GetReactions getReactions) {
-        return requester.request(getReactions.asRequest()).flatMap(res -> res.as(User[].class)).onItem().disjoint();
+        return requester.request(requireNonNull(getReactions, "getReactions").asRequest())
+                .flatMap(res -> res.as(User[].class)).onItem().disjoint();
     }
 
     public Uni<Void> deleteAllReactions(Snowflake channelId, Snowflake messageId) {
@@ -203,7 +211,8 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public Uni<Message> editMessage(EditMessage editMessage) {
-        return requester.request(editMessage.asRequest()).flatMap(res -> res.as(Message.class));
+        return requester.request(requireNonNull(editMessage, "editMessage").asRequest())
+                .flatMap(res -> res.as(Message.class));
     }
 
     public Uni<Void> deleteMessage(Snowflake channelId, Snowflake messageId, @Nullable String auditLogReason) {
@@ -212,11 +221,12 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public Uni<Void> bulkDeleteMessages(BulkDeleteMessages bulkDeleteMessages) {
-        return requester.request(bulkDeleteMessages.asRequest()).replaceWithVoid();
+        return requester.request(requireNonNull(bulkDeleteMessages, "bulkDeleteMessages").asRequest()).replaceWithVoid();
     }
 
     public Uni<Void> editChannelPermissions(EditChannelPermissions editChannelPermissions) {
-        return requester.request(editChannelPermissions.asRequest()).replaceWithVoid();
+        return requester.request(requireNonNull(editChannelPermissions, "editChannelPermissions").asRequest())
+                .replaceWithVoid();
     }
 
     public Multi<Invite> getChannelInvites(Snowflake channelId) {
@@ -226,7 +236,8 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public Uni<Invite> createChannelInvite(CreateChannelInvite createChannelInvite) {
-        return requester.request(createChannelInvite.asRequest()).flatMap(res -> res.as(Invite.class));
+        return requester.request(requireNonNull(createChannelInvite, "createChannelInvite").asRequest())
+                .flatMap(res -> res.as(Invite.class));
     }
 
     public Uni<Void> deleteChannelPermission(Snowflake channelId, Snowflake overwriteId, @Nullable String auditLogReason) {
@@ -270,15 +281,18 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public Uni<Channel> startThreadFromMessage(StartThreadFromMessage startThreadFromMessage) {
-        return requester.request(startThreadFromMessage.asRequest()).flatMap(res -> res.as(Channel.class));
+        return requester.request(requireNonNull(startThreadFromMessage, "startThreadFromMessage").asRequest())
+                .flatMap(res -> res.as(Channel.class));
     }
 
     public Uni<Channel> startThreadWithoutMessage(StartThreadWithoutMessage startThreadWithoutMessage) {
-        return requester.request(startThreadWithoutMessage.asRequest()).flatMap(res -> res.as(Channel.class));
+        return requester.request(requireNonNull(startThreadWithoutMessage, "startThreadWithoutMessage").asRequest())
+                .flatMap(res -> res.as(Channel.class));
     }
 
     public Uni<Channel> startThreadInForumChannel(StartThreadInForumChannel startThreadInForumChannel) {
-        return requester.request(startThreadInForumChannel.asRequest()).flatMap(res -> res.as(Channel.class));
+        return requester.request(requireNonNull(startThreadInForumChannel, "startThreadInForumChannel").asRequest())
+                .flatMap(res -> res.as(Channel.class));
     }
 
     public Uni<Void> joinThread(Snowflake channelId) {
@@ -313,7 +327,7 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     private Uni<ListThreadsResult> listThreads(ListThreads listThreads, String uri) {
-        JsonObject json = JsonObject.of("channel.id", listThreads.channelId().getValue());
+        JsonObject json = JsonObject.of("channel.id", requireNonNull(listThreads, "listThreads").channelId().getValue());
         if (listThreads.limit().isPresent()) {
             json.put("limit", listThreads.limit().getAsInt());
         }
@@ -349,11 +363,13 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public Uni<Emoji> createGuildEmoji(CreateGuildEmoji createGuildEmoji) {
-        return requester.request(createGuildEmoji.asRequest()).flatMap(res -> res.as(Emoji.class));
+        return requester.request(requireNonNull(createGuildEmoji, "createGuildEmoji").asRequest())
+                .flatMap(res -> res.as(Emoji.class));
     }
 
     public Uni<Emoji> modifyGuildEmoji(ModifyGuildEmoji modifyGuildEmoji) {
-        return requester.request(modifyGuildEmoji.asRequest()).flatMap(res -> res.as(Emoji.class));
+        return requester.request(requireNonNull(modifyGuildEmoji, "modifyGuildEmoji").asRequest())
+                .flatMap(res -> res.as(Emoji.class));
     }
 
     public Uni<Void> deleteGuildEmoji(Snowflake guildId, Snowflake emojiId, @Nullable String auditLogReason) {
@@ -362,7 +378,8 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public Uni<Guild> createGuild(CreateGuild createGuild) {
-        return requester.request(createGuild.asRequest()).flatMap(res -> res.as(Guild.class));
+        return requester.request(requireNonNull(createGuild, "createGuild").asRequest())
+                .flatMap(res -> res.as(Guild.class));
     }
 
     public Uni<Guild> getGuild(Snowflake guildId, boolean withCounts) {
@@ -376,7 +393,8 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public Uni<Guild> modifyGuild(ModifyGuild modifyGuild) {
-        return requester.request(modifyGuild.asRequest()).flatMap(res -> res.as(Guild.class));
+        return requester.request(requireNonNull(modifyGuild, "modifyGuild").asRequest())
+                .flatMap(res -> res.as(Guild.class));
     }
 
     public Uni<Void> deleteGuild(Snowflake guildId) {
@@ -391,11 +409,13 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public Uni<Channel> createGuildChannel(CreateGuildChannel createGuildChannel) {
-        return requester.request(createGuildChannel.asRequest()).flatMap(res -> res.as(Channel.class));
+        return requester.request(requireNonNull(createGuildChannel, "createGuildChannel").asRequest())
+                .flatMap(res -> res.as(Channel.class));
     }
 
     public Uni<Void> modifyGuildChannelPositions(ModifyGuildChannelPositions modifyGuildChannelPositions) {
-        return requester.request(modifyGuildChannelPositions.asRequest()).replaceWithVoid();
+        return requester.request(requireNonNull(modifyGuildChannelPositions, "modifyGuildChannelPositions").asRequest())
+                .replaceWithVoid();
     }
 
     public Uni<ListThreadsResult> listActiveGuildThreads(Snowflake guildId) {
@@ -409,23 +429,28 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public Multi<Guild.Member> listGuildMembers(ListGuildMembers listGuildMembers) {
-        return requester.request(listGuildMembers.asRequest()).flatMap(res -> res.as(Guild.Member[].class)).onItem().disjoint();
+        return requester.request(requireNonNull(listGuildMembers, "listGuildMembers").asRequest())
+                .flatMap(res -> res.as(Guild.Member[].class)).onItem().disjoint();
     }
 
     public Multi<Guild.Member> searchGuildMembers(SearchGuildMembers searchGuildMembers) {
-        return requester.request(searchGuildMembers.asRequest()).flatMap(res -> res.as(Guild.Member[].class)).onItem().disjoint();
+        return requester.request(requireNonNull(searchGuildMembers, "searchGuildMembers").asRequest())
+                .flatMap(res -> res.as(Guild.Member[].class)).onItem().disjoint();
     }
 
     public Uni<Guild.Member> addGuildMember(AddGuildMember addGuildMember) {
-        return requester.request(addGuildMember.asRequest()).flatMap(res -> res.as(Guild.Member.class));
+        return requester.request(requireNonNull(addGuildMember, "addGuildMember").asRequest())
+                .flatMap(res -> res.as(Guild.Member.class));
     }
 
     public Uni<Guild.Member> modifyGuildMember(ModifyGuildMember modifyGuildMember) {
-        return requester.request(modifyGuildMember.asRequest()).flatMap(res -> res.as(Guild.Member.class));
+        return requester.request(requireNonNull(modifyGuildMember, "modifyGuildMember").asRequest())
+                .flatMap(res -> res.as(Guild.Member.class));
     }
 
     public Uni<Guild.Member> modifyCurrentMember(ModifyCurrentMember modifyCurrentMember) {
-        return requester.request(modifyCurrentMember.asRequest()).flatMap(res -> res.as(Guild.Member.class));
+        return requester.request(requireNonNull(modifyCurrentMember, "modifyCurrentMember").asRequest())
+                .flatMap(res -> res.as(Guild.Member.class));
     }
 
     public Uni<Void> addGuildMemberRole(Snowflake guildId, Snowflake userId, Snowflake roleId, @Nullable String auditLogReason) {
@@ -444,7 +469,8 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public Multi<Guild.Ban> getGuildBans(GetGuildBans getGuildBans) {
-        return requester.request(getGuildBans.asRequest()).flatMap(res -> res.as(Guild.Ban[].class)).onItem().disjoint();
+        return requester.request(requireNonNull(getGuildBans, "getGuildBans").asRequest())
+                .flatMap(res -> res.as(Guild.Ban[].class)).onItem().disjoint();
     }
 
     public Uni<Guild.Ban> getGuildBan(Snowflake guildId, Snowflake userId) {
@@ -453,7 +479,7 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public Uni<Void> createGuildBan(CreateGuildBan createGuildBan) {
-        return requester.request(createGuildBan.asRequest()).replaceWithVoid();
+        return requester.request(requireNonNull(createGuildBan, "createGuildBan").asRequest()).replaceWithVoid();
     }
 
     public Uni<Void> removeGuildBan(Snowflake guildId, Snowflake userId, @Nullable String auditLogReason) {
@@ -468,15 +494,18 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public Uni<Role> createGuildRole(CreateGuildRole createGuildRole) {
-        return requester.request(createGuildRole.asRequest()).flatMap(res -> res.as(Role.class));
+        return requester.request(requireNonNull(createGuildRole, "createGuildRole").asRequest())
+                .flatMap(res -> res.as(Role.class));
     }
 
     public Multi<Role> modifyGuildRolePositions(ModifyGuildRolePositions modifyGuildRolePositions) {
-        return requester.request(modifyGuildRolePositions.asRequest()).flatMap(res -> res.as(Role[].class)).onItem().disjoint();
+        return requester.request(requireNonNull(modifyGuildRolePositions, "modifyGuildRolePositions").asRequest())
+                .flatMap(res -> res.as(Role[].class)).onItem().disjoint();
     }
 
     public Uni<Role> modifyGuildRole(ModifyGuildRole modifyGuildRole) {
-        return requester.request(modifyGuildRole.asRequest()).flatMap(res -> res.as(Role.class));
+        return requester.request(requireNonNull(modifyGuildRole, "modifyGuildRole").asRequest())
+                .flatMap(res -> res.as(Role.class));
     }
 
     public Uni<Guild.MfaLevel> modifyGuildMfaLevel(Snowflake guildId, Guild.MfaLevel level, @Nullable String auditLogReason) {
@@ -489,13 +518,13 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public Uni<Integer> getGuildPruneCount(GetGuildPruneCount getGuildPruneCount) {
-        return requester.request(getGuildPruneCount.asRequest())
+        return requester.request(requireNonNull(getGuildPruneCount, "getGuildPruneCount").asRequest())
                 .flatMap(res -> res.as(GuildPruneResult.class))
                 .flatMap(result -> Uni.createFrom().optional(result.getPruned()));
     }
 
     public Uni<Integer> beginGuildPrune(BeginGuildPrune beginGuildPrune) {
-        return requester.request(beginGuildPrune.asRequest())
+        return requester.request(requireNonNull(beginGuildPrune, "beginGuildPrune").asRequest())
                 .flatMap(res -> res.as(GuildPruneResult.class))
                 .flatMap(result -> Uni.createFrom().optional(result.getPruned()));
     }
@@ -529,7 +558,8 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public Uni<Guild.Widget> modifyGuildWidget(ModifyGuildWidget modifyGuildWidget) {
-        return requester.request(modifyGuildWidget.asRequest()).flatMap(res -> res.as(Guild.Widget.class));
+        return requester.request(requireNonNull(modifyGuildWidget, "modifyGuildWidget").asRequest())
+                .flatMap(res -> res.as(Guild.Widget.class));
     }
 
     public Uni<Guild.Widget> getGuildWidget(Snowflake guildId) {
@@ -548,11 +578,13 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public Uni<Guild.WelcomeScreen> modifyGuildWelcomeScreen(ModifyGuildWelcomeScreen modifyGuildWelcomeScreen) {
-        return requester.request(modifyGuildWelcomeScreen.asRequest()).flatMap(res -> res.as(Guild.WelcomeScreen.class));
+        return requester.request(requireNonNull(modifyGuildWelcomeScreen, "modifyGuildWelcomeScreen").asRequest())
+                .flatMap(res -> res.as(Guild.WelcomeScreen.class));
     }
 
     public Uni<Void> modifyCurrentUserVoiceState(ModifyCurrentUserVoiceState modifyCurrentUserVoiceState) {
-        return requester.request(modifyCurrentUserVoiceState.asRequest()).replaceWithVoid();
+        return requester.request(requireNonNull(modifyCurrentUserVoiceState, "modifyCurrentUserVoiceState").asRequest())
+                .replaceWithVoid();
     }
 
     public Uni<Void> modifyUserVoiceState(Snowflake guildId, Snowflake userId, Snowflake channelId, boolean suppress) {
@@ -566,7 +598,8 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public Uni<GuildScheduledEvent> createGuildScheduledEvent(CreateGuildScheduledEvent createGuildScheduledEvent) {
-        return requester.request(createGuildScheduledEvent.asRequest()).flatMap(res -> res.as(GuildScheduledEvent.class));
+        return requester.request(requireNonNull(createGuildScheduledEvent, "createGuildScheduledEvent").asRequest())
+                .flatMap(res -> res.as(GuildScheduledEvent.class));
     }
 
     public Uni<GuildScheduledEvent> getGuildScheduledEvent(Snowflake guildId, Snowflake guildScheduledEventId, boolean withUserCount) {
@@ -575,7 +608,8 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public Uni<GuildScheduledEvent> modifyGuildScheduledEvent(ModifyGuildScheduledEvent modifyGuildScheduledEvent) {
-        return requester.request(modifyGuildScheduledEvent.asRequest()).flatMap(res -> res.as(GuildScheduledEvent.class));
+        return requester.request(requireNonNull(modifyGuildScheduledEvent, "modifyGuildScheduledEvent").asRequest())
+                .flatMap(res -> res.as(GuildScheduledEvent.class));
     }
 
     public Uni<Void> deleteGuildScheduledEvent(Snowflake guildId, Snowflake guildScheduledEventId) {
@@ -584,7 +618,7 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public Multi<GuildScheduledEvent.User> getGuildScheduledEventUsers(GetGuildScheduledEventUsers getGuildScheduledEventUsers) {
-        return requester.request(getGuildScheduledEventUsers.asRequest())
+        return requester.request(requireNonNull(getGuildScheduledEventUsers, "getGuildScheduledEventUsers").asRequest())
                 .flatMap(res -> res.as(GuildScheduledEvent.User[].class))
                 .onItem().disjoint();
     }
@@ -595,7 +629,8 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public Uni<Guild> createGuildFromGuildTemplate(CreateGuildFromGuildTemplate createGuildFromGuildTemplate) {
-        return requester.request(createGuildFromGuildTemplate.asRequest()).flatMap(res -> res.as(Guild.class));
+        return requester.request(requireNonNull(createGuildFromGuildTemplate, "createGuildFromGuildTemplate").asRequest())
+                .flatMap(res -> res.as(Guild.class));
     }
 
     public Multi<GuildTemplate> getGuildTemplates(Snowflake guildId) {
@@ -605,7 +640,8 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public Uni<GuildTemplate> createGuildTemplate(CreateGuildTemplate createGuildTemplate) {
-        return requester.request(createGuildTemplate.asRequest()).flatMap(res -> res.as(GuildTemplate.class));
+        return requester.request(requireNonNull(createGuildTemplate, "createGuildTemplate").asRequest())
+                .flatMap(res -> res.as(GuildTemplate.class));
     }
 
     public Uni<GuildTemplate> syncGuildTemplate(Snowflake guildId, String templateCode) {
@@ -614,7 +650,8 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public Uni<GuildTemplate> modifyGuildTemplate(ModifyGuildTemplate modifyGuildTemplate) {
-        return requester.request(modifyGuildTemplate.asRequest()).flatMap(res -> res.as(GuildTemplate.class));
+        return requester.request(requireNonNull(modifyGuildTemplate, "modifyGuildTemplate").asRequest())
+                .flatMap(res -> res.as(GuildTemplate.class));
     }
 
     public Uni<Void> deleteGuildTemplate(Snowflake guildId, String templateCode) {
@@ -623,7 +660,7 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public Uni<Invite> getInvite(GetInvite getInvite) {
-        return requester.request(getInvite.asRequest()).flatMap(res -> res.as(Invite.class));
+        return requester.request(requireNonNull(getInvite, "getInvite").asRequest()).flatMap(res -> res.as(Invite.class));
     }
 
     public Uni<Invite> deleteInvite(String inviteCode, @Nullable String auditLogReason) {
@@ -632,7 +669,8 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public Uni<StageInstance> createStageInstance(CreateStageInstance createStageInstance) {
-        return requester.request(createStageInstance.asRequest()).flatMap(res -> res.as(StageInstance.class));
+        return requester.request(requireNonNull(createStageInstance, "createStageInstance").asRequest())
+                .flatMap(res -> res.as(StageInstance.class));
     }
 
     public Uni<StageInstance> getStageInstance(Snowflake channelId) {
@@ -641,7 +679,8 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public Uni<StageInstance> modifyStageInstance(ModifyStageInstance modifyStageInstance) {
-        return requester.request(modifyStageInstance.asRequest()).flatMap(res -> res.as(StageInstance.class));
+        return requester.request(requireNonNull(modifyStageInstance, "modifyStageInstance").asRequest())
+                .flatMap(res -> res.as(StageInstance.class));
     }
 
     public Uni<Void> deleteStageInstance(Snowflake channelId, @Nullable String auditLogReason) {
@@ -670,11 +709,13 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public Uni<Sticker> createGuildSticker(CreateGuildSticker createGuildSticker) {
-        return requester.request(createGuildSticker.asRequest()).flatMap(res -> res.as(Sticker.class));
+        return requester.request(requireNonNull(createGuildSticker, "createGuildSticker").asRequest())
+                .flatMap(res -> res.as(Sticker.class));
     }
 
     public Uni<Sticker> modifyGuildSticker(ModifyGuildSticker modifyGuildSticker) {
-        return requester.request(modifyGuildSticker.asRequest()).flatMap(res -> res.as(Sticker.class));
+        return requester.request(requireNonNull(modifyGuildSticker, "modifyGuildSticker").asRequest())
+                .flatMap(res -> res.as(Sticker.class));
     }
 
     public Uni<Void> deleteGuildSticker(Snowflake guildId, Snowflake stickerId, @Nullable String auditLogReason) {
@@ -683,7 +724,8 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public Uni<User> modifyCurrentUser(ModifyCurrentUser modifyCurrentUser) {
-        return requester.request(modifyCurrentUser.asRequest()).flatMap(res -> res.as(User.class));
+        return requester.request(requireNonNull(modifyCurrentUser, "modifyCurrentUser").asRequest())
+                .flatMap(res -> res.as(User.class));
     }
 
     public Uni<User> getUser(Snowflake userId) {
@@ -705,7 +747,8 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public Uni<Webhook> createWebhook(CreateWebhook createWebhook) {
-        return requester.request(createWebhook.asRequest()).flatMap(res -> res.as(Webhook.class));
+        return requester.request(requireNonNull(createWebhook, "createWebhook").asRequest())
+                .flatMap(res -> res.as(Webhook.class));
     }
 
     public Multi<Webhook> getChannelWebhooks(Snowflake channelId) {
@@ -726,7 +769,8 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public Uni<Webhook> modifyWebhook(ModifyWebhook modifyWebhook) {
-        return requester.request(modifyWebhook.asRequest()).flatMap(res -> res.as(Webhook.class));
+        return requester.request(requireNonNull(modifyWebhook, "modifyWebhook").asRequest())
+                .flatMap(res -> res.as(Webhook.class));
     }
 
     public Uni<Void> deleteWebhook(Snowflake webhookId, @Nullable String auditLogReason) {
@@ -754,7 +798,7 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
         private final Uni<AccessToken> token;
 
         public static BotToken create(String token) {
-            return new BotToken(requireNonNull(token));
+            return new BotToken(requireNonNull(token, "token"));
         }
 
         private BotToken(String token) {

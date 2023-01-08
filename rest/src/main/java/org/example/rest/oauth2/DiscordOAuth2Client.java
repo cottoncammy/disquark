@@ -21,11 +21,11 @@ import org.example.rest.util.Hex;
 public class DiscordOAuth2Client<T extends Response> extends AuthenticatedDiscordClient<T> {
 
     public static <T extends Response> Builder<T> builder(Vertx vertx, AccessTokenSource tokenSource) {
-        return new Builder<>(requireNonNull(vertx), requireNonNull(tokenSource));
+        return new Builder<>(requireNonNull(vertx, "vertx"), requireNonNull(tokenSource, "tokenSource"));
     }
 
     public static <T extends Response> Builder<T> builder(BearerTokenSource tokenSource) {
-        return builder(tokenSource.getVertx(), tokenSource);
+        return builder(requireNonNull(tokenSource, "tokenSource").getVertx(), tokenSource);
     }
 
     @SuppressWarnings("unchecked")
@@ -53,7 +53,7 @@ public class DiscordOAuth2Client<T extends Response> extends AuthenticatedDiscor
     }
 
     public Uni<GuildApplicationCommandPermissions> editApplicationCommandPermissions(EditApplicationCommandPermissions editApplicationCommandPermissions) {
-        return requester.request(editApplicationCommandPermissions.asRequest())
+        return requester.request(requireNonNull(editApplicationCommandPermissions, "editApplicationCommandPermissions").asRequest())
                 .flatMap(res -> res.as(GuildApplicationCommandPermissions.class));
     }
 
@@ -69,7 +69,7 @@ public class DiscordOAuth2Client<T extends Response> extends AuthenticatedDiscor
     }
 
     public Uni<User.ApplicationRoleConnection> updateUserApplicationRoleConnection(UpdateUserApplicationRoleConnections updateUserApplicationRoleConnections) {
-        return requester.request(updateUserApplicationRoleConnections.asRequest())
+        return requester.request(requireNonNull(updateUserApplicationRoleConnections, "updateUserApplicationRoleConnections").asRequest())
                 .flatMap(res -> res.as(User.ApplicationRoleConnection.class));
     }
 

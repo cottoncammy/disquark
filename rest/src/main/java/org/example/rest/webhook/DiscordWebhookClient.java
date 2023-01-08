@@ -21,7 +21,7 @@ import static org.example.rest.util.Variables.variables;
 public class DiscordWebhookClient<T extends Response> extends DiscordClient<T> implements WebhooksCapable {
 
     public static <T extends Response> Builder<T> builder(Vertx vertx) {
-        return new Builder<>(requireNonNull(vertx));
+        return new Builder<>(requireNonNull(vertx, "vertx"));
     }
 
     @SuppressWarnings("unchecked")
@@ -41,7 +41,8 @@ public class DiscordWebhookClient<T extends Response> extends DiscordClient<T> i
 
     @Override
     public Uni<Webhook> modifyWebhookWithToken(ModifyWebhookWithToken modifyWebhookWithToken) {
-        return requester.request(modifyWebhookWithToken.asRequest()).flatMap(res -> res.as(Webhook.class));
+        return requester.request(requireNonNull(modifyWebhookWithToken, "modifyWebhookWithToken").asRequest())
+                .flatMap(res -> res.as(Webhook.class));
     }
 
     @Override
@@ -52,11 +53,12 @@ public class DiscordWebhookClient<T extends Response> extends DiscordClient<T> i
 
     @Override
     public Uni<Message> executeWebhook(ExecuteWebhook executeWebhook) {
-        return requester.request(executeWebhook.asRequest()).flatMap(res -> res.as(Message.class));
+        return requester.request(requireNonNull(executeWebhook, "executeWebhook").asRequest())
+                .flatMap(res -> res.as(Message.class));
     }
 
     private Uni<Message> executeWebhook(ExecuteWebhookOptions options, String uri) {
-        JsonObject json = JsonObject.of("webhook.id", options.webhookId().getValue(), "webhook.token", options.webhookToken(), "wait", options.waitForServer());
+        JsonObject json = JsonObject.of("webhook.id", requireNonNull(options, "options").webhookId().getValue(), "webhook.token", options.webhookToken(), "wait", options.waitForServer());
         if (options.threadId().isPresent()) {
             json.put("thread_id", options.threadId().get());
         }
@@ -75,7 +77,7 @@ public class DiscordWebhookClient<T extends Response> extends DiscordClient<T> i
     }
 
     private Uni<T> webhookMessageRequest(WebhookMessageOptions options, HttpMethod httpMethod) {
-        JsonObject json = JsonObject.of("webhook.id", options.webhookId().getValue(), "webhook.token", options.webhookToken(), "message.id", options.messageId().getValue());
+        JsonObject json = JsonObject.of("webhook.id", requireNonNull(options, "options").webhookId().getValue(), "webhook.token", options.webhookToken(), "message.id", options.messageId().getValue());
         if (options.threadId().isPresent()) {
             json.put("thread_id", options.threadId().get());
         }
@@ -90,7 +92,8 @@ public class DiscordWebhookClient<T extends Response> extends DiscordClient<T> i
 
     @Override
     public Uni<Message> editWebhookMessage(EditWebhookMessage editWebhookMessage) {
-        return requester.request(editWebhookMessage.asRequest()).flatMap(res -> res.as(Message.class));
+        return requester.request(requireNonNull(editWebhookMessage, "editWebhookMessage").asRequest())
+                .flatMap(res -> res.as(Message.class));
     }
 
     @Override

@@ -22,8 +22,8 @@ class OptionalValueStage<S, T> {
         this.isEmptySideEffect = isEmptySideEffect;
     }
 
-    public S is(T t) {
-        isEqualSideEffect.accept(previousStage, requireNonNull(t));
+    public S is(T value) {
+        isEqualSideEffect.accept(previousStage, requireNonNull(value, "value"));
         return previousStage;
     }
 

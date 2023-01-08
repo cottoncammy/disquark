@@ -16,11 +16,11 @@ public class Bucket4jRateLimiter extends GlobalRateLimiter {
     private final Bucket bucket;
 
     public static Bucket4jRateLimiter create(Bucket bucket) {
-        return new Bucket4jRateLimiter(requireNonNull(bucket));
+        return new Bucket4jRateLimiter(requireNonNull(bucket, "bucket"));
     }
 
     public static Bucket4jRateLimiter create(Bandwidth bandwidth) {
-        return create(Bucket.builder().addLimit(requireNonNull(bandwidth)).build());
+        return create(Bucket.builder().addLimit(requireNonNull(bandwidth, "bandwidth")).build());
     }
 
     public static Bucket4jRateLimiter create() {
@@ -43,7 +43,7 @@ public class Bucket4jRateLimiter extends GlobalRateLimiter {
                 })
                 .onFailure(is(RuntimeException.class).and(wasCausedBy(InterruptedException.class))).invoke(() -> bucket.addTokens(1))
                 .replaceWith(getRetryAfterDuration())
-                .onItem().call(retryAfterDuration -> {
+                .call(retryAfterDuration -> {
                     if (!retryAfterDuration.isZero() && !retryAfterDuration.isNegative()) {
                         return Uni.createFrom().voidItem().onItem().delayIt().by(retryAfterDuration);
                     }

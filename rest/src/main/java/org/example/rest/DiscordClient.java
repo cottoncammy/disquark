@@ -48,7 +48,7 @@ public abstract class DiscordClient<T extends Response> {
         }
 
         public Builder<R, T> globalRateLimiter(GlobalRateLimiter globalRateLimiter) {
-            this.globalRateLimiter = requireNonNull(globalRateLimiter);
+            this.globalRateLimiter = requireNonNull(globalRateLimiter, "globalRateLimiter");
             return this;
         }
 
@@ -57,7 +57,7 @@ public abstract class DiscordClient<T extends Response> {
         }
 
         public Builder<R, T> requesterFactory(RequesterFactory<R> requesterFactory) {
-            this.requesterFactory = requireNonNull(requesterFactory);
+            this.requesterFactory = requireNonNull(requesterFactory, "requesterFactory");
             return this;
         }
 
@@ -67,7 +67,7 @@ public abstract class DiscordClient<T extends Response> {
         }
 
         public Builder<R, T> rateLimitStrategy(RateLimitStrategy<R> rateLimitStrategy) {
-            this.rateLimitStrategy = requireNonNull(rateLimitStrategy);
+            this.rateLimitStrategy = requireNonNull(rateLimitStrategy, "rateLimitStrategy");
             return this;
         }
 

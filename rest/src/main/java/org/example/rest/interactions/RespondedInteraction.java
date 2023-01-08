@@ -34,7 +34,7 @@ public class RespondedInteraction<T> {
         return interactionsClient.deleteOriginalInteractionResponse(interaction.applicationId(), interaction.token());
     }
 
-    // TODO
+    // TODO & do requireNonNull
     public Uni<Message> createFollowupMessage(CreateFollowupMessage createFollowupMessage) {
         return interactionsClient.createFollowupMessage(null);
     }

@@ -14,7 +14,7 @@ public class Endpoint {
     private final boolean requiresAuthentication;
 
     public static Endpoint create(HttpMethod httpMethod, String uri, boolean requiresAuthentication) {
-        return new Endpoint(requireNonNull(httpMethod), UriTemplate.of(requireNonNull(uri)), requiresAuthentication);
+        return new Endpoint(httpMethod, UriTemplate.of(uri), requiresAuthentication);
     }
 
     public static Endpoint create(HttpMethod httpMethod, String uri) {
