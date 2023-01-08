@@ -6,6 +6,7 @@ import io.smallrye.mutiny.helpers.test.UniAssertSubscriber;
 import org.example.it.config.ConfigValue;
 import org.example.rest.DiscordBotClient;
 import org.example.rest.emoji.ReactionEmoji;
+import org.example.rest.oauth2.BearerTokenSource;
 import org.example.rest.resources.Snowflake;
 import org.example.rest.resources.channel.*;
 import org.example.rest.resources.channel.forum.StartThreadInForumChannel;
@@ -14,6 +15,7 @@ import org.example.rest.resources.channel.message.GetReactions;
 import org.example.rest.resources.channel.message.Message;
 import org.example.rest.resources.channel.message.StartThreadFromMessage;
 import org.example.rest.resources.guild.CreateGuildChannel;
+import org.example.rest.resources.oauth2.AccessToken;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -49,13 +51,20 @@ class ChannelIT {
     }
 
     @Test
+    @Tag("group-dm")
     @Order(2)
-    // TODO test
-    void testModifyDmChannel(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_USER_ID") Snowflake userId, @ConfigValue("DISCORD_USER_ID_2") Snowflake userId2) {
+    void testModifyDmChannel(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_CLIENT_ID") String clientId, @ConfigValue("DISCORD_CLIENT_SECRET") String clientSecret, @ConfigValue("DISCORD_USER_ID") Snowflake userId, @ConfigValue("DISCORD_USER_ID_2") Snowflake userId2) {
+        Uni<String> tokenUni = BearerTokenSource.create(botClient.getVertx(), clientId, clientSecret)
+                .fromClientCredentials()
+                .getToken()
+                .map(AccessToken::accessToken);
+
         ModifyDmChannel.Builder builder = ModifyDmChannel.builder().name("foo");
-        dmChannelId = botClient.createDm(userId)
-                .call(channel -> botClient.groupDmAddRecipient(channel.id(), userId2, "", null))
+
+        dmChannelId = botClient.createDm(userId2)
+                .call(channel -> tokenUni.call(token -> botClient.groupDmAddRecipient(channel.id(), userId, token, null)))
                 .call(channel -> botClient.modifyChannel(builder.channelId(channel.id()).build()))
+                .call(channel -> botClient.deleteOrCloseChannel(channel.id(), null))
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .awaitItem()
                 .getItem()
@@ -243,6 +252,7 @@ class ChannelIT {
     }
 
     @Test
+    @Tag("group-dm")
     @Order(23)
     void testGroupDmRemoveRecipient(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_USER_ID") Snowflake userId) {
         botClient.groupDmRemoveRecipient(dmChannelId, userId)

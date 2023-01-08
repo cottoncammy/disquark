@@ -13,6 +13,7 @@ import java.lang.annotation.*;
         of = "create",
         defaults = @Immutable(copy = false),
         visibility = ImplementationVisibility.PACKAGE,
+        optionalAcceptNullable = true,
         overshadowImplementation = true,
         depluralize = true,
         allMandatoryParameters = true
