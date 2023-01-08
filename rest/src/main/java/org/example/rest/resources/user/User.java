@@ -16,7 +16,6 @@ import java.util.*;
 
 @Enclosing
 @ImmutableJson
-@JsonInclude(Include.NON_ABSENT)
 @JsonDeserialize(as = ImmutableUser.class)
 public interface User {
 

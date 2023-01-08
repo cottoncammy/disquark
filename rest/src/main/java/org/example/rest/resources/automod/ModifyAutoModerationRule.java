@@ -18,7 +18,6 @@ import java.util.Optional;
 import static org.example.rest.util.Variables.variables;
 
 @ImmutableJson
-@JsonInclude(Include.NON_ABSENT)
 public interface ModifyAutoModerationRule extends Auditable, Requestable {
 
     static Builder builder() {

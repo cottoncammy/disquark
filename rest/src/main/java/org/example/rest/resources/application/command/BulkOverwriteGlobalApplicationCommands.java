@@ -44,7 +44,6 @@ public interface BulkOverwriteGlobalApplicationCommands extends Requestable {
     }
 
     @ImmutableJson
-    @JsonInclude(Include.NON_ABSENT)
     interface GlobalApplicationCommandOverwrite extends BulkOverwriteGuildApplicationCommands.GuildApplicationCommandOverwrite {
 
         static Builder builder() {

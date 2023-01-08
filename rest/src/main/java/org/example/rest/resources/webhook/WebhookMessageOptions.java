@@ -13,7 +13,7 @@ public interface WebhookMessageOptions {
     }
 
     static WebhookMessageOptions create(Snowflake webhookId, String webhookToken, Snowflake messageId) {
-        return null;
+        return ImmutableWebhookMessageOptions.create(webhookId, webhookToken, messageId);
     }
 
     Snowflake webhookId();

@@ -22,7 +22,6 @@ import static org.example.rest.util.Variables.variables;
 
 @Enclosing
 @ImmutableJson
-@JsonInclude(Include.NON_ABSENT)
 public interface StartThreadInForumChannel extends Auditable, MultipartRequest, Requestable {
 
     static Builder builder() {
@@ -57,7 +56,7 @@ public interface StartThreadInForumChannel extends Auditable, MultipartRequest, 
     }
 
     @ImmutableJson
-    @JsonInclude(Include.NON_ABSENT)
+    
     interface ForumThreadMessageParams {
 
         static Builder builder() {

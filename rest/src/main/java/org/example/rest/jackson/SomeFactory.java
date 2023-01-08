@@ -1,6 +1,9 @@
 package org.example.rest.jackson;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import io.vertx.core.json.jackson.DatabindCodec;
 import io.vertx.core.json.jackson.JacksonFactory;
@@ -9,17 +12,17 @@ import io.vertx.core.spi.json.JsonCodec;
 
 public class SomeFactory implements JsonFactory {
 
+    private static void customizeObjectMapper(ObjectMapper objectMapper) {
+        objectMapper.registerModule(new Jdk8Module())
+                .registerModule(new SomeModule())
+                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+                .setDefaultPropertyInclusion(JsonInclude.Include.NON_ABSENT)
+                .setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
+    }
+
     static {
-        Jdk8Module jdk8Module = new Jdk8Module();
-        DatabindCodec.mapper().registerModule(jdk8Module);
-        DatabindCodec.prettyMapper().registerModule(jdk8Module);
-
-        SomeModule someModule = new SomeModule();
-        DatabindCodec.mapper().registerModule(someModule);
-        DatabindCodec.prettyMapper().registerModule(someModule);
-
-        DatabindCodec.mapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        DatabindCodec.prettyMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        customizeObjectMapper(DatabindCodec.mapper());
+        customizeObjectMapper(DatabindCodec.prettyMapper());
     }
 
     @Override

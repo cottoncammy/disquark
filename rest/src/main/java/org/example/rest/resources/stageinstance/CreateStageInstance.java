@@ -14,7 +14,6 @@ import org.example.rest.resources.Snowflake;
 import java.util.Optional;
 
 @ImmutableJson
-@JsonInclude(Include.NON_ABSENT)
 public interface CreateStageInstance extends Auditable, Requestable {
 
     static Builder builder() {

@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Optional;
 
 @ImmutableJson
-@JsonInclude(Include.NON_ABSENT)
 @JsonDeserialize(as = ImmutableEmoji.class)
 public interface Emoji {
 

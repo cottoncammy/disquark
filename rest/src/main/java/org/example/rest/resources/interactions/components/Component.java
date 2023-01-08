@@ -14,7 +14,6 @@ import java.util.Optional;
 import java.util.OptionalInt;
 
 @ImmutableJson
-@JsonInclude(Include.NON_ABSENT)
 @JsonDeserialize(as = ImmutableComponent.class)
 public interface Component {
 

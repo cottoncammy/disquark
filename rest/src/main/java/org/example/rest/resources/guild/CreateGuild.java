@@ -21,7 +21,6 @@ import java.util.Optional;
 import java.util.OptionalInt;
 
 @ImmutableJson
-@JsonInclude(Include.NON_ABSENT)
 public interface CreateGuild extends Requestable {
 
     static Builder builder() {

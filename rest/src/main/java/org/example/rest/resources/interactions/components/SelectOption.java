@@ -10,7 +10,6 @@ import org.example.immutables.ImmutableJson;
 import java.util.Optional;
 
 @ImmutableJson
-@JsonInclude(Include.NON_ABSENT)
 @JsonDeserialize(as = ImmutableSelectOption.class)
 public interface SelectOption {
 

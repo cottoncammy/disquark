@@ -14,7 +14,7 @@ public interface ExecuteWebhookOptions {
     }
 
     static ExecuteWebhookOptions create(Snowflake webhookId, String webhookToken) {
-        return null;
+        return ImmutableExecuteWebhookOptions.create(webhookId, webhookToken);
     }
 
     Snowflake webhookId();

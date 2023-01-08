@@ -43,7 +43,6 @@ public interface ModifyGuildRolePositions extends Auditable, Requestable {
     }
 
     @ImmutableJson
-    @JsonInclude(Include.NON_ABSENT)
     interface GuildRolePosition {
 
         static Builder builder() {

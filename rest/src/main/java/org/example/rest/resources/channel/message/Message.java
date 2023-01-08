@@ -202,7 +202,6 @@ public interface Message {
     }
 
     @ImmutableJson
-    @JsonInclude(Include.NON_ABSENT)
     @JsonDeserialize(as = ImmutableMessage.Reference.class)
     interface Reference {
 
@@ -247,7 +246,6 @@ public interface Message {
     }
 
     @ImmutableJson
-    @JsonInclude(Include.NON_ABSENT)
     @JsonDeserialize(as = ImmutableMessage.Embed.class)
     interface Embed {
 
@@ -282,7 +280,6 @@ public interface Message {
         Optional<List<Field>> fields();
 
         @ImmutableJson
-        @JsonInclude(Include.NON_ABSENT)
         @JsonDeserialize(as = ImmutableMessage.Thumbnail.class)
         interface Thumbnail {
 
@@ -305,7 +302,6 @@ public interface Message {
         }
 
         @ImmutableJson
-        @JsonInclude(Include.NON_ABSENT)
         @JsonDeserialize(as = ImmutableMessage.Video.class)
         interface Video {
 
@@ -328,7 +324,6 @@ public interface Message {
         }
 
         @ImmutableJson
-        @JsonInclude(Include.NON_ABSENT)
         @JsonDeserialize(as = ImmutableMessage.Image.class)
         interface Image {
 
@@ -351,7 +346,6 @@ public interface Message {
         }
 
         @ImmutableJson
-        @JsonInclude(Include.NON_ABSENT)
         @JsonDeserialize(as = ImmutableMessage.Provider.class)
         interface Provider {
 
@@ -369,7 +363,6 @@ public interface Message {
         }
 
         @ImmutableJson
-        @JsonInclude(Include.NON_ABSENT)
         @JsonDeserialize(as = ImmutableMessage.Author.class)
         interface Author {
 
@@ -393,7 +386,6 @@ public interface Message {
         }
 
         @ImmutableJson
-        @JsonInclude(Include.NON_ABSENT)
         @JsonDeserialize(as = ImmutableMessage.Footer.class)
         interface Footer {
 
@@ -415,7 +407,6 @@ public interface Message {
         }
 
         @ImmutableJson
-        @JsonInclude(Include.NON_ABSENT)
         @JsonDeserialize(as = ImmutableMessage.Field.class)
         interface Field {
 
@@ -440,7 +431,6 @@ public interface Message {
     }
 
     @ImmutableJson
-    @JsonInclude(Include.NON_ABSENT)
     @JsonDeserialize(as = ImmutableMessage.Attachment.class)
     interface Attachment {
 

@@ -17,7 +17,6 @@ import java.util.Optional;
 import static org.example.rest.util.Variables.variables;
 
 @ImmutableJson
-@JsonInclude(Include.NON_ABSENT)
 public interface CreateGuildFromGuildTemplate extends Requestable {
 
     static Builder builder() {

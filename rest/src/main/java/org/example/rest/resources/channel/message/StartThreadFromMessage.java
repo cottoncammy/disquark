@@ -17,7 +17,7 @@ import java.util.OptionalInt;
 import static org.example.rest.util.Variables.variables;
 
 @ImmutableJson
-@JsonInclude(Include.NON_ABSENT)
+
 public interface StartThreadFromMessage extends Auditable, Requestable {
 
     static Builder builder() {

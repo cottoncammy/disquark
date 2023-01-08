@@ -14,7 +14,6 @@ import org.example.rest.request.Requestable;
 import java.util.Optional;
 
 @ImmutableJson
-@JsonInclude(Include.NON_ABSENT)
 public interface ModifyCurrentUser extends Requestable {
 
     static Builder builder() {

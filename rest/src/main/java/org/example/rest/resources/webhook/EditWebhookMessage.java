@@ -21,7 +21,6 @@ import java.util.List;
 import java.util.Optional;
 
 @ImmutableJson
-@JsonInclude(Include.NON_ABSENT)
 public interface EditWebhookMessage extends MultipartRequest, Requestable {
 
     static Builder builder() {

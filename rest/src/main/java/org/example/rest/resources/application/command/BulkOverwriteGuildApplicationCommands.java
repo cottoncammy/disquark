@@ -52,7 +52,6 @@ public interface BulkOverwriteGuildApplicationCommands extends Requestable {
     }
 
     @ImmutableJson
-    @JsonInclude(Include.NON_ABSENT)
     interface GuildApplicationCommandOverwrite {
 
         static Builder builder() {

@@ -1,8 +1,6 @@
 package org.example.rest.resources.channel;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.vertx.core.http.HttpMethod;
 import org.example.immutables.ImmutableJson;
@@ -22,7 +20,6 @@ import java.util.OptionalInt;
 import static org.example.rest.util.Variables.variables;
 
 @ImmutableJson
-@JsonInclude(Include.NON_ABSENT)
 public interface ModifyGuildChannel extends Auditable, Requestable {
 
     static Builder builder() {
