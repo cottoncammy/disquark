@@ -1,6 +1,5 @@
 Configuration:
   name: Config
-  status: debug
   thresholdFilter:
     level: debug
   appenders:
@@ -10,11 +9,7 @@ Configuration:
         pattern: "%highlight{%d %p %c (%t) %m%ex%n}"
 
   Loggers:
-    logger:
-      - name: org.example
-        level: debug
     Root:
       level: debug
-      target: SYSTEM_OUT
       AppenderRef:
         ref: Console

@@ -4,29 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a5029c32-3a5b-4a65-b173-2d497ddb2a2d" name="Changes" comment="Start adding logs">
+    <list default="true" id="a5029c32-3a5b-4a65-b173-2d497ddb2a2d" name="Changes" comment="jboss logging sucks">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/integration-tests/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/integration-tests/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/integration-tests/src/test/resources/logging.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/integration-tests/src/test/resources/log4j2.yml" beforeDir="false" afterPath="$PROJECT_DIR$/integration-tests/src/test/resources/log4j2.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rest/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/rest/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/interactions/ApplicationCommandAutocompleteInteraction.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/interactions/ApplicationCommandAutocompleteInteraction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/interactions/CompletableInteraction.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/interactions/CompletableInteraction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/interactions/DiscordInteractionsClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/interactions/DiscordInteractionsClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/interactions/InteractionsVerticle.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/interactions/InteractionsVerticle.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/interactions/MessageComponentInteraction.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/interactions/MessageComponentInteraction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/interactions/PingInteraction.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/interactions/PingInteraction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/oauth2/BearerTokenSource.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/oauth2/BearerTokenSource.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/request/HttpClientRequester.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/request/HttpClientRequester.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/request/ratelimit/Bucket4jRateLimiter.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/request/ratelimit/Bucket4jRateLimiter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/request/ratelimit/BucketCacheKey.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/request/ratelimit/BucketCacheKey.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/request/ratelimit/BucketRateLimitingRequestStream.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/request/ratelimit/BucketRateLimitingRequestStream.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/request/ratelimit/BucketRateLimitingRequestSubscriber.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/request/ratelimit/BucketRateLimitingRequestSubscriber.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/request/ratelimit/BucketRateLimitingRequester.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/request/ratelimit/BucketRateLimitingRequester.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/Snowflake.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/Snowflake.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/response/HttpResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/response/HttpResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rest/src/test/java/org/example/rest/InteractionsVerticleTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/test/java/org/example/rest/InteractionsVerticleTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rest/src/test/resources/logging.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/test/resources/log4j2.yml" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/test/resources/log4j2.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -230,13 +214,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1661720293566</updated>
-    </task>
-    <task id="LOCAL-00008" summary="progress">
-      <created>1664252517050</created>
-      <option name="number" value="00008" />
-      <option name="presentableId" value="LOCAL-00008" />
-      <option name="project" value="LOCAL" />
-      <updated>1664252517050</updated>
     </task>
     <task id="LOCAL-00009" summary="progress">
       <created>1664329249499</created>
@@ -574,7 +551,14 @@
       <option name="project" value="LOCAL" />
       <updated>1673329963645</updated>
     </task>
-    <option name="localTasksCounter" value="57" />
+    <task id="LOCAL-00057" summary="jboss logging sucks">
+      <created>1673387971197</created>
+      <option name="number" value="00057" />
+      <option name="presentableId" value="LOCAL-00057" />
+      <option name="project" value="LOCAL" />
+      <updated>1673387971198</updated>
+    </task>
+    <option name="localTasksCounter" value="58" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -589,7 +573,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="destruction" />
     <MESSAGE value="progress" />
     <MESSAGE value="update api def" />
     <MESSAGE value="create enums" />
@@ -614,7 +597,8 @@
     <MESSAGE value="edit tests" />
     <MESSAGE value="json edit 1" />
     <MESSAGE value="Start adding logs" />
-    <option name="LAST_COMMIT_MESSAGE" value="Start adding logs" />
+    <MESSAGE value="jboss logging sucks" />
+    <option name="LAST_COMMIT_MESSAGE" value="jboss logging sucks" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -1,6 +1,5 @@
 Configuration:
   name: Config
-  status: debug
   thresholdFilter:
     level: debug
   appenders:
