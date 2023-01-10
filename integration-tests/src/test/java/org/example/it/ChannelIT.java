@@ -14,6 +14,7 @@ import org.example.rest.resources.channel.message.EditMessage;
 import org.example.rest.resources.channel.message.GetReactions;
 import org.example.rest.resources.channel.message.Message;
 import org.example.rest.resources.channel.message.StartThreadFromMessage;
+import org.example.rest.resources.channel.thread.ListThreadMembers;
 import org.example.rest.resources.guild.CreateGuildChannel;
 import org.example.rest.resources.oauth2.AccessToken;
 import org.junit.jupiter.api.*;
@@ -324,7 +325,7 @@ class ChannelIT {
     @Test
     @Order(30)
     void testGetThreadMember(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_USER_ID") Snowflake userId) {
-        botClient.getThreadMember(threadId, userId)
+        botClient.getThreadMember(threadId, userId, false)
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .assertCompleted();
     }
@@ -340,7 +341,9 @@ class ChannelIT {
     @Test
     @Order(32)
     void testListThreadMembers(DiscordBotClient<?> botClient) {
-        botClient.listThreadMembers(threadId).subscribe().withSubscriber(AssertSubscriber.create()).assertCompleted();
+        botClient.listThreadMembers(ListThreadMembers.create(threadId))
+                .subscribe().withSubscriber(AssertSubscriber.create())
+                .assertCompleted();
     }
 
     @Test

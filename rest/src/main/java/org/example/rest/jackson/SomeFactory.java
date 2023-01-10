@@ -15,6 +15,7 @@ public class SomeFactory implements JsonFactory {
     private static void customizeObjectMapper(ObjectMapper objectMapper) {
         objectMapper.registerModule(new Jdk8Module())
                 .registerModule(new SomeModule())
+                // TODO logs
                 .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
                 .setDefaultPropertyInclusion(JsonInclude.Include.NON_ABSENT)
                 .setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);

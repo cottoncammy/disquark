@@ -20,13 +20,16 @@ import org.example.rest.resources.interactions.CreateFollowupMessage;
 import org.example.rest.resources.interactions.EditFollowupMessage;
 import org.example.rest.resources.interactions.EditOriginalInteractionResponse;
 import org.example.rest.response.Response;
+import org.jboss.logging.Logger;
 
+import java.security.Security;
 import java.util.function.Function;
 
 import static java.util.Objects.requireNonNull;
 import static org.example.rest.util.Variables.variables;
 
 public class DiscordInteractionsClient<T extends Response> extends DiscordClient<T> implements InteractionsCapable {
+    private static final Logger LOG = Logger.getLogger(DiscordInteractionsClient.class);
     private final Router router;
     private final HttpServer httpServer;
     private final String interactionsUrl;
@@ -169,9 +172,20 @@ public class DiscordInteractionsClient<T extends Response> extends DiscordClient
 
         @Override
         public DiscordInteractionsClient<T> build() {
-            // TODO make sure bouncy castle is present
             if (validatorFactory == null) {
-                validatorFactory = BouncyCastleInteractionValidator::new;
+                boolean noBouncyCastle = false;
+                try {
+                    Class.forName("org.bouncycastle.jce.provider.BouncyCastleProvider");
+                } catch (ClassNotFoundException e) {
+                    LOG.warn("org.bouncycastle dependency not installed: incoming interaction signatures will not be validated");
+                    noBouncyCastle = true;
+                }
+
+                if (!noBouncyCastle && Security.getProvider("BC") == null) {
+                    LOG.warn("BouncyCastle JCE provider not installed: incoming interaction signatures will not be validated");
+                } else {
+                    validatorFactory = BouncyCastleInteractionValidator::new;
+                }
             }
 
             return new DiscordInteractionsClient<>(
@@ -180,7 +194,7 @@ public class DiscordInteractionsClient<T extends Response> extends DiscordClient
                     router == null ? Router.router(vertx) : router,
                     httpServer == null ? vertx.createHttpServer() : httpServer,
                     interactionsUrl == null ? "/" : interactionsUrl,
-                    validatorFactory.apply(verifyKey));
+                    validatorFactory == null ? InteractionValidatorFactory.NO_OP.apply(verifyKey) : validatorFactory.apply(verifyKey));
         }
     }
 

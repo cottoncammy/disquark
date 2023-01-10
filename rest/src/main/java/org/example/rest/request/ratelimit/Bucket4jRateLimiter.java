@@ -7,12 +7,15 @@ import static org.example.rest.util.ExceptionPredicate.wasCausedBy;
 
 import io.github.bucket4j.Bandwidth;
 import io.github.bucket4j.Bucket;
+import io.smallrye.mutiny.Context;
 import io.smallrye.mutiny.Uni;
 import io.smallrye.mutiny.infrastructure.Infrastructure;
+import org.jboss.logging.Logger;
 
 import java.time.Duration;
 
 public class Bucket4jRateLimiter extends GlobalRateLimiter {
+    private static final Logger LOG = Logger.getLogger(Bucket4jRateLimiter.class);
     private final Bucket bucket;
 
     public static Bucket4jRateLimiter create(Bucket bucket) {
@@ -31,24 +34,35 @@ public class Bucket4jRateLimiter extends GlobalRateLimiter {
         this.bucket = bucket;
     }
 
-    @Override
-    public <T> Uni<T> rateLimit(Uni<T> upstream) {
+    private <T> Uni<T> rateLimitWithContext(Uni<T> upstream, Context context) {
+        String id = context.get("request-id");
+        LOG.debugf("Acquiring bucket token for request %s", id);
+
         return Uni.createFrom().item(supplier(() -> bucket.asBlocking().tryConsume(1, 10)))
                 .runSubscriptionOn(Infrastructure.getDefaultWorkerPool())
                 .call(consumed -> {
                     if (!consumed) {
-                        return Uni.createFrom().failure(new IllegalStateException());
+                        return Uni.createFrom().failure(IllegalStateException::new);
                     }
                     return Uni.createFrom().voidItem();
                 })
-                .onFailure(is(RuntimeException.class).and(wasCausedBy(InterruptedException.class))).invoke(() -> bucket.addTokens(1))
+                .onFailure(is(RuntimeException.class).and(wasCausedBy(InterruptedException.class))).invoke(() -> {
+                    LOG.debugf("Thread interrupted while waiting to acquire bucket token for request %s", id);
+                    bucket.addTokens(1);
+                })
                 .replaceWith(getRetryAfterDuration())
                 .call(retryAfterDuration -> {
                     if (!retryAfterDuration.isZero() && !retryAfterDuration.isNegative()) {
+                        LOG.debugf("Globally rate limited: delaying outgoing request %s by %s", id, retryAfterDuration);
                         return Uni.createFrom().voidItem().onItem().delayIt().by(retryAfterDuration);
                     }
                     return Uni.createFrom().voidItem();
                 })
                 .replaceWith(upstream);
+    }
+
+    @Override
+    public <T> Uni<T> rateLimit(Uni<T> upstream) {
+        return Uni.createFrom().context(context -> rateLimitWithContext(upstream, context));
     }
 }

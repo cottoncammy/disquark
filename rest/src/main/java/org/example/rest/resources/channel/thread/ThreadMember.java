@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.example.rest.resources.Snowflake;
 import org.example.immutables.ImmutableJson;
+import org.example.rest.resources.guild.Guild;
 
 import java.time.Instant;
 import java.util.Optional;
@@ -25,6 +26,8 @@ public interface ThreadMember {
     Instant joinTimestamp();
 
     int flags();
+
+    Optional<Guild.Member> member();
 
     class Builder extends ImmutableThreadMember.Builder {
         protected Builder() {}

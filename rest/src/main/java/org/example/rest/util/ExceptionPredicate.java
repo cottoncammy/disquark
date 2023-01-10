@@ -10,6 +10,11 @@ public interface ExceptionPredicate extends Predicate<Throwable> {
         return t -> Arrays.asList(type).contains(t.getClass());
     }
 
+    @SafeVarargs
+    static Predicate<Throwable> isNot(Class<? extends Throwable>... type) {
+        return Predicate.not(is(type));
+    }
+
     static Predicate<Throwable> wasCausedBy(Class<? extends Throwable> type) {
         return t -> is(type).test(t.getCause());
     }

@@ -315,13 +315,13 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
                 .replaceWithVoid();
     }
 
-    public Uni<ThreadMember> getThreadMember(Snowflake channelId, Snowflake userId) {
-        return requester.request(new EmptyRequest("/channels/{channel.id}/thread-members/{user.id}", variables("channel.id", channelId.getValue(), "user.id", userId.getValue())))
+    public Uni<ThreadMember> getThreadMember(Snowflake channelId, Snowflake userId, boolean withMember) {
+        return requester.request(new EmptyRequest("/channels/{channel.id}/thread-members/{user.id}{?with_member}", variables("channel.id", channelId.getValue(), "user.id", userId.getValue(), "with_member", withMember)))
                 .flatMap(res -> res.as(ThreadMember.class));
     }
 
-    public Multi<ThreadMember> listThreadMembers(Snowflake channelId) {
-        return requester.request(new EmptyRequest("/channels/{channel.id}/thread-members/{user.id}", variables("channel.id", channelId.getValue())))
+    public Multi<ThreadMember> listThreadMembers(ListThreadMembers listThreadMembers) {
+        return requester.request(requireNonNull(listThreadMembers, "listThreadMembers").asRequest())
                 .flatMap(res -> res.as(ThreadMember[].class))
                 .onItem().disjoint();
     }
@@ -336,7 +336,8 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
             json.put("before", ISO_DATE_TIME.format(listThreads.before().get()));
         }
 
-        return requester.request(new EmptyRequest(uri, Variables.variables(json))).flatMap(res -> res.as(ListThreadsResult.class));
+        return requester.request(new EmptyRequest(uri, Variables.variables(json)))
+                .flatMap(res -> res.as(ListThreadsResult.class));
     }
 
     public Uni<ListThreadsResult> listPublicArchivedThreads(ListThreads listThreads) {
@@ -548,7 +549,7 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public Uni<Void> deleteGuildIntegration(Snowflake guildId, Snowflake integrationId, @Nullable String auditLogReason) {
-        return requester.request(new EmptyRequest(HttpMethod.DELETE, "/guilds/{guild.id}/integrations/{integration.id}", variables("guild.id", guildId.getValue(), "integration.id", integrationId.getValueAsString()), auditLogReason))
+        return requester.request(new EmptyRequest(HttpMethod.DELETE, "/guilds/{guild.id}/integrations/{integration.id}", variables("guild.id", guildId.getValue(), "integration.id", integrationId.getValue()), auditLogReason))
                 .replaceWithVoid();
     }
 

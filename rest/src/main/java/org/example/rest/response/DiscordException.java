@@ -8,31 +8,30 @@ import java.util.function.Predicate;
 import static org.example.rest.util.ExceptionPredicate.is;
 
 public class DiscordException extends RuntimeException {
-    private final HttpClientResponse httpResponse;
     private final ErrorResponse errorResponse;
-
-    private static Predicate<Throwable> statusCodeIs(Integer... statusCode) {
-        return is(DiscordException.class).and(t -> Arrays.asList(statusCode).contains(((DiscordException) t).httpResponse.statusCode()));
-    }
+    private final HttpClientResponse httpResponse;
 
     public static Predicate<Throwable> isRetryableServerError() {
-        return statusCodeIs(500, 502, 503, 504, 520);
+        return is(DiscordException.class).and(t -> ((DiscordException) t).isStatusCode(500, 502, 503, 504, 520));
     }
 
-    public static Predicate<Throwable> rateLimitIsExhausted() {
-        return t -> {
-            String remaining = ((DiscordException) t).httpResponse.headers().get("X-RateLimit-Remaining");
-            return remaining == null || Integer.parseInt(remaining) == 0;
-        };
-    }
-
-    public DiscordException(HttpClientResponse httpResponse, ErrorResponse errorResponse) {
-        super(String.format("%s (%s)", errorResponse.message(), errorResponse.errors()));
-        this.httpResponse = httpResponse;
+    public DiscordException(ErrorResponse errorResponse, HttpClientResponse httpResponse) {
+        super(String.format("%s %s returned %s %s: %s",
+                httpResponse.request().getMethod(), httpResponse.request().getURI(), httpResponse.statusCode(),
+                httpResponse.statusMessage(), errorResponse));
         this.errorResponse = errorResponse;
+        this.httpResponse = httpResponse;
     }
 
     public ErrorResponse getErrorResponse() {
         return errorResponse;
+    }
+
+    public HttpClientResponse getHttpResponse() {
+        return httpResponse;
+    }
+
+    public boolean isStatusCode(Integer... statusCode) {
+        return Arrays.asList(statusCode).contains(httpResponse.statusCode());
     }
 }

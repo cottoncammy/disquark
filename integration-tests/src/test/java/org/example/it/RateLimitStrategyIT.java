@@ -3,6 +3,7 @@ package org.example.it;
 import io.smallrye.mutiny.Uni;
 import io.smallrye.mutiny.helpers.test.AssertSubscriber;
 import io.vertx.mutiny.core.Vertx;
+import org.example.it.config.ConfigValue;
 import org.example.rest.DiscordBotClient;
 import org.example.rest.DiscordClient;
 import org.example.rest.request.HttpClientRequester;
@@ -16,13 +17,16 @@ import org.example.rest.response.RateLimitException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.example.it.config.ConfigHelper.configValue;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Tag("rate-limit")
+@ExtendWith(SomeExtension2.class)
 class RateLimitStrategyIT {
     private static final Vertx VERTX = DiscordClients.getVertx();
     private static final int MAX_REQUESTS = 50;
@@ -30,8 +34,8 @@ class RateLimitStrategyIT {
     private String token;
 
     @BeforeAll
-    void init() {
-        token = configValue("DISCORD_TOKEN", String.class);
+    void init(@ConfigValue("DISCORD_TOKEN") String token) {
+        this.token = token;
     }
 
     @Test
@@ -55,7 +59,7 @@ class RateLimitStrategyIT {
                             @Override
                             public Uni<HttpResponse> request(Request request) {
                                 HttpClientRequester httpRequester = HttpClientRequester.create(builder.getVertx(), builder.getTokenSource(), Bucket4jRateLimiter.create());
-                                return httpRequester.request(request).invoke(res -> remaining.set(Integer.parseInt(res.getRaw().getHeader("X-RateLimit-Remaining"))));
+                                return httpRequester.request(request).invoke(res -> remaining.set(Integer.parseInt(res.getHeader("X-RateLimit-Remaining"))));
                             }
                         };
                     }
@@ -82,7 +86,7 @@ class RateLimitStrategyIT {
                 .awaitItems(MAX_REQUESTS)
                 .awaitFailure(t -> {
                     assertInstanceOf(RateLimitException.class, t);
-                    assertTrue(((RateLimitException)t).getResponse().global());
+                    assertTrue(((RateLimitException) t).getResponse().global());
                 });
     }
 
@@ -97,7 +101,7 @@ class RateLimitStrategyIT {
                 .subscribe().withSubscriber(AssertSubscriber.create())
                 .awaitFailure(t -> {
                     assertInstanceOf(RateLimitException.class, t);
-                    assertEquals("Bucket", ((RateLimitException)t).getScope());
+                    assertEquals(Optional.of(RateLimitException.Scope.USER), ((RateLimitException) t).getScope());
                 });
     }
 }

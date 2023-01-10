@@ -70,7 +70,7 @@ public abstract class AuthenticatedDiscordClient<T extends Response> extends Dis
     }
 
     public Uni<Void> deleteGlobalApplicationCommand(Snowflake applicationId, Snowflake commandId) {
-        return requester.request(new EmptyRequest(HttpMethod.DELETE, "/applications/{application.id}/commands/{command.id}", variables("application.id", applicationId.getValue(), "command.id", commandId.getValueAsString())))
+        return requester.request(new EmptyRequest(HttpMethod.DELETE, "/applications/{application.id}/commands/{command.id}", variables("application.id", applicationId.getValue(), "command.id", commandId.getValue())))
                 .replaceWithVoid();
     }
 

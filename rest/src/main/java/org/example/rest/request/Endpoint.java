@@ -14,7 +14,7 @@ public class Endpoint {
     private final boolean requiresAuthentication;
 
     public static Endpoint create(HttpMethod httpMethod, String uri, boolean requiresAuthentication) {
-        return new Endpoint(httpMethod, UriTemplate.of(uri), requiresAuthentication);
+        return new Endpoint(requireNonNull(httpMethod, "httpMethod"), UriTemplate.of(requireNonNull(uri, "uri")), requiresAuthentication);
     }
 
     public static Endpoint create(HttpMethod httpMethod, String uri) {
@@ -40,8 +40,19 @@ public class Endpoint {
     }
 
     public Optional<String> getTopLevelResourceValue(Variables variables) {
-        return Optional.ofNullable(variables.getSingle("channel.id"))
-                .or(() -> Optional.ofNullable(variables.getSingle("guild.id")))
-                .or(() -> Optional.ofNullable(variables.getSingle("webhook.id")));
+        String uri = uriTemplate.expandToString(Variables.variables());
+        if (uri.startsWith("/channels/{channel.id}")) {
+            return Optional.of(variables.getSingle("channel.id"));
+        }
+
+        if (uri.startsWith("/guilds/{guild.id}")) {
+            return Optional.of(variables.getSingle("guild.id"));
+        }
+
+        if (uri.startsWith("/webhooks/{webhook.id}")) {
+            return Optional.of(variables.getSingle("webhook.id"));
+        }
+
+        return Optional.empty();
     }
 }

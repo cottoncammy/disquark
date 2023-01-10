@@ -3,25 +3,35 @@ package org.example.rest.request.ratelimit;
 import io.smallrye.mutiny.Uni;
 import io.smallrye.mutiny.subscription.MultiSubscriber;
 import io.vertx.mutiny.core.Promise;
-import io.vertx.mutiny.core.http.HttpClientResponse;
 import org.example.rest.request.Requester;
 import org.example.rest.response.HttpResponse;
+import org.jboss.logging.Logger;
 import org.reactivestreams.Subscription;
 
 import java.time.Duration;
 import java.time.Instant;
 
 class BucketRateLimitingRequestSubscriber implements MultiSubscriber<CompletableRequest> {
+    private static final Logger LOG = Logger.getLogger(BucketRateLimitingRequestSubscriber.class);
+    private final BucketCacheKey bucketKey;
     private final Requester<HttpResponse> requester;
     private final Promise<String> bucketPromise;
 
-    private volatile Duration rateLimitResetAfter = Duration.ZERO;
+    private volatile int resetAfter;
 
     private Subscription subscription;
 
-    public BucketRateLimitingRequestSubscriber(Requester<HttpResponse> requester, Promise<String> bucketPromise) {
+    public BucketRateLimitingRequestSubscriber(
+            BucketCacheKey bucketKey,
+            Requester<HttpResponse> requester,
+            Promise<String> bucketPromise) {
+        this.bucketKey = bucketKey;
         this.requester = requester;
         this.bucketPromise = bucketPromise;
+    }
+
+    private Duration getResetAfterDuration() {
+        return Duration.between(Instant.now(), Instant.ofEpochSecond(resetAfter));
     }
 
     @Override
@@ -29,21 +39,39 @@ class BucketRateLimitingRequestSubscriber implements MultiSubscriber<Completable
         Promise<HttpResponse> promise = item.getPromise();
 
         requester.request(item.getRequest())
-            .invoke(response -> {
-                HttpClientResponse httpResponse = response.getRaw();
-                bucketPromise.complete(httpResponse.getHeader("X-RateLimit-Bucket"));
+            .call(response -> {
+                String bucket = response.getHeader("X-RateLimit-Bucket");
+                if (bucket != null) {
+                    if (bucketKey.getTopLevelResourceValue().isPresent()) {
+                        bucket += '-' + bucketKey.getTopLevelResourceValue().get();
+                    }
 
-                String remaining = httpResponse.getHeader("X-RateLimit-Remaining");
+                    bucketPromise.complete(bucket);
+                }
+
+                String remaining = response.getHeader("X-RateLimit-Remaining");
                 if (remaining != null && Integer.parseInt(remaining) == 0) {
-                    rateLimitResetAfter = Duration.between(Instant.now(), Instant.ofEpochSecond(Math.round(Float.parseFloat(httpResponse.getHeader("X-RateLimit-Reset-After")))));
+                    String resetAfter = response.getHeader("X-RateLimit-Reset-After");
+                    if (resetAfter != null) {
+                        LOG.debugf("No requests remaining for buckets matching key %s for the next %s", bucketKey, resetAfter);
+                        return Uni.createFrom().voidItem()
+                                .invoke(() -> this.resetAfter = Math.round(Float.parseFloat(resetAfter)));
+                    }
+                    return Uni.createFrom().failure(IllegalStateException::new);
                 }
+                return Uni.createFrom().voidItem();
             })
-            .onTermination().call(() -> {
-                Uni<Void> uni = Uni.createFrom().voidItem().onItem().invoke(() -> subscription.request(1));
-                if (!rateLimitResetAfter.isZero() && !rateLimitResetAfter.isNegative()) {
-                    return uni.onItem().delayIt().by(rateLimitResetAfter);
+            .onItemOrFailure().call(() -> {
+                Duration resetAfter = getResetAfterDuration();
+                if (!resetAfter.isZero() && !resetAfter.isNegative()) {
+                    LOG.debugf("Delaying next request for buckets matching key %s by %s", bucketKey, resetAfter);
+                    return Uni.createFrom().voidItem().onItem().delayIt().by(resetAfter);
                 }
-                return uni;
+                return Uni.createFrom().voidItem();
+            })
+            .onItemOrFailure().invoke(() -> {
+                LOG.debugf("Signalling demand for next request for buckets matching key %s", bucketKey);
+                subscription.request(1);
             })
             .subscribe()
             .with(promise::complete, promise::fail);

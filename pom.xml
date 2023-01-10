@@ -48,6 +48,7 @@
         <caffeine.version>3.1.2</caffeine.version>
         <immutables.version>2.9.3</immutables.version>
         <jboss-logging.version>3.5.0.Final</jboss-logging.version>
+        <jboss-logmanager.version>2.1.19.Final</jboss-logmanager.version>
         <jackson.version>2.13.3</jackson.version>
         <jakarta-annotations.version>2.1.1</jakarta-annotations.version>
         <jsr305.version>3.0.2</jsr305.version>
@@ -111,7 +112,6 @@
                 <scope>import</scope>
                 <type>pom</type>
             </dependency>
-            <!-- TODO remove after upgrading -->
             <dependency>
                 <groupId>jakarta.annotation</groupId>
                 <artifactId>jakarta.annotation-api</artifactId>
@@ -143,6 +143,12 @@
                 <groupId>org.jboss.logging</groupId>
                 <artifactId>jboss-logging</artifactId>
                 <version>${jboss-logging.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.logmanager</groupId>
+                <artifactId>jboss-logmanager</artifactId>
+                <version>${jboss-logmanager.version}</version>
+                <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
@@ -262,6 +268,11 @@
                 <plugin>
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>${surefire-plugin.version}</version>
+                    <configuration>
+                        <systemPropertyVariables>
+                            <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
+                        </systemPropertyVariables>
+                    </configuration>
                 </plugin>
                 <plugin>
                     <artifactId>maven-failsafe-plugin</artifactId>
@@ -274,6 +285,11 @@
                             </goals>
                         </execution>
                     </executions>
+                    <configuration>
+                        <systemPropertyVariables>
+                            <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
+                        </systemPropertyVariables>
+                    </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>

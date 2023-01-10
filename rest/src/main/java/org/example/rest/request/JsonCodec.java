@@ -4,6 +4,7 @@ import io.vertx.core.json.Json;
 import io.vertx.mutiny.core.MultiMap;
 import io.vertx.mutiny.core.buffer.Buffer;
 
+// TODO logs
 class JsonCodec implements Codec {
 
     @Override

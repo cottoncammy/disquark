@@ -2,11 +2,13 @@ package org.example.rest.request.ratelimit;
 
 import io.vertx.core.http.HttpMethod;
 import io.vertx.mutiny.uritemplate.UriTemplate;
+import io.vertx.mutiny.uritemplate.Variables;
 import org.example.rest.request.Endpoint;
 import org.example.rest.request.Request;
 
 import javax.annotation.Nullable;
 import java.util.Objects;
+import java.util.Optional;
 
 class BucketCacheKey {
     private final HttpMethod httpMethod;
@@ -15,17 +17,20 @@ class BucketCacheKey {
     private final String topLevelResourceValue;
 
     public static BucketCacheKey create(Request request) {
-        Endpoint endpoint = request.endpoint();
         return new BucketCacheKey(
-                endpoint.getHttpMethod(),
-                endpoint.getUriTemplate(),
-                endpoint.getTopLevelResourceValue(request.variables()).orElse(null));
+                request.endpoint().getHttpMethod(),
+                request.endpoint().getUriTemplate(),
+                request.endpoint().getTopLevelResourceValue(request.variables()).orElse(null));
     }
 
     private BucketCacheKey(HttpMethod httpMethod, UriTemplate uriTemplate, String topLevelResourceValue) {
         this.httpMethod = httpMethod;
         this.uriTemplate = uriTemplate;
         this.topLevelResourceValue = topLevelResourceValue;
+    }
+
+    public Optional<String> getTopLevelResourceValue() {
+        return Optional.ofNullable(topLevelResourceValue);
     }
 
     @Override
@@ -41,5 +46,14 @@ class BucketCacheKey {
     @Override
     public int hashCode() {
         return Objects.hash(httpMethod, uriTemplate, topLevelResourceValue);
+    }
+
+    @Override
+    public String toString() {
+        return "BucketCacheKey{" +
+                "httpMethod=" + httpMethod + ',' +
+                "uriTemplate=" + uriTemplate.expandToString(Variables.variables()) + ',' +
+                "topLevelResourceValue=" + topLevelResourceValue +
+                '}';
     }
 }

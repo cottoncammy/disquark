@@ -1,29 +1,32 @@
 package org.example.rest.interactions;
 
-import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
 import io.smallrye.mutiny.operators.multi.processors.BroadcastProcessor;
 import io.smallrye.mutiny.vertx.core.AbstractVerticle;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.json.DecodeException;
-import io.vertx.mutiny.core.buffer.Buffer;
 import io.vertx.mutiny.core.http.HttpServer;
 import io.vertx.mutiny.core.http.HttpServerRequest;
 import io.vertx.mutiny.core.http.HttpServerResponse;
+import io.vertx.mutiny.core.net.SocketAddress;
 import io.vertx.mutiny.ext.web.Route;
 import io.vertx.mutiny.ext.web.Router;
 import io.vertx.mutiny.ext.web.RoutingContext;
+import io.vertx.mutiny.ext.web.handler.CorsHandler;
 import io.vertx.mutiny.ext.web.handler.ResponseContentTypeHandler;
 import org.example.rest.interactions.dsl.InteractionSchema;
 import org.example.rest.resources.interactions.Interaction;
+import org.jboss.logging.Logger;
 
 import java.util.function.Consumer;
 
 import static java.util.Objects.requireNonNull;
 import static org.example.rest.util.ExceptionPredicate.is;
+import static org.example.rest.util.ExceptionPredicate.isNot;
 
 class InteractionsVerticle extends AbstractVerticle {
+    private static final Logger LOG = Logger.getLogger(InteractionsVerticle.class);
     private final Router router;
     private final HttpServer httpServer;
     private final String interactionsUrl;
@@ -50,20 +53,32 @@ class InteractionsVerticle extends AbstractVerticle {
             @SuppressWarnings("unchecked")
             public void accept(RoutingContext context) {
                 HttpServerRequest request = context.request();
+                String id = Integer.toHexString(request.hashCode());
+
                 String signature = request.getHeader("X-Signature-Ed25519");
                 String timestamp = request.getHeader("X-Signature-Timestamp");
                 HttpServerResponse response = context.response();
 
                 request.body()
                         .call(body -> {
+                            SocketAddress address = request.remoteAddress();
+                            LOG.debugf("Received incoming request %s from %s:%s with body %s",
+                                    request.hashCode(), address.host(), address.port(), body);
+
                             if (!interactionValidator.validate(requireNonNull(timestamp), body.toString(), requireNonNull(signature))) {
                                 return Uni.createFrom().failure(UnauthorizedException::new);
                             }
                             return Uni.createFrom().voidItem();
                         })
-                        .onFailure(is(NullPointerException.class, UnauthorizedException.class)).call(() -> response.setStatusCode(401).end())
+                        .onFailure(is(NullPointerException.class, UnauthorizedException.class)).call(() -> {
+                            LOG.debugf("Interaction validation failed for incoming request %s", id);
+                            return response.setStatusCode(401).end();
+                        })
                         .map(body -> body.toJsonObject().mapTo(Interaction.class))
-                        .onFailure(is(IllegalArgumentException.class, DecodeException.class)).call(() -> response.setStatusCode(400).end())
+                        .onFailure(is(IllegalArgumentException.class, DecodeException.class)).call(e -> {
+                            LOG.debugf("Request body mapping failed for incoming request %s: %s", id, e.getMessage());
+                            return response.setStatusCode(400).end();
+                        })
                         .call(interaction -> {
                             if (interaction.type() == Interaction.Type.PING) {
                                 return new PingInteraction(interaction, response, interactionsClient).pong();
@@ -71,9 +86,16 @@ class InteractionsVerticle extends AbstractVerticle {
                             return Uni.createFrom().voidItem();
                         })
                         .invoke(interaction -> {
+                            LOG.debugf("Incoming request %s mapped to %s interaction: %s",
+                                    id, interaction.type(), interaction);
+
                             context.put("interaction", interaction);
                             processor.onNext(context);
                         })
+                        .onFailure(isNot(NullPointerException.class, UnauthorizedException.class,
+                                IllegalArgumentException.class, DecodeException.class))
+                        .invoke(e -> LOG.warnf("Encountered exception while handling incoming request %s: %s",
+                                id, e.getMessage()))
                         .onFailure().recoverWithNull()
                         .subscribe()
                         .with(x -> {});
@@ -83,22 +105,25 @@ class InteractionsVerticle extends AbstractVerticle {
 
     @Override
     public Uni<Void> asyncStart() {
-        // TODO CORS
         Route route = router.route(HttpMethod.POST, interactionsUrl)
                 .consumes("application/json")
                 .produces("application/json")
+                .handler(CorsHandler.create("discord\\.com"))
                 .handler(requestHandler())
                 .handler(ResponseContentTypeHandler.create());
 
         return Uni.createFrom().item(route)
                 .replaceWith(httpServer.requestHandler(router))
+                .invoke(() -> LOG.debugf("Starting HTTP server on port %d", httpServer.actualPort()))
                 .call(() -> httpServer.listen())
                 .replaceWithVoid();
     }
 
     @Override
     public Uni<Void> asyncStop() {
-        return httpServer.close();
+        return Uni.createFrom().voidItem()
+                .invoke(() -> LOG.debug("Shutting down HTTP server"))
+                .replaceWith(httpServer.close());
     }
 
     public <D, C extends CompletableInteraction<D>> Multi<C> on(InteractionSchema<D, C> schema) {

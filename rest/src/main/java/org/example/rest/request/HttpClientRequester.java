@@ -2,7 +2,6 @@ package org.example.rest.request;
 
 import static java.util.Objects.requireNonNull;
 import static org.example.rest.response.DiscordException.isRetryableServerError;
-import static org.example.rest.response.DiscordException.rateLimitIsExhausted;
 
 import io.smallrye.mutiny.Uni;
 import io.vertx.core.http.RequestOptions;
@@ -11,13 +10,17 @@ import io.vertx.mutiny.core.http.HttpClient;
 import io.vertx.mutiny.core.http.HttpClientResponse;
 import io.vertx.mutiny.core.http.HttpHeaders;
 import org.example.rest.request.ratelimit.GlobalRateLimiter;
+import org.example.rest.resources.oauth2.AccessToken;
 import org.example.rest.response.*;
+import org.jboss.logging.Logger;
 
 import java.net.URI;
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 
 public class HttpClientRequester implements Requester<HttpResponse> {
+    private static final Logger LOG = Logger.getLogger(HttpClientRequester.class);
     private final URI baseUrl;
     private final HttpClient httpClient;
     private final Map<String, Codec> codecs;
@@ -48,32 +51,39 @@ public class HttpClientRequester implements Requester<HttpResponse> {
     @Override
     public Uni<HttpResponse> request(Request request) {
         Endpoint endpoint = request.endpoint();
+        String id = Integer.toHexString(request.hashCode());
 
-        // TODO handle webhook and interactions clients, need separate rate limiter
+        LOG.debugf("Preparing to send outgoing request %s: %s", id, request);
         return tokenSource.getToken()
-                .flatMap(token -> {
+                .attachContext()
+                .flatMap(contextual -> {
                     RequestOptions options = new RequestOptions()
                             .setAbsoluteURI(baseUrl + endpoint.getUriTemplate().expandToString(request.variables()))
                             .setFollowRedirects(true)
-                            .setMethod(endpoint.getHttpMethod());
+                            .setMethod(endpoint.getHttpMethod())
+                            .putHeader(HttpHeaders.USER_AGENT, String.format("DiscordBot (%s, %s)", "https://github.com/cameronprater/discord-TODO", "0.1.0"));
+
+                    AccessToken token = contextual.get();
+                    if (endpoint.isAuthenticationRequired()) {
+                        options.putHeader(HttpHeaders.AUTHORIZATION, String.format("%s %s", token.tokenType().getValue(), token.accessToken()));
+                    }
+
+                    if (request.auditLogReason().isPresent()) {
+                        options.putHeader("X-Audit-Log-Reason", request.auditLogReason().get());
+                    }
+
+                    contextual.context().put("request-id", id);
 
                     return rateLimiter.rateLimit(httpClient.request(options)).flatMap(req -> {
-                        req.putHeader(HttpHeaders.USER_AGENT, String.format("DiscordBot (%s, %s)", "https://github.com/cameronprater/discord-TODO", "0.1.0"));
-                        if (endpoint.isAuthenticationRequired()) {
-                            req.putHeader(HttpHeaders.AUTHORIZATION, String.format("%s %s", token.tokenType().getValue(), token.accessToken()));
-                        }
-
-                        if (request.auditLogReason().isPresent()) {
-                            req.putHeader("X-Audit-Log-Reason", request.auditLogReason().get());
-                        }
-
                         if (request.contentType().isPresent()) {
                             String contentType = request.contentType().get();
                             req.putHeader(HttpHeaders.CONTENT_TYPE, contentType);
 
-                            Codec codec = requireNonNull(codecs.get(contentType));
+                            Codec codec = requireNonNull(codecs.get(contentType), String.format("%s codec", contentType));
+                            LOG.debugf("Serializing %s body for outgoing request %s", contentType, id);
                             Codec.Body body = codec.serialize(request, req.headers());
 
+                            LOG.debugf("Sending outgoing request %s", id);
                             if (body.asString().isPresent()) {
                                 return req.send(body.asString().get());
                             }
@@ -89,26 +99,35 @@ public class HttpClientRequester implements Requester<HttpResponse> {
                             return req.send(body.asPublisher().get());
                         }
 
+                        LOG.debugf("Sending outgoing request %s", id);
                         return req.send();
                     });
                 })
                 .call(res -> {
                     if (Boolean.parseBoolean(res.getHeader("X-RateLimit-Global"))) {
-                        return rateLimiter.setRetryAfter(Math.round(Float.parseFloat(res.getHeader("Retry-After"))));
+                        String retryAfter = res.getHeader("Retry-After");
+                        if (retryAfter != null) {
+                            LOG.debugf("Globally rate limited for the next PT%sS", retryAfter);
+                            return rateLimiter.setRetryAfter(Math.round(Float.parseFloat(retryAfter)));
+                        }
+                        return Uni.createFrom().failure(IllegalStateException::new);
                     }
                     return Uni.createFrom().voidItem();
                 })
                 .map(res -> new HttpResponse(codecs, res))
                 .call(response -> {
                     HttpClientResponse httpResponse = response.getRaw();
+                    LOG.debugf("Received %s - %s for outgoing request %s",
+                            httpResponse.statusCode(), httpResponse.statusMessage(), id);
+
                     if (httpResponse.statusCode() == 429) {
-                        return response.as(RateLimitResponse.class).onItem().failWith(RateLimitException::new);
+                        return response.as(RateLimitResponse.class).onItem().failWith(res -> new RateLimitException(res, httpResponse));
                     } else if (httpResponse.statusCode() >= 400) {
-                       return response.as(ErrorResponse.class).onItem().failWith(res -> new DiscordException(httpResponse, res));
+                       return response.as(ErrorResponse.class).onItem().failWith(res -> new DiscordException(res, httpResponse));
                     }
                     return Uni.createFrom().voidItem();
                 })
-                .onFailure(isRetryableServerError()).retry().until(rateLimitIsExhausted());
+                .onFailure(isRetryableServerError()).retry().withBackOff(Duration.ofSeconds(2), Duration.ofSeconds(30)).atMost(5);
     }
 
     public static class Builder {
@@ -148,8 +167,9 @@ public class HttpClientRequester implements Requester<HttpResponse> {
         }
 
         public HttpClientRequester build() {
-            codecs.putIfAbsent("application/json", new JsonCodec());
-            codecs.putIfAbsent("multipart/form-data", new MultipartCodec(vertx, codecs.get("application/json")));
+            Codec jsonCodec = new JsonCodec();
+            codecs.put("application/json", jsonCodec);
+            codecs.put("multipart/form-data", new MultipartCodec(vertx, jsonCodec));
 
             return new HttpClientRequester(
                     baseUrl == null ? URI.create("https://discord.com/api/v10") : baseUrl,

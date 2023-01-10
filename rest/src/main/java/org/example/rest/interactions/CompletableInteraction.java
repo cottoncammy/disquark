@@ -6,11 +6,13 @@ import io.vertx.mutiny.core.http.HttpServerResponse;
 import org.example.rest.resources.channel.message.Message;
 import org.example.rest.resources.interactions.Interaction;
 import org.example.rest.resources.interactions.components.Component;
+import org.jboss.logging.Logger;
 
 import java.util.EnumSet;
 import java.util.List;
 
 public abstract class CompletableInteraction<T> {
+    protected static final Logger LOG = Logger.getLogger(CompletableInteraction.class);
     protected final Interaction<T> interaction;
     protected final HttpServerResponse response;
     protected final DiscordInteractionsClient<?> interactionsClient;
@@ -21,12 +23,15 @@ public abstract class CompletableInteraction<T> {
         this.interactionsClient = interactionsClient;
     }
 
-    protected String serialize(Object obj) {
-        return Json.encode(obj);
+    protected Uni<String> serialize(Object obj) {
+        return Uni.createFrom().item(Json.encode(obj));
     }
 
     protected Uni<RespondedInteraction<T>> respond(Interaction.MessageCallbackData data) {
-        return response.end(serialize(Interaction.Response.builder().type(Interaction.CallbackType.CHANNEL_MESSAGE_WITH_SOURCE).data(data).build()))
+        return serialize(Interaction.Response.builder().type(Interaction.CallbackType.CHANNEL_MESSAGE_WITH_SOURCE).data(data).build())
+                .invoke(json -> LOG.debugf("Responding to interaction %s with message: %s",
+                        interaction.id().getValueAsString(), json))
+                .flatMap(response::end)
                 .replaceWith(new RespondedInteraction<>(interaction, interactionsClient));
     }
 
@@ -35,7 +40,11 @@ public abstract class CompletableInteraction<T> {
         if (ephemeral) {
             builder.data(Interaction.CallbackData.builder().flags(EnumSet.of(Message.Flag.EPHEMERAL)).build());
         }
-        return response.end(serialize(builder.build())).replaceWith(new RespondedInteraction<>(interaction, interactionsClient));
+        return serialize(builder.build())
+                .invoke(json -> LOG.debugf("Responding to interaction with %s deferred message: %s",
+                        interaction.id().getValueAsString(), json))
+                .flatMap(response::end)
+                .replaceWith(new RespondedInteraction<>(interaction, interactionsClient));
     }
 
     protected Uni<RespondedInteraction<T>> popUpModal(String customId, String title, List<Component> components) {
@@ -44,7 +53,11 @@ public abstract class CompletableInteraction<T> {
                 .data(Interaction.CallbackData.builder().customId(customId).title(title).components(components).build())
                 .build();
 
-        return response.end(serialize(interactionResponse)).replaceWith(new RespondedInteraction<>(interaction, interactionsClient));
+        return serialize(interactionResponse)
+                .invoke(json -> LOG.debugf("Responding to interaction %s with modal: %s",
+                        interaction.id().getValueAsString(), json))
+                .flatMap(response::end)
+                .replaceWith(new RespondedInteraction<>(interaction, interactionsClient));
     }
 
     public Interaction<T> getInteraction() {

@@ -11,10 +11,12 @@ import io.vertx.mutiny.ext.auth.User;
 import io.vertx.mutiny.ext.auth.oauth2.OAuth2Auth;
 import org.example.rest.request.AccessTokenSource;
 import org.example.rest.resources.oauth2.AccessToken;
+import org.jboss.logging.Logger;
 
 import javax.annotation.Nullable;
 
 public class BearerTokenSource implements AccessTokenSource {
+    private static final Logger LOG = Logger.getLogger(BearerTokenSource.class);
     private final Vertx vertx;
     private final OAuth2Auth oAuth2;
     private final OAuth2FlowType flowType;
@@ -49,6 +51,7 @@ public class BearerTokenSource implements AccessTokenSource {
         Uni<User> uni = Uni.createFrom().item(user);
         if (user != null) {
             if (user.expired()) {
+                LOG.debugf("Refreshing expired access token for user %s", user.subject());
                 uni = oAuth2.refresh(user).invoke(user -> this.user = user);
             }
         } else {
