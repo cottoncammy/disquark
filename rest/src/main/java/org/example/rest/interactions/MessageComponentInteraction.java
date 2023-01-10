@@ -28,7 +28,7 @@ public class MessageComponentInteraction extends CompletableInteraction<Interact
 
     public Uni<RespondedInteraction<Interaction.MessageComponentData>> deferEdit() {
         return serialize(serialize(Interaction.Response.create(Interaction.CallbackType.DEFERRED_UPDATE_MESSAGE)))
-                .invoke(json -> LOG.debugf("Responding to interaction %s with deferred message edit: %s",
+                .invoke(json -> LOG.debug("Responding to interaction {} with deferred message edit: {}",
                         interaction.id().getValueAsString(), json))
                 .flatMap(response::end)
                 .replaceWith(new RespondedInteraction<>(interaction, interactionsClient));
@@ -36,7 +36,7 @@ public class MessageComponentInteraction extends CompletableInteraction<Interact
 
     public Uni<RespondedInteraction<Interaction.MessageComponentData>> edit(Interaction.MessageCallbackData data) {
         return serialize(Interaction.Response.builder().type(Interaction.CallbackType.UPDATE_MESSAGE).data(data).build())
-                .invoke(json -> LOG.debugf("Responding to interaction %s with message edit: %s",
+                .invoke(json -> LOG.debug("Responding to interaction {} with message edit: {}",
                         interaction.id().getValueAsString(), json))
                 .flatMap(response::end)
                 .replaceWith(new RespondedInteraction<>(interaction, interactionsClient));

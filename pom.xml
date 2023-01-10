@@ -47,12 +47,12 @@
         <bucket4j-version>8.1.0</bucket4j-version>
         <caffeine.version>3.1.2</caffeine.version>
         <immutables.version>2.9.3</immutables.version>
-        <jboss-logging.version>3.5.0.Final</jboss-logging.version>
-        <jboss-logmanager.version>2.1.19.Final</jboss-logmanager.version>
         <jackson.version>2.13.3</jackson.version>
         <jakarta-annotations.version>2.1.1</jakarta-annotations.version>
         <jsr305.version>3.0.2</jsr305.version>
         <junit.version>5.9.0</junit.version>
+        <log4j.version>2.19.0</log4j.version>
+        <slf4j.version>2.0.6</slf4j.version>
         <smallrye-config.version>3.0.0</smallrye-config.version>
         <smallrye-mutiny-vertx-binding.version>2.28.0</smallrye-mutiny-vertx-binding.version>
 
@@ -118,6 +118,18 @@
                 <version>${jakarta-annotations.version}</version>
             </dependency>
             <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-core</artifactId>
+                <version>${log4j.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-slf4j-impl</artifactId>
+                <version>${log4j.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
                 <groupId>org.apache.tika</groupId>
                 <artifactId>tika-core</artifactId>
                 <version>${apache-tika.version}</version>
@@ -126,6 +138,7 @@
                 <groupId>org.bouncycastle</groupId>
                 <artifactId>bcprov-jdk15on</artifactId>
                 <version>${bouncycastle.version}</version>
+                <optional>true</optional>
             </dependency>
             <dependency>
                 <groupId>org.immutables</groupId>
@@ -140,21 +153,15 @@
                 <scope>provided</scope>
             </dependency>
             <dependency>
-                <groupId>org.jboss.logging</groupId>
-                <artifactId>jboss-logging</artifactId>
-                <version>${jboss-logging.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.jboss.logmanager</groupId>
-                <artifactId>jboss-logmanager</artifactId>
-                <version>${jboss-logmanager.version}</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter</artifactId>
                 <version>${junit.version}</version>
                 <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4j.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -268,11 +275,6 @@
                 <plugin>
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>${surefire-plugin.version}</version>
-                    <configuration>
-                        <systemPropertyVariables>
-                            <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
-                        </systemPropertyVariables>
-                    </configuration>
                 </plugin>
                 <plugin>
                     <artifactId>maven-failsafe-plugin</artifactId>
@@ -285,11 +287,6 @@
                             </goals>
                         </execution>
                     </executions>
-                    <configuration>
-                        <systemPropertyVariables>
-                            <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
-                        </systemPropertyVariables>
-                    </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>

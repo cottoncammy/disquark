@@ -51,8 +51,8 @@ class BucketCacheKey {
     @Override
     public String toString() {
         return "BucketCacheKey{" +
-                "httpMethod=" + httpMethod + ',' +
-                "uriTemplate=" + uriTemplate.expandToString(Variables.variables()) + ',' +
+                "httpMethod=" + httpMethod + ", " +
+                "uriTemplate=" + uriTemplate.expandToString(Variables.variables()) + ", " +
                 "topLevelResourceValue=" + topLevelResourceValue +
                 '}';
     }

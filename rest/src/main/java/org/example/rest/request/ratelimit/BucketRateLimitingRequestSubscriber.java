@@ -5,14 +5,15 @@ import io.smallrye.mutiny.subscription.MultiSubscriber;
 import io.vertx.mutiny.core.Promise;
 import org.example.rest.request.Requester;
 import org.example.rest.response.HttpResponse;
-import org.jboss.logging.Logger;
+import org.slf4j.Logger;
 import org.reactivestreams.Subscription;
+import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
 import java.time.Instant;
 
 class BucketRateLimitingRequestSubscriber implements MultiSubscriber<CompletableRequest> {
-    private static final Logger LOG = Logger.getLogger(BucketRateLimitingRequestSubscriber.class);
+    private static final Logger LOG = LoggerFactory.getLogger(BucketRateLimitingRequestSubscriber.class);
     private final BucketCacheKey bucketKey;
     private final Requester<HttpResponse> requester;
     private final Promise<String> bucketPromise;
@@ -53,7 +54,7 @@ class BucketRateLimitingRequestSubscriber implements MultiSubscriber<Completable
                 if (remaining != null && Integer.parseInt(remaining) == 0) {
                     String resetAfter = response.getHeader("X-RateLimit-Reset-After");
                     if (resetAfter != null) {
-                        LOG.debugf("No requests remaining for buckets matching key %s for the next %s", bucketKey, resetAfter);
+                        LOG.debug("No requests remaining for buckets matching key {} for the next {}", bucketKey, resetAfter);
                         return Uni.createFrom().voidItem()
                                 .invoke(() -> this.resetAfter = Math.round(Float.parseFloat(resetAfter)));
                     }
@@ -64,13 +65,13 @@ class BucketRateLimitingRequestSubscriber implements MultiSubscriber<Completable
             .onItemOrFailure().call(() -> {
                 Duration resetAfter = getResetAfterDuration();
                 if (!resetAfter.isZero() && !resetAfter.isNegative()) {
-                    LOG.debugf("Delaying next request for buckets matching key %s by %s", bucketKey, resetAfter);
+                    LOG.debug("Delaying next request for buckets matching key {} by {}", bucketKey, resetAfter);
                     return Uni.createFrom().voidItem().onItem().delayIt().by(resetAfter);
                 }
                 return Uni.createFrom().voidItem();
             })
             .onItemOrFailure().invoke(() -> {
-                LOG.debugf("Signalling demand for next request for buckets matching key %s", bucketKey);
+                LOG.debug("Signalling demand for next request for buckets matching key {}", bucketKey);
                 subscription.request(1);
             })
             .subscribe()

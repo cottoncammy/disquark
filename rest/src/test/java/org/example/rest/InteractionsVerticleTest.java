@@ -35,11 +35,12 @@ class InteractionsVerticleTest extends InteractionsTestBase {
 
     @Test
     void testPongRespond() {
+        System.out.println("I am here");
         sendInteraction(botClient, "foo", "bar", buildPing())
                 .flatMap(HttpClientResponse::body)
                 .map(buf -> buf.toJsonObject().mapTo(Interaction.Response.class))
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
-                .awaitItem()
+                //.awaitItem()
                 .assertItem(Interaction.Response.create(Interaction.CallbackType.PONG));
     }
 

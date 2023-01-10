@@ -23,7 +23,7 @@ public class ApplicationCommandAutocompleteInteraction extends CompletableIntera
                 .build();
 
         return serialize(interactionResponse)
-                .invoke(json -> LOG.debugf("Responding to interaction %s with autocomplete choices: %s",
+                .invoke(json -> LOG.debug("Responding to interaction {} with autocomplete choices {}",
                         interaction.id().getValueAsString(), json))
                 .flatMap(response::end)
                 .replaceWith(new RespondedInteraction<>(interaction, interactionsClient));

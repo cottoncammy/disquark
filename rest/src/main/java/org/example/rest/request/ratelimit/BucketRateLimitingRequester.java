@@ -4,14 +4,15 @@ import io.smallrye.mutiny.Uni;
 import org.example.rest.request.Request;
 import org.example.rest.request.Requester;
 import org.example.rest.response.HttpResponse;
-import org.jboss.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 
 class BucketRateLimitingRequester implements Requester<HttpResponse> {
-    private static final Logger LOG = Logger.getLogger(BucketRateLimitingRequester.class);
+    private static final Logger LOG = LoggerFactory.getLogger(BucketRateLimitingRequester.class);
     private final Requester<HttpResponse> requester;
     private final Map<BucketCacheKey, String> bucketCache = new HashMap<>();
     private final Map<String, BucketRateLimitingRequestStream> requestStreamCache = new HashMap<>();
@@ -25,10 +26,10 @@ class BucketRateLimitingRequester implements Requester<HttpResponse> {
         BucketRateLimitingRequestStream requestStream = requestStreamCache.get(bucket);
 
         if (requestStream == null) {
-            LOG.debugf("Creating new request stream for bucket key %s", key);
+            LOG.debug("Creating new request stream for bucket key {}", key);
             requestStream = new BucketRateLimitingRequestStream(key, requester);
         } else {
-            LOG.debugf("Fetched existing request stream matching bucket %s for key %s", bucket, key);
+            LOG.debug("Fetched existing request stream matching bucket {} for key {}", bucket, key);
         }
 
         if (!requestStream.isSubscribed()) {
@@ -49,19 +50,19 @@ class BucketRateLimitingRequester implements Requester<HttpResponse> {
         Uni<Void> bucketUni = requestStream.getBucket()
                 .onItem().invoke(bucket -> {
                     if (!bucketCache.containsKey(key)) {
-                        LOG.debugf("Caching bucket value %s for key %s", bucket, key);
+                        LOG.debug("Caching bucket value {} for key {}", bucket, key);
                         bucketCache.put(key, bucket);
                     }
 
                     if (!requestStreamCache.containsKey(bucket)) {
-                        LOG.debugf("Caching request stream for bucket %s (key: %s)", bucket, key);
+                        LOG.debug("Caching request stream for bucket {} (key: {})", bucket, key);
                         requestStreamCache.put(bucket, requestStream);
                     }
                 })
                 .replaceWithVoid();
 
         Uni<Void> delay = Uni.createFrom().voidItem()
-                .invoke(() -> LOG.warnf("Unable to cache request stream for key %s: bucket value not received after timeout", key))
+                .invoke(() -> LOG.warn("Unable to cache request stream for key {}: bucket value not received after timeout", key))
                 .onItem().delayIt().by(Duration.ofSeconds(5));
 
         return Uni.join().first(bucketUni, delay).withItem().replaceWith(completableRequest.getPromise().future());

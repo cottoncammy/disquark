@@ -12,7 +12,8 @@ import io.vertx.mutiny.core.http.HttpHeaders;
 import org.example.rest.request.ratelimit.GlobalRateLimiter;
 import org.example.rest.resources.oauth2.AccessToken;
 import org.example.rest.response.*;
-import org.jboss.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.URI;
 import java.time.Duration;
@@ -20,7 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class HttpClientRequester implements Requester<HttpResponse> {
-    private static final Logger LOG = Logger.getLogger(HttpClientRequester.class);
+    private static final Logger LOG = LoggerFactory.getLogger(HttpClientRequester.class);
     private final URI baseUrl;
     private final HttpClient httpClient;
     private final Map<String, Codec> codecs;
@@ -53,7 +54,7 @@ public class HttpClientRequester implements Requester<HttpResponse> {
         Endpoint endpoint = request.endpoint();
         String id = Integer.toHexString(request.hashCode());
 
-        LOG.debugf("Preparing to send outgoing request %s: %s", id, request);
+        LOG.debug("Preparing to send outgoing request {}: {}", id, request);
         return tokenSource.getToken()
                 .attachContext()
                 .flatMap(contextual -> {
@@ -80,10 +81,10 @@ public class HttpClientRequester implements Requester<HttpResponse> {
                             req.putHeader(HttpHeaders.CONTENT_TYPE, contentType);
 
                             Codec codec = requireNonNull(codecs.get(contentType), String.format("%s codec", contentType));
-                            LOG.debugf("Serializing %s body for outgoing request %s", contentType, id);
+                            LOG.debug("Serializing {} body for outgoing request {}", contentType, id);
                             Codec.Body body = codec.serialize(request, req.headers());
 
-                            LOG.debugf("Sending outgoing request %s", id);
+                            LOG.debug("Sending outgoing request {}", id);
                             if (body.asString().isPresent()) {
                                 return req.send(body.asString().get());
                             }
@@ -99,7 +100,7 @@ public class HttpClientRequester implements Requester<HttpResponse> {
                             return req.send(body.asPublisher().get());
                         }
 
-                        LOG.debugf("Sending outgoing request %s", id);
+                        LOG.debug("Sending outgoing request {}", id);
                         return req.send();
                     });
                 })
@@ -107,7 +108,7 @@ public class HttpClientRequester implements Requester<HttpResponse> {
                     if (Boolean.parseBoolean(res.getHeader("X-RateLimit-Global"))) {
                         String retryAfter = res.getHeader("Retry-After");
                         if (retryAfter != null) {
-                            LOG.debugf("Globally rate limited for the next PT%sS", retryAfter);
+                            LOG.debug("Globally rate limited for the next PT{}S", retryAfter);
                             return rateLimiter.setRetryAfter(Math.round(Float.parseFloat(retryAfter)));
                         }
                         return Uni.createFrom().failure(IllegalStateException::new);
@@ -117,7 +118,7 @@ public class HttpClientRequester implements Requester<HttpResponse> {
                 .map(res -> new HttpResponse(codecs, res))
                 .call(response -> {
                     HttpClientResponse httpResponse = response.getRaw();
-                    LOG.debugf("Received %s - %s for outgoing request %s",
+                    LOG.debug("Received {} - {} for outgoing request {}",
                             httpResponse.statusCode(), httpResponse.statusMessage(), id);
 
                     if (httpResponse.statusCode() == 429) {

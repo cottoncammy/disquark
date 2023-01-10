@@ -20,7 +20,8 @@ import org.example.rest.resources.interactions.CreateFollowupMessage;
 import org.example.rest.resources.interactions.EditFollowupMessage;
 import org.example.rest.resources.interactions.EditOriginalInteractionResponse;
 import org.example.rest.response.Response;
-import org.jboss.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.security.Security;
 import java.util.function.Function;
@@ -29,7 +30,7 @@ import static java.util.Objects.requireNonNull;
 import static org.example.rest.util.Variables.variables;
 
 public class DiscordInteractionsClient<T extends Response> extends DiscordClient<T> implements InteractionsCapable {
-    private static final Logger LOG = Logger.getLogger(DiscordInteractionsClient.class);
+    private static final Logger LOG = LoggerFactory.getLogger(DiscordInteractionsClient.class);
     private final Router router;
     private final HttpServer httpServer;
     private final String interactionsUrl;
@@ -173,6 +174,8 @@ public class DiscordInteractionsClient<T extends Response> extends DiscordClient
         @Override
         public DiscordInteractionsClient<T> build() {
             if (validatorFactory == null) {
+                validatorFactory = InteractionValidatorFactory.NO_OP;
+
                 boolean noBouncyCastle = false;
                 try {
                     Class.forName("org.bouncycastle.jce.provider.BouncyCastleProvider");
@@ -194,7 +197,7 @@ public class DiscordInteractionsClient<T extends Response> extends DiscordClient
                     router == null ? Router.router(vertx) : router,
                     httpServer == null ? vertx.createHttpServer() : httpServer,
                     interactionsUrl == null ? "/" : interactionsUrl,
-                    validatorFactory == null ? InteractionValidatorFactory.NO_OP.apply(verifyKey) : validatorFactory.apply(verifyKey));
+                    validatorFactory.apply(verifyKey));
         }
     }
 

@@ -1,0 +1,16 @@
+Configuration:
+  name: Config
+  status: debug
+  thresholdFilter:
+    level: debug
+  appenders:
+    Console:
+      name: Console
+      PatternLayout:
+        pattern: "%highlight{%d %p %c (%t) %m%ex%n}"
+
+  Loggers:
+    Root:
+      level: debug
+      AppenderRef:
+        ref: Console

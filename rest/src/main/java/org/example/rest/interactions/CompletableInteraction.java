@@ -6,13 +6,14 @@ import io.vertx.mutiny.core.http.HttpServerResponse;
 import org.example.rest.resources.channel.message.Message;
 import org.example.rest.resources.interactions.Interaction;
 import org.example.rest.resources.interactions.components.Component;
-import org.jboss.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.EnumSet;
 import java.util.List;
 
 public abstract class CompletableInteraction<T> {
-    protected static final Logger LOG = Logger.getLogger(CompletableInteraction.class);
+    protected static final Logger LOG = LoggerFactory.getLogger(CompletableInteraction.class);
     protected final Interaction<T> interaction;
     protected final HttpServerResponse response;
     protected final DiscordInteractionsClient<?> interactionsClient;
@@ -29,7 +30,7 @@ public abstract class CompletableInteraction<T> {
 
     protected Uni<RespondedInteraction<T>> respond(Interaction.MessageCallbackData data) {
         return serialize(Interaction.Response.builder().type(Interaction.CallbackType.CHANNEL_MESSAGE_WITH_SOURCE).data(data).build())
-                .invoke(json -> LOG.debugf("Responding to interaction %s with message: %s",
+                .invoke(json -> LOG.debug("Responding to interaction {} with message {}",
                         interaction.id().getValueAsString(), json))
                 .flatMap(response::end)
                 .replaceWith(new RespondedInteraction<>(interaction, interactionsClient));
@@ -41,7 +42,7 @@ public abstract class CompletableInteraction<T> {
             builder.data(Interaction.CallbackData.builder().flags(EnumSet.of(Message.Flag.EPHEMERAL)).build());
         }
         return serialize(builder.build())
-                .invoke(json -> LOG.debugf("Responding to interaction with %s deferred message: %s",
+                .invoke(json -> LOG.debug("Responding to interaction with {} deferred message {}",
                         interaction.id().getValueAsString(), json))
                 .flatMap(response::end)
                 .replaceWith(new RespondedInteraction<>(interaction, interactionsClient));
@@ -54,7 +55,7 @@ public abstract class CompletableInteraction<T> {
                 .build();
 
         return serialize(interactionResponse)
-                .invoke(json -> LOG.debugf("Responding to interaction %s with modal: %s",
+                .invoke(json -> LOG.debug("Responding to interaction {} with modal {}",
                         interaction.id().getValueAsString(), json))
                 .flatMap(response::end)
                 .replaceWith(new RespondedInteraction<>(interaction, interactionsClient));

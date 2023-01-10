@@ -4,14 +4,15 @@ import io.smallrye.mutiny.Uni;
 import io.vertx.mutiny.core.http.HttpClientResponse;
 import io.vertx.mutiny.core.http.HttpHeaders;
 import org.example.rest.request.Codec;
-import org.jboss.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
 import static java.util.Objects.requireNonNull;
 
 public class HttpResponse implements Response {
-    private static final Logger LOG = Logger.getLogger(HttpResponse.class);
+    private static final Logger LOG = LoggerFactory.getLogger(HttpResponse.class);
     private final Map<String, Codec> codecs;
     private final HttpClientResponse response;
 
@@ -26,7 +27,7 @@ public class HttpResponse implements Response {
                 .map(contextual -> {
                     String contentType = requireNonNull(response.getHeader(HttpHeaders.CONTENT_TYPE), "contentType");
                     Codec codec = requireNonNull(codecs.get(contentType), String.format("%s codec", contentType));
-                    LOG.debugf("Deserializing %s body for outgoing request %s as %s",
+                    LOG.debug("Deserializing {} body for outgoing request {} as {}",
                             contentType, contextual.context().get("request-id"), type);
                     return codec.deserialize(contextual.get(), type);
                 });

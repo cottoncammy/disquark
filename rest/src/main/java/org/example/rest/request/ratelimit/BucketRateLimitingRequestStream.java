@@ -5,12 +5,13 @@ import io.smallrye.mutiny.operators.multi.processors.BroadcastProcessor;
 import io.vertx.mutiny.core.Promise;
 import org.example.rest.request.Requester;
 import org.example.rest.response.HttpResponse;
-import org.jboss.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
 
 class BucketRateLimitingRequestStream {
-    private static final Logger LOG = Logger.getLogger(BucketRateLimitingRequestStream.class);
+    private static final Logger LOG = LoggerFactory.getLogger(BucketRateLimitingRequestStream.class);
     private final BucketCacheKey bucketKey;
     private final Requester<HttpResponse> requester;
     private final Promise<String> bucketPromise = Promise.promise();
@@ -28,13 +29,13 @@ class BucketRateLimitingRequestStream {
     }
 
     public void subscribe() {
-        LOG.debugf("Subscribing to request stream for buckets matching key %s", bucketKey);
+        LOG.debug("Subscribing to request stream for buckets matching key {}", bucketKey);
         Uni.createFrom().voidItem()
                 .invoke(() -> subscribed = true)
                 .onItem().transformToMulti(x -> processor)
                 .ifNoItem().after(Duration.ofSeconds(30)).recoverWithCompletion()
                 .onCompletion().invoke(() -> {
-                    LOG.debugf("Unsubscribing from stream: no requests received for buckets matching key %s after timeout", bucketKey);
+                    LOG.debug("Unsubscribing from stream: no requests received for buckets matching key {} after timeout", bucketKey);
                     subscribed = false;
                 })
                 .subscribe().withSubscriber(new BucketRateLimitingRequestSubscriber(bucketKey, requester, bucketPromise));
