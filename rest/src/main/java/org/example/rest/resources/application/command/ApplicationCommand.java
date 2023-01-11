@@ -28,7 +28,7 @@ public interface ApplicationCommand {
     @JsonProperty("application_id")
     Snowflake applicationId();
 
-    Snowflake guildId();
+    Optional<Snowflake> guildId();
 
     String name();
 

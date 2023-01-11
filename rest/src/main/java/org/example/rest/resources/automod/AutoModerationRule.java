@@ -8,6 +8,7 @@ import org.example.immutables.ImmutableJson;
 import org.immutables.value.Value.Enclosing;
 
 import java.util.List;
+import java.util.OptionalInt;
 
 @Enclosing
 @ImmutableJson
@@ -85,7 +86,7 @@ public interface AutoModerationRule {
         List<String> allowList();
 
         @JsonProperty("mention_total_limit")
-        int mentionTotalLimit();
+        OptionalInt mentionTotalLimit();
 
         class Builder extends ImmutableAutoModerationRule.TriggerMetadata.Builder {
             protected Builder() {}

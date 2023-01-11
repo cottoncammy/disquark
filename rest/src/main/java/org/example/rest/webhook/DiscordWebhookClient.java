@@ -63,7 +63,8 @@ public class DiscordWebhookClient<T extends Response> extends DiscordClient<T> i
             json.put("thread_id", options.threadId().get());
         }
 
-        return requester.request(new EmptyRequest(HttpMethod.POST, uri, false, Variables.variables(json))).flatMap(res -> res.as(Message.class));
+        return requester.request(new EmptyRequest(HttpMethod.POST, uri, false, Variables.variables(json)))
+                .flatMap(res -> res.as(Message.class));
     }
 
     @Override

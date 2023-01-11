@@ -74,6 +74,6 @@ public class EmptyRequest implements Request {
 
     @Override
     public String toString() {
-        return Request.super.toString();
+        return new Request.Builder().from(this).toString();
     }
 }

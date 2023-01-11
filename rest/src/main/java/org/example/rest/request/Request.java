@@ -2,6 +2,7 @@ package org.example.rest.request;
 
 import io.vertx.mutiny.uritemplate.Variables;
 import org.example.immutables.ImmutableBuilder;
+import org.immutables.value.Value.Auxiliary;
 import org.immutables.value.Value.Default;
 
 import java.util.Optional;
@@ -16,6 +17,7 @@ public interface Request extends Auditable, MultipartRequest {
     Endpoint endpoint();
 
     @Default
+    @Auxiliary
     default Variables variables() {
         return Variables.variables();
     }

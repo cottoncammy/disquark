@@ -13,6 +13,9 @@ class JsonCodec implements Codec {
 
     @Override
     public <T> T deserialize(Buffer buffer, Class<T> type) {
+        if (type.isArray()) {
+            return Json.decodeValue(buffer.getDelegate(), type);
+        }
         return buffer.toJsonObject().mapTo(type);
     }
 }

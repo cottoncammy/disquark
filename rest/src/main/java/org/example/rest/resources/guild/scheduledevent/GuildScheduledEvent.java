@@ -57,7 +57,7 @@ public interface GuildScheduledEvent {
     @JsonProperty("entity_metadata")
     Optional<EntityMetadata> entityMetadata();
 
-    Optional<User> creator();
+    Optional<org.example.rest.resources.user.User> creator();
 
     @JsonProperty("user_count")
     OptionalInt userCount();

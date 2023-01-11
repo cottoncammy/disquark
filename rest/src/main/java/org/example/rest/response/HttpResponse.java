@@ -3,7 +3,6 @@ package org.example.rest.response;
 import io.smallrye.mutiny.Uni;
 import io.vertx.mutiny.core.http.HttpClientResponse;
 import io.vertx.mutiny.core.http.HttpHeaders;
-import io.vertx.mutiny.uritemplate.UriTemplate;
 import org.example.rest.request.Codec;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,15 +24,17 @@ public class HttpResponse implements Response {
     }
 
     public <T> Uni<T> as(Class<T> type) {
-        return Uni.createFrom().context(ctx -> response.body()
-                .map(body -> {
-                    String contentType = requireNonNull(response.getHeader(HttpHeaders.CONTENT_TYPE), "contentType");
-                    Codec codec = requireNonNull(codecs.get(contentType), String.format("%s codec", contentType));
-                    LOG.debug("Deserializing {} body for outgoing request {} as {}",
-                            contentType, ctx.getOrElse(REQUEST_ID, FALLBACK_REQUEST_ID), type);
+        return Uni.createFrom().context(ctx -> {
+            return response.body()
+                    .map(body -> {
+                        String contentType = requireNonNull(response.getHeader(HttpHeaders.CONTENT_TYPE), "contentType");
+                        Codec codec = requireNonNull(codecs.get(contentType), String.format("%s codec", contentType));
+                        LOG.debug("Deserializing {} body for outgoing request {} as {}",
+                                contentType, ctx.getOrElse(REQUEST_ID, FALLBACK_REQUEST_ID), type.getSimpleName());
 
-                    return codec.deserialize(body, type);
-                }));
+                        return codec.deserialize(body, type);
+                    });
+        });
     }
 
     public HttpClientResponse getRaw() {

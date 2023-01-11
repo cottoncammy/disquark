@@ -17,6 +17,15 @@ public class UriTemplate {
         this.delegate = delegate;
     }
 
+    private String getUriWithoutQueryTemplate() {
+        // hack, we assume that there's only one query template and that it's the last one
+        if (uri.contains("{?")) {
+            return uri.substring(0, uri.lastIndexOf('{'));
+        }
+
+        return uri;
+    }
+
     public String getUri() {
         return uri;
     }
@@ -27,22 +36,21 @@ public class UriTemplate {
 
     @Override
     public boolean equals(Object o) {
-        // TODO trim last part of template (query template)
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UriTemplate that = (UriTemplate) o;
-        return uri.equals(that.uri);
+        return getUriWithoutQueryTemplate().equals(that.getUriWithoutQueryTemplate());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(uri);
+        return Objects.hash(getUriWithoutQueryTemplate());
     }
 
     @Override
     public String toString() {
         return "UriTemplate{" +
-                "uri=" + uri +
+                "uri=\"" + getUriWithoutQueryTemplate() + "\"" +
                 '}';
     }
 }

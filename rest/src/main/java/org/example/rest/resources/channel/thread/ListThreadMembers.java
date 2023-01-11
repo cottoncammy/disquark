@@ -39,7 +39,7 @@ public interface ListThreadMembers extends Requestable {
 
     @Override
     default Request asRequest() {
-        JsonObject json = JsonObject.of("channel.id", channelId(), "with_member", withMember(), "limit", limit());
+        JsonObject json = JsonObject.of("channel.id", channelId().getValue(), "with_member", withMember(), "limit", limit());
         if (after().isPresent()) {
             json.put("after", after().get().getValue());
         }

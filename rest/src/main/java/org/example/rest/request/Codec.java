@@ -75,7 +75,7 @@ public interface Codec {
                 return buffer.toString();
             }
 
-            return "TODO";
+            return "";
         }
     }
 }

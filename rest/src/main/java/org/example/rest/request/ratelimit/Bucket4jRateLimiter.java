@@ -40,7 +40,7 @@ public class Bucket4jRateLimiter extends GlobalRateLimiter {
     }
 
     private <T> Uni<T> rateLimitWithContext(Uni<T> upstream, Context ctx) {
-        LOG.debug("Acquiring bucket token for request {}, {} tokens available",
+        LOG.debug("Acquiring bucket token for outgoing request {}, {} tokens available",
                 ctx.getOrElse(REQUEST_ID, FALLBACK_REQUEST_ID), bucket.getAvailableTokens());
 
         return Uni.createFrom().item(supplier(() -> bucket.asBlocking().tryConsume(1, 10)))
@@ -52,7 +52,7 @@ public class Bucket4jRateLimiter extends GlobalRateLimiter {
                     return Uni.createFrom().voidItem();
                 })
                 .onFailure(is(RuntimeException.class).and(wasCausedBy(InterruptedException.class))).invoke(() -> {
-                    LOG.warn("Thread interrupted while waiting to acquire bucket token for request {}",
+                    LOG.warn("Thread interrupted while waiting to acquire bucket token for outgoing request {}",
                             ctx.getOrElse(REQUEST_ID, FALLBACK_REQUEST_ID));
 
                     bucket.addTokens(1);

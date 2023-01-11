@@ -8,6 +8,7 @@ import org.example.immutables.ImmutableJson;
 import org.immutables.value.Value.Enclosing;
 
 import java.util.Optional;
+import java.util.OptionalInt;
 
 @Enclosing
 @ImmutableJson
@@ -48,10 +49,10 @@ public interface AutoModerationAction {
         }
 
         @JsonProperty("channel_id")
-        Snowflake channelId();
+        Optional<Snowflake> channelId();
 
         @JsonProperty("duration_seconds")
-        int durationSeconds();
+        OptionalInt durationSeconds();
 
         class Builder extends ImmutableAutoModerationAction.Metadata.Builder {
             protected Builder() {}

@@ -216,6 +216,7 @@ class ChannelIT {
         EditChannelPermissions editChannelPermissions = EditChannelPermissions.builder()
                 .channelId(channelId)
                 .overwriteId(userId)
+                .type(Channel.Overwrite.Type.MEMBER)
                 .build();
 
         botClient.editChannelPermissions(editChannelPermissions)
