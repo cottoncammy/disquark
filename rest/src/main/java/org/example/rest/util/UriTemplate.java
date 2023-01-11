@@ -1,0 +1,48 @@
+package org.example.rest.util;
+
+import io.vertx.mutiny.uritemplate.Variables;
+
+import java.util.Objects;
+
+public class UriTemplate {
+    private final String uri;
+    private final io.vertx.mutiny.uritemplate.UriTemplate delegate;
+
+    public static UriTemplate of(String uri) {
+        return new UriTemplate(uri, io.vertx.mutiny.uritemplate.UriTemplate.of(uri));
+    }
+
+    private UriTemplate(String uri, io.vertx.mutiny.uritemplate.UriTemplate delegate) {
+        this.uri = uri;
+        this.delegate = delegate;
+    }
+
+    public String getUri() {
+        return uri;
+    }
+
+    public String expandToString(Variables variables) {
+        return delegate.expandToString(variables);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        // TODO trim last part of template (query template)
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UriTemplate that = (UriTemplate) o;
+        return uri.equals(that.uri);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(uri);
+    }
+
+    @Override
+    public String toString() {
+        return "UriTemplate{" +
+                "uri=" + uri +
+                '}';
+    }
+}
