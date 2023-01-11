@@ -10,6 +10,9 @@ class VoiceIT {
 
     @Test
     void testListVoiceRegions(DiscordBotClient<?> botClient) {
-        botClient.listVoiceRegions().subscribe().withSubscriber(AssertSubscriber.create()).assertCompleted();
+        botClient.listVoiceRegions()
+                .subscribe().withSubscriber(AssertSubscriber.create())
+                .awaitCompletion()
+                .assertCompleted();
     }
 }

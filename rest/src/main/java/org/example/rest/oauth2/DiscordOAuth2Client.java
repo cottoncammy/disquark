@@ -11,6 +11,7 @@ import org.example.rest.interactions.DiscordInteractionsClient;
 import org.example.rest.request.*;
 import org.example.rest.resources.Snowflake;
 import org.example.rest.resources.application.command.EditApplicationCommandPermissions;
+import org.example.rest.resources.guild.Guild;
 import org.example.rest.resources.user.UpdateUserApplicationRoleConnections;
 import org.example.rest.resources.user.User;
 import org.example.rest.resources.application.command.GuildApplicationCommandPermissions;
@@ -55,6 +56,11 @@ public class DiscordOAuth2Client<T extends Response> extends AuthenticatedDiscor
     public Uni<GuildApplicationCommandPermissions> editApplicationCommandPermissions(EditApplicationCommandPermissions editApplicationCommandPermissions) {
         return requester.request(requireNonNull(editApplicationCommandPermissions, "editApplicationCommandPermissions").asRequest())
                 .flatMap(res -> res.as(GuildApplicationCommandPermissions.class));
+    }
+
+    public Uni<Guild.Member> getCurrentUserGuildMember(Snowflake guildId) {
+        return requester.request(new EmptyRequest("/users/@me/guilds/{guild.id}/member", variables("guild.id", guildId.getValue())))
+                .flatMap(res -> res.as(Guild.Member.class));
     }
 
     public Multi<User.Connection> getUserConnections() {

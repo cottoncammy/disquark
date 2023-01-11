@@ -19,13 +19,16 @@ class EmojiIT {
     @Test
     @Order(1)
     void testListGuildEmojis(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_GUILD_ID") Snowflake guildId) {
-        botClient.listGuildEmojis(guildId).subscribe().withSubscriber(AssertSubscriber.create()).assertCompleted();
+        botClient.listGuildEmojis(guildId)
+                .subscribe().withSubscriber(AssertSubscriber.create())
+                .awaitCompletion()
+                .assertCompleted();
     }
 
     @Test
     @Order(2)
     void testCreateGuildEmoji(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_GUILD_ID") Snowflake guildId) {
-        Buffer image = botClient.getVertx().fileSystem().readFileAndAwait("emoji.png");
+        Buffer image = botClient.getVertx().fileSystem().readFileAndAwait("images/emoji.png");
         CreateGuildEmoji createGuildEmoji = CreateGuildEmoji.builder()
                 .guildId(guildId)
                 .name("foo")
@@ -45,6 +48,7 @@ class EmojiIT {
     void testGetGuildEmoji(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_GUILD_ID") Snowflake guildId) {
         botClient.getGuildEmoji(guildId, emojiId)
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 
@@ -53,6 +57,7 @@ class EmojiIT {
     void testModifyGuildEmoji(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_GUILD_ID") Snowflake guildId) {
         botClient.modifyGuildEmoji(ModifyGuildEmoji.builder().guildId(guildId).emojiId(emojiId).name("bar").build())
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 
@@ -61,6 +66,7 @@ class EmojiIT {
     void testDeleteGuildEmoji(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_GUILD_ID") Snowflake guildId) {
         botClient.deleteGuildEmoji(guildId, emojiId, null)
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 }

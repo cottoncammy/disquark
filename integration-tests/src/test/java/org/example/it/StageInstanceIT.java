@@ -19,13 +19,17 @@ class StageInstanceIT {
     void testCreateStageInstance(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_STAGE_CHANNEL_ID") Snowflake channelId) {
         botClient.createStageInstance(CreateStageInstance.builder().channelId(channelId).topic("foo").build())
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 
     @Test
     @Order(2)
     void testGetStageInstance(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_STAGE_CHANNEL_ID") Snowflake channelId) {
-        botClient.getStageInstance(channelId).subscribe().withSubscriber(UniAssertSubscriber.create()).assertCompleted();
+        botClient.getStageInstance(channelId)
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
+                .assertCompleted();
     }
 
     @Test
@@ -33,6 +37,7 @@ class StageInstanceIT {
     void testModifyStageInstance(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_STAGE_CHANNEL_ID") Snowflake channelId) {
         botClient.modifyStageInstance(ModifyStageInstance.builder().channelId(channelId).topic("bar").build())
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 
@@ -41,6 +46,7 @@ class StageInstanceIT {
     void testDeleteStageInstance(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_STAGE_CHANNEL_ID") Snowflake channelId) {
         botClient.deleteStageInstance(channelId, null)
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 }

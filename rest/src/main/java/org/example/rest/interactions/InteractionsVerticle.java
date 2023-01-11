@@ -1,5 +1,6 @@
 package org.example.rest.interactions;
 
+import io.smallrye.mutiny.Context;
 import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
 import io.smallrye.mutiny.operators.multi.processors.BroadcastProcessor;
@@ -9,7 +10,6 @@ import io.vertx.core.json.DecodeException;
 import io.vertx.mutiny.core.http.HttpServer;
 import io.vertx.mutiny.core.http.HttpServerRequest;
 import io.vertx.mutiny.core.http.HttpServerResponse;
-import io.vertx.mutiny.core.net.SocketAddress;
 import io.vertx.mutiny.ext.web.Route;
 import io.vertx.mutiny.ext.web.Router;
 import io.vertx.mutiny.ext.web.RoutingContext;
@@ -27,7 +27,9 @@ import static org.example.rest.util.ExceptionPredicate.is;
 import static org.example.rest.util.ExceptionPredicate.isNot;
 
 class InteractionsVerticle extends AbstractVerticle {
+    private static final String REQUEST_ID = "request-id";
     private static final Logger LOG = LoggerFactory.getLogger(InteractionsVerticle.class);
+
     private final Router router;
     private final HttpServer httpServer;
     private final String interactionsUrl;
@@ -48,56 +50,61 @@ class InteractionsVerticle extends AbstractVerticle {
         this.interactionsClient = interactionsClient;
     }
 
+    @SuppressWarnings("unchecked")
+    private Uni<?> handleRequest(RoutingContext context, Context ctx) {
+        HttpServerRequest request = context.request();
+        if (LOG.isDebugEnabled()) {
+            ctx.put(REQUEST_ID, Integer.toHexString(request.hashCode()));
+        }
+
+        return request.body()
+                .call(body -> {
+                    LOG.debug("Received incoming request {} from {}:{} with body {}",
+                            ctx.get(REQUEST_ID), request.remoteAddress().host(), request.remoteAddress().port(), body);
+
+                    String signature = requireNonNull(request.getHeader("X-Signature-Ed25519"));
+                    String timestamp = requireNonNull(request.getHeader("X-Signature-Timestamp"));
+                    if (!interactionValidator.validate(timestamp, body.toString(), signature)) {
+                        return Uni.createFrom().failure(UnauthorizedException::new);
+                    }
+                    return Uni.createFrom().voidItem();
+                })
+                .onFailure(is(NullPointerException.class, UnauthorizedException.class)).call(() -> {
+                    LOG.debug("Interaction validation failed for incoming request {}", ctx.<Object>get(REQUEST_ID));
+                    return context.response().setStatusCode(401).end();
+                })
+                .map(body -> body.toJsonObject().mapTo(Interaction.class))
+                .onFailure(is(IllegalArgumentException.class, DecodeException.class)).call(e -> {
+                    LOG.warn("Request body mapping failed for incoming request {}: {}",
+                            ctx.get(REQUEST_ID), e.getMessage());
+
+                    return context.response().setStatusCode(400).end();
+                })
+                .call(interaction -> {
+                    LOG.debug("Incoming request {} mapped to incoming {} interaction {}",
+                            ctx.get(REQUEST_ID), interaction.type(), interaction);
+
+                    if (interaction.type() == Interaction.Type.PING) {
+                        return new PingInteraction(interaction, context.response(), interactionsClient).pong();
+                    }
+                    return Uni.createFrom().voidItem();
+                })
+                .invoke(interaction -> {
+                    context.put("interaction", interaction);
+                    processor.onNext(context);
+                })
+                .onFailure(isNot(NullPointerException.class, UnauthorizedException.class,
+                        IllegalArgumentException.class, DecodeException.class))
+                .invoke(e -> LOG.warn("Encountered exception while handling incoming request {}: {}",
+                        ctx.get(REQUEST_ID), e.getMessage()))
+                .onFailure().recoverWithNull();
+    }
+
     private Consumer<RoutingContext> requestHandler() {
         return new Consumer<>() {
             @Override
-            @SuppressWarnings("unchecked")
             public void accept(RoutingContext context) {
-                HttpServerRequest request = context.request();
-                String id = Integer.toHexString(request.hashCode());
-
-                String signature = request.getHeader("X-Signature-Ed25519");
-                String timestamp = request.getHeader("X-Signature-Timestamp");
-                HttpServerResponse response = context.response();
-
-                request.body()
-                        .call(body -> {
-                            SocketAddress address = request.remoteAddress();
-                            LOG.debug("Received incoming request {} from {}:{} with body {}",
-                                    id, address.host(), address.port(), body);
-
-                            if (!interactionValidator.validate(requireNonNull(timestamp), body.toString(), requireNonNull(signature))) {
-                                return Uni.createFrom().failure(UnauthorizedException::new);
-                            }
-                            return Uni.createFrom().voidItem();
-                        })
-                        .onFailure(is(NullPointerException.class, UnauthorizedException.class)).call(() -> {
-                            LOG.debug("Interaction validation failed for incoming request {}", id);
-                            return response.setStatusCode(401).end();
-                        })
-                        .map(body -> body.toJsonObject().mapTo(Interaction.class))
-                        .onFailure(is(IllegalArgumentException.class, DecodeException.class)).call(e -> {
-                            LOG.warn("Request body mapping failed for incoming request {}: {}", id, e.getMessage());
-                            return response.setStatusCode(400).end();
-                        })
-                        .call(interaction -> {
-                            if (interaction.type() == Interaction.Type.PING) {
-                                return new PingInteraction(interaction, response, interactionsClient).pong();
-                            }
-                            return Uni.createFrom().voidItem();
-                        })
-                        .invoke(interaction -> {
-                            LOG.debug("Incoming request {} mapped to {} interaction: {}",
-                                    id, interaction.type(), interaction);
-
-                            context.put("interaction", interaction);
-                            processor.onNext(context);
-                        })
-                        .onFailure(isNot(NullPointerException.class, UnauthorizedException.class,
-                                IllegalArgumentException.class, DecodeException.class))
-                        .invoke(e -> LOG.warn("Encountered exception while handling incoming request {}: {}",
-                                id, e.getMessage()))
-                        .onFailure().recoverWithNull()
+                Uni.createFrom().context(ctx -> handleRequest(context, ctx))
                         .subscribe()
                         .with(x -> {});
             }

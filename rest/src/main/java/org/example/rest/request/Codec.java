@@ -3,7 +3,6 @@ package org.example.rest.request;
 import io.vertx.mutiny.core.MultiMap;
 import io.vertx.mutiny.core.buffer.Buffer;
 import io.vertx.mutiny.core.streams.ReadStream;
-import org.example.rest.request.Request;
 import org.reactivestreams.Publisher;
 
 import javax.annotation.Nullable;
@@ -65,6 +64,18 @@ public interface Codec {
 
         public Optional<Publisher<Buffer>> asPublisher() {
             return Optional.ofNullable(publisher);
+        }
+
+        public String getAsString() {
+            if (string != null) {
+                return string;
+            }
+
+            if (buffer != null) {
+                return buffer.toString();
+            }
+
+            return "TODO";
         }
     }
 }

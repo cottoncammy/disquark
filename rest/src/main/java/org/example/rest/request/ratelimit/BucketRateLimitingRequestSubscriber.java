@@ -40,7 +40,7 @@ class BucketRateLimitingRequestSubscriber implements MultiSubscriber<Completable
         Promise<HttpResponse> promise = item.getPromise();
 
         requester.request(item.getRequest())
-            .call(response -> {
+            .invoke(response -> {
                 String bucket = response.getHeader("X-RateLimit-Bucket");
                 if (bucket != null) {
                     if (bucketKey.getTopLevelResourceValue().isPresent()) {
@@ -49,12 +49,15 @@ class BucketRateLimitingRequestSubscriber implements MultiSubscriber<Completable
 
                     bucketPromise.complete(bucket);
                 }
-
+            })
+            .call(response -> {
                 String remaining = response.getHeader("X-RateLimit-Remaining");
                 if (remaining != null && Integer.parseInt(remaining) == 0) {
                     String resetAfter = response.getHeader("X-RateLimit-Reset-After");
                     if (resetAfter != null) {
-                        LOG.debug("No requests remaining for buckets matching key {} for the next {}", bucketKey, resetAfter);
+                        LOG.debug("No requests remaining for buckets matching key {} for the next {}s",
+                                bucketKey, resetAfter);
+
                         return Uni.createFrom().voidItem()
                                 .invoke(() -> this.resetAfter = Math.round(Float.parseFloat(resetAfter)));
                     }
@@ -65,7 +68,9 @@ class BucketRateLimitingRequestSubscriber implements MultiSubscriber<Completable
             .onItemOrFailure().call(() -> {
                 Duration resetAfter = getResetAfterDuration();
                 if (!resetAfter.isZero() && !resetAfter.isNegative()) {
-                    LOG.debug("Delaying next request for buckets matching key {} by {}", bucketKey, resetAfter);
+                    LOG.debug("Delaying demand signal for next request for buckets matching key {} by {}s",
+                            bucketKey, resetAfter.getSeconds());
+
                     return Uni.createFrom().voidItem().onItem().delayIt().by(resetAfter);
                 }
                 return Uni.createFrom().voidItem();

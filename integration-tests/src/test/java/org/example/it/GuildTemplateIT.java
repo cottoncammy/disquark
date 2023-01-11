@@ -31,6 +31,7 @@ class GuildTemplateIT {
     void testGetGuildTemplate(DiscordBotClient<?> botClient) {
         botClient.getGuildTemplate(templateCode)
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 
@@ -45,13 +46,17 @@ class GuildTemplateIT {
         botClient.createGuildFromGuildTemplate(createGuildFromGuildTemplate)
                 .flatMap(guild -> botClient.deleteGuild(guild.id()))
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 
     @Test
     @Order(4)
     void testGetGuildTemplates(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_GUILD_ID") Snowflake guildId) {
-        botClient.getGuildTemplates(guildId).subscribe().withSubscriber(AssertSubscriber.create()).assertCompleted();
+        botClient.getGuildTemplates(guildId)
+                .subscribe().withSubscriber(AssertSubscriber.create())
+                .awaitCompletion()
+                .assertCompleted();
     }
 
     @Test
@@ -59,6 +64,7 @@ class GuildTemplateIT {
     void testSyncGuildTemplate(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_GUILD_ID") Snowflake guildId) {
         botClient.syncGuildTemplate(guildId, templateCode)
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 
@@ -73,6 +79,7 @@ class GuildTemplateIT {
 
         botClient.modifyGuildTemplate(modifyGuildTemplate)
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 
@@ -81,6 +88,7 @@ class GuildTemplateIT {
     void testDeleteGuildTemplate(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_GUILD_ID") Snowflake guildId) {
         botClient.deleteGuildTemplate(guildId, templateCode)
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 }

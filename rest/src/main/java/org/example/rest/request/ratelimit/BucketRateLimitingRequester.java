@@ -39,6 +39,7 @@ class BucketRateLimitingRequester implements Requester<HttpResponse> {
         return requestStream;
     }
 
+    // TODO reactive chain this
     @Override
     public Uni<HttpResponse> request(Request request) {
         BucketCacheKey key = BucketCacheKey.create(request);
@@ -61,10 +62,9 @@ class BucketRateLimitingRequester implements Requester<HttpResponse> {
                 })
                 .replaceWithVoid();
 
-        Uni<Void> delay = Uni.createFrom().voidItem()
-                .invoke(() -> LOG.warn("Unable to cache request stream for key {}: bucket value not received after timeout", key))
-                .onItem().delayIt().by(Duration.ofSeconds(5));
-
-        return Uni.join().first(bucketUni, delay).withItem().replaceWith(completableRequest.getPromise().future());
+        return bucketUni.ifNoItem().after(Duration.ofSeconds(5))
+                .recoverWithUni(Uni.createFrom().voidItem().invoke(() ->
+                        LOG.warn("Unable to cache request stream for key {}: bucket value not received after timeout", key)))
+                .replaceWith(completableRequest.getPromise().future());
     }
 }

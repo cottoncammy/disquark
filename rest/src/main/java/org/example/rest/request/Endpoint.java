@@ -1,8 +1,8 @@
 package org.example.rest.request;
 
 import io.vertx.core.http.HttpMethod;
-import io.vertx.mutiny.uritemplate.UriTemplate;
 import io.vertx.mutiny.uritemplate.Variables;
+import org.example.rest.util.UriTemplate;
 
 import java.util.Optional;
 
@@ -40,7 +40,7 @@ public class Endpoint {
     }
 
     public Optional<String> getTopLevelResourceValue(Variables variables) {
-        String uri = uriTemplate.expandToString(Variables.variables());
+        String uri = uriTemplate.getUri();
         if (uri.startsWith("/channels/{channel.id}")) {
             return Optional.of(variables.getSingle("channel.id"));
         }
@@ -54,5 +54,14 @@ public class Endpoint {
         }
 
         return Optional.empty();
+    }
+
+    @Override
+    public String toString() {
+        return "Endpoint{" +
+                "httpMethod=" + httpMethod + ", " +
+                "uriTemplate=" + uriTemplate + ", " +
+                "requiresAuthentication=" + requiresAuthentication +
+                '}';
     }
 }

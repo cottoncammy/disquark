@@ -22,6 +22,7 @@ class AutoModerationIT {
     void testListAutoModerationRulesForGuild(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_GUILD_ID") Snowflake guildId) {
         botClient.listAutoModerationRulesForGuild(guildId)
                 .subscribe().withSubscriber(AssertSubscriber.create())
+                .awaitCompletion()
                 .assertCompleted();
     }
 
@@ -30,6 +31,7 @@ class AutoModerationIT {
     void testGetAutoModerationRule(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_GUILD_ID") Snowflake guildId) {
         botClient.getAutoModerationRule(guildId, autoModerationRuleId)
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 
@@ -62,6 +64,7 @@ class AutoModerationIT {
 
         botClient.modifyAutoModerationRule(modifyAutoModerationRule)
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 
@@ -70,6 +73,7 @@ class AutoModerationIT {
     void testDeleteAutoModerationRule(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_GUILD_ID") Snowflake guildId) {
         botClient.deleteAutoModerationRule(guildId, autoModerationRuleId, null)
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 }

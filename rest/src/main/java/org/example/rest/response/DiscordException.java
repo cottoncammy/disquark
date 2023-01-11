@@ -11,10 +11,6 @@ public class DiscordException extends RuntimeException {
     private final ErrorResponse errorResponse;
     private final HttpClientResponse httpResponse;
 
-    public static Predicate<Throwable> isRetryableServerError() {
-        return is(DiscordException.class).and(t -> ((DiscordException) t).isStatusCode(500, 502, 503, 504, 520));
-    }
-
     public DiscordException(ErrorResponse errorResponse, HttpClientResponse httpResponse) {
         super(String.format("%s %s returned %s %s: %s",
                 httpResponse.request().getMethod(), httpResponse.request().getURI(), httpResponse.statusCode(),

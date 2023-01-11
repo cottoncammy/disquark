@@ -2,6 +2,8 @@ package org.example.rest.request.ratelimit;
 
 import static io.smallrye.mutiny.unchecked.Unchecked.supplier;
 import static java.util.Objects.requireNonNull;
+import static org.example.rest.request.HttpClientRequester.FALLBACK_REQUEST_ID;
+import static org.example.rest.request.HttpClientRequester.REQUEST_ID;
 import static org.example.rest.util.ExceptionPredicate.is;
 import static org.example.rest.util.ExceptionPredicate.wasCausedBy;
 
@@ -14,9 +16,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
+import java.util.function.Supplier;
 
 public class Bucket4jRateLimiter extends GlobalRateLimiter {
     private static final Logger LOG = LoggerFactory.getLogger(Bucket4jRateLimiter.class);
+
     private final Bucket bucket;
 
     public static Bucket4jRateLimiter create(Bucket bucket) {
@@ -35,9 +39,9 @@ public class Bucket4jRateLimiter extends GlobalRateLimiter {
         this.bucket = bucket;
     }
 
-    private <T> Uni<T> rateLimitWithContext(Uni<T> upstream, Context context) {
-        String id = context.get("request-id");
-        LOG.debug("Acquiring bucket token for request {}", id);
+    private <T> Uni<T> rateLimitWithContext(Uni<T> upstream, Context ctx) {
+        LOG.debug("Acquiring bucket token for request {}, {} tokens available",
+                ctx.getOrElse(REQUEST_ID, FALLBACK_REQUEST_ID), bucket.getAvailableTokens());
 
         return Uni.createFrom().item(supplier(() -> bucket.asBlocking().tryConsume(1, 10)))
                 .runSubscriptionOn(Infrastructure.getDefaultWorkerPool())
@@ -48,13 +52,17 @@ public class Bucket4jRateLimiter extends GlobalRateLimiter {
                     return Uni.createFrom().voidItem();
                 })
                 .onFailure(is(RuntimeException.class).and(wasCausedBy(InterruptedException.class))).invoke(() -> {
-                    LOG.debug("Thread interrupted while waiting to acquire bucket token for request {}", id);
+                    LOG.warn("Thread interrupted while waiting to acquire bucket token for request {}",
+                            ctx.getOrElse(REQUEST_ID, FALLBACK_REQUEST_ID));
+
                     bucket.addTokens(1);
                 })
                 .replaceWith(getRetryAfterDuration())
                 .call(retryAfterDuration -> {
                     if (!retryAfterDuration.isZero() && !retryAfterDuration.isNegative()) {
-                        LOG.debug("Globally rate limited: delaying outgoing request {} by {}", id, retryAfterDuration);
+                        LOG.debug("Globally rate limited: delaying outgoing request {} by {}s",
+                                ctx.getOrElse(REQUEST_ID, FALLBACK_REQUEST_ID), retryAfterDuration.getSeconds());
+
                         return Uni.createFrom().voidItem().onItem().delayIt().by(retryAfterDuration);
                     }
                     return Uni.createFrom().voidItem();
@@ -64,6 +72,6 @@ public class Bucket4jRateLimiter extends GlobalRateLimiter {
 
     @Override
     public <T> Uni<T> rateLimit(Uni<T> upstream) {
-        return Uni.createFrom().context(context -> rateLimitWithContext(upstream, context));
+        return Uni.createFrom().context(ctx -> rateLimitWithContext(upstream, ctx));
     }
 }

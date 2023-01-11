@@ -48,7 +48,10 @@ class ChannelIT {
     @Test
     @Order(1)
     void testGetChannel(DiscordBotClient<?> botClient) {
-        botClient.getChannel(channelId).subscribe().withSubscriber(UniAssertSubscriber.create()).assertCompleted();
+        botClient.getChannel(channelId)
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
+                .assertCompleted();
     }
 
     @Test
@@ -61,7 +64,6 @@ class ChannelIT {
                 .map(AccessToken::accessToken);
 
         ModifyDmChannel.Builder builder = ModifyDmChannel.builder().name("foo");
-
         dmChannelId = botClient.createDm(userId2)
                 .call(channel -> tokenUni.call(token -> botClient.groupDmAddRecipient(channel.id(), userId, token, null)))
                 .call(channel -> botClient.modifyChannel(builder.channelId(channel.id()).build()))
@@ -77,6 +79,7 @@ class ChannelIT {
     void testModifyGuildChannel(DiscordBotClient<?> botClient) {
         botClient.modifyChannel(ModifyGuildChannel.builder().channelId(channelId).name("bar").build())
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 
@@ -85,6 +88,7 @@ class ChannelIT {
     void testGetChannelMessages(DiscordBotClient<?> botClient) {
         botClient.getChannelMessages(GetChannelMessages.create(channelId))
                 .subscribe().withSubscriber(AssertSubscriber.create())
+                .awaitCompletion()
                 .assertCompleted();
     }
 
@@ -104,6 +108,7 @@ class ChannelIT {
     void testGetChannelMessage(DiscordBotClient<?> botClient) {
         botClient.getChannelMessage(channelId, messageId)
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 
@@ -114,6 +119,7 @@ class ChannelIT {
         createMessage(botClient, announcementChannelId, "Hello World!")
                 .flatMap(message -> botClient.crosspostMessage(announcementChannelId, messageId))
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 
@@ -122,6 +128,7 @@ class ChannelIT {
     void testCreateReaction(DiscordBotClient<?> botClient) {
         botClient.createReaction(channelId, messageId, ReactionEmoji.create(ROBOT_EMOJI))
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 
@@ -130,6 +137,7 @@ class ChannelIT {
     void testDeleteOwnReaction(DiscordBotClient<?> botClient) {
         botClient.deleteOwnReaction(channelId, messageId, ReactionEmoji.create(ROBOT_EMOJI))
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 
@@ -140,6 +148,7 @@ class ChannelIT {
                 .call(user -> botClient.createReaction(channelId, messageId, ReactionEmoji.create(ROBOT_EMOJI)))
                 .call(user -> botClient.deleteUserReaction(channelId, messageId, ReactionEmoji.create(ROBOT_EMOJI), user.id()))
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 
@@ -148,6 +157,7 @@ class ChannelIT {
     void testGetReactions(DiscordBotClient<?> botClient) {
         botClient.getReactions(GetReactions.create(channelId, messageId, ReactionEmoji.create(ROBOT_EMOJI)))
                 .subscribe().withSubscriber(AssertSubscriber.create())
+                .awaitCompletion()
                 .assertCompleted();
     }
 
@@ -156,6 +166,7 @@ class ChannelIT {
     void testDeleteAllReactions(DiscordBotClient<?> botClient) {
         botClient.deleteAllReactions(channelId, messageId)
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 
@@ -164,6 +175,7 @@ class ChannelIT {
     void testDeleteAllReactionsForEmoji(DiscordBotClient<?> botClient) {
         botClient.deleteAllReactionsForEmoji(channelId, messageId, ReactionEmoji.create(ROBOT_EMOJI))
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 
@@ -176,7 +188,10 @@ class ChannelIT {
                 .content("Goodbye Cruel World...")
                 .build();
 
-        botClient.editMessage(editMessage).subscribe().withSubscriber(UniAssertSubscriber.create()).assertCompleted();
+        botClient.editMessage(editMessage)
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
+                .assertCompleted();
     }
 
     @Test
@@ -191,6 +206,7 @@ class ChannelIT {
                 .combinedWith((m1, m2, m3) -> List.of(m1.id(), m2.id(), m3.id()))
                 .flatMap(messages -> botClient.bulkDeleteMessages(builder.messages(messages).build()))
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 
@@ -204,13 +220,17 @@ class ChannelIT {
 
         botClient.editChannelPermissions(editChannelPermissions)
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 
     @Test
     @Order(17)
     void testGetChannelInvites(DiscordBotClient<?> botClient) {
-        botClient.getChannelInvites(channelId).subscribe().withSubscriber(AssertSubscriber.create()).assertCompleted();
+        botClient.getChannelInvites(channelId)
+                .subscribe().withSubscriber(AssertSubscriber.create())
+                .awaitCompletion()
+                .assertCompleted();
     }
 
     @Test
@@ -218,6 +238,7 @@ class ChannelIT {
     void testDeleteChannelPermission(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_USER_ID") Snowflake userId) {
         botClient.deleteChannelPermission(channelId, userId, null)
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 
@@ -227,13 +248,17 @@ class ChannelIT {
     void testFollowAnnouncementChannel(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_ANNOUNCEMENT_CHANNEL_ID") Snowflake announcementChannelId) {
         botClient.followAnnouncementChannel(announcementChannelId, channelId)
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 
     @Test
     @Order(20)
     void testGetPinnedMessages(DiscordBotClient<?> botClient) {
-        botClient.getPinnedMessages(channelId).subscribe().withSubscriber(AssertSubscriber.create()).assertCompleted();
+        botClient.getPinnedMessages(channelId)
+                .subscribe().withSubscriber(AssertSubscriber.create())
+                .awaitCompletion()
+                .assertCompleted();
     }
 
     @Test
@@ -241,6 +266,7 @@ class ChannelIT {
     void testPinMessage(DiscordBotClient<?> botClient) {
         botClient.pinMessage(channelId, messageId, null)
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 
@@ -249,6 +275,7 @@ class ChannelIT {
     void testUnpinMessage(DiscordBotClient<?> botClient) {
         botClient.unpinMessage(channelId, messageId, null)
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 
@@ -258,6 +285,7 @@ class ChannelIT {
     void testGroupDmRemoveRecipient(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_USER_ID") Snowflake userId) {
         botClient.groupDmRemoveRecipient(dmChannelId, userId)
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 
@@ -272,6 +300,7 @@ class ChannelIT {
 
         botClient.startThreadFromMessage(startThreadFromMessage)
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 
@@ -301,25 +330,35 @@ class ChannelIT {
 
         botClient.startThreadInForumChannel(startThreadInForumChannel)
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 
     @Test
     @Order(27)
     void testAddThreadMember(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_USER_ID") Snowflake userId) {
-        botClient.addThreadMember(threadId, userId).subscribe().withSubscriber(UniAssertSubscriber.create()).assertCompleted();
+        botClient.addThreadMember(threadId, userId)
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
+                .assertCompleted();
     }
 
     @Test
     @Order(28)
     void leaveThread(DiscordBotClient<?> botClient) {
-        botClient.leaveThread(threadId).subscribe().withSubscriber(UniAssertSubscriber.create()).assertCompleted();
+        botClient.leaveThread(threadId)
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
+                .assertCompleted();
     }
 
     @Test
     @Order(29)
     void testJoinThread(DiscordBotClient<?> botClient) {
-        botClient.joinThread(threadId).subscribe().withSubscriber(UniAssertSubscriber.create()).assertCompleted();
+        botClient.joinThread(threadId)
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
+                .assertCompleted();
     }
 
     @Test
@@ -327,6 +366,7 @@ class ChannelIT {
     void testGetThreadMember(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_USER_ID") Snowflake userId) {
         botClient.getThreadMember(threadId, userId, false)
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 
@@ -335,6 +375,7 @@ class ChannelIT {
     void testRemoveThreadMember(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_USER_ID") Snowflake userId) {
         botClient.removeThreadMember(threadId, userId)
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 
@@ -343,6 +384,7 @@ class ChannelIT {
     void testListThreadMembers(DiscordBotClient<?> botClient) {
         botClient.listThreadMembers(ListThreadMembers.create(threadId))
                 .subscribe().withSubscriber(AssertSubscriber.create())
+                .awaitCompletion()
                 .assertCompleted();
     }
 
@@ -351,6 +393,7 @@ class ChannelIT {
     void testListPublicArchivedThreads(DiscordBotClient<?> botClient) {
         botClient.listPublicArchivedThreads(ListThreads.create(channelId))
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 
@@ -359,6 +402,7 @@ class ChannelIT {
     void testListPrivateArchivedThreads(DiscordBotClient<?> botClient) {
         botClient.listPrivateArchivedThreads(ListThreads.create(channelId))
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 
@@ -367,6 +411,7 @@ class ChannelIT {
     void testListJoinedPrivateArchivedThreads(DiscordBotClient<?> botClient) {
         botClient.listJoinedPrivateArchivedThreads(ListThreads.create(channelId))
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 
@@ -375,6 +420,7 @@ class ChannelIT {
     void testDeleteMessage(DiscordBotClient<?> botClient) {
         botClient.deleteMessage(channelId, messageId, null)
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 
@@ -383,6 +429,7 @@ class ChannelIT {
     void testDeleteOrCloseChannel(DiscordBotClient<?> botClient) {
         botClient.deleteOrCloseChannel(channelId, null).subscribe()
                 .withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 }

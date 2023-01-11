@@ -71,4 +71,9 @@ public class EmptyRequest implements Request {
     public Optional<Object> body() {
         return Optional.empty();
     }
+
+    @Override
+    public String toString() {
+        return Request.super.toString();
+    }
 }

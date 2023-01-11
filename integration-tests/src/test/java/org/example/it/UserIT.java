@@ -22,12 +22,12 @@ class UserIT {
 
     @Test
     void testGetUser(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_USER_ID") Snowflake userId) {
-        botClient.getUser(userId).subscribe().withSubscriber(UniAssertSubscriber.create()).assertCompleted();
+        botClient.getUser(userId).subscribe().withSubscriber(UniAssertSubscriber.create()).awaitItem().assertCompleted();
     }
 
     @Test
     void testModifyCurrentUser(DiscordBotClient<?> botClient) {
-        Buffer avatar = botClient.getVertx().fileSystem().readFileAndAwait("avatar.png");
+        Buffer avatar = botClient.getVertx().fileSystem().readFileAndAwait("images/avatar.png");
         ModifyCurrentUser modifyCurrentUser = ModifyCurrentUser.builder().avatar(avatar).build();
         HttpClient httpClient = botClient.getVertx().createHttpClient();
 
@@ -37,9 +37,7 @@ class UserIT {
                     if (user.avatar().isPresent()) {
                         RequestOptions options = new RequestOptions()
                                 .setAbsoluteURI(String.format("https://cdn.discordapp.com/avatars/%s/%s.png",
-                                        user.id().getValueAsString(),
-                                        user.avatar().get()))
-                                .setFollowRedirects(true);
+                                        user.id().getValueAsString(), user.avatar().get()));
 
                         return httpClient.request(options)
                                 .flatMap(HttpClientRequest::send)
@@ -50,6 +48,7 @@ class UserIT {
                 })
                 .call(httpClient::close)
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 
@@ -58,11 +57,12 @@ class UserIT {
         botClient.createGuild(CreateGuild.builder().name("foo").build())
                 .flatMap(guild -> botClient.leaveGuild(guild.id()))
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 
     @Test
     void testCreateDm(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_USER_ID") Snowflake userId) {
-        botClient.createDm(userId).subscribe().withSubscriber(UniAssertSubscriber.create()).assertCompleted();
+        botClient.createDm(userId).subscribe().withSubscriber(UniAssertSubscriber.create()).awaitItem().assertCompleted();
     }
 }

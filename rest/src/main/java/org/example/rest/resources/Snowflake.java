@@ -53,7 +53,7 @@ public class Snowflake {
 
     @Override
     public int hashCode() {
-        return Long.valueOf(value).hashCode();
+        return Objects.hash(value);
     }
 
     @Override

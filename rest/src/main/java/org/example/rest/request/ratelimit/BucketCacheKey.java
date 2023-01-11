@@ -1,10 +1,9 @@
 package org.example.rest.request.ratelimit;
 
 import io.vertx.core.http.HttpMethod;
-import io.vertx.mutiny.uritemplate.UriTemplate;
 import io.vertx.mutiny.uritemplate.Variables;
-import org.example.rest.request.Endpoint;
 import org.example.rest.request.Request;
+import org.example.rest.util.UriTemplate;
 
 import javax.annotation.Nullable;
 import java.util.Objects;
@@ -52,7 +51,7 @@ class BucketCacheKey {
     public String toString() {
         return "BucketCacheKey{" +
                 "httpMethod=" + httpMethod + ", " +
-                "uriTemplate=" + uriTemplate.expandToString(Variables.variables()) + ", " +
+                "uriTemplate=" + uriTemplate + ", " +
                 "topLevelResourceValue=" + topLevelResourceValue +
                 '}';
     }

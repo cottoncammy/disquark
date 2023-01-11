@@ -31,19 +31,27 @@ class WebhookIT {
     @Test
     @Order(2)
     void testGetChannelWebhooks(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_CHANNEL_ID") Snowflake channelId) {
-        botClient.getChannelWebhooks(channelId).subscribe().withSubscriber(AssertSubscriber.create()).assertCompleted();
+        botClient.getChannelWebhooks(channelId)
+                .subscribe().withSubscriber(AssertSubscriber.create())
+                .awaitCompletion()
+                .assertCompleted();
     }
 
     @Test
     @Order(3)
     void testGetGuildWebhooks(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_GUILD_ID") Snowflake guildId) {
-        botClient.getGuildWebhooks(guildId).subscribe().withSubscriber(AssertSubscriber.create()).assertCompleted();
+        botClient.getGuildWebhooks(guildId).subscribe().withSubscriber(AssertSubscriber.create())
+                .awaitCompletion()
+                .assertCompleted();
     }
 
     @Test
     @Order(4)
     void testGetWebhook(DiscordBotClient<?> botClient) {
-        botClient.getWebhook(webhookId).subscribe().withSubscriber(UniAssertSubscriber.create()).assertCompleted();
+        botClient.getWebhook(webhookId)
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
+                .assertCompleted();
     }
 
     @Test
@@ -51,6 +59,7 @@ class WebhookIT {
     void testGetWebhookWithToken(DiscordBotClient<?> botClient) {
         botClient.getWebhookWithToken(webhookId, webhookToken)
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 
@@ -59,6 +68,7 @@ class WebhookIT {
     void testModifyWebhook(DiscordBotClient<?> botClient) {
         botClient.modifyWebhook(ModifyWebhook.builder().webhookId(webhookId).name("bar").build())
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 
@@ -73,6 +83,7 @@ class WebhookIT {
 
         botClient.modifyWebhookWithToken(modifyWebhookWithToken)
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 
@@ -97,6 +108,7 @@ class WebhookIT {
     void testGetWebhookMessage(DiscordBotClient<?> botClient) {
         botClient.getWebhookMessage(WebhookMessageOptions.create(webhookId, webhookToken, messageId))
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 
@@ -112,6 +124,7 @@ class WebhookIT {
 
         botClient.editWebhookMessage(editWebhookMessage)
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 
@@ -120,6 +133,7 @@ class WebhookIT {
     void testDeleteWebhookMessage(DiscordBotClient<?> botClient) {
         botClient.deleteWebhookMessage(WebhookMessageOptions.create(webhookId, webhookToken, messageId))
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 
@@ -128,6 +142,7 @@ class WebhookIT {
     void testDeleteWebhook(DiscordBotClient<?> botClient) {
         botClient.deleteWebhook(webhookId, null)
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 
@@ -136,6 +151,8 @@ class WebhookIT {
     void testDeleteWebhookWithToken(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_CHANNEL_ID") Snowflake channelId) {
         botClient.createWebhook(CreateWebhook.builder().channelId(channelId).name("alice").build())
                 .flatMap(webhook -> botClient.deleteWebhookWithToken(webhook.id(), webhook.token().get()))
-                .subscribe().withSubscriber(UniAssertSubscriber.create()).assertCompleted();
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
+                .assertCompleted();
     }
 }

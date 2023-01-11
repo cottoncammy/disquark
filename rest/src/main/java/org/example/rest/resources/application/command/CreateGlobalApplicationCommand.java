@@ -35,7 +35,7 @@ public interface CreateGlobalApplicationCommand extends Requestable {
     @JsonProperty("name_localizations")
     Optional<Map<Locale, String>> nameLocalizations();
 
-    Optional<String> description();
+    String description();
 
     @JsonProperty("description_localizations")
     Optional<Map<Locale, String>> descriptionLocalizations();

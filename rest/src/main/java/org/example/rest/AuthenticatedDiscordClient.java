@@ -206,11 +206,6 @@ public abstract class AuthenticatedDiscordClient<T extends Response> extends Dis
                 .flatMap(res -> res.as(Guild[].class)).onItem().disjoint();
     }
 
-    public Uni<Guild.Member> getCurrentUserGuildMember(Snowflake guildId) {
-        return requester.request(new EmptyRequest("/users/@me/guilds/{guild.id}/member", variables("guild.id", guildId.getValue())))
-                .flatMap(res -> res.as(Guild.Member.class));
-    }
-
     @Override
     public Uni<Webhook> getWebhookWithToken(Snowflake webhookId, String webhookToken) {
         return webhookClient.getWebhookWithToken(webhookId, webhookToken);

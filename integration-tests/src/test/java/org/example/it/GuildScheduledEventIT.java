@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
+import java.time.Duration;
 import java.time.Instant;
 
 @ExtendWith(SomeExtension2.class)
@@ -24,17 +25,19 @@ class GuildScheduledEventIT {
     void testListScheduledEventsForGuild(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_GUILD_ID") Snowflake guildId) {
         botClient.listScheduledEventsForGuild(guildId, false)
                 .subscribe().withSubscriber(AssertSubscriber.create())
+                .awaitCompletion()
                 .assertCompleted();
     }
 
     @Test
     @Order(2)
-    void testCreateGuildScheduledEvent(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_GUILD_ID") Snowflake guildId) {
+    void testCreateGuildScheduledEvent(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_GUILD_ID") Snowflake guildId, @ConfigValue("DISCORD_VOICE_CHANNEL_ID") Snowflake voiceChannelId) {
         CreateGuildScheduledEvent createGuildScheduledEvent = CreateGuildScheduledEvent.builder()
                 .guildId(guildId)
+                .channelId(voiceChannelId)
                 .name("foo")
                 .privacyLevel(GuildScheduledEvent.PrivacyLevel.GUILD_ONLY)
-                .scheduledStartTime(Instant.now())
+                .scheduledStartTime(Instant.now().plus(Duration.ofMinutes(30)))
                 .entityType(GuildScheduledEvent.EntityType.VOICE)
                 .build();
 
@@ -50,6 +53,7 @@ class GuildScheduledEventIT {
     void testGetGuildScheduledEvent(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_GUILD_ID") Snowflake guildId) {
         botClient.getGuildScheduledEvent(guildId, guildScheduledEventId, false)
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 
@@ -58,6 +62,7 @@ class GuildScheduledEventIT {
     void testGetGuildScheduledEventUsers(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_GUILD_ID") Snowflake guildId) {
         botClient.getGuildScheduledEventUsers(GetGuildScheduledEventUsers.create(guildId, guildScheduledEventId))
                 .subscribe().withSubscriber(AssertSubscriber.create())
+                .awaitCompletion()
                 .assertCompleted();
     }
 
@@ -72,6 +77,7 @@ class GuildScheduledEventIT {
 
         botClient.modifyGuildScheduledEvent(modifyGuildScheduledEvent)
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 
@@ -80,6 +86,7 @@ class GuildScheduledEventIT {
     void testDeleteGuildScheduledEvent(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_GUILD_ID") Snowflake guildId) {
         botClient.deleteGuildScheduledEvent(guildId, guildScheduledEventId)
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 }

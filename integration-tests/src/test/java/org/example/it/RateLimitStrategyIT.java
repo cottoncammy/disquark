@@ -44,6 +44,7 @@ class RateLimitStrategyIT {
                 .listVoiceRegions().toUni()
                 .repeat().atMost(MAX_REQUESTS + 1)
                 .subscribe().withSubscriber(AssertSubscriber.create())
+                .awaitCompletion()
                 .assertCompleted();
     }
 
@@ -71,6 +72,7 @@ class RateLimitStrategyIT {
                 .repeat().until(val -> val == 0)
                 .subscribe().withSubscriber(AssertSubscriber.create())
                 .request(1)
+                .awaitCompletion()
                 .assertCompleted();
     }
 

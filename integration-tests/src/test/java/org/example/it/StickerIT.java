@@ -22,25 +22,34 @@ class StickerIT {
     @Test
     @Order(1)
     void testGetSticker(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_STICKER_ID") Snowflake stickerId) {
-        botClient.getSticker(stickerId).subscribe().withSubscriber(UniAssertSubscriber.create()).assertCompleted();
+        botClient.getSticker(stickerId)
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
+                .assertCompleted();
     }
 
     @Test
     @Order(2)
     void testListNitroStickerPacks(DiscordBotClient<?> botClient) {
-        botClient.listNitroStickerPacks().subscribe().withSubscriber(AssertSubscriber.create()).assertCompleted();
+        botClient.listNitroStickerPacks()
+                .subscribe().withSubscriber(AssertSubscriber.create())
+                .awaitCompletion()
+                .assertCompleted();
     }
 
     @Test
     @Order(3)
     void testListGuildStickers(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_GUILD_ID") Snowflake guildId) {
-        botClient.listGuildStickers(guildId).subscribe().withSubscriber(AssertSubscriber.create()).assertCompleted();
+        botClient.listGuildStickers(guildId)
+                .subscribe().withSubscriber(AssertSubscriber.create())
+                .awaitCompletion()
+                .assertCompleted();
     }
 
     @Test
     @Order(4)
     void testCreateGuildSticker(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_GUILD_ID") Snowflake guildId) {
-        String imageName = "sticker.png";
+        String imageName = "images/sticker.png";
         Buffer image = botClient.getVertx().fileSystem().readFileAndAwait(imageName);
         CreateGuildSticker createGuildSticker = CreateGuildSticker.builder()
                 .guildId(guildId)
@@ -62,6 +71,7 @@ class StickerIT {
     void testGetGuildSticker(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_GUILD_ID") Snowflake guildId) {
         botClient.getGuildSticker(guildId, stickerId)
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 
@@ -76,6 +86,7 @@ class StickerIT {
 
         botClient.modifyGuildSticker(modifyGuildSticker)
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 
@@ -84,6 +95,7 @@ class StickerIT {
     void testDeleteGuildSticker(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_GUILD_ID") Snowflake guildId) {
         botClient.deleteGuildSticker(guildId, stickerId, null)
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 }

@@ -31,6 +31,7 @@ class AuthenticatedDiscordClientIT {
     void testGetGlobalApplicationCommands(AuthenticatedDiscordClient<?> discordClient) {
         discordClient.getGlobalApplicationCommands(applicationId, false)
                 .subscribe().withSubscriber(AssertSubscriber.create())
+                .awaitCompletion()
                 .assertCompleted();
     }
 
@@ -41,6 +42,7 @@ class AuthenticatedDiscordClientIT {
         CreateGlobalApplicationCommand createGlobalApplicationCommand = CreateGlobalApplicationCommand.builder()
                 .applicationId(applicationId)
                 .name("foo")
+                .description("bar")
                 .build();
 
         globalCommandId = discordClient.createGlobalApplicationCommand(createGlobalApplicationCommand)
@@ -56,6 +58,7 @@ class AuthenticatedDiscordClientIT {
     void testGetGlobalApplicationCommand(AuthenticatedDiscordClient<?> discordClient) {
         discordClient.getGlobalApplicationCommand(applicationId, globalCommandId)
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 
@@ -71,6 +74,7 @@ class AuthenticatedDiscordClientIT {
 
         discordClient.editGlobalApplicationCommand(editGlobalApplicationCommand)
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 
@@ -88,6 +92,7 @@ class AuthenticatedDiscordClientIT {
 
         discordClient.bulkOverwriteGlobalApplicationCommands(bulkOverwriteGlobalApplicationCommands)
                 .subscribe().withSubscriber(AssertSubscriber.create())
+                .awaitCompletion()
                 .assertCompleted();
     }
 
@@ -97,6 +102,7 @@ class AuthenticatedDiscordClientIT {
     void testGetGuildApplicationCommands(AuthenticatedDiscordClient<?> discordClient) {
         discordClient.getGuildApplicationCommands(applicationId, guildId, false)
                 .subscribe().withSubscriber(AssertSubscriber.create())
+                .awaitCompletion()
                 .assertCompleted();
     }
 
@@ -108,6 +114,7 @@ class AuthenticatedDiscordClientIT {
                 .applicationId(applicationId)
                 .guildId(guildId)
                 .name("foo")
+                .description("bar")
                 .build();
 
         guildCommandId = discordClient.createGuildApplicationCommand(createGuildApplicationCommand)
@@ -123,6 +130,7 @@ class AuthenticatedDiscordClientIT {
     void testGetGuildApplicationCommand(AuthenticatedDiscordClient<?> discordClient) {
         discordClient.getGuildApplicationCommand(applicationId, guildId, guildCommandId)
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 
@@ -139,6 +147,7 @@ class AuthenticatedDiscordClientIT {
 
         discordClient.editGuildApplicationCommand(editGuildApplicationCommand)
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 
@@ -157,6 +166,7 @@ class AuthenticatedDiscordClientIT {
 
         discordClient.bulkOverwriteGuildApplicationCommands(bulkOverwriteGuildApplicationCommands)
                 .subscribe().withSubscriber(AssertSubscriber.create())
+                .awaitCompletion()
                 .assertCompleted();
     }
 
@@ -166,6 +176,7 @@ class AuthenticatedDiscordClientIT {
     void testGetGuildApplicationCommandPermissions(AuthenticatedDiscordClient<?> discordClient) {
         discordClient.getGuildApplicationCommandPermissions(applicationId, guildId)
                 .subscribe().withSubscriber(AssertSubscriber.create())
+                .awaitCompletion()
                 .assertCompleted();
     }
 
@@ -175,6 +186,7 @@ class AuthenticatedDiscordClientIT {
     void testGetApplicationCommandPermissions(AuthenticatedDiscordClient<?> discordClient) {
         discordClient.getApplicationCommandPermissions(applicationId, guildId, guildCommandId)
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 
@@ -184,6 +196,7 @@ class AuthenticatedDiscordClientIT {
     void testDeleteGlobalApplicationCommand(AuthenticatedDiscordClient<?> discordClient) {
         discordClient.deleteGlobalApplicationCommand(applicationId, globalCommandId)
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 
@@ -193,13 +206,17 @@ class AuthenticatedDiscordClientIT {
     void testDeleteGuildApplicationCommand(AuthenticatedDiscordClient<?> discordClient) {
         discordClient.deleteGuildApplicationCommand(applicationId, guildId, guildCommandId)
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 
     @TestTemplate
     @ExtendWith(SomeExtension.class)
     void testGetCurrentUser(AuthenticatedDiscordClient<?> discordClient) {
-        discordClient.getCurrentUser().subscribe().withSubscriber(UniAssertSubscriber.create()).assertCompleted();
+        discordClient.getCurrentUser()
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
+                .assertCompleted();
     }
 
     @TestTemplate
@@ -207,14 +224,7 @@ class AuthenticatedDiscordClientIT {
     void testGetCurrentUserGuilds(AuthenticatedDiscordClient<?> discordClient) {
         discordClient.getCurrentUserGuilds(GetCurrentUserGuilds.create())
                 .subscribe().withSubscriber(AssertSubscriber.create())
-                .assertCompleted();
-    }
-
-    @TestTemplate
-    @ExtendWith(SomeExtension.class)
-    void testGetCurrentUserGuildMember(AuthenticatedDiscordClient<?> discordClient) {
-        discordClient.getCurrentUserGuildMember(guildId)
-                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitCompletion()
                 .assertCompleted();
     }
 }

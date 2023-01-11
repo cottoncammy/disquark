@@ -30,6 +30,7 @@ class InviteIT {
     void testDeleteInvite(DiscordBotClient<?> botClient) {
         botClient.deleteInvite(inviteCode, null)
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 }
