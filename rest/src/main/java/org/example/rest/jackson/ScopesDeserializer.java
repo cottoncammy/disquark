@@ -58,6 +58,8 @@ public class ScopesDeserializer extends JsonDeserializer<List<Scope>> {
                 return MESSAGES_READ;
             case "relationships.read":
                 return RELATIONSHIPS_READ;
+            case "role_connections.write":
+                return ROLE_CONNECTIONS_WRITE;
             case "rpc":
                 return RPC;
             case "rpc.activities.read":

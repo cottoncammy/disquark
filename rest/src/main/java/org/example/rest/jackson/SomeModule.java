@@ -2,6 +2,7 @@ package org.example.rest.jackson;
 
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.module.SimpleSerializers;
+import com.fasterxml.jackson.datatype.jdk8.OptionalSerializer;
 import org.example.rest.resources.FlagEnum;
 
 import java.time.Instant;
@@ -21,5 +22,7 @@ public class SomeModule extends SimpleModule {
         SimpleSerializers serializers = new SimpleSerializers();
         serializers.addSerializer(new FlagsSerializer(context.getTypeFactory().constructCollectionType(EnumSet.class, FlagEnum.class)));
         context.addSerializers(serializers);
+        context.addSerializers(new NullableOptionalSerializers());
+        context.addTypeModifier(new NullableOptionalTypeModifier());
     }
 }
