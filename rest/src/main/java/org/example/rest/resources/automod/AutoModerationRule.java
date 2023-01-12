@@ -8,6 +8,7 @@ import org.example.immutables.ImmutableJson;
 import org.immutables.value.Value.Enclosing;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.OptionalInt;
 
 @Enclosing
@@ -75,15 +76,15 @@ public interface AutoModerationRule {
         }
 
         @JsonProperty("keyword_filter")
-        List<String> keywordFilter();
+        Optional<List<String>> keywordFilter();
 
         @JsonProperty("regex_patterns")
-        List<String> regexPatterns();
+        Optional<List<String>> regexPatterns();
 
-        List<KeywordPresetType> presets();
+        Optional<List<KeywordPresetType>> presets();
 
         @JsonProperty("allow_list")
-        List<String> allowList();
+        Optional<List<String>> allowList();
 
         @JsonProperty("mention_total_limit")
         OptionalInt mentionTotalLimit();
