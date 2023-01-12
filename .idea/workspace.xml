@@ -4,10 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a5029c32-3a5b-4a65-b173-2d497ddb2a2d" name="Changes" comment="fix">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/jackson/ScopesDeserializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/jackson/ScopesDeserializer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/jackson/SomeModule.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/jackson/SomeModule.java" afterDir="false" />
+    <list default="true" id="a5029c32-3a5b-4a65-b173-2d497ddb2a2d" name="Changes" comment="nullable optional">
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/jackson/NullableOptionalFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/jackson/NullableOptionalFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/jackson/NullableOptionalSerializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/jackson/NullableOptionalSerializer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/jackson/NullableOptionalTypeModifier.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/jackson/NullableOptionalTypeModifier.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -213,13 +213,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1661720293566</updated>
-    </task>
-    <task id="LOCAL-00014" summary="progress">
-      <created>1664781430236</created>
-      <option name="number" value="00014" />
-      <option name="presentableId" value="LOCAL-00014" />
-      <option name="project" value="LOCAL" />
-      <updated>1664781430236</updated>
     </task>
     <task id="LOCAL-00015" summary="progress">
       <created>1666676361724</created>
@@ -557,7 +550,14 @@
       <option name="project" value="LOCAL" />
       <updated>1673487782392</updated>
     </task>
-    <option name="localTasksCounter" value="63" />
+    <task id="LOCAL-00063" summary="nullable optional">
+      <created>1673501311088</created>
+      <option name="number" value="00063" />
+      <option name="presentableId" value="LOCAL-00063" />
+      <option name="project" value="LOCAL" />
+      <updated>1673501311089</updated>
+    </task>
+    <option name="localTasksCounter" value="64" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -572,7 +572,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="create enums" />
     <MESSAGE value="fixes" />
     <MESSAGE value="Flag serialization" />
     <MESSAGE value="Adding API methods" />
@@ -597,7 +596,8 @@
     <MESSAGE value="jboss logging sucks" />
     <MESSAGE value="starting to run tests, big refactors" />
     <MESSAGE value="fix" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix" />
+    <MESSAGE value="nullable optional" />
+    <option name="LAST_COMMIT_MESSAGE" value="nullable optional" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -8,7 +8,6 @@ import com.fasterxml.jackson.databind.type.TypeModifier;
 import org.example.rest.util.NullableOptional;
 
 import java.lang.reflect.Type;
-import java.util.Optional;
 
 public class NullableOptionalTypeModifier extends TypeModifier {
 
@@ -18,9 +17,8 @@ public class NullableOptionalTypeModifier extends TypeModifier {
             return type;
         }
 
-        // we trick Jackson into thinking the type is NullableOptional<Optional<?>>
         if (type.isTypeOrSubTypeOf(NullableOptional.class)) {
-            return ReferenceType.upgradeFrom(type, ReferenceType.upgradeFrom(typeFactory.constructType(Optional.class), type.containedTypeOrUnknown(0)));
+            return ReferenceType.upgradeFrom(type, type.containedTypeOrUnknown(0));
         }
 
         return type;

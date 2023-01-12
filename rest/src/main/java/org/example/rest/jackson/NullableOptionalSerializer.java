@@ -30,16 +30,16 @@ public class NullableOptionalSerializer extends ReferenceTypeSerializer<Nullable
 
     @Override
     protected boolean _isValuePresent(NullableOptional<?> value) {
-        return !value.isNull();
+        return value.toOptional().isPresent();
     }
 
     @Override
     protected Object _getReferenced(NullableOptional<?> value) {
-        return value.toOptional();
+        return value.toOptional().get();
     }
 
     @Override
     protected Object _getReferencedIfPresent(NullableOptional<?> value) {
-        return value.isNull() ? null : value.toOptional();
+        return value.toOptional().isEmpty() ? null : value.toOptional().get();
     }
 }
