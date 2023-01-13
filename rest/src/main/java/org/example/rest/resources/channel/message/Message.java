@@ -1,11 +1,10 @@
 package org.example.rest.resources.channel.message;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import org.example.rest.jackson.NonceDeserializer;
+import com.fasterxml.jackson.databind.deser.std.FromStringDeserializer;
+import com.fasterxml.jackson.databind.deser.std.StringDeserializer;
 import org.example.rest.resources.Snowflake;
 import org.example.immutables.ImmutableJson;
 import org.example.rest.resources.application.Application;
@@ -66,7 +65,7 @@ public interface Message {
 
     Optional<List<Reaction>> reactions();
 
-    @JsonDeserialize(using = NonceDeserializer.class)
+    @JsonDeserialize(using = StringDeserializer.class)
     Optional<String> nonce();
 
     boolean pinned();

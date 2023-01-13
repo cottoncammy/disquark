@@ -8,6 +8,7 @@ import org.immutables.value.Value.Style.ImplementationVisibility;
 import java.lang.annotation.*;
 
 @Target({ElementType.PACKAGE, ElementType.TYPE})
+@NullableOptionalEncodingEnabled
 @JsonSerialize
 @Style(
         of = "create",

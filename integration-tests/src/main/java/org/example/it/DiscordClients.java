@@ -22,7 +22,6 @@ public class DiscordClients {
         return LazyHolder.OAUTH2_CLIENT;
     }
 
-    @SuppressWarnings("unchecked")
     private static class LazyHolder {
         static final Vertx VERTX = Vertx.vertx();
         static final DiscordBotClient<?> BOT_CLIENT;
@@ -33,11 +32,8 @@ public class DiscordClients {
             BearerTokenSource.Builder builder = BearerTokenSource.create(
                     VERTX,
                     ConfigHelper.configValue("DISCORD_CLIENT_ID", String.class),
-                    ConfigHelper.configValue("DISCORD_CLIENT_SECRET", String.class)
-            );
-            OAUTH2_CLIENT = DiscordOAuth2Client.builder(builder.fromClientCredentials())
-                    .requesterFactory(x -> (Requester<Response>) BOT_CLIENT.getRequester())
-                    .build();
+                    ConfigHelper.configValue("DISCORD_CLIENT_SECRET", String.class));
+            OAUTH2_CLIENT = DiscordOAuth2Client.create(builder.fromClientCredentials());
         }
 
     }

@@ -155,6 +155,11 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
                 .flatMap(res -> res.as(Channel.class));
     }
 
+    public Uni<Channel> modifyChannel(ModifyThread modifyThread) {
+        return requester.request(requireNonNull(modifyThread, "modifyThread").asRequest())
+                .flatMap(res -> res.as(Channel.class));
+    }
+
     public Uni<Channel> deleteOrCloseChannel(Snowflake channelId, @Nullable String auditLogReason) {
         return requester.request(new EmptyRequest(HttpMethod.DELETE, "/channels/{channel.id}", variables("channel.id", channelId.getValue()), auditLogReason))
                 .flatMap(res -> res.as(Channel.class));

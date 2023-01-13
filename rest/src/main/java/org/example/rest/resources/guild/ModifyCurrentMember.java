@@ -1,15 +1,17 @@
 package org.example.rest.resources.guild;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import io.vertx.core.http.HttpMethod;
 import org.example.immutables.ImmutableJson;
+import org.example.nullableoptional.jackson.NullableOptionalFilter;
 import org.example.rest.request.Auditable;
 import org.example.rest.request.Endpoint;
 import org.example.rest.request.Request;
 import org.example.rest.request.Requestable;
 import org.example.rest.resources.Snowflake;
-
-import java.util.Optional;
+import org.example.nullableoptional.NullableOptional;
 
 import static org.example.rest.util.Variables.variables;
 
@@ -23,7 +25,8 @@ public interface ModifyCurrentMember extends Auditable, Requestable {
     @JsonIgnore
     Snowflake guildId();
 
-    Optional<String> nick();
+    @JsonInclude(value = Include.CUSTOM, valueFilter = NullableOptionalFilter.class)
+    NullableOptional<String> nick();
 
     @Override
     default Request asRequest() {

@@ -51,6 +51,7 @@ public interface ModifyGuildRolePositions extends Auditable, Requestable {
 
         Snowflake id();
 
+        @JsonInclude
         OptionalInt position();
 
         class Builder extends ImmutableModifyGuildRolePositions.GuildRolePosition.Builder {

@@ -1,8 +1,6 @@
 package org.example.rest.resources.application.command;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.vertx.core.http.HttpMethod;
@@ -11,6 +9,7 @@ import org.example.rest.request.Endpoint;
 import org.example.rest.request.Request;
 import org.example.rest.request.Requestable;
 import org.example.rest.resources.Snowflake;
+import org.example.nullableoptional.NullableOptional;
 import org.immutables.value.Value.Enclosing;
 
 import javax.annotation.Nullable;

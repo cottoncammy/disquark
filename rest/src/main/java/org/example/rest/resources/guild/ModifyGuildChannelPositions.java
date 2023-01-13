@@ -44,6 +44,7 @@ public interface ModifyGuildChannelPositions extends Requestable {
                 .build();
     }
 
+    @JsonInclude
     @ImmutableJson
     interface GuildChannelPosition {
 

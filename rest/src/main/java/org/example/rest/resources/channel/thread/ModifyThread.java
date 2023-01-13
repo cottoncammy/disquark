@@ -1,4 +1,4 @@
-package org.example.rest.resources.channel;
+package org.example.rest.resources.channel.thread;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -9,15 +9,17 @@ import org.example.rest.request.Endpoint;
 import org.example.rest.request.Request;
 import org.example.rest.request.Requestable;
 import org.example.rest.resources.Snowflake;
-import org.example.nullableoptional.NullableOptional;
+import org.example.rest.resources.channel.Channel;
 
+import java.util.EnumSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.OptionalInt;
 
 import static org.example.rest.util.Variables.variables;
 
 @ImmutableJson
-public interface StartThreadWithoutMessage extends Auditable, Requestable {
+public interface ModifyThread extends Auditable, Requestable {
 
     static Builder builder() {
         return new Builder();
@@ -26,29 +28,36 @@ public interface StartThreadWithoutMessage extends Auditable, Requestable {
     @JsonIgnore
     Snowflake channelId();
 
-    String name();
+    Optional<String> name();
+
+    Optional<Boolean> archived();
 
     @JsonProperty("auto_archive_duration")
     OptionalInt autoArchiveDuration();
 
-    Optional<Channel.Type> type();
+    Optional<Boolean> locked();
 
     Optional<Boolean> invitable();
 
     @JsonProperty("rate_limit_per_user")
     OptionalInt rateLimitPerUser();
 
+    Optional<EnumSet<Channel.Flag>> flags();
+
+    @JsonProperty("applied_tags")
+    Optional<List<Snowflake>> appliedTags();
+
     @Override
     default Request asRequest() {
         return Request.builder()
-                .endpoint(Endpoint.create(HttpMethod.POST, "/channels/{channel.id}/threads"))
+                .endpoint(Endpoint.create(HttpMethod.PATCH, "/channels/{channel.id}"))
                 .variables(variables("channel.id", channelId().getValue()))
                 .body(this)
                 .auditLogReason(auditLogReason())
                 .build();
     }
 
-    class Builder extends ImmutableStartThreadWithoutMessage.Builder {
+    class Builder extends ImmutableModifyThread.Builder {
         protected Builder() {}
     }
 }

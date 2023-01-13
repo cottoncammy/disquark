@@ -1,7 +1,5 @@
 package org.example.rest.resources.guild;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.vertx.core.http.HttpMethod;
@@ -14,6 +12,7 @@ import org.example.rest.request.Requestable;
 import org.example.rest.resources.Snowflake;
 import org.example.rest.resources.channel.Channel;
 import org.example.rest.resources.permissions.Role;
+import org.example.nullableoptional.NullableOptional;
 
 import java.util.EnumSet;
 import java.util.List;

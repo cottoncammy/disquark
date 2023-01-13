@@ -6,20 +6,22 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.vertx.core.http.HttpMethod;
 import org.example.immutables.ImmutableJson;
+import org.example.nullableoptional.jackson.NullableOptionalFilter;
 import org.example.rest.request.Endpoint;
 import org.example.rest.request.MultipartRequest;
 import org.example.rest.request.Request;
 import org.example.rest.request.Requestable;
 import org.example.rest.resources.Snowflake;
 import org.example.rest.resources.interactions.components.Component;
+import org.example.nullableoptional.NullableOptional;
 
 import java.util.EnumSet;
 import java.util.List;
-import java.util.Optional;
 
 import static org.example.rest.util.Variables.variables;
 
 @ImmutableJson
+@JsonInclude(value = Include.CUSTOM, valueFilter = NullableOptionalFilter.class)
 public interface EditMessage extends MultipartRequest, Requestable {
 
     static Builder builder() {
@@ -32,18 +34,18 @@ public interface EditMessage extends MultipartRequest, Requestable {
     @JsonIgnore
     Snowflake messageId();
 
-    Optional<String> content();
+    NullableOptional<String> content();
 
-    Optional<List<Message.Embed>> embeds();
+    NullableOptional<List<Message.Embed>> embeds();
 
-    Optional<EnumSet<Message.Flag>> flags();
+    NullableOptional<EnumSet<Message.Flag>> flags();
 
     @JsonProperty("allowed_mentions")
-    Optional<AllowedMentions> allowedMentions();
+    NullableOptional<AllowedMentions> allowedMentions();
 
-    Optional<List<Component>> components();
+    NullableOptional<List<Component>> components();
 
-    Optional<List<Message.Attachment>> attachments();
+    NullableOptional<List<Message.Attachment>> attachments();
 
     @Override
     default Request asRequest() {

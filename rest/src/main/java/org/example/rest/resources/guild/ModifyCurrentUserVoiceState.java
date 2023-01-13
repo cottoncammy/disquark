@@ -6,10 +6,12 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.vertx.core.http.HttpMethod;
 import org.example.immutables.ImmutableJson;
+import org.example.nullableoptional.jackson.NullableOptionalFilter;
 import org.example.rest.request.Endpoint;
 import org.example.rest.request.Request;
 import org.example.rest.request.Requestable;
 import org.example.rest.resources.Snowflake;
+import org.example.nullableoptional.NullableOptional;
 
 import java.time.Instant;
 import java.util.Optional;
@@ -32,7 +34,8 @@ public interface ModifyCurrentUserVoiceState extends Requestable {
     Optional<Boolean> suppress();
 
     @JsonProperty("request_to_speak_timestamp")
-    Optional<Instant> requestToSpeakTimestamp();
+    @JsonInclude(value = Include.CUSTOM, valueFilter = NullableOptionalFilter.class)
+    NullableOptional<Instant> requestToSpeakTimestamp();
 
     @Override
     default Request asRequest() {

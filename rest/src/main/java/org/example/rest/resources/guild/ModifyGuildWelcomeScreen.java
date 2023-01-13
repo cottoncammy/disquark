@@ -6,11 +6,13 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.vertx.core.http.HttpMethod;
 import org.example.immutables.ImmutableJson;
+import org.example.nullableoptional.jackson.NullableOptionalFilter;
 import org.example.rest.request.Auditable;
 import org.example.rest.request.Endpoint;
 import org.example.rest.request.Request;
 import org.example.rest.request.Requestable;
 import org.example.rest.resources.Snowflake;
+import org.example.nullableoptional.NullableOptional;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,6 +20,7 @@ import java.util.Optional;
 import static org.example.rest.util.Variables.variables;
 
 @ImmutableJson
+@JsonInclude(value = Include.CUSTOM, valueFilter = NullableOptionalFilter.class)
 public interface ModifyGuildWelcomeScreen extends Auditable, Requestable {
 
     static Builder builder() {
@@ -27,12 +30,13 @@ public interface ModifyGuildWelcomeScreen extends Auditable, Requestable {
     @JsonIgnore
     Snowflake guildId();
 
+    @JsonInclude(Include.NON_ABSENT)
     Optional<Boolean> enabled();
 
     @JsonProperty("welcome_channels")
-    Optional<List<Guild.WelcomeScreen.Channel>> welcomeChannels();
+    NullableOptional<List<Guild.WelcomeScreen.Channel>> welcomeChannels();
 
-    Optional<String> description();
+    NullableOptional<String> description();
 
     @Override
     default Request asRequest() {

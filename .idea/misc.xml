@@ -17,6 +17,8 @@
         <option value="$PROJECT_DIR$/gateway/pom.xml" />
         <option value="$PROJECT_DIR$/github-bot/pom.xml" />
         <option value="$PROJECT_DIR$/gizmo-runner/pom.xml" />
+        <option value="$PROJECT_DIR$/immutables/annotations/pom.xml" />
+        <option value="$PROJECT_DIR$/immutables/encoding/pom.xml" />
         <option value="$PROJECT_DIR$/javapoet-runner/pom.xml" />
         <option value="$PROJECT_DIR$/json/pom.xml" />
         <option value="$PROJECT_DIR$/junit5-internal/pom.xml" />

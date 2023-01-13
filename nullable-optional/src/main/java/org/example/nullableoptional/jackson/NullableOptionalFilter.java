@@ -1,6 +1,6 @@
-package org.example.rest.jackson;
+package org.example.nullableoptional.jackson;
 
-import org.example.rest.util.NullableOptional;
+import org.example.nullableoptional.NullableOptional;
 
 public class NullableOptionalFilter {
 

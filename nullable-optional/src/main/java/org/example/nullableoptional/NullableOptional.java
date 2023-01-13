@@ -1,4 +1,4 @@
-package org.example.rest.util;
+package org.example.nullableoptional;
 
 import javax.annotation.Nullable;
 import java.util.Objects;

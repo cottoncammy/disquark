@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ser.ContextualSerializer;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import org.example.rest.resources.FlagEnum;
 import org.example.rest.resources.permissions.PermissionFlag;
+import org.example.nullableoptional.NullableOptional;
 
 import java.io.IOException;
 import java.util.EnumSet;
@@ -19,12 +20,8 @@ public class FlagsSerializer extends StdSerializer<EnumSet<? extends FlagEnum>> 
 
     @Override
     public JsonSerializer<?> createContextual(SerializerProvider prov, BeanProperty property) throws JsonMappingException {
-        if (property == null) {
-            throw new IllegalStateException("Cannot construct contextual serializer for root value");
-        }
-
         JavaType type = property.getType();
-        if (type.isTypeOrSubTypeOf(Optional.class)) {
+        if (type.isTypeOrSubTypeOf(Optional.class) || type.isTypeOrSubTypeOf(NullableOptional.class)) {
             type = type.containedType(0);
         }
 

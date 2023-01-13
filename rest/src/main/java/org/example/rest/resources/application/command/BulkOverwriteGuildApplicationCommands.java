@@ -7,12 +7,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.vertx.core.http.HttpMethod;
 import org.example.immutables.ImmutableJson;
+import org.example.nullableoptional.jackson.NullableOptionalFilter;
 import org.example.rest.request.Endpoint;
 import org.example.rest.request.Request;
 import org.example.rest.request.Requestable;
 import org.example.rest.resources.Locale;
 import org.example.rest.resources.Snowflake;
 import org.example.rest.resources.permissions.PermissionFlag;
+import org.example.nullableoptional.NullableOptional;
 import org.immutables.value.Value.Enclosing;
 
 import javax.annotation.Nullable;
@@ -63,17 +65,20 @@ public interface BulkOverwriteGuildApplicationCommands extends Requestable {
         String name();
 
         @JsonProperty("name_localizations")
-        Optional<Map<Locale, String>> nameLocalizations();
+        @JsonInclude(value = Include.CUSTOM, valueFilter = NullableOptionalFilter.class)
+        NullableOptional<Map<Locale, String>> nameLocalizations();
 
-        String description();
+        Optional<String> description();
 
         @JsonProperty("description_localizations")
-        Optional<Map<Locale, String>> descriptionLocalizations();
+        @JsonInclude(value = Include.CUSTOM, valueFilter = NullableOptionalFilter.class)
+        NullableOptional<Map<Locale, String>> descriptionLocalizations();
 
         Optional<List<ApplicationCommand.Option>> options();
 
         @JsonProperty("default_member_permissions")
-        Optional<EnumSet<PermissionFlag>> defaultMemberPermissions();
+        @JsonInclude(value = Include.CUSTOM, valueFilter = NullableOptionalFilter.class)
+        NullableOptional<EnumSet<PermissionFlag>> defaultMemberPermissions();
 
         @JsonProperty("default_permission")
         Optional<Boolean> defaultPermission();

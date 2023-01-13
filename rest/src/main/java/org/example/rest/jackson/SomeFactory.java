@@ -9,13 +9,14 @@ import io.vertx.core.json.jackson.DatabindCodec;
 import io.vertx.core.json.jackson.JacksonFactory;
 import io.vertx.core.spi.JsonFactory;
 import io.vertx.core.spi.json.JsonCodec;
+import org.example.nullableoptional.jackson.NullableOptionalModule;
 
 public class SomeFactory implements JsonFactory {
 
     private static void customizeObjectMapper(ObjectMapper objectMapper) {
         objectMapper.registerModule(new Jdk8Module())
                 .registerModule(new SomeModule())
-                // TODO logs
+                .registerModule(new NullableOptionalModule())
                 .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
                 .setDefaultPropertyInclusion(JsonInclude.Include.NON_ABSENT)
                 .setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);

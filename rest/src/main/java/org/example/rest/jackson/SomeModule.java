@@ -22,7 +22,5 @@ public class SomeModule extends SimpleModule {
         SimpleSerializers serializers = new SimpleSerializers();
         serializers.addSerializer(new FlagsSerializer(context.getTypeFactory().constructCollectionType(EnumSet.class, FlagEnum.class)));
         context.addSerializers(serializers);
-        context.addSerializers(new NullableOptionalSerializers());
-        context.addTypeModifier(new NullableOptionalTypeModifier());
     }
 }

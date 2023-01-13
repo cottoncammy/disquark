@@ -1,13 +1,11 @@
-package org.example.rest;
+package org.example.nullableoptional;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
-import org.example.rest.jackson.NullableOptionalFilter;
-import org.example.rest.jackson.SomeModule;
-import org.example.rest.util.NullableOptional;
+import org.example.nullableoptional.jackson.NullableOptionalFilter;
+import org.example.nullableoptional.jackson.NullableOptionalModule;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -19,8 +17,7 @@ class NullableOptionalTest {
     @BeforeAll
     static void init() {
         objectMapper = new ObjectMapper()
-                .registerModule(new Jdk8Module())
-                .registerModule(new SomeModule())
+                .registerModule(new NullableOptionalModule())
                 .setDefaultPropertyInclusion(JsonInclude.Value.construct(JsonInclude.Include.CUSTOM, JsonInclude.Include.NON_ABSENT, NullableOptionalFilter.class, null));
     }
 

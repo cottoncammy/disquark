@@ -70,6 +70,7 @@
     </properties>
 
     <modules>
+        <module>nullable-optional</module>
         <module>immutables</module>
         <module>rest</module>
         <module>integration-tests</module>
@@ -142,15 +143,10 @@
             </dependency>
             <dependency>
                 <groupId>org.immutables</groupId>
-                <artifactId>value</artifactId>
+                <artifactId>bom</artifactId>
                 <version>${immutables.version}</version>
-                <scope>provided</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.immutables</groupId>
-                <artifactId>value-annotations</artifactId>
-                <version>${immutables.version}</version>
-                <scope>provided</scope>
+                <scope>import</scope>
+                <type>pom</type>
             </dependency>
             <dependency>
                 <groupId>org.junit.jupiter</groupId>

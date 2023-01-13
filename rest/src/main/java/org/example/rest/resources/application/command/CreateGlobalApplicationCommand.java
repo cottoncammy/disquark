@@ -1,8 +1,6 @@
 package org.example.rest.resources.application.command;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.vertx.core.http.HttpMethod;
 import org.example.immutables.ImmutableJson;
@@ -12,6 +10,7 @@ import org.example.rest.request.Requestable;
 import org.example.rest.resources.Locale;
 import org.example.rest.resources.Snowflake;
 import org.example.rest.resources.permissions.PermissionFlag;
+import org.example.nullableoptional.NullableOptional;
 
 import java.util.EnumSet;
 import java.util.List;
@@ -35,7 +34,7 @@ public interface CreateGlobalApplicationCommand extends Requestable {
     @JsonProperty("name_localizations")
     Optional<Map<Locale, String>> nameLocalizations();
 
-    String description();
+    Optional<String> description();
 
     @JsonProperty("description_localizations")
     Optional<Map<Locale, String>> descriptionLocalizations();

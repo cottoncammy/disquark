@@ -1,4 +1,4 @@
-package org.example.rest.jackson;
+package org.example.nullableoptional.jackson;
 
 import com.fasterxml.jackson.databind.BeanProperty;
 import com.fasterxml.jackson.databind.JsonSerializer;
@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
 import com.fasterxml.jackson.databind.ser.std.ReferenceTypeSerializer;
 import com.fasterxml.jackson.databind.type.ReferenceType;
 import com.fasterxml.jackson.databind.util.NameTransformer;
-import org.example.rest.util.NullableOptional;
+import org.example.nullableoptional.NullableOptional;
 
 public class NullableOptionalSerializer extends ReferenceTypeSerializer<NullableOptional<?>> {
 

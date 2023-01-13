@@ -1,8 +1,6 @@
 package org.example.rest.resources.channel.forum;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.vertx.core.http.HttpMethod;
 import org.example.immutables.ImmutableJson;
@@ -11,6 +9,7 @@ import org.example.rest.resources.Snowflake;
 import org.example.rest.resources.channel.message.AllowedMentions;
 import org.example.rest.resources.channel.message.Message;
 import org.example.rest.resources.interactions.components.Component;
+import org.example.nullableoptional.NullableOptional;
 import org.immutables.value.Value.Enclosing;
 
 import java.util.EnumSet;
