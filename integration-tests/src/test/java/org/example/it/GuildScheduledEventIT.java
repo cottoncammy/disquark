@@ -24,8 +24,9 @@ class GuildScheduledEventIT {
     @Order(1)
     void testListScheduledEventsForGuild(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_GUILD_ID") Snowflake guildId) {
         botClient.listScheduledEventsForGuild(guildId, false)
-                .subscribe().withSubscriber(AssertSubscriber.create())
-                .awaitCompletion()
+                .collect().asList()
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 
@@ -61,8 +62,9 @@ class GuildScheduledEventIT {
     @Order(4)
     void testGetGuildScheduledEventUsers(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_GUILD_ID") Snowflake guildId) {
         botClient.getGuildScheduledEventUsers(GetGuildScheduledEventUsers.create(guildId, guildScheduledEventId))
-                .subscribe().withSubscriber(AssertSubscriber.create())
-                .awaitCompletion()
+                .collect().asList()
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 

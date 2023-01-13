@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 class BucketRateLimitingRequester implements Requester<HttpResponse> {
     private static final Logger LOG = LoggerFactory.getLogger(BucketRateLimitingRequester.class);
@@ -64,7 +65,8 @@ class BucketRateLimitingRequester implements Requester<HttpResponse> {
 
         return bucketUni.ifNoItem().after(Duration.ofSeconds(5))
                 .recoverWithUni(Uni.createFrom().voidItem().invoke(() ->
-                        LOG.warn("Unable to cache request stream for key {}: bucket value not received after timeout", key)))
+                        LOG.warn("Unable to cache request stream for key {}: bucket promise was not completed after timeout", key)))
+                .onFailure(NoSuchElementException.class).recoverWithNull()
                 .replaceWith(completableRequest.getPromise().future());
     }
 }

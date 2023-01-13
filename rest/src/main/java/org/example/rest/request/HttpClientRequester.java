@@ -113,17 +113,19 @@ public class HttpClientRequester implements Requester<HttpResponse> {
                         String retryAfter = res.getHeader("Retry-After");
                         if (retryAfter != null) {
                             LOG.debug("Globally rate limited for the next {}s", retryAfter);
-                            return rateLimiter.setRetryAfter(Math.round(Float.parseFloat(retryAfter)));
+                            return rateLimiter.setRetryAfter(Math.round(Float.parseFloat(retryAfter)))
+                                    .onFailure(NumberFormatException.class).transform(IllegalStateException::new);
                         }
                         return Uni.createFrom().failure(IllegalStateException::new);
                     }
                     return Uni.createFrom().voidItem();
                 })
-                .map(res -> new HttpResponse(codecs, res))
+                .map(res -> new HttpResponse(ctx.getOrElse(REQUEST_ID, null), codecs, res))
                 .call(response -> {
                     HttpClientResponse httpResponse = response.getRaw();
-                    LOG.debug("Received {} - {} for outgoing request {}",
-                            httpResponse.statusCode(), httpResponse.statusMessage(), ctx.get(REQUEST_ID));
+                    LOG.debug("Received {} - {} for outgoing request {}, headers: {}",
+                            httpResponse.statusCode(), httpResponse.statusMessage(), ctx.get(REQUEST_ID),
+                            httpResponse.headers().entries());
 
                     if (httpResponse.statusCode() == 429) {
                         return response.as(RateLimitResponse.class).onItem().failWith(res -> new RateLimitException(res, httpResponse));

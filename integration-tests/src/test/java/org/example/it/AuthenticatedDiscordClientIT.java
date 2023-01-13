@@ -30,8 +30,9 @@ class AuthenticatedDiscordClientIT {
     @Order(1)
     void testGetGlobalApplicationCommands(AuthenticatedDiscordClient<?> discordClient) {
         discordClient.getGlobalApplicationCommands(applicationId, false)
-                .subscribe().withSubscriber(AssertSubscriber.create())
-                .awaitCompletion()
+                .collect().asList()
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 
@@ -91,8 +92,9 @@ class AuthenticatedDiscordClientIT {
                 .build();
 
         discordClient.bulkOverwriteGlobalApplicationCommands(bulkOverwriteGlobalApplicationCommands)
-                .subscribe().withSubscriber(AssertSubscriber.create())
-                .awaitCompletion()
+                .collect().asList()
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 
@@ -101,8 +103,9 @@ class AuthenticatedDiscordClientIT {
     @Order(6)
     void testGetGuildApplicationCommands(AuthenticatedDiscordClient<?> discordClient) {
         discordClient.getGuildApplicationCommands(applicationId, guildId, false)
-                .subscribe().withSubscriber(AssertSubscriber.create())
-                .awaitCompletion()
+                .collect().asList()
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 
@@ -165,8 +168,9 @@ class AuthenticatedDiscordClientIT {
                 .build();
 
         discordClient.bulkOverwriteGuildApplicationCommands(bulkOverwriteGuildApplicationCommands)
-                .subscribe().withSubscriber(AssertSubscriber.create())
-                .awaitCompletion()
+                .collect().asList()
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 
@@ -175,8 +179,9 @@ class AuthenticatedDiscordClientIT {
     @Order(11)
     void testGetGuildApplicationCommandPermissions(AuthenticatedDiscordClient<?> discordClient) {
         discordClient.getGuildApplicationCommandPermissions(applicationId, guildId)
-                .subscribe().withSubscriber(AssertSubscriber.create())
-                .awaitCompletion()
+                .collect().asList()
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 
@@ -223,8 +228,9 @@ class AuthenticatedDiscordClientIT {
     @ExtendWith(SomeExtension.class)
     void testGetCurrentUserGuilds(AuthenticatedDiscordClient<?> discordClient) {
         discordClient.getCurrentUserGuilds(GetCurrentUserGuilds.create())
-                .subscribe().withSubscriber(AssertSubscriber.create())
-                .awaitCompletion()
+                .collect().asList()
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 }

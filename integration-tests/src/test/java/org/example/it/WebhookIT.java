@@ -32,16 +32,19 @@ class WebhookIT {
     @Order(2)
     void testGetChannelWebhooks(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_CHANNEL_ID") Snowflake channelId) {
         botClient.getChannelWebhooks(channelId)
-                .subscribe().withSubscriber(AssertSubscriber.create())
-                .awaitCompletion()
+                .collect().asList()
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 
     @Test
     @Order(3)
     void testGetGuildWebhooks(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_GUILD_ID") Snowflake guildId) {
-        botClient.getGuildWebhooks(guildId).subscribe().withSubscriber(AssertSubscriber.create())
-                .awaitCompletion()
+        botClient.getGuildWebhooks(guildId)
+                .collect().asList()
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 

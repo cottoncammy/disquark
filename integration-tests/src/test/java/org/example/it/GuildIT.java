@@ -82,8 +82,9 @@ class GuildIT {
     @Order(7)
     void testListGuildMembers(DiscordBotClient<?> botClient) {
         botClient.listGuildMembers(ListGuildMembers.create(guildId))
-                .subscribe().withSubscriber(AssertSubscriber.create())
-                .awaitCompletion()
+                .collect().asList()
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 
@@ -91,8 +92,9 @@ class GuildIT {
     @Order(8)
     void testSearchGuildMembers(DiscordBotClient<?> botClient) {
         botClient.searchGuildMembers(SearchGuildMembers.create(guildId, "foo"))
-                .subscribe().withSubscriber(AssertSubscriber.create())
-                .awaitCompletion()
+                .collect().asList()
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 
@@ -136,8 +138,9 @@ class GuildIT {
     @Order(13)
     void testGetGuildBans(DiscordBotClient<?> botClient) {
         botClient.getGuildBans(GetGuildBans.create(guildId))
-                .subscribe().withSubscriber(AssertSubscriber.create())
-                .awaitCompletion()
+                .collect().asList()
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 
@@ -145,8 +148,9 @@ class GuildIT {
     @Order(14)
     void testGetGuildRoles(DiscordBotClient<?> botClient) {
         botClient.getGuildRoles(guildId)
-                .subscribe().withSubscriber(AssertSubscriber.create())
-                .awaitCompletion()
+                .collect().asList()
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 
@@ -226,8 +230,9 @@ class GuildIT {
                 .build();
 
         botClient.modifyGuildRolePositions(modifyGuildRolePositions)
-                .subscribe().withSubscriber(AssertSubscriber.create())
-                .awaitCompletion()
+                .collect().asList()
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 
@@ -280,8 +285,9 @@ class GuildIT {
     @Order(28)
     void testGetGuildVoiceRegions(DiscordBotClient<?> botClient) {
         botClient.getGuildVoiceRegions(guildId)
-                .subscribe().withSubscriber(AssertSubscriber.create())
-                .awaitCompletion()
+                .collect().asList()
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 
@@ -289,8 +295,9 @@ class GuildIT {
     @Order(29)
     void testGetGuildInvites(DiscordBotClient<?> botClient) {
         botClient.getGuildInvites(guildId)
-                .subscribe().withSubscriber(AssertSubscriber.create())
-                .awaitCompletion()
+                .collect().asList()
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 

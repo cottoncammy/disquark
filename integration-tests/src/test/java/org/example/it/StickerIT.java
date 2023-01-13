@@ -32,8 +32,9 @@ class StickerIT {
     @Order(2)
     void testListNitroStickerPacks(DiscordBotClient<?> botClient) {
         botClient.listNitroStickerPacks()
-                .subscribe().withSubscriber(AssertSubscriber.create())
-                .awaitCompletion()
+                .collect().asList()
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 
@@ -41,8 +42,9 @@ class StickerIT {
     @Order(3)
     void testListGuildStickers(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_GUILD_ID") Snowflake guildId) {
         botClient.listGuildStickers(guildId)
-                .subscribe().withSubscriber(AssertSubscriber.create())
-                .awaitCompletion()
+                .collect().asList()
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 

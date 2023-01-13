@@ -10,30 +10,27 @@ import org.slf4j.LoggerFactory;
 import java.util.Map;
 
 import static java.util.Objects.requireNonNull;
-import static org.example.rest.request.HttpClientRequester.FALLBACK_REQUEST_ID;
-import static org.example.rest.request.HttpClientRequester.REQUEST_ID;
 
 public class HttpResponse implements Response {
     private static final Logger LOG = LoggerFactory.getLogger(HttpResponse.class);
+    private final String requestId;
     private final Map<String, Codec> codecs;
     private final HttpClientResponse response;
 
-    public HttpResponse(Map<String, Codec> codecs, HttpClientResponse response) {
+    public HttpResponse(String requestId, Map<String, Codec> codecs, HttpClientResponse response) {
+        this.requestId = requestId;
         this.codecs = codecs;
         this.response = response;
     }
 
     public <T> Uni<T> as(Class<T> type) {
-        return Uni.createFrom().context(ctx -> {
-            return response.body()
-                    .map(body -> {
-                        String contentType = requireNonNull(response.getHeader(HttpHeaders.CONTENT_TYPE), "contentType");
-                        Codec codec = requireNonNull(codecs.get(contentType), String.format("%s codec", contentType));
-                        LOG.debug("Deserializing {} body for outgoing request {} as {}",
-                                contentType, ctx.getOrElse(REQUEST_ID, FALLBACK_REQUEST_ID), type.getSimpleName());
+        return response.body().map(body -> {
+            String contentType = requireNonNull(response.getHeader(HttpHeaders.CONTENT_TYPE), "contentType");
+            Codec codec = requireNonNull(codecs.get(contentType), String.format("%s codec", contentType));
+            LOG.debug("Deserializing {} response body {} for outgoing request {} as {}",
+                    contentType, body, requestId, type.getSimpleName());
 
-                        return codec.deserialize(body, type);
-                    });
+            return codec.deserialize(body, type);
         });
     }
 

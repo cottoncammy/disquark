@@ -16,6 +16,10 @@ public class ImageDataSerializer extends StdSerializer<Buffer> implements Contex
     private static final Base64.Encoder BASE64_ENCODER = Base64.getEncoder();
     private static final Tika TIKA = new Tika();
 
+    ImageDataSerializer() {
+        super(Buffer.class);
+    }
+
     ImageDataSerializer(JavaType type) {
         super(type);
     }

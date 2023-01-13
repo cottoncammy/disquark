@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.NoSuchElementException;
 
 class BucketRateLimitingRequestSubscriber implements MultiSubscriber<CompletableRequest> {
     private static final Logger LOG = LoggerFactory.getLogger(BucketRateLimitingRequestSubscriber.class);
@@ -48,6 +49,9 @@ class BucketRateLimitingRequestSubscriber implements MultiSubscriber<Completable
                     }
 
                     bucketPromise.complete(bucket);
+                } else {
+                    LOG.debug("Request matching bucket key {} didn't return a bucket value", bucketKey);
+                    bucketPromise.fail(new NoSuchElementException());
                 }
             })
             .call(response -> {
@@ -59,7 +63,8 @@ class BucketRateLimitingRequestSubscriber implements MultiSubscriber<Completable
                                 bucketKey, resetAfter);
 
                         return Uni.createFrom().voidItem()
-                                .invoke(() -> this.resetAfter = Math.round(Float.parseFloat(resetAfter)));
+                                .invoke(() -> this.resetAfter = Math.round(Float.parseFloat(resetAfter)))
+                                .onFailure(NumberFormatException.class).transform(IllegalStateException::new);
                     }
                     return Uni.createFrom().failure(IllegalStateException::new);
                 }

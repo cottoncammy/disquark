@@ -60,6 +60,8 @@ import org.example.rest.util.Hex;
 
 import javax.annotation.Nullable;
 
+import java.util.Arrays;
+
 import static java.time.format.DateTimeFormatter.ISO_DATE_TIME;
 import static java.util.Objects.requireNonNull;
 import static org.example.rest.util.Variables.variables;
@@ -788,7 +790,7 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public Uni<Void> deleteWebhook(Snowflake webhookId, @Nullable String auditLogReason) {
-        return requester.request(new EmptyRequest(HttpMethod.DELETE, "/webhooks/{webhook.id}", variables("guild.id", webhookId.getValue()), auditLogReason))
+        return requester.request(new EmptyRequest(HttpMethod.DELETE, "/webhooks/{webhook.id}", variables("webhook.id", webhookId.getValue()), auditLogReason))
                 .replaceWithVoid();
     }
 

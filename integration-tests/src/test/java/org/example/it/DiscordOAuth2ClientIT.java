@@ -52,8 +52,9 @@ class DiscordOAuth2ClientIT extends AuthenticatedDiscordClientIT {
     @Test
     void testGetUserConnections(DiscordOAuth2Client<?> oAuth2Client) {
         oAuth2Client.getUserConnections()
-                .subscribe().withSubscriber(AssertSubscriber.create())
-                .awaitCompletion()
+                .collect().asList()
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 

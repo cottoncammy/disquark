@@ -87,8 +87,9 @@ class ChannelIT {
     @Order(4)
     void testGetChannelMessages(DiscordBotClient<?> botClient) {
         botClient.getChannelMessages(GetChannelMessages.create(channelId))
-                .subscribe().withSubscriber(AssertSubscriber.create())
-                .awaitCompletion()
+                .collect().asList()
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 
@@ -156,8 +157,9 @@ class ChannelIT {
     @Order(11)
     void testGetReactions(DiscordBotClient<?> botClient) {
         botClient.getReactions(GetReactions.create(channelId, messageId, ReactionEmoji.create(ROBOT_EMOJI)))
-                .subscribe().withSubscriber(AssertSubscriber.create())
-                .awaitCompletion()
+                .collect().asList()
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 
@@ -229,8 +231,9 @@ class ChannelIT {
     @Order(17)
     void testGetChannelInvites(DiscordBotClient<?> botClient) {
         botClient.getChannelInvites(channelId)
-                .subscribe().withSubscriber(AssertSubscriber.create())
-                .awaitCompletion()
+                .collect().asList()
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 
@@ -257,8 +260,9 @@ class ChannelIT {
     @Order(20)
     void testGetPinnedMessages(DiscordBotClient<?> botClient) {
         botClient.getPinnedMessages(channelId)
-                .subscribe().withSubscriber(AssertSubscriber.create())
-                .awaitCompletion()
+                .collect().asList()
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 
@@ -384,8 +388,9 @@ class ChannelIT {
     @Order(32)
     void testListThreadMembers(DiscordBotClient<?> botClient) {
         botClient.listThreadMembers(ListThreadMembers.create(threadId))
-                .subscribe().withSubscriber(AssertSubscriber.create())
-                .awaitCompletion()
+                .collect().asList()
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
                 .assertCompleted();
     }
 
