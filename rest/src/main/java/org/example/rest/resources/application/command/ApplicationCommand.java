@@ -1,5 +1,6 @@
 package org.example.rest.resources.application.command;
 
+import com.fasterxml.jackson.annotation.JsonEnumDefaultValue;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -58,6 +59,8 @@ public interface ApplicationCommand {
     Snowflake version();
 
     enum Type {
+        @JsonEnumDefaultValue
+        UNKNOWN(-1),
         CHAT_INPUT(1),
         USER(2),
         MESSAGE(3);
@@ -120,6 +123,8 @@ public interface ApplicationCommand {
         Optional<Boolean> autocomplete();
 
         enum Type {
+            @JsonEnumDefaultValue
+            UNKNOWN(-1),
             SUB_COMMAND(1),
             SUB_COMMAND_GROUP(2),
             STRING(3),
@@ -186,6 +191,8 @@ public interface ApplicationCommand {
         boolean permission();
 
         enum Type {
+            @JsonEnumDefaultValue
+            UNKNOWN(-1),
             ROLE(1),
             USER(2),
             CHANNEL(3);

@@ -1,5 +1,6 @@
 package org.example.rest.resources.user;
 
+import com.fasterxml.jackson.annotation.JsonEnumDefaultValue;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -87,6 +88,8 @@ public interface User {
     }
 
     enum PremiumType {
+        @JsonEnumDefaultValue
+        UNKNOWN(-1),
         NONE(0),
         NITRO_CLASSIC(1),
         NITRO(2),
@@ -136,6 +139,8 @@ public interface User {
         VisibilityType visibility();
 
         enum Service {
+            @JsonEnumDefaultValue
+            UNKNOWN("unknown"),
             BATTLE_NET("battlenet"),
             EBAY("ebay"),
             EPIC_GAMES("epicgames"),
@@ -167,6 +172,8 @@ public interface User {
         }
 
         enum VisibilityType {
+            @JsonEnumDefaultValue
+            UNKNOWN(-1),
             NONE(0),
             EVERYONE(1);
 

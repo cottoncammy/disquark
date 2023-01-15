@@ -1,5 +1,6 @@
 package org.example.rest.resources.application;
 
+import com.fasterxml.jackson.annotation.JsonEnumDefaultValue;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -32,6 +33,8 @@ public interface ApplicationRoleConnectionMetadata {
     Optional<Map<Locale, String>> descriptionLocalizations();
 
     enum Type {
+        @JsonEnumDefaultValue
+        UNKNOWN(-1),
         INTEGER_LESS_THAN_OR_EQUAL(1),
         INTEGER_GREATER_THAN_OR_EQUAL(2),
         INTEGER_EQUAL(3),

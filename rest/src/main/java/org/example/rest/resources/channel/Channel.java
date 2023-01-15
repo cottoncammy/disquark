@@ -1,5 +1,6 @@
 package org.example.rest.resources.channel;
 
+import com.fasterxml.jackson.annotation.JsonEnumDefaultValue;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -120,6 +121,8 @@ public interface Channel {
     Optional<ForumLayoutType> defaultForumLayout();
 
     enum Type {
+        @JsonEnumDefaultValue
+        UNKNOWN(-1),
         GUILD_TEXT(0),
         DM(1),
         GUILD_VOICE(2),
@@ -146,6 +149,8 @@ public interface Channel {
     }
 
     enum VideoQualityMode {
+        @JsonEnumDefaultValue
+        UNKNOWN(-1),
         AUTO(1),
         FULL(2);
 
@@ -178,6 +183,8 @@ public interface Channel {
     }
 
     enum SortOrderType {
+        @JsonEnumDefaultValue
+        UNKNOWN(-1),
         LATEST_ACTIVITY(0),
         CREATION_DATE(1);
 
@@ -194,6 +201,8 @@ public interface Channel {
     }
 
     enum ForumLayoutType {
+        @JsonEnumDefaultValue
+        UNKNOWN(-1),
         NOT_SET(0),
         LIST_VIEW(1),
         GALLERY_VIEW(2);
@@ -227,6 +236,8 @@ public interface Channel {
         EnumSet<PermissionFlag> deny();
 
         enum Type {
+            @JsonEnumDefaultValue
+            UNKNOWN(-1),
             ROLE(0),
             MEMBER(1);
 

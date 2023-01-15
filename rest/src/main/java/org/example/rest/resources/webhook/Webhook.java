@@ -1,5 +1,6 @@
 package org.example.rest.resources.webhook;
 
+import com.fasterxml.jackson.annotation.JsonEnumDefaultValue;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -49,6 +50,8 @@ public interface Webhook {
     Optional<String> url();
 
     enum Type {
+        @JsonEnumDefaultValue
+        UNKNOWN(-1),
         INCOMING(1),
         CHANNEL_FOLLOWER(2),
         APPLICATION(3);

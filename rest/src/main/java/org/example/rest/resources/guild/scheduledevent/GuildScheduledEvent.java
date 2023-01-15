@@ -1,5 +1,6 @@
 package org.example.rest.resources.guild.scheduledevent;
 
+import com.fasterxml.jackson.annotation.JsonEnumDefaultValue;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -65,6 +66,8 @@ public interface GuildScheduledEvent {
     Optional<String> image();
 
     enum PrivacyLevel {
+        @JsonEnumDefaultValue
+        UNKNOWN(-1),
         GUILD_ONLY(2);
 
         private final int value;
@@ -80,6 +83,8 @@ public interface GuildScheduledEvent {
     }
 
     enum EntityType {
+        @JsonEnumDefaultValue
+        UNKNOWN(-1),
         STAGE_INSTANCE(1),
         VOICE(2),
         EXTERNAL(3);
@@ -97,6 +102,8 @@ public interface GuildScheduledEvent {
     }
 
     enum Status {
+        @JsonEnumDefaultValue
+        UNKNOWN(-1),
         SCHEDULED(1),
         ACTIVE(2),
         COMPLETED(3),

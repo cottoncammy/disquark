@@ -9,7 +9,7 @@ public class ListNitroStickerPacksResponse {
     private final List<Sticker.Pack> stickerPacks;
 
     @JsonCreator
-    public ListNitroStickerPacksResponse(@JsonProperty List<Sticker.Pack> stickerPacks) {
+    public ListNitroStickerPacksResponse(@JsonProperty("sticker_packs") List<Sticker.Pack> stickerPacks) {
         this.stickerPacks = stickerPacks;
     }
 

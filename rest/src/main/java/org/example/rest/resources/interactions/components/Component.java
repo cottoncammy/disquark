@@ -1,5 +1,6 @@
 package org.example.rest.resources.interactions.components;
 
+import com.fasterxml.jackson.annotation.JsonEnumDefaultValue;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -61,6 +62,8 @@ public interface Component {
     Optional<String> value();
 
     enum Type {
+        @JsonEnumDefaultValue
+        UNKNOWN(-1),
         ACTION_ROW(1),
         BUTTON(2),
         SELECT_MENU(3),

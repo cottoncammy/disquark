@@ -15,9 +15,10 @@ public class SomeFactory implements JsonFactory {
 
     private static void customizeObjectMapper(ObjectMapper objectMapper) {
         objectMapper.registerModule(new Jdk8Module())
-                .registerModule(new SomeModule())
                 .registerModule(new NullableOptionalModule())
+                .registerModule(new SomeModule())
                 .addHandler(new UnknownPropertyHandler())
+                .configure(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_USING_DEFAULT_VALUE, true)
                 .setDefaultPropertyInclusion(JsonInclude.Include.NON_ABSENT)
                 .setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
     }

@@ -27,7 +27,7 @@ import org.example.rest.resources.emoji.ModifyGuildEmoji;
 import org.example.rest.resources.guild.*;
 import org.example.rest.resources.guild.prune.BeginGuildPrune;
 import org.example.rest.resources.guild.prune.GetGuildPruneCount;
-import org.example.rest.resources.guild.prune.GuildPruneResult;
+import org.example.rest.resources.guild.prune.GuildPruneResponse;
 import org.example.rest.resources.guild.scheduledevent.CreateGuildScheduledEvent;
 import org.example.rest.resources.guild.scheduledevent.GetGuildScheduledEventUsers;
 import org.example.rest.resources.guild.scheduledevent.GuildScheduledEvent;
@@ -517,8 +517,8 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
 
     public Uni<Guild.MfaLevel> modifyGuildMfaLevel(Snowflake guildId, Guild.MfaLevel level, @Nullable String auditLogReason) {
         return requester.request(ModifyGuildMfaLevel.create(guildId, level, auditLogReason).asRequest())
-                .flatMap(res -> res.as(ModifyMfaLevelResponse.class))
-                .map(ModifyMfaLevelResponse::getLevel);
+                .flatMap(res -> res.as(ModifyGuildMfaLevel.Response.class))
+                .map(ModifyGuildMfaLevel.Response::getLevel);
     }
 
     public Uni<Void> deleteGuildRole(Snowflake guildId, Snowflake roleId, @Nullable String auditLogReason) {
@@ -528,13 +528,13 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
 
     public Uni<Integer> getGuildPruneCount(GetGuildPruneCount getGuildPruneCount) {
         return requester.request(requireNonNull(getGuildPruneCount, "getGuildPruneCount").asRequest())
-                .flatMap(res -> res.as(GuildPruneResult.class))
+                .flatMap(res -> res.as(GuildPruneResponse.class))
                 .flatMap(result -> Uni.createFrom().optional(result.getPruned()));
     }
 
     public Uni<Integer> beginGuildPrune(BeginGuildPrune beginGuildPrune) {
         return requester.request(requireNonNull(beginGuildPrune, "beginGuildPrune").asRequest())
-                .flatMap(res -> res.as(GuildPruneResult.class))
+                .flatMap(res -> res.as(GuildPruneResponse.class))
                 .flatMap(result -> Uni.createFrom().optional(result.getPruned()));
     }
 

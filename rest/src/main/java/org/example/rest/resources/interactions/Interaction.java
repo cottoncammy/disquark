@@ -1,5 +1,6 @@
 package org.example.rest.resources.interactions;
 
+import com.fasterxml.jackson.annotation.JsonEnumDefaultValue;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -65,6 +66,8 @@ public interface Interaction<T> {
     Optional<Locale> guildLocale();
 
     enum Type {
+        @JsonEnumDefaultValue
+        UNKNOWN(-1),
         PING(1),
         APPLICATION_COMMAND(2),
         MESSAGE_COMPONENT(3),

@@ -1,5 +1,6 @@
 package org.example.rest.resources.guild;
 
+import com.fasterxml.jackson.annotation.JsonEnumDefaultValue;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
@@ -145,6 +146,8 @@ public interface Guild {
     boolean premiumProgressBarEnabled();
 
     enum DefaultMessageNotificationLevel {
+        @JsonEnumDefaultValue
+        UNKNOWN(-1),
         ALL_MESSAGES(0),
         ONLY_MENTIONS(1);
 
@@ -161,6 +164,8 @@ public interface Guild {
     }
 
     enum ExplicitContentFilterLevel {
+        @JsonEnumDefaultValue
+        UNKNOWN(-1),
         DISABLED(0),
         MEMBERS_WITHOUT_ROLES(1),
         ALL_MEMBERS(2);
@@ -178,6 +183,8 @@ public interface Guild {
     }
 
     enum MfaLevel {
+        @JsonEnumDefaultValue
+        UNKNOWN(-1),
         NONE(0),
         ELEVATED(1);
 
@@ -194,6 +201,8 @@ public interface Guild {
     }
 
     enum VerificationLevel {
+        @JsonEnumDefaultValue
+        UNKNOWN(-1),
         NONE(0),
         LOW(1),
         MEDIUM(2),
@@ -213,6 +222,8 @@ public interface Guild {
     }
 
     enum NsfwLevel {
+        @JsonEnumDefaultValue
+        UNKNOWN(-1),
         DEFAULT(0),
         EXPLICIT(1),
         SAFE(2),
@@ -231,6 +242,8 @@ public interface Guild {
     }
 
     enum PremiumTier {
+        @JsonEnumDefaultValue
+        UNKNOWN(-1),
         NONE(0),
         TIER_1(1),
         TIER_2(2),
@@ -267,6 +280,8 @@ public interface Guild {
     }
 
     enum Feature {
+        @JsonEnumDefaultValue
+        UNKNOWN,
         ANIMATED_BANNER,
         ANIMATED_ICON,
         APPLICATION_COMMAND_PERMISSIONS_V2,
@@ -463,6 +478,8 @@ public interface Guild {
         Optional<List<Scope>> scopes();
 
         enum ExpireBehavior {
+            @JsonEnumDefaultValue
+            UNKNOWN(-1),
             REMOVE_ROLE(0),
             KICK(1);
 

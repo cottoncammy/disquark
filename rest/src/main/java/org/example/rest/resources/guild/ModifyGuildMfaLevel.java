@@ -1,6 +1,8 @@
 package org.example.rest.resources.guild;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.vertx.core.http.HttpMethod;
 import org.example.immutables.ImmutableJson;
 import org.example.rest.request.Auditable;
@@ -37,5 +39,18 @@ public interface ModifyGuildMfaLevel extends Auditable, Requestable {
                 .body(this)
                 .auditLogReason(auditLogReason())
                 .build();
+    }
+
+    class Response {
+        private final Guild.MfaLevel level;
+
+        @JsonCreator
+        public Response(@JsonProperty Guild.MfaLevel level) {
+            this.level = level;
+        }
+
+        public Guild.MfaLevel getLevel() {
+            return level;
+        }
     }
 }

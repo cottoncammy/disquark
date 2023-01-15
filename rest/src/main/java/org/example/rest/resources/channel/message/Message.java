@@ -1,5 +1,6 @@
 package org.example.rest.resources.channel.message;
 
+import com.fasterxml.jackson.annotation.JsonEnumDefaultValue;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -104,6 +105,8 @@ public interface Message {
     OptionalInt position();
 
     enum Type {
+        @JsonEnumDefaultValue
+        UNKNOWN(-1),
         DEFAULT(0),
         RECIPIENT_ADD(1),
         RECIPIENT_REMOVE(2),
@@ -155,6 +158,8 @@ public interface Message {
         Optional<String> partyId();
 
         enum Type {
+            @JsonEnumDefaultValue
+            UNKNOWN(-1),
             JOIN(1),
             SPECTATE(2),
             LISTEN(3),

@@ -83,7 +83,6 @@ public class ScopesDeserializer extends JsonDeserializer<List<Scope>> {
     public List<Scope> deserialize(JsonParser p, DeserializationContext ctx) throws IOException {
         String s = p.getText();
 
-        // TODO
         try {
             return Arrays.stream(s.split(" ")).map(this::getScope).collect(Collectors.toList());
         } catch (IllegalArgumentException e) {

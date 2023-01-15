@@ -1,5 +1,6 @@
 package org.example.rest.resources.automod;
 
+import com.fasterxml.jackson.annotation.JsonEnumDefaultValue;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -50,6 +51,8 @@ public interface AutoModerationRule {
     List<Snowflake> exemptChannels();
 
     enum TriggerType {
+        @JsonEnumDefaultValue
+        UNKNOWN(-1),
         KEYWORD(1),
         SPAM(3),
         KEYWORD_PRESET(4),
@@ -95,6 +98,8 @@ public interface AutoModerationRule {
     }
 
     enum KeywordPresetType {
+        @JsonEnumDefaultValue
+        UNKNOWN(-1),
         PROFANITY(1),
         SEXUAL_CONTENT(2),
         SLURS(3);
@@ -112,6 +117,8 @@ public interface AutoModerationRule {
     }
 
     enum EventType {
+        @JsonEnumDefaultValue
+        UNKNOWN(-1),
         MESSAGE_SEND(1);
 
         private final int value;

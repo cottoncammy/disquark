@@ -1,5 +1,6 @@
 package org.example.rest.resources.sticker;
 
+import com.fasterxml.jackson.annotation.JsonEnumDefaultValue;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -50,6 +51,8 @@ public interface Sticker {
     int sortValue();
 
     enum Type {
+        @JsonEnumDefaultValue
+        UNKNOWN(-1),
         STANDARD(1),
         GUILD(2);
 
@@ -66,6 +69,8 @@ public interface Sticker {
     }
 
     enum FormatType {
+        @JsonEnumDefaultValue
+        UNKNOWN(-1),
         PNG(1),
         APNG(2),
         LOTTIE(3);

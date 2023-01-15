@@ -1,5 +1,6 @@
 package org.example.rest.resources.stageinstance;
 
+import com.fasterxml.jackson.annotation.JsonEnumDefaultValue;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -37,6 +38,8 @@ public interface StageInstance {
     Optional<Snowflake> guildScheduledEventId();
 
     enum PrivacyLevel {
+        @JsonEnumDefaultValue
+        UNKNOWN(-1),
         PUBLIC(1),
         GUILD_ONLY(2);
 

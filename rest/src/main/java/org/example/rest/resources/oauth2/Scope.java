@@ -1,8 +1,11 @@
 package org.example.rest.resources.oauth2;
 
+import com.fasterxml.jackson.annotation.JsonEnumDefaultValue;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum Scope {
+    @JsonEnumDefaultValue
+    UNKNOWN("unknown"),
     ACTIVITIES_READ("activities.read"),
     ACTIVITIES_WRITE("activities.write"),
     APPLICATIONS_BUILDS_READ("applications.builds.read"),

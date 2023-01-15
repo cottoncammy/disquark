@@ -1,8 +1,8 @@
 package org.example.it;
 
-import io.smallrye.mutiny.helpers.test.AssertSubscriber;
 import io.smallrye.mutiny.helpers.test.UniAssertSubscriber;
 import org.example.rest.AuthenticatedDiscordClient;
+import org.example.rest.oauth2.DiscordOAuth2Client;
 import org.example.rest.resources.Snowflake;
 import org.example.rest.resources.application.command.*;
 import org.example.rest.resources.user.GetCurrentUserGuilds;
@@ -12,6 +12,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import static org.example.it.config.ConfigHelper.configValue;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@ExtendWith(SomeExtension2.class)
 class AuthenticatedDiscordClientIT {
     private Snowflake applicationId;
     private Snowflake guildId;
@@ -20,9 +21,19 @@ class AuthenticatedDiscordClientIT {
     private Snowflake guildCommandId;
 
     @BeforeAll
-    void init() {
+    void init(DiscordOAuth2Client<?> oAuth2Client) {
         applicationId = configValue("DISCORD_APPLICATION_ID", Snowflake.class);
         guildId = configValue("DISCORD_GUILD_ID", Snowflake.class);
+
+        oAuth2Client.getGlobalApplicationCommands(applicationId, false)
+                .onItem().transformToUniAndMerge(command -> oAuth2Client.deleteGlobalApplicationCommand(applicationId, command.id()))
+                .collect().asList()
+                .await().indefinitely();
+
+        oAuth2Client.getGuildApplicationCommands(applicationId, guildId, false)
+                .onItem().transformToUniAndMerge(command -> oAuth2Client.deleteGuildApplicationCommand(applicationId, guildId, command.id()))
+                .collect().asList()
+                .await().indefinitely();
     }
 
     @TestTemplate

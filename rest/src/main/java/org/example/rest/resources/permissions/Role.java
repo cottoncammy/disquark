@@ -44,7 +44,6 @@ public interface Role {
     Optional<Tags> tags();
 
     @ImmutableJson
-    
     @JsonDeserialize(as = ImmutableRole.Tags.class)
     interface Tags {
 

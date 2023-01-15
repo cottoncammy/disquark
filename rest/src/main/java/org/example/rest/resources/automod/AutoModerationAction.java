@@ -1,5 +1,6 @@
 package org.example.rest.resources.automod;
 
+import com.fasterxml.jackson.annotation.JsonEnumDefaultValue;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -24,6 +25,8 @@ public interface AutoModerationAction {
     Optional<Metadata> metadata();
 
     enum Type {
+        @JsonEnumDefaultValue
+        UNKNOWN(-1),
         BLOCK_MESSAGE(1),
         SEND_ALERT_MESSAGE(2),
         TIMEOUT(3);

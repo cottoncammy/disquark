@@ -1,5 +1,6 @@
 package org.example.rest.resources.application;
 
+import com.fasterxml.jackson.annotation.JsonEnumDefaultValue;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -55,6 +56,8 @@ public interface Team {
     }
 
     enum MembershipState {
+        @JsonEnumDefaultValue
+        UNKNOWN(-1),
         INVITED(1),
         ACCEPTED(2);
 

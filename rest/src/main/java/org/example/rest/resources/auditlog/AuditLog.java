@@ -1,5 +1,6 @@
 package org.example.rest.resources.auditlog;
 
+import com.fasterxml.jackson.annotation.JsonEnumDefaultValue;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -78,6 +79,8 @@ public interface AuditLog {
     }
 
     enum Event {
+        @JsonEnumDefaultValue
+        UNKNOWN(-1),
         GUILD_UPDATE(1),
         CHANNEL_CREATE(10),
         CHANNEL_UPDATE(11),

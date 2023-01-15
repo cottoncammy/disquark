@@ -6,12 +6,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.annotation.Nullable;
 import java.util.Optional;
 
-public class GuildPruneResult {
+public class GuildPruneResponse {
     @Nullable
     private final Integer pruned;
 
     @JsonCreator
-    public GuildPruneResult(@JsonProperty Integer pruned) {
+    public GuildPruneResponse(@JsonProperty Integer pruned) {
         this.pruned = pruned;
     }
 
