@@ -25,11 +25,11 @@ public class HttpResponse implements Response {
 
     public <T> Uni<T> as(Class<T> type) {
         return response.body().map(body -> {
+            LOG.trace("Response body for outgoing request {}: {}", requestId, body);
             String contentType = requireNonNull(response.getHeader(HttpHeaders.CONTENT_TYPE), "contentType");
             Codec codec = requireNonNull(codecs.get(contentType), String.format("%s codec", contentType));
             LOG.debug("Deserializing {} response body for outgoing request {} as {}",
                     contentType, requestId, type.getSimpleName());
-            LOG.trace("Response body for outgoing request {}: {}", requestId, body);
 
             return codec.deserialize(body, type);
         });

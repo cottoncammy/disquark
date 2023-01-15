@@ -40,7 +40,6 @@ class BucketRateLimitingRequester implements Requester<HttpResponse> {
         return requestStream;
     }
 
-    // TODO reactive chain this
     @Override
     public Uni<HttpResponse> request(Request request) {
         BucketCacheKey key = BucketCacheKey.create(request);
@@ -64,8 +63,8 @@ class BucketRateLimitingRequester implements Requester<HttpResponse> {
                 .replaceWithVoid();
 
         return bucketUni.ifNoItem().after(Duration.ofSeconds(5))
-                .recoverWithUni(Uni.createFrom().voidItem().invoke(() ->
-                        LOG.warn("Bucket promise did not complete or fail for request matching key {} after timeout", key)))
+                .failWith(new IllegalStateException(String.format(
+                        "Bucket promise did not emit item or failure for request matching key %s after timeout", key)))
                 .onFailure(NoSuchElementException.class).recoverWithNull()
                 .replaceWith(completableRequest.getPromise().future());
     }

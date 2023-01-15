@@ -97,6 +97,7 @@ class WebhookIT {
                 .webhookId(webhookId)
                 .webhookToken(webhookToken)
                 .content("Hello World!")
+                .waitForServer(true)
                 .build();
 
         messageId = botClient.executeWebhook(executeWebhook)

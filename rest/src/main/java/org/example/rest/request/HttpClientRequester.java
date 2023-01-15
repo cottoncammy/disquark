@@ -4,6 +4,7 @@ import static java.util.Objects.requireNonNull;
 
 import io.smallrye.mutiny.Context;
 import io.smallrye.mutiny.Uni;
+import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.RequestOptions;
 import io.vertx.mutiny.core.Vertx;
 import io.vertx.mutiny.core.http.HttpClient;
@@ -76,6 +77,8 @@ public class HttpClientRequester implements Requester<HttpResponse> {
 
                     return rateLimiter.rateLimit(httpClient.request(options)).flatMap(req -> {
                         if (request.contentType().isEmpty()) {
+                            req.putHeader(HttpHeaders.CONTENT_LENGTH, "0");
+
                             LOG.debug("Sending outgoing request {}", ctx.<Object>get(REQUEST_ID));
                             return req.send();
                         }
@@ -84,10 +87,9 @@ public class HttpClientRequester implements Requester<HttpResponse> {
                         req.putHeader(HttpHeaders.CONTENT_TYPE, contentType);
 
                         Codec codec = requireNonNull(codecs.get(contentType), String.format("%s codec", contentType));
-                        return Uni.createFrom().voidItem()
-                                .invoke(() -> LOG.debug("Serializing {} body for outgoing request {}",
-                                        contentType, ctx.get(REQUEST_ID)))
-                                .replaceWith(codec.serialize(request, req.headers()))
+                        LOG.debug("Serializing {} body for outgoing request {}", contentType, ctx.get(REQUEST_ID));
+
+                        return Uni.createFrom().item(codec.serialize(request, req.headers()))
                                 .flatMap(body -> {
                                     LOG.debug("Sending outgoing request {} with body {}",
                                             ctx.get(REQUEST_ID), body.getAsString());
@@ -179,9 +181,8 @@ public class HttpClientRequester implements Requester<HttpResponse> {
         }
 
         public HttpClientRequester build() {
-            Codec jsonCodec = new JsonCodec();
-            codecs.put("application/json", jsonCodec);
-            codecs.put("multipart/form-data", new MultipartCodec(vertx, jsonCodec));
+            codecs.put("application/json", new JsonCodec());
+            codecs.put("multipart/form-data", new MultipartCodec(vertx));
 
             return new HttpClientRequester(
                     baseUrl == null ? URI.create("https://discord.com/api/v10") : baseUrl,

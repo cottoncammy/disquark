@@ -37,8 +37,9 @@ public class DiscordClients {
                     VERTX,
                     ConfigHelper.configValue("DISCORD_CLIENT_ID", String.class),
                     ConfigHelper.configValue("DISCORD_CLIENT_SECRET", String.class));
-            EnumSet<Scope> scopes = EnumSet.of(Scope.APPLICATIONS_COMMANDS_UPDATE, Scope.CONNECTIONS, Scope.GUILDS,
-                    Scope.GUILDS_JOIN, Scope.GUILDS_MEMBERS_READ, Scope.IDENTIFY);
+            EnumSet<Scope> scopes = EnumSet.of(Scope.APPLICATIONS_COMMANDS_UPDATE,
+                    Scope.APPLICATIONS_COMMANDS_PERMISSIONS_UPDATE, Scope.CONNECTIONS, Scope.GUILDS, Scope.GUILDS_JOIN,
+                    Scope.GUILDS_MEMBERS_READ, Scope.IDENTIFY);
 
             OAUTH2_CLIENT = DiscordOAuth2Client.create(builder.fromClientCredentials(scopes));
         }

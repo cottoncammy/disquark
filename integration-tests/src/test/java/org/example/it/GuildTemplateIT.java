@@ -1,6 +1,5 @@
 package org.example.it;
 
-import io.smallrye.mutiny.helpers.test.AssertSubscriber;
 import io.smallrye.mutiny.helpers.test.UniAssertSubscriber;
 import org.example.it.config.ConfigValue;
 import org.example.rest.DiscordBotClient;
@@ -8,6 +7,7 @@ import org.example.rest.resources.Snowflake;
 import org.example.rest.resources.guild.template.CreateGuildFromGuildTemplate;
 import org.example.rest.resources.guild.template.CreateGuildTemplate;
 import org.example.rest.resources.guild.template.ModifyGuildTemplate;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,6 +15,14 @@ import org.junit.jupiter.api.extension.ExtendWith;
 @ExtendWith(SomeExtension2.class)
 class GuildTemplateIT {
     private String templateCode;
+
+    @BeforeAll
+    void init(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_GUILD_ID") Snowflake guildId) {
+        botClient.getGuildTemplates(guildId)
+                .onItem().transformToUniAndMerge(template -> botClient.deleteGuildTemplate(guildId, template.code()))
+                .collect().asList()
+                .await().indefinitely();
+    }
 
     @Test
     @Order(1)

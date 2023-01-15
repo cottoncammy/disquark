@@ -1,6 +1,7 @@
 package org.example.rest.request;
 
 import io.netty.handler.codec.http.multipart.HttpPostRequestEncoder.EncoderMode;
+import io.vertx.core.json.Json;
 import io.vertx.ext.web.client.impl.MultipartFormUpload;
 import io.vertx.mutiny.core.MultiMap;
 import io.vertx.mutiny.core.Vertx;
@@ -13,13 +14,12 @@ import java.util.Map;
 
 class MultipartCodec implements Codec {
     private final Vertx vertx;
-    private final Codec jsonCodec;
 
-    public MultipartCodec(Vertx vertx, Codec jsonCodec) {
+    public MultipartCodec(Vertx vertx) {
         this.vertx = vertx;
-        this.jsonCodec = jsonCodec;
     }
 
+    // TODO set contentLength
     @Override
     public Body serialize(Request request, MultiMap headers) {
         MultipartForm form = MultipartForm.create();
@@ -30,7 +30,7 @@ class MultipartCodec implements Codec {
         }
 
         if (request.body().isPresent()) {
-            form.attribute("payload_json", jsonCodec.serialize(request, headers).toString());
+            form.attribute("payload_json", Json.encode(request.body().get()));
         }
 
         MultipartFormUpload upload;

@@ -36,11 +36,14 @@ class BucketRateLimitingRequestSubscriber implements MultiSubscriber<Completable
         return Duration.between(Instant.now(), Instant.ofEpochSecond(resetAfter));
     }
 
+    // TODO retry early rate limits encountered before bucket info is stored (need iterative context)
+    // and retry emoji rate limits
     @Override
     public void onItem(CompletableRequest item) {
         Promise<HttpResponse> promise = item.getPromise();
 
         requester.request(item.getRequest())
+            .onFailure().invoke(bucketPromise::tryFail)
             .invoke(response -> {
                 String bucket = response.getHeader("X-RateLimit-Bucket");
                 if (bucket != null) {
@@ -48,10 +51,10 @@ class BucketRateLimitingRequestSubscriber implements MultiSubscriber<Completable
                         bucket += '-' + bucketKey.getTopLevelResourceValue().get();
                     }
 
-                    bucketPromise.complete(bucket);
+                    bucketPromise.tryComplete(bucket);
                 } else {
                     LOG.debug("Request matching bucket key {} didn't return a bucket value", bucketKey);
-                    bucketPromise.fail(new NoSuchElementException());
+                    bucketPromise.tryFail(new NoSuchElementException());
                 }
             })
             .call(response -> {

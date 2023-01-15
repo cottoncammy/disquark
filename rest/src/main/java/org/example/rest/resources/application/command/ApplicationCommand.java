@@ -33,6 +33,7 @@ public interface ApplicationCommand {
     @JsonProperty("application_id")
     Snowflake applicationId();
 
+    @JsonProperty("guild_id")
     Optional<Snowflake> guildId();
 
     String name();
@@ -55,6 +56,8 @@ public interface ApplicationCommand {
 
     @JsonProperty("default_permission")
     Optional<Boolean> defaultPermission();
+
+    Optional<Boolean> nsfw();
 
     Snowflake version();
 
