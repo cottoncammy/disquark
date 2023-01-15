@@ -49,7 +49,7 @@ public abstract class AuthenticatedDiscordClient<T extends Response> extends Dis
     }
 
     public Multi<ApplicationCommand> getGlobalApplicationCommands(Snowflake applicationId, boolean withLocalizations) {
-        return requester.request(new EmptyRequest("/applications/{application.id}/commands{?with_localizations}", variables("application.id", applicationId.getValue(), "with_localizations", withLocalizations)))
+        return requester.request(new EmptyRequest("/applications/{application.id}/commands{?with_localizations}", variables("application.id", requireNonNull(applicationId, "applicationId").getValue(), "with_localizations", withLocalizations)))
                 .flatMap(res -> res.as(ApplicationCommand[].class))
                 .onItem().disjoint();
     }
@@ -60,7 +60,7 @@ public abstract class AuthenticatedDiscordClient<T extends Response> extends Dis
     }
 
     public Uni<ApplicationCommand> getGlobalApplicationCommand(Snowflake applicationId, Snowflake commandId) {
-        return requester.request(new EmptyRequest("/applications/{application.id}/commands/{command.id}", variables("application.id", applicationId.getValue(), "command.id", commandId.getValue())))
+        return requester.request(new EmptyRequest("/applications/{application.id}/commands/{command.id}", variables("application.id", requireNonNull(applicationId, "applicationId").getValue(), "command.id", requireNonNull(commandId, "commandId").getValue())))
                 .flatMap(res -> res.as(ApplicationCommand.class));
     }
 
@@ -70,7 +70,7 @@ public abstract class AuthenticatedDiscordClient<T extends Response> extends Dis
     }
 
     public Uni<Void> deleteGlobalApplicationCommand(Snowflake applicationId, Snowflake commandId) {
-        return requester.request(new EmptyRequest(HttpMethod.DELETE, "/applications/{application.id}/commands/{command.id}", variables("application.id", applicationId.getValue(), "command.id", commandId.getValue())))
+        return requester.request(new EmptyRequest(HttpMethod.DELETE, "/applications/{application.id}/commands/{command.id}", variables("application.id", requireNonNull(applicationId, "applicationId").getValue(), "command.id", requireNonNull(commandId, "commandId").getValue())))
                 .replaceWithVoid();
     }
 
@@ -81,7 +81,7 @@ public abstract class AuthenticatedDiscordClient<T extends Response> extends Dis
     }
 
     public Multi<ApplicationCommand> getGuildApplicationCommands(Snowflake applicationId, Snowflake guildId, boolean withLocalizations) {
-        return requester.request(new EmptyRequest("/applications/{application.id}/guilds/{guild.id}/commands{?with_localizations}", variables("application.id", applicationId.getValue(), "guild.id", guildId.getValue(), "with_localizations", withLocalizations)))
+        return requester.request(new EmptyRequest("/applications/{application.id}/guilds/{guild.id}/commands{?with_localizations}", variables("application.id", requireNonNull(applicationId, "applicationId").getValue(), "guild.id", requireNonNull(guildId, "guildId").getValue(), "with_localizations", withLocalizations)))
                 .flatMap(res -> res.as(ApplicationCommand[].class))
                 .onItem().disjoint();
     }
@@ -92,7 +92,7 @@ public abstract class AuthenticatedDiscordClient<T extends Response> extends Dis
     }
 
     public Uni<ApplicationCommand> getGuildApplicationCommand(Snowflake applicationId, Snowflake guildId, Snowflake commandId) {
-        return requester.request(new EmptyRequest("/applications/{application.id}/guilds/{guild.id}/commands/{command.id}", variables("application.id", applicationId.getValue(), "guild.id", guildId.getValue(), "command.id", commandId.getValue())))
+        return requester.request(new EmptyRequest("/applications/{application.id}/guilds/{guild.id}/commands/{command.id}", variables("application.id", requireNonNull(applicationId, "applicationId").getValue(), "guild.id", requireNonNull(guildId, "guildId").getValue(), "command.id", requireNonNull(commandId, "commandId").getValue())))
                 .flatMap(res -> res.as(ApplicationCommand.class));
     }
 
@@ -102,7 +102,7 @@ public abstract class AuthenticatedDiscordClient<T extends Response> extends Dis
     }
 
     public Uni<Void> deleteGuildApplicationCommand(Snowflake applicationId, Snowflake guildId, Snowflake commandId) {
-        return requester.request(new EmptyRequest(HttpMethod.DELETE, "/applications/{application.id}/guilds/{guild.id}/commands/{command.id}", variables("application.id", applicationId.getValue(), "guild.id", guildId.getValue(), "command.id", commandId.getValue())))
+        return requester.request(new EmptyRequest(HttpMethod.DELETE, "/applications/{application.id}/guilds/{guild.id}/commands/{command.id}", variables("application.id", requireNonNull(applicationId, "applicationId").getValue(), "guild.id", requireNonNull(guildId, "guildId").getValue(), "command.id", requireNonNull(commandId, "commandId").getValue())))
                 .replaceWithVoid();
     }
 
@@ -113,13 +113,13 @@ public abstract class AuthenticatedDiscordClient<T extends Response> extends Dis
     }
 
     public Multi<GuildApplicationCommandPermissions> getGuildApplicationCommandPermissions(Snowflake applicationId, Snowflake guildId) {
-        return requester.request(new EmptyRequest("/applications/{application.id}/guilds/{guild.id}/commands/permissions", variables("application.id", applicationId.getValue(), "guild.id", guildId.getValue())))
+        return requester.request(new EmptyRequest("/applications/{application.id}/guilds/{guild.id}/commands/permissions", variables("application.id", requireNonNull(applicationId, "applicationId").getValue(), "guild.id", requireNonNull(guildId, "guildId").getValue())))
                 .flatMap(res -> res.as(GuildApplicationCommandPermissions[].class))
                 .onItem().disjoint();
     }
 
     public Uni<GuildApplicationCommandPermissions> getApplicationCommandPermissions(Snowflake applicationId, Snowflake guildId, Snowflake commandId) {
-        return requester.request(new EmptyRequest("/applications/{application.id}/guilds/{guild.id}/commands/{command.id}/permissions", variables("application.id", applicationId.getValue(), "guild.id", guildId.getValue(), "command.id", commandId.getValue())))
+        return requester.request(new EmptyRequest("/applications/{application.id}/guilds/{guild.id}/commands/{command.id}/permissions", variables("application.id", requireNonNull(applicationId, "applicationId").getValue(), "guild.id", requireNonNull(guildId, "guildId").getValue(), "command.id", requireNonNull(commandId, "commandId").getValue())))
                 .flatMap(res -> res.as(GuildApplicationCommandPermissions.class));
     }
 

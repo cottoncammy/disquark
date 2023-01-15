@@ -15,11 +15,14 @@ import org.example.rest.resources.channel.message.GetReactions;
 import org.example.rest.resources.channel.message.Message;
 import org.example.rest.resources.channel.message.StartThreadFromMessage;
 import org.example.rest.resources.channel.thread.ListThreadMembers;
+import org.example.rest.resources.channel.thread.ModifyThread;
 import org.example.rest.resources.guild.CreateGuildChannel;
 import org.example.rest.resources.oauth2.AccessToken;
+import org.example.rest.resources.oauth2.Scope;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 
+import java.util.EnumSet;
 import java.util.List;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -59,7 +62,7 @@ class ChannelIT {
     @Order(2)
     void testModifyDmChannel(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_CLIENT_ID") String clientId, @ConfigValue("DISCORD_CLIENT_SECRET") String clientSecret, @ConfigValue("DISCORD_USER_ID") Snowflake userId, @ConfigValue("DISCORD_USER_ID_2") Snowflake userId2) {
         Uni<String> tokenUni = BearerTokenSource.create(botClient.getVertx(), clientId, clientSecret)
-                .fromClientCredentials()
+                .fromClientCredentials(EnumSet.of(Scope.GDM_JOIN))
                 .getToken()
                 .map(AccessToken::accessToken);
 
@@ -325,8 +328,17 @@ class ChannelIT {
     }
 
     @Test
-    @Tag("forum-channel")
     @Order(26)
+    void testModifyThread(DiscordBotClient<?> botClient) {
+        botClient.modifyChannel(ModifyThread.builder().channelId(threadId).name("bar").build())
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
+                .assertCompleted();
+    }
+
+    @Test
+    @Tag("forum-channel")
+    @Order(27)
     void testStartThreadInForumChannel(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_FORUM_CHANNEL_ID") Snowflake forumChannelId) {
         StartThreadInForumChannel startThreadInForumChannel = StartThreadInForumChannel.builder()
                 .channelId(forumChannelId)
@@ -340,7 +352,7 @@ class ChannelIT {
     }
 
     @Test
-    @Order(27)
+    @Order(28)
     void testAddThreadMember(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_USER_ID") Snowflake userId) {
         botClient.addThreadMember(threadId, userId)
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
@@ -349,7 +361,7 @@ class ChannelIT {
     }
 
     @Test
-    @Order(28)
+    @Order(29)
     void leaveThread(DiscordBotClient<?> botClient) {
         botClient.leaveThread(threadId)
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
@@ -358,7 +370,7 @@ class ChannelIT {
     }
 
     @Test
-    @Order(29)
+    @Order(30)
     void testJoinThread(DiscordBotClient<?> botClient) {
         botClient.joinThread(threadId)
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
@@ -367,7 +379,7 @@ class ChannelIT {
     }
 
     @Test
-    @Order(30)
+    @Order(31)
     void testGetThreadMember(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_USER_ID") Snowflake userId) {
         botClient.getThreadMember(threadId, userId, false)
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
@@ -376,7 +388,7 @@ class ChannelIT {
     }
 
     @Test
-    @Order(31)
+    @Order(32)
     void testRemoveThreadMember(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_USER_ID") Snowflake userId) {
         botClient.removeThreadMember(threadId, userId)
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
@@ -385,7 +397,7 @@ class ChannelIT {
     }
 
     @Test
-    @Order(32)
+    @Order(33)
     void testListThreadMembers(DiscordBotClient<?> botClient) {
         botClient.listThreadMembers(ListThreadMembers.create(threadId))
                 .collect().asList()
@@ -395,7 +407,7 @@ class ChannelIT {
     }
 
     @Test
-    @Order(33)
+    @Order(34)
     void testListPublicArchivedThreads(DiscordBotClient<?> botClient) {
         botClient.listPublicArchivedThreads(ListThreads.create(channelId))
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
@@ -404,7 +416,7 @@ class ChannelIT {
     }
 
     @Test
-    @Order(34)
+    @Order(35)
     void testListPrivateArchivedThreads(DiscordBotClient<?> botClient) {
         botClient.listPrivateArchivedThreads(ListThreads.create(channelId))
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
@@ -413,7 +425,7 @@ class ChannelIT {
     }
 
     @Test
-    @Order(35)
+    @Order(36)
     void testListJoinedPrivateArchivedThreads(DiscordBotClient<?> botClient) {
         botClient.listJoinedPrivateArchivedThreads(ListThreads.create(channelId))
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
@@ -422,7 +434,7 @@ class ChannelIT {
     }
 
     @Test
-    @Order(36)
+    @Order(37)
     void testDeleteMessage(DiscordBotClient<?> botClient) {
         botClient.deleteMessage(channelId, messageId, null)
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
@@ -431,7 +443,7 @@ class ChannelIT {
     }
 
     @Test
-    @Order(37)
+    @Order(38)
     void testDeleteOrCloseChannel(DiscordBotClient<?> botClient) {
         botClient.deleteOrCloseChannel(channelId, null).subscribe()
                 .withSubscriber(UniAssertSubscriber.create())

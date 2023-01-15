@@ -30,7 +30,7 @@ public interface CreateWebhook extends Auditable, Requestable {
 
     String name();
 
-    @JsonSerialize(using = ImageDataSerializer.class)
+    @JsonSerialize(contentUsing = ImageDataSerializer.class)
     @JsonInclude(value = Include.CUSTOM, valueFilter = NullableOptionalFilter.class)
     NullableOptional<Buffer> avatar();
 

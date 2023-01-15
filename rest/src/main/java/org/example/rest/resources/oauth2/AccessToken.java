@@ -31,7 +31,7 @@ public interface AccessToken {
     @JsonProperty("refresh_token")
     Optional<String> refreshToken();
 
-    @JsonDeserialize(using = ScopesDeserializer.class)
+    @JsonDeserialize(contentUsing = ScopesDeserializer.class)
     Optional<List<Scope>> scope();
 
     Optional<Guild> guild();

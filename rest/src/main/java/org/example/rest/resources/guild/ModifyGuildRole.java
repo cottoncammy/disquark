@@ -46,7 +46,7 @@ public interface ModifyGuildRole extends Auditable, Requestable {
     @JsonInclude(Include.NON_ABSENT)
     Optional<Boolean> hoist();
 
-    @JsonSerialize(using = ImageDataSerializer.class)
+    @JsonSerialize(contentUsing = ImageDataSerializer.class)
     NullableOptional<Buffer> icon();
 
     @JsonProperty("unicode_emoji")

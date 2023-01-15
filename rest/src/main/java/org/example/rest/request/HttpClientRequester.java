@@ -123,9 +123,10 @@ public class HttpClientRequester implements Requester<HttpResponse> {
                 .map(res -> new HttpResponse(ctx.getOrElse(REQUEST_ID, null), codecs, res))
                 .call(response -> {
                     HttpClientResponse httpResponse = response.getRaw();
-                    LOG.debug("Received {} - {} for outgoing request {}, headers: {}",
-                            httpResponse.statusCode(), httpResponse.statusMessage(), ctx.get(REQUEST_ID),
-                            httpResponse.headers().entries());
+                    LOG.debug("Received {} - {} for outgoing request {}",
+                            httpResponse.statusCode(), httpResponse.statusMessage(), ctx.get(REQUEST_ID));
+                    LOG.trace("Response headers for outgoing request {}: {}",
+                            ctx.get(REQUEST_ID), httpResponse.headers().entries());
 
                     if (httpResponse.statusCode() == 429) {
                         return response.as(RateLimitResponse.class).onItem().failWith(res -> new RateLimitException(res, httpResponse));

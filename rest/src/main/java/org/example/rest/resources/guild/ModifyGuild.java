@@ -54,7 +54,7 @@ public interface ModifyGuild extends Auditable, Requestable {
     @JsonProperty("afk_timeout")
     NullableOptional<Integer> afkTimeout();
 
-    @JsonSerialize(using = ImageDataSerializer.class)
+    @JsonSerialize(contentUsing = ImageDataSerializer.class)
     NullableOptional<Buffer> icon();
 
     @JsonProperty("owner_id")

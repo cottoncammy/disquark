@@ -110,7 +110,6 @@ public interface Application {
             return new Builder();
         }
 
-        @JsonDeserialize(using = ScopesDeserializer.class)
         List<Scope> scopes();
 
         EnumSet<PermissionFlag> permissions();

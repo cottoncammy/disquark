@@ -1,7 +1,7 @@
 Configuration:
   name: Config
   thresholdFilter:
-    level: debug
+    level: trace
   appenders:
     Console:
       name: Console
@@ -9,6 +9,9 @@ Configuration:
         pattern: "%highlight{%d %p %c (%t) %m%ex%n}"
 
   Loggers:
+    logger:
+      - name: org.example
+        level: trace
     Root:
       level: debug
       AppenderRef:

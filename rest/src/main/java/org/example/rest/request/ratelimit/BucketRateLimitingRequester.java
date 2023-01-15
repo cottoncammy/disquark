@@ -65,7 +65,7 @@ class BucketRateLimitingRequester implements Requester<HttpResponse> {
 
         return bucketUni.ifNoItem().after(Duration.ofSeconds(5))
                 .recoverWithUni(Uni.createFrom().voidItem().invoke(() ->
-                        LOG.warn("Unable to cache request stream for key {}: bucket promise was not completed after timeout", key)))
+                        LOG.warn("Bucket promise did not complete or fail for request matching key {} after timeout", key)))
                 .onFailure(NoSuchElementException.class).recoverWithNull()
                 .replaceWith(completableRequest.getPromise().future());
     }

@@ -30,7 +30,7 @@ public interface ModifyDmChannel extends Auditable, Requestable {
 
     Optional<String> name();
 
-    @JsonSerialize(using = ImageDataSerializer.class)
+    @JsonSerialize(contentUsing = ImageDataSerializer.class)
     Optional<Buffer> icon();
 
     @Override

@@ -18,7 +18,7 @@ public class UriTemplate {
     }
 
     private String getUriWithoutQueryTemplate() {
-        // hack, we assume that there's only one query template and that it's the last one
+        // hack, we assume that there's only one query template and that it's the last template in the string
         if (uri.contains("{?")) {
             return uri.substring(0, uri.lastIndexOf('{'));
         }

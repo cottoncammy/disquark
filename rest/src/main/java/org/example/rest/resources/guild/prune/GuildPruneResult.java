@@ -1,6 +1,7 @@
 package org.example.rest.resources.guild.prune;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.annotation.Nullable;
 import java.util.Optional;
@@ -10,11 +11,7 @@ public class GuildPruneResult {
     private final Integer pruned;
 
     @JsonCreator
-    public static GuildPruneResult create(Integer pruned) {
-        return new GuildPruneResult(pruned);
-    }
-
-    private GuildPruneResult(Integer pruned) {
+    public GuildPruneResult(@JsonProperty Integer pruned) {
         this.pruned = pruned;
     }
 

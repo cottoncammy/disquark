@@ -27,8 +27,9 @@ public class HttpResponse implements Response {
         return response.body().map(body -> {
             String contentType = requireNonNull(response.getHeader(HttpHeaders.CONTENT_TYPE), "contentType");
             Codec codec = requireNonNull(codecs.get(contentType), String.format("%s codec", contentType));
-            LOG.debug("Deserializing {} response body {} for outgoing request {} as {}",
-                    contentType, body, requestId, type.getSimpleName());
+            LOG.debug("Deserializing {} response body for outgoing request {} as {}",
+                    contentType, requestId, type.getSimpleName());
+            LOG.trace("Response body for outgoing request {}: {}", requestId, body);
 
             return codec.deserialize(body, type);
         });

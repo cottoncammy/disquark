@@ -10,8 +10,8 @@ import org.example.rest.resources.channel.Channel;
 import java.util.Optional;
 
 @ImmutableJson
-@JsonDeserialize(as = ImmutableOptionalAuditEntryInfo.class)
-public interface OptionalAuditEntryInfo {
+@JsonDeserialize(as = ImmutableAuditEntryInfo.class)
+public interface AuditEntryInfo {
 
     static Builder builder() {
         return new Builder();
@@ -47,7 +47,7 @@ public interface OptionalAuditEntryInfo {
 
     Optional<Channel.Overwrite.Type> type();
 
-    class Builder extends ImmutableOptionalAuditEntryInfo.Builder {
+    class Builder extends ImmutableAuditEntryInfo.Builder {
         protected Builder() {}
     }
 }

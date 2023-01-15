@@ -6,7 +6,11 @@ import org.example.rest.DiscordBotClient;
 import org.example.rest.oauth2.BearerTokenSource;
 import org.example.rest.oauth2.DiscordOAuth2Client;
 import org.example.rest.request.Requester;
+import org.example.rest.resources.oauth2.Scope;
 import org.example.rest.response.Response;
+
+import java.util.EnumSet;
+import java.util.List;
 
 public class DiscordClients {
 
@@ -33,7 +37,10 @@ public class DiscordClients {
                     VERTX,
                     ConfigHelper.configValue("DISCORD_CLIENT_ID", String.class),
                     ConfigHelper.configValue("DISCORD_CLIENT_SECRET", String.class));
-            OAUTH2_CLIENT = DiscordOAuth2Client.create(builder.fromClientCredentials());
+            EnumSet<Scope> scopes = EnumSet.of(Scope.APPLICATIONS_COMMANDS_UPDATE, Scope.CONNECTIONS, Scope.GUILDS,
+                    Scope.GUILDS_JOIN, Scope.GUILDS_MEMBERS_READ, Scope.IDENTIFY);
+
+            OAUTH2_CLIENT = DiscordOAuth2Client.create(builder.fromClientCredentials(scopes));
         }
 
     }

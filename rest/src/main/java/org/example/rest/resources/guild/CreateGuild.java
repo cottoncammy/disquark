@@ -31,7 +31,7 @@ public interface CreateGuild extends Requestable {
     @Deprecated
     Optional<String> region();
 
-    @JsonSerialize(using = ImageDataSerializer.class)
+    @JsonSerialize(contentUsing = ImageDataSerializer.class)
     Optional<Buffer> icon();
 
     @JsonProperty("verification_level")

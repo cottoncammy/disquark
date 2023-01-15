@@ -273,18 +273,21 @@ public interface Guild {
         AUTO_MODERATION,
         BANNER,
         COMMUNITY,
+        CREATOR_MONETIZABLE_PROVISIONAL,
+        CREATOR_STORE_PAGE,
         DEVELOPER_SUPPORT_SERVER,
         DISCOVERABLE,
         FEATURABLE,
         INVITES_DISABLED,
         INVITE_SPLASH,
         MEMBER_VERIFICATION_GATE_ENABLED,
-        MONETIZATION_ENABLED,
         MORE_STICKERS,
         NEWS,
         PARTNERED,
         PREVIEW_ENABLED,
         ROLE_ICONS,
+        ROLE_SUBSCRIPTIONS_AVAILABLE_FOR_PURCHASE,
+        ROLE_SUBSCRIPTIONS_ENABLED,
         TICKETED_EVENTS_ENABLED,
         VANITY_URL,
         VERIFIED,
@@ -457,7 +460,6 @@ public interface Guild {
 
         Optional<Application> application();
 
-        @JsonDeserialize(using = ScopesDeserializer.class)
         Optional<List<Scope>> scopes();
 
         enum ExpireBehavior {

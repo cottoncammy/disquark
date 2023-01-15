@@ -68,7 +68,7 @@ public interface AuditLog {
         @JsonProperty("action_type")
         Event actionType();
 
-        Optional<List<OptionalAuditEntryInfo>> options();
+        Optional<AuditEntryInfo> options();
 
         Optional<String> reason();
 

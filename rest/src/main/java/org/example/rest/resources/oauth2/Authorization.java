@@ -20,7 +20,6 @@ public interface Authorization {
 
     Application application();
 
-    @JsonDeserialize(using = ScopesDeserializer.class)
     List<Scope> scopes();
 
     Instant expires();

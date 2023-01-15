@@ -40,7 +40,7 @@ public interface CreateGuildRole extends Auditable, Requestable {
 
     Optional<Boolean> hoist();
 
-    @JsonSerialize(using = ImageDataSerializer.class)
+    @JsonSerialize(contentUsing = ImageDataSerializer.class)
     Optional<Buffer> icon();
 
     @JsonProperty("unicode_emoji")

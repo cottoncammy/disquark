@@ -59,7 +59,7 @@ public class DiscordOAuth2Client<T extends Response> extends AuthenticatedDiscor
     }
 
     public Uni<Guild.Member> getCurrentUserGuildMember(Snowflake guildId) {
-        return requester.request(new EmptyRequest("/users/@me/guilds/{guild.id}/member", variables("guild.id", guildId.getValue())))
+        return requester.request(new EmptyRequest("/users/@me/guilds/{guild.id}/member", variables("guild.id", requireNonNull(guildId, "guildId").getValue())))
                 .flatMap(res -> res.as(Guild.Member.class));
     }
 
@@ -70,7 +70,7 @@ public class DiscordOAuth2Client<T extends Response> extends AuthenticatedDiscor
     }
 
     public Uni<User.ApplicationRoleConnection> getUserApplicationRoleConnection(Snowflake applicationId) {
-        return requester.request(new EmptyRequest("/users/@me/applications/{application.id}/role-connection", variables("application.id", applicationId.getValue())))
+        return requester.request(new EmptyRequest("/users/@me/applications/{application.id}/role-connection", variables("application.id", requireNonNull(applicationId, "applicationId").getValue())))
                 .flatMap(res -> res.as(User.ApplicationRoleConnection.class));
     }
 

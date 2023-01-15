@@ -35,7 +35,7 @@ public class DiscordWebhookClient<T extends Response> extends DiscordClient<T> i
 
     @Override
     public Uni<Webhook> getWebhookWithToken(Snowflake webhookId, String webhookToken) {
-        return requester.request(new EmptyRequest("/webhooks/{webhook.id}/{webhook.token}", false, variables("webhook.id", webhookId.getValue(), "webhook.token", webhookToken)))
+        return requester.request(new EmptyRequest("/webhooks/{webhook.id}/{webhook.token}", false, variables("webhook.id", requireNonNull(webhookId, "webhookId").getValue(), "webhook.token", requireNonNull(webhookToken, "webhookToken"))))
                 .flatMap(res -> res.as(Webhook.class));
     }
 
@@ -47,7 +47,7 @@ public class DiscordWebhookClient<T extends Response> extends DiscordClient<T> i
 
     @Override
     public Uni<Void> deleteWebhookWithToken(Snowflake webhookId, String webhookToken) {
-        return requester.request(new EmptyRequest(HttpMethod.DELETE, "/webhooks/{webhook.id}/{webhook.token}", false, variables("webhook.id", webhookId.getValue(), "webhook.token", webhookToken)))
+        return requester.request(new EmptyRequest(HttpMethod.DELETE, "/webhooks/{webhook.id}/{webhook.token}", false, variables("webhook.id", requireNonNull(webhookId, "webhookId").getValue(), "webhook.token", requireNonNull(webhookToken, "webhookToken"))))
                 .replaceWithVoid();
     }
 
