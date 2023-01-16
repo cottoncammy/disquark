@@ -1,6 +1,7 @@
 package org.example.rest.request.ratelimit;
 
 import io.smallrye.mutiny.Uni;
+import io.smallrye.mutiny.tuples.Tuple2;
 import org.example.rest.request.Request;
 import org.example.rest.request.Requester;
 import org.example.rest.response.HttpResponse;
@@ -11,6 +12,8 @@ import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 class BucketRateLimitingRequester implements Requester<HttpResponse> {
     private static final Logger LOG = LoggerFactory.getLogger(BucketRateLimitingRequester.class);
@@ -45,27 +48,23 @@ class BucketRateLimitingRequester implements Requester<HttpResponse> {
         BucketCacheKey key = BucketCacheKey.create(request);
         BucketRateLimitingRequestStream requestStream = getRequestStream(key);
 
-        CompletableRequest completableRequest = new CompletableRequest(request);
+        Consumer<String> bucketConsumer = bucket -> {
+            if (!bucketCache.containsKey(key)) {
+                LOG.debug("Caching bucket value {} for key {}", bucket, key);
+                bucketCache.put(key, bucket);
+            }
+
+            if (!requestStreamCache.containsKey(bucket)) {
+                LOG.debug("Caching request stream for bucket {} (key: {})", bucket, key);
+                requestStreamCache.put(bucket, requestStream);
+            }
+        };
+
+        CompletableRequest completableRequest = new CompletableRequest(request, bucketConsumer);
         requestStream.onNext(completableRequest);
 
-        Uni<Void> bucketUni = requestStream.getBucket()
-                .onItem().invoke(bucket -> {
-                    if (!bucketCache.containsKey(key)) {
-                        LOG.debug("Caching bucket value {} for key {}", bucket, key);
-                        bucketCache.put(key, bucket);
-                    }
-
-                    if (!requestStreamCache.containsKey(bucket)) {
-                        LOG.debug("Caching request stream for bucket {} (key: {})", bucket, key);
-                        requestStreamCache.put(bucket, requestStream);
-                    }
-                })
-                .replaceWithVoid();
-
-        return bucketUni.ifNoItem().after(Duration.ofSeconds(5))
-                .failWith(new IllegalStateException(String.format(
-                        "Bucket promise did not emit item or failure for request matching key %s after timeout", key)))
-                .onFailure(NoSuchElementException.class).recoverWithNull()
-                .replaceWith(completableRequest.getPromise().future());
+        return completableRequest.getResponsePromise().future()
+                .ifNoItem().after(Duration.ofSeconds(5)).failWith(new IllegalStateException(
+                        "No item (or failure) event received after 5000ms timeout"));
     }
 }
