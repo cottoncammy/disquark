@@ -16,6 +16,7 @@ import org.example.rest.resources.Snowflake;
 import org.example.rest.resources.channel.message.AllowedMentions;
 import org.example.rest.resources.channel.message.Message;
 import org.example.rest.resources.interactions.components.Component;
+import org.example.rest.resources.partial.PartialAttachment;
 
 import java.util.List;
 import java.util.Optional;
@@ -47,7 +48,7 @@ public interface EditFollowupMessage extends MultipartRequest, Requestable {
 
     Optional<List<Component>> components();
 
-    Optional<List<Message.Attachment>> attachments();
+    Optional<List<PartialAttachment>> attachments();
 
     @Override
     default Request asRequest() {

@@ -4,11 +4,9 @@ import com.fasterxml.jackson.annotation.JsonEnumDefaultValue;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.deser.std.FromStringDeserializer;
 import com.fasterxml.jackson.databind.deser.std.StringDeserializer;
 import org.example.rest.resources.Snowflake;
 import org.example.immutables.ImmutableJson;
-import org.example.rest.resources.application.Application;
 import org.example.rest.resources.channel.Channel;
 import org.example.rest.resources.emoji.Emoji;
 import org.example.rest.resources.interactions.MessageInteraction;
@@ -78,7 +76,7 @@ public interface Message {
 
     Optional<Activity> activity();
 
-    Optional<Application> application();
+    Optional<PartialApplication> application();
 
     @JsonProperty("application_id")
     Optional<Snowflake> applicationId();
@@ -178,6 +176,30 @@ public interface Message {
         }
 
         class Builder extends ImmutableMessage.Activity.Builder {
+            protected Builder() {}
+        }
+    }
+
+    @ImmutableJson
+    @JsonDeserialize(as = ImmutableMessage.PartialApplication.class)
+    interface PartialApplication {
+
+        static Builder builder() {
+            return new Builder();
+        }
+
+        Snowflake id();
+
+        String name();
+
+        Optional<String> icon();
+
+        String description();
+
+        @JsonProperty("cover_image")
+        Optional<String> coverImage();
+
+        class Builder extends ImmutableMessage.PartialApplication.Builder {
             protected Builder() {}
         }
     }

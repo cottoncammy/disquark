@@ -17,10 +17,10 @@ import org.example.rest.request.ratelimit.RateLimitStrategy;
 import org.example.rest.resources.Snowflake;
 import org.example.rest.resources.application.command.*;
 import org.example.rest.resources.channel.message.Message;
-import org.example.rest.resources.guild.Guild;
 import org.example.rest.resources.interactions.CreateFollowupMessage;
 import org.example.rest.resources.interactions.EditFollowupMessage;
 import org.example.rest.resources.interactions.EditOriginalInteractionResponse;
+import org.example.rest.resources.partial.PartialGuild;
 import org.example.rest.resources.user.GetCurrentUserGuilds;
 import org.example.rest.resources.user.User;
 import org.example.rest.resources.webhook.*;
@@ -200,9 +200,9 @@ public abstract class AuthenticatedDiscordClient<T extends Response> extends Dis
         return requester.request(new EmptyRequest("/users/@me")).flatMap(res -> res.as(User.class));
     }
 
-    public Multi<Guild> getCurrentUserGuilds(GetCurrentUserGuilds getCurrentUserGuilds) {
+    public Multi<PartialGuild> getCurrentUserGuilds(GetCurrentUserGuilds getCurrentUserGuilds) {
         return requester.request(requireNonNull(getCurrentUserGuilds, "getCurrentUserGuilds").asRequest())
-                .flatMap(res -> res.as(Guild[].class)).onItem().disjoint();
+                .flatMap(res -> res.as(PartialGuild[].class)).onItem().disjoint();
     }
 
     @Override

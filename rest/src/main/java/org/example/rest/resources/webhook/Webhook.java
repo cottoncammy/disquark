@@ -7,11 +7,11 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.example.immutables.ImmutableJson;
 import org.example.rest.resources.Snowflake;
 import org.example.rest.resources.user.User;
-import org.example.rest.resources.channel.Channel;
-import org.example.rest.resources.guild.Guild;
+import org.immutables.value.Value.Enclosing;
 
 import java.util.Optional;
 
+@Enclosing
 @ImmutableJson
 @JsonDeserialize(as = ImmutableWebhook.class)
 public interface Webhook {
@@ -42,10 +42,10 @@ public interface Webhook {
     Optional<Snowflake> applicationId();
 
     @JsonProperty("source_guild")
-    Optional<Guild> sourceGuild();
+    Optional<PartialGuild> sourceGuild();
 
     @JsonProperty("source_channel")
-    Optional<Channel> sourceChannel();
+    Optional<PartialChannel> sourceChannel();
 
     Optional<String> url();
 
@@ -70,5 +70,41 @@ public interface Webhook {
 
     class Builder extends ImmutableWebhook.Builder {
         protected Builder() {}
+    }
+
+    @ImmutableJson
+    @JsonDeserialize(as = ImmutableWebhook.PartialGuild.class)
+    interface PartialGuild {
+
+        static Builder builder() {
+            return new Builder();
+        }
+
+        Snowflake id();
+
+        String name();
+
+        Optional<String> icon();
+
+        class Builder extends ImmutableWebhook.PartialGuild.Builder {
+            protected Builder() {}
+        }
+    }
+
+    @ImmutableJson
+    @JsonDeserialize(as = ImmutableWebhook.PartialChannel.class)
+    interface PartialChannel {
+
+        static Builder builder() {
+            return new Builder();
+        }
+
+        Snowflake id();
+
+        Optional<String> name();
+
+        class Builder extends ImmutableWebhook.PartialChannel.Builder {
+            protected Builder() {}
+        }
     }
 }

@@ -14,6 +14,7 @@ import org.example.rest.request.Requestable;
 import org.example.rest.resources.Snowflake;
 import org.example.rest.resources.interactions.components.Component;
 import org.example.nullableoptional.NullableOptional;
+import org.example.rest.resources.partial.PartialAttachment;
 
 import java.util.EnumSet;
 import java.util.List;
@@ -45,7 +46,7 @@ public interface EditMessage extends MultipartRequest, Requestable {
 
     NullableOptional<List<Component>> components();
 
-    NullableOptional<List<Message.Attachment>> attachments();
+    NullableOptional<List<PartialAttachment>> attachments();
 
     @Override
     default Request asRequest() {

@@ -3,6 +3,7 @@ package org.example.rest.request;
 import static java.util.Objects.requireNonNull;
 
 import io.smallrye.mutiny.Context;
+import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.RequestOptions;

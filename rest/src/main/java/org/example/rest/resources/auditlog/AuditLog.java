@@ -14,6 +14,7 @@ import org.example.rest.resources.automod.AutoModerationRule;
 import org.example.rest.resources.channel.Channel;
 import org.example.rest.resources.guild.Guild;
 import org.example.rest.resources.application.command.ApplicationCommand;
+import org.example.rest.util.Partial;
 import org.immutables.value.Value.Enclosing;
 
 import java.util.List;

@@ -11,6 +11,7 @@ import org.example.rest.resources.Locale;
 import org.example.rest.resources.Snowflake;
 import org.example.rest.resources.guild.Guild;
 import org.example.rest.resources.FlagEnum;
+import org.example.rest.util.Partial;
 import org.immutables.value.Value.Enclosing;
 
 import java.util.*;

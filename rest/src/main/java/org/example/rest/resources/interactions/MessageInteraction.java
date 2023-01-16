@@ -5,6 +5,7 @@ import org.example.rest.resources.Snowflake;
 import org.example.immutables.ImmutableJson;
 import org.example.rest.resources.user.User;
 import org.example.rest.resources.guild.Guild;
+import org.example.rest.util.Partial;
 
 import java.util.Optional;
 

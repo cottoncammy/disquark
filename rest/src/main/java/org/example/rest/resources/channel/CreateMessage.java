@@ -11,6 +11,7 @@ import org.example.immutables.ImmutableJson;
 import org.example.rest.resources.channel.message.AllowedMentions;
 import org.example.rest.resources.channel.message.Message;
 import org.example.rest.resources.interactions.components.Component;
+import org.example.rest.resources.partial.PartialAttachment;
 
 import java.util.EnumSet;
 import java.util.List;
@@ -47,7 +48,7 @@ public interface CreateMessage extends MultipartRequest, Requestable {
     @JsonProperty("sticker_ids")
     Optional<List<Snowflake>> stickerIds();
 
-    Optional<List<Message.Attachment>> attachments();
+    Optional<List<PartialAttachment>> attachments();
 
     Optional<EnumSet<Message.Flag>> flags();
 

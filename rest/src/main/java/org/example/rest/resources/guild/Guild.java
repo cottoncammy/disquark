@@ -1,18 +1,15 @@
 package org.example.rest.resources.guild;
 
 import com.fasterxml.jackson.annotation.JsonEnumDefaultValue;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import org.example.rest.jackson.ScopesDeserializer;
 import org.example.rest.resources.Locale;
 import org.example.rest.resources.Snowflake;
 import org.example.rest.resources.emoji.Emoji;
 import org.example.immutables.ImmutableJson;
 import org.example.rest.resources.sticker.Sticker;
 import org.example.rest.resources.user.User;
-import org.example.rest.resources.channel.Channel;
 import org.example.rest.resources.oauth2.Scope;
 import org.example.rest.resources.permissions.PermissionFlag;
 import org.example.rest.resources.permissions.Role;
@@ -40,20 +37,13 @@ public interface Guild {
 
     Optional<String> icon();
 
-    @JsonProperty("icon_hash")
-    Optional<String> iconHash();
-
     Optional<String> splash();
 
     @JsonProperty("discovery_splash")
     Optional<String> discoverySplash();
 
-    Optional<Boolean> owner();
-
     @JsonProperty("owner_id")
     Snowflake ownerId();
-
-    Optional<EnumSet<PermissionFlag>> permissions();
 
     @Deprecated
     Optional<String> region();
@@ -95,7 +85,7 @@ public interface Guild {
     Optional<Snowflake> systemChannelId();
 
     @JsonProperty("system_channel_flags")
-    EnumSet<SystemChannelFlag> systemChannelFlag();
+    EnumSet<SystemChannelFlag> systemChannelFlags();
 
     @JsonProperty("rules_channel_id")
     Optional<Snowflake> rulesChannelId();
@@ -381,12 +371,56 @@ public interface Guild {
         @JsonProperty("instant_invite")
         Optional<String> instantInvite();
 
-        List<Channel> channels();
+        List<PartialChannel> channels();
 
-        List<User> members();
+        List<UserPresence> members();
 
         @JsonProperty("presence_count")
         int presenceCount();
+
+        @ImmutableJson
+        @JsonDeserialize(as = ImmutableGuild.PartialChannel.class)
+        interface PartialChannel {
+
+            static Builder builder() {
+                return new Builder();
+            }
+
+            Snowflake id();
+
+            OptionalInt position();
+
+            Optional<String> name();
+
+            class Builder extends ImmutableGuild.PartialChannel.Builder {
+                protected Builder() {}
+            }
+        }
+
+        @ImmutableJson
+        @JsonDeserialize(as = ImmutableGuild.UserPresence.class)
+        interface UserPresence {
+
+            static Builder builder() {
+                return new Builder();
+            }
+
+            Snowflake id();
+
+            String username();
+
+            String discriminator();
+
+            Optional<String> avatar();
+
+            String status();
+
+            String avatarUrl();
+
+            class Builder extends ImmutableGuild.UserPresence.Builder {
+                protected Builder() {}
+            }
+        }
 
         class Builder extends ImmutableGuild.Widget.Builder {
             protected Builder() {}

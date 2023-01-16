@@ -10,6 +10,7 @@ import org.example.rest.resources.channel.message.AllowedMentions;
 import org.example.rest.resources.channel.message.Message;
 import org.example.rest.resources.interactions.components.Component;
 import org.example.nullableoptional.NullableOptional;
+import org.example.rest.resources.partial.PartialAttachment;
 import org.immutables.value.Value.Enclosing;
 
 import java.util.EnumSet;
@@ -74,7 +75,7 @@ public interface StartThreadInForumChannel extends Auditable, MultipartRequest, 
         @JsonProperty("sticker_ids")
         Optional<List<Snowflake>> stickerIds();
 
-        Optional<List<Message.Attachment>> attachments();
+        Optional<List<PartialAttachment>> attachments();
 
         Optional<EnumSet<Message.Flag>> flags();
 

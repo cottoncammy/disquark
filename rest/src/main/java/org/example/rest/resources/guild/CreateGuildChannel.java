@@ -12,7 +12,6 @@ import org.example.rest.resources.Snowflake;
 import org.example.rest.resources.channel.Channel;
 import org.example.rest.resources.channel.forum.DefaultReaction;
 import org.example.rest.resources.channel.forum.ForumTag;
-import org.example.nullableoptional.NullableOptional;
 
 import java.util.List;
 import java.util.Optional;

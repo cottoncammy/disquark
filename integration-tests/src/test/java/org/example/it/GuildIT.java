@@ -21,7 +21,7 @@ class GuildIT {
     void init(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_GUILD_ID") Snowflake guildId) {
         botClient.getCurrentUserGuilds(GetCurrentUserGuilds.create())
                 .filter(guild -> !guild.id().equals(guildId))
-                .onItem().transformToUniAndMerge(guild -> botClient.deleteGuild(guild.id()))
+                .onItem().transformToUniAndMerge(guild -> botClient.deleteGuild(guild.id()).onFailure().recoverWithNull())
                 .collect().asList()
                 .await().indefinitely();
     }
@@ -348,6 +348,7 @@ class GuildIT {
     }
 
     @Test
+    @Tag("vanity-url")
     @Order(34)
     void testGetGuildVanityUrl(DiscordBotClient<?> botClient) {
         botClient.getGuildVanityUrl(guildId)

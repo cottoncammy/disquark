@@ -60,6 +60,15 @@ public interface Role {
         @JsonProperty("premium_subscriber")
         Optional<Void> premiumSubscriber();
 
+        @JsonProperty("subscription_listing_id")
+        Optional<Snowflake> subscriptionListingId();
+
+        @JsonProperty("available_for_purchase")
+        Optional<Void> availableForPurchase();
+
+        @JsonProperty("guild_connections")
+        Optional<Void> guildConnections();
+
         class Builder extends ImmutableRole.Tags.Builder {
             protected Builder() {}
         }

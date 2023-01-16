@@ -1,9 +1,12 @@
 package org.example.rest.resources.channel;
 
 import com.fasterxml.jackson.annotation.JsonEnumDefaultValue;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import org.example.nullableoptional.NullableOptional;
+import org.example.nullableoptional.jackson.NullableOptionalFilter;
 import org.example.rest.resources.Snowflake;
 import org.example.immutables.ImmutableJson;
 import org.example.rest.resources.channel.forum.DefaultReaction;
@@ -221,6 +224,7 @@ public interface Channel {
 
     @ImmutableJson
     @JsonDeserialize(as = ImmutableChannel.Overwrite.class)
+    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableOptionalFilter.class)
     interface Overwrite {
 
         static Builder builder() {
@@ -231,9 +235,9 @@ public interface Channel {
 
         Type type();
 
-        EnumSet<PermissionFlag> allow();
+        NullableOptional<EnumSet<PermissionFlag>> allow();
 
-        EnumSet<PermissionFlag> deny();
+        NullableOptional<EnumSet<PermissionFlag>> deny();
 
         enum Type {
             @JsonEnumDefaultValue

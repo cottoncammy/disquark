@@ -15,6 +15,7 @@ import org.example.rest.resources.Snowflake;
 import org.example.rest.resources.channel.forum.DefaultReaction;
 import org.example.rest.resources.channel.forum.ForumTag;
 import org.example.nullableoptional.NullableOptional;
+import org.example.rest.util.Partial;
 
 import java.util.EnumSet;
 import java.util.List;

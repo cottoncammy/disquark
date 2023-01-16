@@ -11,14 +11,17 @@ import org.example.rest.request.Request;
 import org.example.rest.request.Requestable;
 import org.example.rest.resources.Snowflake;
 import org.example.rest.resources.channel.Channel;
+import org.example.rest.resources.channel.forum.DefaultReaction;
+import org.example.rest.resources.channel.forum.ForumTag;
 import org.example.rest.resources.permissions.Role;
-import org.example.nullableoptional.NullableOptional;
+import org.immutables.value.Value.Enclosing;
 
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.OptionalInt;
 
+@Enclosing
 @ImmutableJson
 public interface CreateGuild extends Requestable {
 
@@ -45,7 +48,7 @@ public interface CreateGuild extends Requestable {
 
     Optional<List<Role>> roles();
 
-    Optional<List<Channel>> channels();
+    Optional<List<PartialChannel>> channels();
 
     @JsonProperty("afk_channel_id")
     Optional<Snowflake> afkChannelId();
@@ -69,5 +72,59 @@ public interface CreateGuild extends Requestable {
 
     class Builder extends ImmutableCreateGuild.Builder {
         protected Builder() {}
+    }
+
+    @ImmutableJson
+    interface PartialChannel {
+
+        static Builder builder() {
+            return new Builder();
+        }
+
+        Optional<Snowflake> id();
+
+        String name();
+
+        Optional<Channel.Type> type();
+
+        Optional<String> topic();
+
+        OptionalInt bitrate();
+
+        @JsonProperty("user_limit")
+        OptionalInt userLimit();
+
+        @JsonProperty("rate_limit_per_user")
+        OptionalInt rateLimitPerUser();
+
+        @JsonProperty("permission_overwrites")
+        Optional<List<Channel.Overwrite>> permissionOverwrites();
+
+        @JsonProperty("parent_id")
+        Optional<Snowflake> parentId();
+
+        Optional<Boolean> nsfw();
+
+        @JsonProperty("rtc_region")
+        Optional<String> rtcRegion();
+
+        @JsonProperty("video_quality_mode")
+        Optional<Channel.VideoQualityMode> videoQualityMode();
+
+        @JsonProperty("default_auto_archive_duration")
+        OptionalInt defaultAutoArchiveDuration();
+
+        @JsonProperty("default_reaction_emoji")
+        Optional<DefaultReaction> defaultReactionEmoji();
+
+        @JsonProperty("available_tags")
+        Optional<List<ForumTag>> availableTags();
+
+        @JsonProperty("default_sort_order")
+        Optional<Channel.SortOrderType> defaultSortOrder();
+
+        class Builder extends ImmutableCreateGuild.PartialChannel.Builder {
+            protected Builder() {}
+        }
     }
 }

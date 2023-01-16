@@ -40,6 +40,7 @@ import org.example.rest.resources.invite.GetInvite;
 import org.example.rest.resources.invite.Invite;
 import org.example.rest.resources.oauth2.AccessToken;
 import org.example.rest.resources.oauth2.TokenType;
+import org.example.rest.resources.partial.GuildVanityUrl;
 import org.example.rest.resources.permissions.Role;
 import org.example.rest.resources.stageinstance.CreateStageInstance;
 import org.example.rest.resources.stageinstance.ModifyStageInstance;
@@ -576,9 +577,9 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
                 .flatMap(res -> res.as(Guild.Widget.class));
     }
 
-    public Uni<Invite> getGuildVanityUrl(Snowflake guildId) {
+    public Uni<GuildVanityUrl> getGuildVanityUrl(Snowflake guildId) {
         return requester.request(new EmptyRequest("/guilds/{guild.id}/vanity-url", variables("guild.id", requireNonNull(guildId, "guildId").getValue())))
-                .flatMap(res -> res.as(Invite.class));
+                .flatMap(res -> res.as(GuildVanityUrl.class));
     }
 
     public Uni<Guild.WelcomeScreen> getGuildWelcomeScreen(Snowflake guildId) {

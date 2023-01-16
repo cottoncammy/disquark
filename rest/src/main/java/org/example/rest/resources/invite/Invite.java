@@ -5,11 +5,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.example.immutables.ImmutableJson;
+import org.example.rest.resources.Snowflake;
 import org.example.rest.resources.application.Application;
+import org.example.rest.resources.guild.Guild;
 import org.example.rest.resources.guild.scheduledevent.GuildScheduledEvent;
 import org.example.rest.resources.user.User;
 import org.example.rest.resources.channel.Channel;
-import org.example.rest.resources.guild.Guild;
+import org.example.rest.util.Partial;
 import org.immutables.value.Value.Enclosing;
 
 import java.time.Instant;
@@ -28,7 +30,7 @@ public interface Invite {
 
     String code();
 
-    Optional<Guild> guild();
+    Optional<PartialGuild> guild();
 
     Optional<Channel> channel();
 
@@ -40,6 +42,7 @@ public interface Invite {
     @JsonProperty("target_user")
     Optional<User> targetUser();
 
+    @Partial
     @JsonProperty("target_application")
     Optional<Application> targetApplication();
 
@@ -52,12 +55,8 @@ public interface Invite {
     @JsonProperty("expires_at")
     Optional<String> expiresAt();
 
-    @Deprecated
-    @JsonProperty("stage_instance")
-    StageInstance stageInstance();
-
     @JsonProperty("guild_scheduled_event")
-    GuildScheduledEvent guildScheduledEvent();
+    Optional<GuildScheduledEvent> guildScheduledEvent();
 
     enum TargetType {
         @JsonEnumDefaultValue
@@ -74,6 +73,45 @@ public interface Invite {
         @JsonValue
         public int getValue() {
             return value;
+        }
+    }
+
+    @ImmutableJson
+    @JsonDeserialize(as = ImmutableInvite.PartialGuild.class)
+    interface PartialGuild {
+
+        static Builder builder() {
+            return new Builder();
+        }
+
+        Snowflake id();
+
+        String name();
+
+        Optional<String> icon();
+
+        Optional<String> splash();
+
+        @JsonProperty("verification_level")
+        Guild.VerificationLevel verificationLevel();
+
+        List<Guild.Feature> features();
+
+        @JsonProperty("vanity_url_code")
+        Optional<String> vanityUrlCode();
+
+        Optional<String> description();
+
+        Optional<String> banner();
+
+        @JsonProperty("premium_subscription_count")
+        OptionalInt premiumSubscriptionCount();
+
+        @JsonProperty("nsfw_level")
+        Guild.NsfwLevel nsfwLevel();
+
+        class Builder extends ImmutableInvite.PartialGuild.Builder {
+            protected Builder() {}
         }
     }
 
@@ -99,30 +137,6 @@ public interface Invite {
         Instant createdAt();
 
         class Builder extends ImmutableInvite.Metadata.Builder {
-            protected Builder() {}
-        }
-    }
-
-    @Deprecated
-    @ImmutableJson
-    @JsonDeserialize(as = ImmutableInvite.StageInstance.class)
-    interface StageInstance {
-
-        static Builder builder() {
-            return new Builder();
-        }
-
-        List<Guild.Member> members();
-
-        @JsonProperty("participant_count")
-        int participantCount();
-
-        @JsonProperty("speaker_count")
-        int speakerCount();
-
-        String topic();
-
-        class Builder extends ImmutableInvite.StageInstance.Builder {
             protected Builder() {}
         }
     }

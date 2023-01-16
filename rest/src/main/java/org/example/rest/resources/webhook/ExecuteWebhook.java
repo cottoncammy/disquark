@@ -16,6 +16,7 @@ import org.example.rest.resources.Snowflake;
 import org.example.rest.resources.channel.message.AllowedMentions;
 import org.example.rest.resources.channel.message.Message;
 import org.example.rest.resources.interactions.components.Component;
+import org.example.rest.resources.partial.PartialAttachment;
 import org.immutables.value.Value.Default;
 
 import java.util.EnumSet;
@@ -60,7 +61,7 @@ public interface ExecuteWebhook extends MultipartRequest, Requestable {
 
     Optional<List<Component>> components();
 
-    Optional<List<Message.Attachment>> attachments();
+    Optional<List<PartialAttachment>> attachments();
 
     Optional<EnumSet<Message.Flag>> flags();
 

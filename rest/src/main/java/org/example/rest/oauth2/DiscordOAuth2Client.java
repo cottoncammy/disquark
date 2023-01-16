@@ -18,6 +18,7 @@ import org.example.rest.resources.application.command.GuildApplicationCommandPer
 import org.example.rest.resources.oauth2.Authorization;
 import org.example.rest.response.Response;
 import org.example.rest.util.Hex;
+import org.example.rest.util.Partial;
 
 public class DiscordOAuth2Client<T extends Response> extends AuthenticatedDiscordClient<T> {
 

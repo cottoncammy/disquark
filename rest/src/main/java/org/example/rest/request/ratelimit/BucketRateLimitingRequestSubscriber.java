@@ -22,7 +22,6 @@ import static org.example.rest.util.ExceptionPredicate.is;
 class BucketRateLimitingRequestSubscriber implements MultiSubscriber<CompletableRequest> {
     private static final Logger LOG = LoggerFactory.getLogger(BucketRateLimitingRequestSubscriber.class);
     private static final String ITERATION = "iteration";
-
     private final BucketCacheKey bucketKey;
     private final Requester<HttpResponse> requester;
 
@@ -50,7 +49,7 @@ class BucketRateLimitingRequestSubscriber implements MultiSubscriber<Completable
                         })
                         .invoke(() -> {
                             ctx.put(ITERATION, ctx.getOrElse(ITERATION, () -> 0) + 1);
-                            LOG.debug("Retrying outgoing request {} due to rate limit, attempts: {}",
+                            LOG.debug("Retrying outgoing request {} after encountering rate limit error, attempts: {}",
                                     ctx.getOrElse(REQUEST_ID, FALLBACK_REQUEST_ID), ctx.get(ITERATION));
                         });
             });
@@ -76,7 +75,6 @@ class BucketRateLimitingRequestSubscriber implements MultiSubscriber<Completable
                     if (bucketKey.getTopLevelResourceValue().isPresent()) {
                         bucket += '-' + bucketKey.getTopLevelResourceValue().get();
                     }
-
                     return Uni.createFrom().item(bucket).invoke(item.getBucketConsumer());
                 }
 

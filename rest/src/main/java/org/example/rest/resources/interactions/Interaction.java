@@ -8,8 +8,10 @@ import org.example.rest.resources.Locale;
 import org.example.rest.resources.Snowflake;
 import org.example.immutables.ImmutableJson;
 import org.example.rest.resources.application.command.ApplicationCommand;
-import org.example.rest.resources.user.User;
 import org.example.rest.resources.channel.Channel;
+import org.example.rest.resources.channel.thread.ThreadMetadata;
+import org.example.rest.resources.partial.PartialAttachment;
+import org.example.rest.resources.user.User;
 import org.example.rest.resources.channel.message.AllowedMentions;
 import org.example.rest.resources.channel.message.Message;
 import org.example.rest.resources.guild.Guild;
@@ -18,6 +20,7 @@ import org.example.rest.resources.permissions.PermissionFlag;
 import org.example.rest.resources.permissions.Role;
 import org.immutables.value.Value.Enclosing;
 
+import java.time.Instant;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
@@ -203,11 +206,11 @@ public interface Interaction<T> {
 
         Optional<Map<Snowflake, User>> users();
 
-        Optional<Map<Snowflake, Guild.Member>> members();
+        Optional<Map<Snowflake, PartialGuildMember>> members();
 
         Optional<Map<Snowflake, Role>> roles();
 
-        Optional<Map<Snowflake, Channel>> channels();
+        Optional<Map<Snowflake, PartialChannel>> channels();
 
         Optional<Map<Snowflake, Message>> messages();
 
@@ -215,6 +218,65 @@ public interface Interaction<T> {
 
         class Builder extends ImmutableInteraction.ResolvedData.Builder {
             protected Builder() {}
+        }
+
+        @ImmutableJson
+        @JsonDeserialize(as = ImmutableInteraction.PartialGuildMember.class)
+        interface PartialGuildMember {
+
+            static Builder builder() {
+                return new Builder();
+            }
+
+            Optional<String> nick();
+
+            Optional<String> avatar();
+
+            List<Snowflake> roles();
+
+            @JsonProperty("joined_at")
+            Instant joinedAt();
+
+            @JsonProperty("premium_since")
+            Optional<Instant> premiumSince();
+
+            Optional<Boolean> pending();
+
+            Optional<EnumSet<PermissionFlag>> permissions();
+
+            @JsonProperty("communication_disabled_until")
+            Optional<Instant> communicationDisabledUntil();
+
+            class Builder extends ImmutableInteraction.PartialGuildMember.Builder {
+                protected Builder() {}
+            }
+        }
+
+        @ImmutableJson
+        @JsonDeserialize(as = ImmutableInteraction.ResolvedData.class)
+        interface PartialChannel {
+
+            static Builder builder() {
+                return new Builder();
+            }
+
+            Snowflake id();
+
+            Channel.Type type();
+
+            Optional<String> name();
+
+            @JsonProperty("parent_id")
+            Optional<Snowflake> parentId();
+
+            @JsonProperty("thread_metadata")
+            Optional<ThreadMetadata> threadMetadata();
+
+            Optional<EnumSet<PermissionFlag>> permissions();
+
+            class Builder extends ImmutableInteraction.PartialChannel.Builder {
+                protected Builder() {}
+            }
         }
     }
 
@@ -281,7 +343,7 @@ public interface Interaction<T> {
 
         Optional<List<Component>> components();
 
-        Optional<List<Message.Attachment>> attachments();
+        Optional<List<PartialAttachment>> attachments();
 
         Optional<List<ApplicationCommand.Option.Choice>> choices();
 
