@@ -145,7 +145,6 @@ public abstract class AuthenticatedDiscordClient<T extends Response> extends Dis
 
     protected abstract DiscordInteractionsClient<T> buildInteractionsClient();
 
-    // TODO async
     private DiscordInteractionsClient<T> getInteractionsClient() {
         if (interactionsClient == null) {
             synchronized (this) {

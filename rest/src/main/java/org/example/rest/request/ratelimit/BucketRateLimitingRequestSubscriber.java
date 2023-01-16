@@ -1,10 +1,14 @@
 package org.example.rest.request.ratelimit;
 
+import io.smallrye.mutiny.Context;
 import io.smallrye.mutiny.Uni;
 import io.smallrye.mutiny.subscription.MultiSubscriber;
 import io.vertx.mutiny.core.Promise;
+import org.example.rest.request.HttpClientRequester;
+import org.example.rest.request.Request;
 import org.example.rest.request.Requester;
 import org.example.rest.response.HttpResponse;
+import org.example.rest.response.RateLimitException;
 import org.slf4j.Logger;
 import org.reactivestreams.Subscription;
 import org.slf4j.LoggerFactory;
@@ -12,14 +16,22 @@ import org.slf4j.LoggerFactory;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.NoSuchElementException;
+import java.util.function.Predicate;
+
+import static org.example.rest.request.HttpClientRequester.FALLBACK_REQUEST_ID;
+import static org.example.rest.request.HttpClientRequester.REQUEST_ID;
+import static org.example.rest.util.ExceptionPredicate.is;
 
 class BucketRateLimitingRequestSubscriber implements MultiSubscriber<CompletableRequest> {
     private static final Logger LOG = LoggerFactory.getLogger(BucketRateLimitingRequestSubscriber.class);
+    private static final String ITERATION = "iteration";
+
     private final BucketCacheKey bucketKey;
     private final Requester<HttpResponse> requester;
     private final Promise<String> bucketPromise;
 
     private volatile int resetAfter;
+    private volatile boolean bucketPromiseCompleted;
 
     private Subscription subscription;
 
@@ -32,29 +44,50 @@ class BucketRateLimitingRequestSubscriber implements MultiSubscriber<Completable
         this.bucketPromise = bucketPromise;
     }
 
+    private Uni<HttpResponse> requestWithContext(Request request, Context ctx) {
+        return requester.request(request)
+            .onFailure(is(RateLimitException.class).and(x -> ctx.getOrElse(ITERATION, () -> 0) < 5)).retry().when(multi -> {
+                return multi.onItem().castTo(RateLimitException.class)
+                        .call(rateLimit -> {
+                            Duration retryAfter = Duration.between(Instant.now(),
+                                    Instant.ofEpochSecond(Math.round(rateLimit.getResponse().retryAfter())));
+
+                            if (!retryAfter.isZero() && !retryAfter.isNegative()) {
+                                return Uni.createFrom().voidItem().onItem().delayIt().by(retryAfter);
+                            }
+                            return Uni.createFrom().voidItem();
+                        })
+                        .invoke(() -> {
+                            ctx.put(ITERATION, ctx.getOrElse(ITERATION, () -> 0) + 1);
+                            LOG.debug("Retrying outgoing request {} due to rate limit, attempts: {}",
+                                    ctx.getOrElse(REQUEST_ID, FALLBACK_REQUEST_ID), ctx.get(ITERATION));
+                        });
+            });
+    }
+
     private Duration getResetAfterDuration() {
         return Duration.between(Instant.now(), Instant.ofEpochSecond(resetAfter));
     }
 
-    // TODO retry early rate limits encountered before bucket info is stored (need iterative context)
-    // and retry emoji rate limits
     @Override
     public void onItem(CompletableRequest item) {
         Promise<HttpResponse> promise = item.getPromise();
 
-        requester.request(item.getRequest())
+        // TODO can't fail with bucketPromise, need to wait for first item between requestPromise and bucketPromise
+        // then fail if no termination after timeout
+        Uni.createFrom().context(ctx -> requestWithContext(item.getRequest(), ctx))
             .onFailure().invoke(bucketPromise::tryFail)
             .invoke(response -> {
                 String bucket = response.getHeader("X-RateLimit-Bucket");
-                if (bucket != null) {
+                if (bucket != null && !bucketPromiseCompleted) {
                     if (bucketKey.getTopLevelResourceValue().isPresent()) {
                         bucket += '-' + bucketKey.getTopLevelResourceValue().get();
                     }
 
-                    bucketPromise.tryComplete(bucket);
-                } else {
+                    bucketPromiseCompleted = bucketPromise.tryComplete(bucket);
+                } else if (!bucketPromiseCompleted) {
                     LOG.debug("Request matching bucket key {} didn't return a bucket value", bucketKey);
-                    bucketPromise.tryFail(new NoSuchElementException());
+                    bucketPromiseCompleted = bucketPromise.tryFail(new NoSuchElementException());
                 }
             })
             .call(response -> {

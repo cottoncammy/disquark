@@ -34,7 +34,7 @@ public interface AuditLog {
     @JsonProperty("audit_log_entries")
     List<Entry> auditLogEntries();
 
-    @JsonProperty("audit_moderation_rules")
+    @JsonProperty("auto_moderation_rules")
     List<AutoModerationRule> autoModerationRules();
 
     @JsonProperty("guild_scheduled_events")

@@ -19,7 +19,7 @@ class BucketRateLimitingRequestStream {
 
     private volatile boolean subscribed;
 
-    public BucketRateLimitingRequestStream(BucketCacheKey  bucketKey, Requester<HttpResponse> requester) {
+    public BucketRateLimitingRequestStream(BucketCacheKey bucketKey, Requester<HttpResponse> requester) {
         this.bucketKey = bucketKey;
         this.requester = requester;
     }

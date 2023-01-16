@@ -41,6 +41,7 @@ public abstract class CompletableInteraction<T> {
         if (ephemeral) {
             builder.data(Interaction.CallbackData.builder().flags(EnumSet.of(Message.Flag.EPHEMERAL)).build());
         }
+
         return serialize(builder.build())
                 .invoke(json -> LOG.debug("Responding to interaction with {} deferred message {}",
                         interaction.id().getValueAsString(), json))

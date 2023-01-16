@@ -61,7 +61,6 @@ public class DiscordInteractionsClient<T extends Response> extends DiscordClient
         this.validator = validator;
     }
 
-    // TODO async
     private InteractionsVerticle getVerticle() {
         if (verticle == null) {
             synchronized (this) {
@@ -178,7 +177,7 @@ public class DiscordInteractionsClient<T extends Response> extends DiscordClient
 
                 boolean noBouncyCastle = false;
                 try {
-                    Class.forName("org.bouncycastle.jce.provider.BouncyCastleProvider");
+                    Class.forName("org.bouncycastle.math.ec.rfc8032.Ed25519");
                 } catch (ClassNotFoundException e) {
                     LOG.warn("org.bouncycastle dependency not installed: incoming interaction signatures will not be validated");
                     noBouncyCastle = true;
