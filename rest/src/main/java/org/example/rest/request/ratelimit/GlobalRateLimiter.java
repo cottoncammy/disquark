@@ -13,7 +13,7 @@ public abstract class GlobalRateLimiter {
     }
 
     protected Uni<Duration> getRetryAfterDuration() {
-        return Uni.createFrom().item(Duration.between(Instant.now(), Instant.ofEpochSecond(retryAfter)));
+        return Uni.createFrom().item(Duration.between(Instant.now(), Instant.now().plusSeconds(retryAfter)));
     }
 
     public abstract <T> Uni<T> rateLimit(Uni<T> upstream);

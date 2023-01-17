@@ -567,9 +567,9 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
                 .flatMap(res -> res.as(Guild.WidgetSettings.class));
     }
 
-    public Uni<Guild.Widget> modifyGuildWidget(ModifyGuildWidget modifyGuildWidget) {
+    public Uni<Guild.WidgetSettings> modifyGuildWidget(ModifyGuildWidget modifyGuildWidget) {
         return requester.request(requireNonNull(modifyGuildWidget, "modifyGuildWidget").asRequest())
-                .flatMap(res -> res.as(Guild.Widget.class));
+                .flatMap(res -> res.as(Guild.WidgetSettings.class));
     }
 
     public Uni<Guild.Widget> getGuildWidget(Snowflake guildId) {

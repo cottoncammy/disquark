@@ -7,11 +7,10 @@ import org.example.rest.resources.Snowflake;
 import org.example.rest.resources.guild.template.CreateGuildFromGuildTemplate;
 import org.example.rest.resources.guild.template.CreateGuildTemplate;
 import org.example.rest.resources.guild.template.ModifyGuildTemplate;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @ExtendWith(SomeExtension2.class)
 class GuildTemplateIT {
     private String templateCode;

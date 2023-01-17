@@ -1,9 +1,7 @@
 package org.example.it;
 
-import io.smallrye.mutiny.helpers.test.AssertSubscriber;
 import io.smallrye.mutiny.helpers.test.UniAssertSubscriber;
 import org.example.it.config.ConfigValue;
-import org.example.rest.AuthenticatedDiscordClient;
 import org.example.rest.oauth2.DiscordOAuth2Client;
 import org.example.rest.resources.Snowflake;
 import org.example.rest.resources.application.command.ApplicationCommand;
@@ -13,7 +11,7 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 @ExtendWith(SomeExtension2.class)
-class DiscordOAuth2ClientIT extends AuthenticatedDiscordClientIT {
+class DiscordOAuth2ClientIT {
 
     @Test
     void testEditApplicationCommandPermissions(DiscordOAuth2Client<?> oAuth2Client, @ConfigValue("DISCORD_APPLICATION_ID") Snowflake applicationId, @ConfigValue("DISCORD_GUILD_ID") Snowflake guildId) {

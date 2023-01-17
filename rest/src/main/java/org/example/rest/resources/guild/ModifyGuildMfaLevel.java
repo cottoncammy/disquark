@@ -45,7 +45,7 @@ public interface ModifyGuildMfaLevel extends Auditable, Requestable {
         private final Guild.MfaLevel level;
 
         @JsonCreator
-        public Response(@JsonProperty Guild.MfaLevel level) {
+        public Response(@JsonProperty("level") Guild.MfaLevel level) {
             this.level = level;
         }
 

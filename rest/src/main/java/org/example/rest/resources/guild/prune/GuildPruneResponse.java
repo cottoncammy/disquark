@@ -11,7 +11,7 @@ public class GuildPruneResponse {
     private final Integer pruned;
 
     @JsonCreator
-    public GuildPruneResponse(@JsonProperty Integer pruned) {
+    public GuildPruneResponse(@JsonProperty("pruned") Integer pruned) {
         this.pruned = pruned;
     }
 

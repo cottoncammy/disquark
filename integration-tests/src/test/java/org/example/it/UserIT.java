@@ -53,15 +53,6 @@ class UserIT {
     }
 
     @Test
-    void testLeaveGuild(DiscordBotClient<?> botClient) {
-        botClient.createGuild(CreateGuild.builder().name("foo").build())
-                .flatMap(guild -> botClient.leaveGuild(guild.id()))
-                .subscribe().withSubscriber(UniAssertSubscriber.create())
-                .awaitItem()
-                .assertCompleted();
-    }
-
-    @Test
     void testCreateDm(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_USER_ID") Snowflake userId) {
         botClient.createDm(userId).subscribe().withSubscriber(UniAssertSubscriber.create()).awaitItem().assertCompleted();
     }

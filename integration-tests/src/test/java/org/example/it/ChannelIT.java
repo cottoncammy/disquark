@@ -397,6 +397,7 @@ class ChannelIT {
     }
 
     @Test
+    @Tag("members-intent")
     @Order(33)
     void testListThreadMembers(DiscordBotClient<?> botClient) {
         botClient.listThreadMembers(ListThreadMembers.create(threadId))

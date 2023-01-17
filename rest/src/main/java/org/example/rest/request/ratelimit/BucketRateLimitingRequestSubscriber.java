@@ -2,6 +2,7 @@ package org.example.rest.request.ratelimit;
 
 import io.smallrye.mutiny.Context;
 import io.smallrye.mutiny.Uni;
+import io.smallrye.mutiny.infrastructure.Infrastructure;
 import io.smallrye.mutiny.subscription.MultiSubscriber;
 import io.vertx.mutiny.core.Promise;
 import org.example.rest.request.Request;
@@ -25,7 +26,7 @@ class BucketRateLimitingRequestSubscriber implements MultiSubscriber<Completable
     private final BucketCacheKey bucketKey;
     private final Requester<HttpResponse> requester;
 
-    private volatile int resetAfter;
+    private volatile long resetAfter;
 
     private Subscription subscription;
 
@@ -34,13 +35,17 @@ class BucketRateLimitingRequestSubscriber implements MultiSubscriber<Completable
         this.requester = requester;
     }
 
+    private int getIteration(Context ctx) {
+        return ctx.getOrElse(ITERATION, () -> 0);
+    }
+
     private Uni<HttpResponse> requestWithContext(Request request, Context ctx) {
         return requester.request(request)
-            .onFailure(is(RateLimitException.class).and(x -> ctx.getOrElse(ITERATION, () -> 0) < 5)).retry().when(multi -> {
+            .onFailure(is(RateLimitException.class).and(x -> getIteration(ctx) < 5)).retry().when(multi -> {
                 return multi.onItem().castTo(RateLimitException.class)
                         .onItem().transformToUniAndMerge(rateLimit -> {
                             Duration retryAfter = Duration.between(Instant.now(),
-                                    Instant.ofEpochSecond(Math.round(rateLimit.getResponse().retryAfter())));
+                                    Instant.now().plusSeconds(Math.round(rateLimit.getResponse().retryAfter())));
 
                             if (!retryAfter.isZero() && !retryAfter.isNegative()) {
                                 return Uni.createFrom().item(rateLimit).onItem().delayIt().by(retryAfter);
@@ -48,7 +53,7 @@ class BucketRateLimitingRequestSubscriber implements MultiSubscriber<Completable
                             return Uni.createFrom().item(rateLimit);
                         })
                         .invoke(() -> {
-                            ctx.put(ITERATION, ctx.getOrElse(ITERATION, () -> 0) + 1);
+                            ctx.put(ITERATION, getIteration(ctx) + 1);
                             LOG.debug("Retrying outgoing request {} after encountering rate limit error, attempts: {}",
                                     ctx.getOrElse(REQUEST_ID, FALLBACK_REQUEST_ID), ctx.get(ITERATION));
                         });
@@ -56,7 +61,7 @@ class BucketRateLimitingRequestSubscriber implements MultiSubscriber<Completable
     }
 
     private Duration getResetAfterDuration() {
-        return Duration.between(Instant.now(), Instant.ofEpochSecond(resetAfter));
+        return Duration.between(Instant.now(), Instant.now().plusSeconds(resetAfter));
     }
 
     private void request() {
@@ -97,6 +102,7 @@ class BucketRateLimitingRequestSubscriber implements MultiSubscriber<Completable
                 }
                 return Uni.createFrom().voidItem();
             })
+            .onItem().invoke(res -> promise.complete(res))
             .onItemOrFailure().call(() -> {
                 Duration resetAfter = getResetAfterDuration();
                 if (!resetAfter.isZero() && !resetAfter.isNegative()) {
@@ -108,7 +114,7 @@ class BucketRateLimitingRequestSubscriber implements MultiSubscriber<Completable
                 return Uni.createFrom().voidItem().invoke(this::request);
             })
             .subscribe()
-            .with(promise::complete, promise::fail);
+            .with(x -> {}, promise::fail);
     }
 
     @Override

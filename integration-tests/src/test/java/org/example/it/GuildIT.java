@@ -1,15 +1,22 @@
 package org.example.it;
 
+import io.smallrye.mutiny.Uni;
 import io.smallrye.mutiny.helpers.test.UniAssertSubscriber;
 import org.example.it.config.ConfigValue;
 import org.example.rest.DiscordBotClient;
+import org.example.rest.oauth2.BearerTokenSource;
 import org.example.rest.resources.Snowflake;
 import org.example.rest.resources.guild.*;
 import org.example.rest.resources.guild.prune.BeginGuildPrune;
 import org.example.rest.resources.guild.prune.GetGuildPruneCount;
+import org.example.rest.resources.oauth2.AccessToken;
+import org.example.rest.resources.oauth2.Scope;
 import org.example.rest.resources.user.GetCurrentUserGuilds;
+import org.example.rest.response.DiscordException;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
+
+import java.util.EnumSet;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @ExtendWith(SomeExtension2.class)
@@ -21,7 +28,8 @@ class GuildIT {
     void init(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_GUILD_ID") Snowflake guildId) {
         botClient.getCurrentUserGuilds(GetCurrentUserGuilds.create())
                 .filter(guild -> !guild.id().equals(guildId))
-                .onItem().transformToUniAndMerge(guild -> botClient.deleteGuild(guild.id()).onFailure().recoverWithNull())
+                .onItem().transformToUniAndMerge(guild -> botClient.deleteGuild(guild.id())
+                        .onFailure(DiscordException.statusCodeIs(403)).recoverWithNull())
                 .collect().asList()
                 .await().indefinitely();
     }
@@ -88,6 +96,7 @@ class GuildIT {
     }
 
     @Test
+    @Tag("members-intent")
     @Order(7)
     void testListGuildMembers(DiscordBotClient<?> botClient) {
         botClient.listGuildMembers(ListGuildMembers.create(guildId))
@@ -109,8 +118,13 @@ class GuildIT {
 
     @Test
     @Order(9)
-    void testAddGuildMember(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_USER_ID") Snowflake userId) {
-        botClient.addGuildMember(AddGuildMember.builder().guildId(guildId).userId(userId).accessToken("").build())
+    void testAddGuildMember(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_CLIENT_ID") String clientId, @ConfigValue("DISCORD_CLIENT_SECRET") String clientSecret, @ConfigValue("DISCORD_USER_ID") Snowflake userId) {
+        Uni<String> tokenUni = BearerTokenSource.create(botClient.getVertx(), clientId, clientSecret)
+                .fromClientCredentials(EnumSet.of(Scope.GUILDS_JOIN))
+                .getToken()
+                .map(AccessToken::accessToken);
+
+        tokenUni.call(token -> botClient.addGuildMember(AddGuildMember.builder().guildId(guildId).userId(userId).accessToken(token).build()))
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .awaitItem()
                 .assertCompleted();
@@ -332,7 +346,7 @@ class GuildIT {
     @Test
     @Order(32)
     void testModifyGuildWidget(DiscordBotClient<?> botClient) {
-        botClient.modifyGuildWidget(ModifyGuildWidget.builder().guildId(guildId).enabled(false).build())
+        botClient.modifyGuildWidget(ModifyGuildWidget.builder().guildId(guildId).enabled(true).build())
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .awaitItem()
                 .assertCompleted();
@@ -358,6 +372,7 @@ class GuildIT {
     }
 
     @Test
+    @Tag("welcome-screen")
     @Order(35)
     void testGetGuildWelcomeScreen(DiscordBotClient<?> botClient) {
         botClient.getGuildWelcomeScreen(guildId)
@@ -367,6 +382,7 @@ class GuildIT {
     }
 
     @Test
+    @Tag("welcome-screen")
     @Order(36)
     void testModifyGuildWelcomeScreen(DiscordBotClient<?> botClient) {
         botClient.modifyGuildWelcomeScreen(ModifyGuildWelcomeScreen.builder().guildId(guildId).description("foo").build())

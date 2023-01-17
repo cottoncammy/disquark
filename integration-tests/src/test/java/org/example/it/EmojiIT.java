@@ -1,6 +1,5 @@
 package org.example.it;
 
-import io.smallrye.mutiny.helpers.test.AssertSubscriber;
 import io.smallrye.mutiny.helpers.test.UniAssertSubscriber;
 import io.vertx.mutiny.core.buffer.Buffer;
 import org.example.it.config.ConfigValue;
