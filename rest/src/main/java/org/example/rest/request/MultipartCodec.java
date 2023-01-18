@@ -5,21 +5,28 @@ import io.vertx.core.json.Json;
 import io.vertx.mutiny.core.MultiMap;
 import io.vertx.mutiny.core.buffer.Buffer;
 import io.vertx.mutiny.ext.web.multipart.MultipartForm;
-import org.apache.tika.Tika;
+import org.example.rest.util.Tika;
 
 import java.util.List;
 import java.util.Map;
 
 class MultipartCodec implements Codec {
-    private static final Tika TIKA = new Tika();
+
+    private void addFile(MultipartForm form, String paramName, Map.Entry<String, Buffer> file) {
+        form.binaryFileUpload(paramName, file.getKey(), file.getValue(), Tika.detect(file.getValue().getBytes()));
+    }
 
     @Override
     public Body serialize(Request request, MultiMap headers) {
         MultipartForm form = MultipartForm.create();
         List<Map.Entry<String, Buffer>> files = request.files();
-        for (int i = 0; i < files.size(); i++) {
-            Map.Entry<String, Buffer> file = files.get(i);
-            form.binaryFileUpload(String.format("files[%d]", i), file.getKey(), file.getValue(), TIKA.detect(file.getValue().getBytes()));
+
+        if (files.size() == 1) {
+            addFile(form, "file", files.get(0));
+        } else {
+            for (int i = 0; i < files.size(); i++) {
+                addFile(form, String.format("files[%d]", i), files.get(i));
+            }
         }
 
         if (request.body().isPresent()) {

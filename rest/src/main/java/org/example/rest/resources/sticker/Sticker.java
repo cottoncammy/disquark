@@ -11,6 +11,7 @@ import org.immutables.value.Value.Enclosing;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.OptionalInt;
 
 @Enclosing
 @ImmutableJson
@@ -48,7 +49,7 @@ public interface Sticker {
     Optional<User> user();
 
     @JsonProperty("sort_value")
-    int sortValue();
+    OptionalInt sortValue();
 
     enum Type {
         @JsonEnumDefaultValue
@@ -73,7 +74,8 @@ public interface Sticker {
         UNKNOWN(-1),
         PNG(1),
         APNG(2),
-        LOTTIE(3);
+        LOTTIE(3),
+        GIF(4);
 
         private final int value;
 

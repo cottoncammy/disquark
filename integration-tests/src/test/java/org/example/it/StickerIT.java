@@ -48,7 +48,6 @@ class StickerIT {
     }
 
     @Test
-    @Tag("sticker")
     @Order(4)
     void testCreateGuildSticker(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_GUILD_ID") Snowflake guildId) {
         Buffer image = botClient.getVertx().fileSystem().readFileAndAwait("images/sticker.png");

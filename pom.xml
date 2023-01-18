@@ -43,7 +43,6 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <apache-tika.version>2.6.0</apache-tika.version>
-        <asm.version>9.4</asm.version>
         <bouncycastle.version>1.70</bouncycastle.version>
         <bucket4j-version>8.1.0</bucket4j-version>
         <caffeine.version>3.1.2</caffeine.version>
@@ -159,11 +158,6 @@
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
                 <version>${slf4j.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.ow2.asm</groupId>
-                <artifactId>asm</artifactId>
-                <version>${asm.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
