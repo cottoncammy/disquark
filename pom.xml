@@ -63,7 +63,7 @@
         <dependency-plugin.version>3.5.0</dependency-plugin.version>
         <deploy-plugin.version>3.0.0</deploy-plugin.version>
         <enforcer-plugin.version>3.1.0</enforcer-plugin.version>
-        <failsafe-plugin.version>3.0.0-M7</failsafe-plugin.version>
+        <failsafe-plugin.version>3.0.0-M8</failsafe-plugin.version>
         <gpg-plugin.version>3.0.1</gpg-plugin.version>
         <install-plugin.version>3.1.0</install-plugin.version>
         <jar-plugin.version>3.3.0</jar-plugin.version>
