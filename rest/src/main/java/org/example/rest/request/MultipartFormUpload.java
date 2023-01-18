@@ -51,7 +51,7 @@ class MultipartFormUpload extends AbstractMulti<Buffer> {
 
     private Multi<Buffer> encodeBody() {
         return Uni.createFrom().item(supplier(() -> Buffer.buffer(encoder.readChunk(ALLOC).content())))
-                .repeat().until(y -> supplier(encoder::isEndOfInput).get())
+                .repeat().until(x -> supplier(encoder::isEndOfInput).get())
                 .onItem().invoke(() -> LOG.debug("Writing multipart-form body chunk"));
     }
 
