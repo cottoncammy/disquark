@@ -4,6 +4,7 @@ import io.smallrye.mutiny.Context;
 import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
 import io.smallrye.mutiny.operators.multi.processors.BroadcastProcessor;
+import io.smallrye.mutiny.operators.multi.processors.UnicastProcessor;
 import io.smallrye.mutiny.vertx.core.AbstractVerticle;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.json.DecodeException;
@@ -35,7 +36,7 @@ class InteractionsVerticle extends AbstractVerticle {
     private final String interactionsUrl;
     private final InteractionValidator interactionValidator;
     private final DiscordInteractionsClient<?> interactionsClient;
-    private final BroadcastProcessor<RoutingContext> processor = BroadcastProcessor.create();
+    private final UnicastProcessor<RoutingContext> processor = UnicastProcessor.create();
 
     public InteractionsVerticle(
             Router router,

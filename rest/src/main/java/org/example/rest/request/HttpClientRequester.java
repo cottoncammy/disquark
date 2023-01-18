@@ -5,14 +5,18 @@ import static java.util.Objects.requireNonNull;
 import io.smallrye.mutiny.Context;
 import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
+import io.smallrye.mutiny.infrastructure.Infrastructure;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.RequestOptions;
 import io.vertx.mutiny.core.Vertx;
+import io.vertx.mutiny.core.buffer.Buffer;
 import io.vertx.mutiny.core.http.HttpClient;
+import io.vertx.mutiny.core.http.HttpClientRequest;
 import io.vertx.mutiny.core.http.HttpClientResponse;
 import io.vertx.mutiny.core.http.HttpHeaders;
 import org.example.rest.request.ratelimit.GlobalRateLimiter;
 import org.example.rest.response.*;
+import org.reactivestreams.Publisher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -85,8 +89,6 @@ public class HttpClientRequester implements Requester<HttpResponse> {
                         }
 
                         String contentType = request.contentType().get();
-                        req.putHeader(HttpHeaders.CONTENT_TYPE, contentType);
-
                         Codec codec = requireNonNull(codecs.get(contentType), String.format("%s codec", contentType));
                         LOG.debug("Serializing {} body for outgoing request {}", contentType, ctx.get(REQUEST_ID));
 
@@ -94,6 +96,8 @@ public class HttpClientRequester implements Requester<HttpResponse> {
                                 .flatMap(body -> {
                                     LOG.debug("Sending outgoing request {} with body {}",
                                             ctx.get(REQUEST_ID), body.getAsString());
+                                    LOG.trace("Headers for outgoing request {}: {}",
+                                            ctx.get(REQUEST_ID), req.headers().entries());
 
                                     if (body.asString().isPresent()) {
                                         return req.send(body.asString().get());
@@ -101,10 +105,6 @@ public class HttpClientRequester implements Requester<HttpResponse> {
 
                                     if (body.asBuffer().isPresent()) {
                                         return req.send(body.asBuffer().get());
-                                    }
-
-                                    if (body.asReadStream().isPresent()) {
-                                        return req.send(body.asReadStream().get());
                                     }
 
                                     return req.send(body.asPublisher().get());
@@ -183,7 +183,7 @@ public class HttpClientRequester implements Requester<HttpResponse> {
 
         public HttpClientRequester build() {
             codecs.put("application/json", new JsonCodec());
-            codecs.put("multipart/form-data", new MultipartCodec(vertx));
+            codecs.put("multipart/form-data", new MultipartCodec());
 
             return new HttpClientRequester(
                     baseUrl == null ? URI.create("https://discord.com/api/v10") : baseUrl,

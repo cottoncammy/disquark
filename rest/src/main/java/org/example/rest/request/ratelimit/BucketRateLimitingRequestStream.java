@@ -2,6 +2,7 @@ package org.example.rest.request.ratelimit;
 
 import io.smallrye.mutiny.Uni;
 import io.smallrye.mutiny.operators.multi.processors.BroadcastProcessor;
+import io.smallrye.mutiny.operators.multi.processors.UnicastProcessor;
 import io.vertx.mutiny.core.Promise;
 import org.example.rest.request.Requester;
 import org.example.rest.response.HttpResponse;
@@ -14,7 +15,7 @@ class BucketRateLimitingRequestStream {
     private static final Logger LOG = LoggerFactory.getLogger(BucketRateLimitingRequestStream.class);
     private final BucketCacheKey bucketKey;
     private final Requester<HttpResponse> requester;
-    private final BroadcastProcessor<CompletableRequest> processor = BroadcastProcessor.create();
+    private final UnicastProcessor<CompletableRequest> processor = UnicastProcessor.create();
 
     private volatile boolean subscribed;
 

@@ -23,30 +23,23 @@ public interface Codec {
         @Nullable
         private final Buffer buffer;
         @Nullable
-        private final ReadStream<Buffer> readStream;
-        @Nullable
         private final Publisher<Buffer> publisher;
 
         public static Body from(String body) {
-            return new Body(requireNonNull(body, "body"), null, null, null);
+            return new Body(requireNonNull(body, "body"), null, null);
         }
 
         public static Body from(Buffer body) {
-            return new Body(null, requireNonNull(body, "body"), null, null);
-        }
-
-        public static Body from(ReadStream<Buffer> body) {
-            return new Body(null, null, requireNonNull(body, "body"), null);
+            return new Body(null, requireNonNull(body, "body"), null);
         }
 
         public static Body from(Publisher<Buffer> body) {
-            return new Body(null, null, null, requireNonNull(body, "body"));
+            return new Body(null, null, requireNonNull(body, "body"));
         }
 
-        private Body(String string, Buffer buffer, ReadStream<Buffer> readStream, Publisher<Buffer> publisher) {
+        private Body(String string, Buffer buffer, Publisher<Buffer> publisher) {
             this.string = string;
             this.buffer = buffer;
-            this.readStream = readStream;
             this.publisher = publisher;
         }
 
@@ -56,10 +49,6 @@ public interface Codec {
 
         public Optional<Buffer> asBuffer() {
             return Optional.ofNullable(buffer);
-        }
-
-        public Optional<ReadStream<Buffer>> asReadStream() {
-            return Optional.ofNullable(readStream);
         }
 
         public Optional<Publisher<Buffer>> asPublisher() {

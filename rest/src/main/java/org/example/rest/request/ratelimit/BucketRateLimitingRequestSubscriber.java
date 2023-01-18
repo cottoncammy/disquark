@@ -39,7 +39,7 @@ class BucketRateLimitingRequestSubscriber implements MultiSubscriber<Completable
         return ctx.getOrElse(ITERATION, () -> 0);
     }
 
-    private Uni<HttpResponse> requestWithContext(Request request, Context ctx) {
+    private Uni<HttpResponse> request(Request request, Context ctx) {
         return requester.request(request)
             .onFailure(is(RateLimitException.class).and(x -> getIteration(ctx) < 5)).retry().when(multi -> {
                 return multi.onItem().castTo(RateLimitException.class)
@@ -73,7 +73,7 @@ class BucketRateLimitingRequestSubscriber implements MultiSubscriber<Completable
     public void onItem(CompletableRequest item) {
         Promise<HttpResponse> promise = item.getResponsePromise();
 
-        Uni.createFrom().context(ctx -> requestWithContext(item.getRequest(), ctx))
+        Uni.createFrom().context(ctx -> request(item.getRequest(), ctx))
             .call(response -> {
                 String bucket = response.getHeader("X-RateLimit-Bucket");
                 if (bucket != null) {

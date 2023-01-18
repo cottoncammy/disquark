@@ -50,6 +50,7 @@
             <plugin>
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <configuration>
+                    <groups>sticker</groups>
                     <excludedGroups>announcement-channel, forum-channel, group-dm, members-intent, rate-limit, stage-channel, welcome-screen, vanity-url</excludedGroups>
                 </configuration>
             </plugin>

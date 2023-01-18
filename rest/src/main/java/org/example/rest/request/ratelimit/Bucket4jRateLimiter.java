@@ -39,7 +39,7 @@ public class Bucket4jRateLimiter extends GlobalRateLimiter {
         this.bucket = bucket;
     }
 
-    private <T> Uni<T> rateLimitWithContext(Uni<T> upstream, Context ctx) {
+    private <T> Uni<T> rateLimit(Uni<T> upstream, Context ctx) {
         LOG.debug("Acquiring bucket token for outgoing request {}, {} tokens available",
                 ctx.getOrElse(REQUEST_ID, FALLBACK_REQUEST_ID), bucket.getAvailableTokens());
 
@@ -72,6 +72,6 @@ public class Bucket4jRateLimiter extends GlobalRateLimiter {
 
     @Override
     public <T> Uni<T> rateLimit(Uni<T> upstream) {
-        return Uni.createFrom().context(ctx -> rateLimitWithContext(upstream, ctx));
+        return Uni.createFrom().context(ctx -> rateLimit(upstream, ctx));
     }
 }

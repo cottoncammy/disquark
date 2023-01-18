@@ -5,6 +5,7 @@ import io.vertx.mutiny.core.buffer.Buffer;
 import org.example.it.config.ConfigValue;
 import org.example.rest.DiscordBotClient;
 import org.example.rest.resources.Snowflake;
+import org.example.rest.resources.channel.CreateMessage;
 import org.example.rest.resources.sticker.CreateGuildSticker;
 import org.example.rest.resources.sticker.ModifyGuildSticker;
 import org.junit.jupiter.api.*;
@@ -47,16 +48,16 @@ class StickerIT {
     }
 
     @Test
+    @Tag("sticker")
     @Order(4)
     void testCreateGuildSticker(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_GUILD_ID") Snowflake guildId) {
-        String imageName = "images/sticker.png";
-        Buffer image = botClient.getVertx().fileSystem().readFileAndAwait(imageName);
+        Buffer image = botClient.getVertx().fileSystem().readFileAndAwait("images/sticker.png");
         CreateGuildSticker createGuildSticker = CreateGuildSticker.builder()
                 .guildId(guildId)
                 .name("foo")
                 .description("bar")
                 .tags("baz")
-                .addFile(Map.entry(imageName, image))
+                .addFile(Map.entry("sticker.png", image))
                 .build();
 
         stickerId = botClient.createGuildSticker(createGuildSticker)

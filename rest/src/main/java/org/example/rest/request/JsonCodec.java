@@ -3,11 +3,13 @@ package org.example.rest.request;
 import io.vertx.core.json.Json;
 import io.vertx.mutiny.core.MultiMap;
 import io.vertx.mutiny.core.buffer.Buffer;
+import io.vertx.mutiny.core.http.HttpHeaders;
 
 class JsonCodec implements Codec {
 
     @Override
     public Body serialize(Request request, MultiMap headers) {
+        headers.add(HttpHeaders.CONTENT_TYPE, "application/json");
         return Body.from(Json.encode(request.body().get()));
     }
 

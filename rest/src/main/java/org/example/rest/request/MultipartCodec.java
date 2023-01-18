@@ -1,47 +1,41 @@
 package org.example.rest.request;
 
-import io.netty.handler.codec.http.multipart.HttpPostRequestEncoder.EncoderMode;
+import io.netty.util.internal.StringUtil;
 import io.vertx.core.json.Json;
-import io.vertx.ext.web.client.impl.MultipartFormUpload;
 import io.vertx.mutiny.core.MultiMap;
-import io.vertx.mutiny.core.Vertx;
 import io.vertx.mutiny.core.buffer.Buffer;
-import io.vertx.mutiny.core.streams.ReadStream;
 import io.vertx.mutiny.ext.web.multipart.MultipartForm;
+import org.apache.tika.Tika;
 
 import java.util.List;
 import java.util.Map;
 
 class MultipartCodec implements Codec {
-    private final Vertx vertx;
+    private static final Tika TIKA = new Tika();
 
-    public MultipartCodec(Vertx vertx) {
-        this.vertx = vertx;
-    }
-
-    // TODO set contentLength
     @Override
     public Body serialize(Request request, MultiMap headers) {
         MultipartForm form = MultipartForm.create();
         List<Map.Entry<String, Buffer>> files = request.files();
         for (int i = 0; i < files.size(); i++) {
             Map.Entry<String, Buffer> file = files.get(i);
-            form.binaryFileUpload(String.format("files[%d]", i), file.getKey(), file.getValue(), "application/octet-stream");
+            form.binaryFileUpload(String.format("files[%d]", i), file.getKey(), file.getValue(), TIKA.detect(file.getValue().getBytes()));
         }
 
         if (request.body().isPresent()) {
-            form.attribute("payload_json", Json.encode(request.body().get()));
+            form.textFileUpload("payload_json", StringUtil.EMPTY_STRING,
+                    Buffer.buffer(Json.encode(request.body().get())), "application/json");
         }
 
         MultipartFormUpload upload;
         try {
-            upload = new MultipartFormUpload(vertx.getOrCreateContext().getDelegate(), form.getDelegate(), true, EncoderMode.HTML5);
+            upload = new MultipartFormUpload(form);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
 
-        headers.addAll(MultiMap.newInstance(upload.headers()));
-        return Body.from(ReadStream.newInstance(upload));
+        headers.addAll(upload.headers());
+        return Body.from(upload);
     }
 
     @Override
