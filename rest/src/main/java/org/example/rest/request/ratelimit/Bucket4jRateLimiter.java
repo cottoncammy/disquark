@@ -21,27 +21,47 @@ import java.util.function.Supplier;
 public class Bucket4jRateLimiter extends GlobalRateLimiter {
     private static final Logger LOG = LoggerFactory.getLogger(Bucket4jRateLimiter.class);
 
-    private final Bucket bucket;
+    private final Bucket ipBucket;
+    private final Bucket appBucket;
 
-    public static Bucket4jRateLimiter create(Bucket bucket) {
-        return new Bucket4jRateLimiter(requireNonNull(bucket, "bucket"));
+    public static Bucket4jRateLimiter create(Bucket ipBucket, Bucket appBucket) {
+        return new Bucket4jRateLimiter(requireNonNull(ipBucket, "ipBucket"), requireNonNull(appBucket, "appBucket"));
     }
 
     public static Bucket4jRateLimiter create(Bandwidth bandwidth) {
-        return create(Bucket.builder().addLimit(requireNonNull(bandwidth, "bandwidth")).build());
+        return create(Bucket.builder().addLimit(Bandwidth.simple(50, Duration.ofSeconds(1))).build(),
+                Bucket.builder().addLimit(requireNonNull(bandwidth, "bandwidth")).build());
     }
 
     public static Bucket4jRateLimiter create() {
         return create(Bandwidth.simple(50, Duration.ofSeconds(1)));
     }
 
-    private Bucket4jRateLimiter(Bucket bucket) {
-        this.bucket = bucket;
+    private Bucket4jRateLimiter(Bucket ipBucket, Bucket appBucket) {
+        this.ipBucket = ipBucket;
+        this.appBucket = appBucket;
     }
 
-    private <T> Uni<T> rateLimit(Uni<T> upstream, Context ctx) {
-        LOG.debug("Acquiring bucket token for outgoing request {}, {} tokens available",
-                ctx.getOrElse(REQUEST_ID, FALLBACK_REQUEST_ID), bucket.getAvailableTokens());
+    private String getLogString(boolean app) {
+        if (app) {
+            return "authenticated";
+        }
+
+        return "unauthenticated";
+    }
+
+    private Bucket getBucket(boolean app) {
+        if (app) {
+            return appBucket;
+        }
+
+        return ipBucket;
+    }
+
+    private <T> Uni<T> rateLimit(Uni<T> upstream, boolean app, Context ctx) {
+        Bucket bucket = getBucket(app);
+        LOG.debug("Acquiring bucket token for outgoing {} request {}, {} tokens available",
+                getLogString(app), ctx.getOrElse(REQUEST_ID, FALLBACK_REQUEST_ID), bucket.getAvailableTokens());
 
         return Uni.createFrom().item(supplier(() -> bucket.asBlocking().tryConsume(1, 10)))
                 .runSubscriptionOn(Infrastructure.getDefaultWorkerPool())
@@ -52,16 +72,16 @@ public class Bucket4jRateLimiter extends GlobalRateLimiter {
                     return Uni.createFrom().voidItem();
                 })
                 .onFailure(is(RuntimeException.class).and(wasCausedBy(InterruptedException.class))).invoke(() -> {
-                    LOG.warn("Thread interrupted while waiting to acquire bucket token for outgoing request {}",
-                            ctx.getOrElse(REQUEST_ID, FALLBACK_REQUEST_ID));
+                    LOG.warn("Thread interrupted while waiting to acquire bucket token for outgoing {} request {}",
+                            getLogString(app), ctx.getOrElse(REQUEST_ID, FALLBACK_REQUEST_ID));
 
                     bucket.addTokens(1);
                 })
-                .replaceWith(getRetryAfterDuration())
+                .replaceWith(getRetryAfterDuration(app))
                 .flatMap(retryAfterDuration -> {
                     if (!retryAfterDuration.isZero() && !retryAfterDuration.isNegative()) {
-                        LOG.debug("Globally rate limited: delaying outgoing request {} by {}s",
-                                ctx.getOrElse(REQUEST_ID, FALLBACK_REQUEST_ID), retryAfterDuration.getSeconds());
+                        LOG.debug("Globally rate limited: delaying outgoing {} request {} by {}s",
+                                getLogString(app), ctx.getOrElse(REQUEST_ID, FALLBACK_REQUEST_ID), retryAfterDuration.getSeconds());
 
                         return Uni.createFrom().voidItem().onItem().delayIt().by(retryAfterDuration);
                     }
@@ -71,7 +91,7 @@ public class Bucket4jRateLimiter extends GlobalRateLimiter {
     }
 
     @Override
-    public <T> Uni<T> rateLimit(Uni<T> upstream) {
-        return Uni.createFrom().context(ctx -> rateLimit(upstream, ctx));
+    public <T> Uni<T> rateLimit(Uni<T> upstream, boolean app) {
+        return Uni.createFrom().context(ctx -> rateLimit(upstream, app, ctx));
     }
 }

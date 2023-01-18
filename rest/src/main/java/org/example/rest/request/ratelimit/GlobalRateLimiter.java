@@ -4,17 +4,32 @@ import io.smallrye.mutiny.Uni;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.function.Supplier;
 
 public abstract class GlobalRateLimiter {
-    protected volatile int retryAfter;
+    private volatile int ipRetryAfter;
+    private volatile int appRetryAfter;
 
-    public Uni<Void> setRetryAfter(int retryAfter) {
-        return Uni.createFrom().voidItem().invoke(() -> this.retryAfter = retryAfter);
+    public Uni<Void> setRetryAfter(int retryAfter, boolean app) {
+        return Uni.createFrom().voidItem().invoke(() -> {
+            if (app) {
+                appRetryAfter = retryAfter;
+            } else {
+                ipRetryAfter = retryAfter;
+            }
+        });
     }
 
-    protected Uni<Duration> getRetryAfterDuration() {
-        return Uni.createFrom().item(Duration.between(Instant.now(), Instant.now().plusSeconds(retryAfter)));
+    protected Uni<Duration> getRetryAfterDuration(boolean app) {
+        Supplier<Integer> retryAfter;
+        if (app) {
+            retryAfter = () -> appRetryAfter;
+        } else {
+            retryAfter = () -> ipRetryAfter;
+        }
+
+        return Uni.createFrom().item(Duration.between(Instant.now(), Instant.now().plusSeconds(retryAfter.get())));
     }
 
-    public abstract <T> Uni<T> rateLimit(Uni<T> upstream);
+    public abstract <T> Uni<T> rateLimit(Uni<T> upstream, boolean app);
 }

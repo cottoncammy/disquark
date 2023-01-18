@@ -63,6 +63,8 @@ public class HttpClientRequester implements Requester<HttpResponse> {
             ctx.put(REQUEST_ID, Integer.toHexString(request.hashCode()));
         }
 
+        boolean authentication = request.endpoint().isAuthenticationRequired();
+
         return tokenSource.getToken()
                 .flatMap(token -> {
                     LOG.debug("Preparing to send outgoing request {} as {}", request, ctx.get(REQUEST_ID));
@@ -72,7 +74,7 @@ public class HttpClientRequester implements Requester<HttpResponse> {
                             .setMethod(request.endpoint().getHttpMethod())
                             .putHeader(HttpHeaders.USER_AGENT, String.format("DiscordBot (%s, %s)", "https://github.com/cameronprater/discord-TODO", "0.1.0"));
 
-                    if (request.endpoint().isAuthenticationRequired()) {
+                    if (authentication) {
                         options.putHeader(HttpHeaders.AUTHORIZATION, String.format("%s %s", token.tokenType().getValue(), token.accessToken()));
                     }
 
@@ -80,7 +82,7 @@ public class HttpClientRequester implements Requester<HttpResponse> {
                         options.putHeader("X-Audit-Log-Reason", request.auditLogReason().get());
                     }
 
-                    return rateLimiter.rateLimit(httpClient.request(options)).flatMap(req -> {
+                    return rateLimiter.rateLimit(httpClient.request(options), authentication).flatMap(req -> {
                         if (request.contentType().isEmpty()) {
                             req.putHeader(HttpHeaders.CONTENT_LENGTH, "0");
 
@@ -115,15 +117,17 @@ public class HttpClientRequester implements Requester<HttpResponse> {
                     if (Boolean.parseBoolean(res.getHeader("X-RateLimit-Global"))) {
                         String retryAfter = res.getHeader("Retry-After");
                         if (retryAfter != null) {
-                            LOG.debug("Globally rate limited for the next {}s", retryAfter);
-                            return rateLimiter.setRetryAfter(Math.round(Float.parseFloat(retryAfter)))
+                            LOG.debug("{} requests will be globally rate limited for the next {}s",
+                                    authentication ? "Authenticated" : "Unauthenticated", retryAfter);
+
+                            return rateLimiter.setRetryAfter(Math.round(Float.parseFloat(retryAfter)), authentication)
                                     .onFailure(NumberFormatException.class).transform(IllegalStateException::new);
                         }
                         return Uni.createFrom().failure(IllegalStateException::new);
                     }
                     return Uni.createFrom().voidItem();
                 })
-                .map(res -> new HttpResponse(ctx.getOrElse(REQUEST_ID, null), codecs, res))
+                .map(res -> new HttpResponse(ctx.getOrElse(REQUEST_ID, FALLBACK_REQUEST_ID), codecs, res))
                 .call(response -> {
                     HttpClientResponse httpResponse = response.getRaw();
                     LOG.debug("Received {} - {} for outgoing request {}",
@@ -147,7 +151,7 @@ public class HttpClientRequester implements Requester<HttpResponse> {
 
     public static class Builder {
         protected final Vertx vertx;
-        protected final Map<String, Codec> codecs;
+        protected final Map<String, Codec> codecs = new HashMap<>();
         protected final AccessTokenSource tokenSource;
         protected final GlobalRateLimiter rateLimiter;
 
@@ -156,7 +160,6 @@ public class HttpClientRequester implements Requester<HttpResponse> {
 
         protected Builder(Vertx vertx, AccessTokenSource tokenSource, GlobalRateLimiter rateLimiter) {
             this.vertx = vertx;
-            this.codecs = new HashMap<>();
             this.tokenSource = tokenSource;
             this.rateLimiter = rateLimiter;
         }

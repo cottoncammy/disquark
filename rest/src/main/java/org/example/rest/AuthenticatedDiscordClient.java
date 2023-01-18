@@ -12,6 +12,7 @@ import org.example.rest.request.AccessTokenSource;
 import org.example.rest.request.EmptyRequest;
 import org.example.rest.request.Requester;
 import org.example.rest.request.RequesterFactory;
+import org.example.rest.request.ratelimit.BucketRateLimitingRequester;
 import org.example.rest.request.ratelimit.GlobalRateLimiter;
 import org.example.rest.request.ratelimit.RateLimitStrategy;
 import org.example.rest.resources.Snowflake;
@@ -44,8 +45,18 @@ public abstract class AuthenticatedDiscordClient<T extends Response> extends Dis
             Requester<T> requester,
             DiscordInteractionsClient.Options interactionsClientOptions) {
         super(vertx, requester);
-        this.webhookClient = ((DiscordWebhookClient.Builder<T>) DiscordWebhookClient.builder(vertx)).requesterFactory(x -> requester).build();
+        this.webhookClient = ((DiscordWebhookClient.Builder<T>) DiscordWebhookClient.builder(vertx))
+                .requesterFactory(x -> wrapRequester())
+                .build();
         this.interactionsClientOptions = interactionsClientOptions;
+    }
+
+    @SuppressWarnings("unchecked")
+    private Requester<T> wrapRequester() {
+        if (requester instanceof BucketRateLimitingRequester) {
+            return (Requester<T>) new BucketRateLimitingRequester(((BucketRateLimitingRequester) requester).getRequester());
+        }
+        return requester;
     }
 
     public Multi<ApplicationCommand> getGlobalApplicationCommands(Snowflake applicationId, boolean withLocalizations) {
@@ -140,7 +151,7 @@ public abstract class AuthenticatedDiscordClient<T extends Response> extends Dis
             builder.validatorFactory(interactionsClientOptions.getValidatorFactory());
         }
 
-        return builder.requesterFactory(x -> requester).build();
+        return builder.requesterFactory(x -> webhookClient.requester).build();
     }
 
     protected abstract DiscordInteractionsClient<T> buildInteractionsClient();

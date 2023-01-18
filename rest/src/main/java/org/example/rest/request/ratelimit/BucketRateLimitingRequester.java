@@ -15,7 +15,7 @@ import java.util.NoSuchElementException;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-class BucketRateLimitingRequester implements Requester<HttpResponse> {
+public class BucketRateLimitingRequester implements Requester<HttpResponse> {
     private static final Logger LOG = LoggerFactory.getLogger(BucketRateLimitingRequester.class);
     private final Requester<HttpResponse> requester;
     private final Map<BucketCacheKey, String> bucketCache = new HashMap<>();
@@ -41,6 +41,10 @@ class BucketRateLimitingRequester implements Requester<HttpResponse> {
         }
 
         return requestStream;
+    }
+
+    public Requester<HttpResponse> getRequester() {
+        return requester;
     }
 
     @Override

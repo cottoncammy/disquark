@@ -13,7 +13,7 @@ public class UnknownPropertyHandler extends DeserializationProblemHandler {
     private static final Logger LOG = LoggerFactory.getLogger(UnknownPropertyHandler.class);
 
     @Override
-    public boolean handleUnknownProperty(DeserializationContext ctxt, JsonParser p, JsonDeserializer<?> deserializer, Object beanOrClass, String propertyName) throws IOException {
+    public boolean handleUnknownProperty(DeserializationContext ctx, JsonParser p, JsonDeserializer<?> deserializer, Object beanOrClass, String propertyName) throws IOException {
         LOG.trace("Skipping unknown property \"{}\" while deserializing {}",
                 propertyName, beanOrClass.getClass().getCanonicalName());
 
