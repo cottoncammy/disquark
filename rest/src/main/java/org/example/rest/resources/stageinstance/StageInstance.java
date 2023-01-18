@@ -30,10 +30,6 @@ public interface StageInstance {
     @JsonProperty("privacy_level")
     PrivacyLevel privacyLevel();
 
-    @Deprecated
-    @JsonProperty("discoverable_disabled")
-    boolean discoverableDisabled();
-
     @JsonProperty("guild_scheduled_event_id")
     Optional<Snowflake> guildScheduledEventId();
 

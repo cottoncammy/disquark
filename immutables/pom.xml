@@ -20,12 +20,12 @@
         </dependency>
         <dependency>
             <groupId>org.immutables</groupId>
-            <artifactId>value</artifactId>
-            <scope>provided</scope>
+            <artifactId>encode</artifactId>
         </dependency>
         <dependency>
             <groupId>org.immutables</groupId>
-            <artifactId>encode</artifactId>
+            <artifactId>value</artifactId>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 

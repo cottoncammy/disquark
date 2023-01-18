@@ -15,15 +15,16 @@
 
     <developers>
         <developer>
-            <id>cameronprater</id>
+            <id>cottoncammy</id>
             <name>Cameron Prater</name>
         </developer>
     </developers>
 
     <licenses>
         <license>
-            <name>TODO</name>
-            <url>TODO</url>
+            <name>Mozilla Public License 2.0</name>
+            <url>https://www.mozilla.org/en-US/MPL/2.0/</url>
+            <distribution>repo</distribution>
         </license>
     </licenses>
 
@@ -42,6 +43,8 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <skipITs>true</skipITs>
+
         <apache-tika.version>2.6.0</apache-tika.version>
         <bouncycastle.version>1.70</bouncycastle.version>
         <bucket4j-version>8.1.0</bucket4j-version>
@@ -57,12 +60,16 @@
         <smallrye-mutiny-vertx-binding.version>2.28.0</smallrye-mutiny-vertx-binding.version>
 
         <compiler-plugin.version>3.10.1</compiler-plugin.version>
+        <dependency-plugin.version>3.5.0</dependency-plugin.version>
+        <deploy-plugin.version>3.0.0</deploy-plugin.version>
         <enforcer-plugin.version>3.1.0</enforcer-plugin.version>
         <failsafe-plugin.version>3.0.0-M7</failsafe-plugin.version>
-        <gib.version>4.1.1</gib.version>
         <gpg-plugin.version>3.0.1</gpg-plugin.version>
+        <install-plugin.version>3.1.0</install-plugin.version>
+        <jar-plugin.version>3.3.0</jar-plugin.version>
         <javadoc-plugin.version>3.4.1</javadoc-plugin.version>
         <nexus-staging-plugin.version>1.6.13</nexus-staging-plugin.version>
+        <resources-plugin.version>3.3.0</resources-plugin.version>
         <revapi-plugin.version>0.14.7</revapi-plugin.version>
         <source-plugin.version>3.2.1</source-plugin.version>
         <spotless-plugin.version>2.25.0</spotless-plugin.version>
@@ -79,16 +86,31 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>com.bucket4j</groupId>
-                <artifactId>bucket4j-core</artifactId>
-                <version>${bucket4j-version}</version>
-            </dependency>
-            <dependency>
                 <groupId>com.fasterxml.jackson</groupId>
                 <artifactId>jackson-bom</artifactId>
                 <version>${jackson.version}</version>
                 <scope>import</scope>
                 <type>pom</type>
+            </dependency>
+            <dependency>
+                <groupId>io.smallrye.reactive</groupId>
+                <artifactId>vertx-mutiny-clients-bom</artifactId>
+                <version>${smallrye-mutiny-vertx-binding.version}</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+            <dependency>
+                <groupId>org.immutables</groupId>
+                <artifactId>bom</artifactId>
+                <version>${immutables.version}</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+
+            <dependency>
+                <groupId>com.bucket4j</groupId>
+                <artifactId>bucket4j-core</artifactId>
+                <version>${bucket4j-version}</version>
             </dependency>
             <dependency>
                 <groupId>com.github.ben-manes.caffeine</groupId>
@@ -107,17 +129,26 @@
                 <version>${smallrye-config.version}</version>
             </dependency>
             <dependency>
-                <groupId>io.smallrye.reactive</groupId>
-                <artifactId>vertx-mutiny-clients-bom</artifactId>
-                <version>${smallrye-mutiny-vertx-binding.version}</version>
-                <scope>import</scope>
-                <type>pom</type>
-            </dependency>
-            <dependency>
                 <groupId>jakarta.annotation</groupId>
                 <artifactId>jakarta.annotation-api</artifactId>
                 <version>${jakarta-annotations.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.apache.tika</groupId>
+                <artifactId>tika-core</artifactId>
+                <version>${apache-tika.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.bouncycastle</groupId>
+                <artifactId>bcprov-jdk15on</artifactId>
+                <version>${bouncycastle.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+
             <dependency>
                 <groupId>org.apache.logging.log4j</groupId>
                 <artifactId>log4j-core</artifactId>
@@ -131,33 +162,10 @@
                 <scope>test</scope>
             </dependency>
             <dependency>
-                <groupId>org.apache.tika</groupId>
-                <artifactId>tika-core</artifactId>
-                <version>${apache-tika.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.bouncycastle</groupId>
-                <artifactId>bcprov-jdk15on</artifactId>
-                <version>${bouncycastle.version}</version>
-                <optional>true</optional>
-            </dependency>
-            <dependency>
-                <groupId>org.immutables</groupId>
-                <artifactId>bom</artifactId>
-                <version>${immutables.version}</version>
-                <scope>import</scope>
-                <type>pom</type>
-            </dependency>
-            <dependency>
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter</artifactId>
                 <version>${junit.version}</version>
                 <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-api</artifactId>
-                <version>${slf4j.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -174,6 +182,7 @@
     </distributionManagement>
 
     <build>
+        <defaultGoal>clean install</defaultGoal>
         <pluginManagement>
             <plugins>
                 <plugin>
@@ -181,70 +190,45 @@
                     <version>${compiler-plugin.version}</version>
                     <configuration>
                         <release>11</release>
+                        <parameters>true</parameters>
                     </configuration>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <version>${dependency-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <version>${deploy-plugin.version}</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-enforcer-plugin</artifactId>
                     <version>${enforcer-plugin.version}</version>
-                    <executions>
-                        <execution>
-                            <id>enforce</id>
-                            <goals>
-                                <goal>enforce</goal>
-                            </goals>
-                            <configuration>
-                                <rules>
-                                    <dependencyConvergence />
-                                    <requireJavaVersion>
-                                        <version></version>
-                                    </requireJavaVersion>
-                                    <requireMavenVersion>
-                                        <version></version>
-                                    </requireMavenVersion>
-                                </rules>
-                            </configuration>
-                        </execution>
-                    </executions>
-                </plugin>
-                <plugin>
-                    <groupId>io.github.gitflow-incremental-builder</groupId>
-                    <artifactId>gitflow-incremental-builder</artifactId>
-                    <version>${gib.version}</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-gpg-plugin</artifactId>
                     <version>${gpg-plugin.version}</version>
-                    <executions>
-                        <execution>
-                            <id>sign-artifacts</id>
-                            <phase>verify</phase>
-                            <goals>
-                                <goal>sign</goal>
-                            </goals>
-                        </execution>
-                    </executions>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-install-plugin</artifactId>
+                    <version>${install-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>${jar-plugin.version}</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-javadoc-plugin</artifactId>
                     <version>${javadoc-plugin.version}</version>
-                    <executions>
-                        <execution>
-                            <id>attach-javadocs</id>
-                            <goals>
-                                <goal>jar</goal>
-                            </goals>
-                        </execution>
-                    </executions>
                 </plugin>
                 <plugin>
                     <groupId>org.sonatype.plugins</groupId>
                     <artifactId>nexus-staging-maven-plugin</artifactId>
                     <version>${nexus-staging-plugin.version}</version>
-                    <extensions>true</extensions>
-                    <configuration>
-                        <serverId>ossrh</serverId>
-                        <nexusUrl>https://s01.oss.sonatype.org</nexusUrl>
-                    </configuration>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>${resources-plugin.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.revapi</groupId>
@@ -254,19 +238,26 @@
                 <plugin>
                     <artifactId>maven-source-plugin</artifactId>
                     <version>${source-plugin.version}</version>
-                    <executions>
-                        <execution>
-                            <id>attach-sources</id>
-                            <goals>
-                                <goal>jar-no-fork</goal>
-                            </goals>
-                        </execution>
-                    </executions>
                 </plugin>
                 <plugin>
                     <groupId>com.diffplug.spotless</groupId>
                     <artifactId>spotless-maven-plugin</artifactId>
                     <version>${spotless-plugin.version}</version>
+                    <configuration>
+                        <formats>
+                            <format>
+
+                            </format>
+                        </formats>
+
+                        <java>
+                            <palantirJavaFormat />
+                            <toggleOnOff />
+
+                            <importOrder />
+                            <removeUnusedImports />
+                        </java>
+                    </configuration>
                 </plugin>
                 <plugin>
                     <artifactId>maven-surefire-plugin</artifactId>
@@ -286,35 +277,77 @@
                 </plugin>
             </plugins>
         </pluginManagement>
+
+        <plugins>
+            <plugin>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>enforce-build</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <dependencyConvergence />
+
+                                <requireJavaVersion>
+                                    <version>[11,)</version>
+                                </requireJavaVersion>
+                                <requireMavenVersion>
+                                    <version>[3.1.0,)</version>
+                                </requireMavenVersion>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>com.diffplug.spotless</groupId>
+                <artifactId>spotless-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>check-formatting</id>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
     </build>
 
     <profiles>
         <profile>
-            <id>gib</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>io.github.gitflow-incremental-builder</groupId>
-                        <artifactId>gitflow-incremental-builder</artifactId>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-
-        <profile>
             <id>format</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+                <property>
+                    <name>skipFormatting</name>
+                    <value>!true</value>
+                </property>
+            </activation>
             <build>
                 <plugins>
                     <plugin>
                         <groupId>com.diffplug.spotless</groupId>
                         <artifactId>spotless-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>apply-formatting</id>
+                                <phase>process-sources</phase>
+                                <goals>
+                                    <goal>apply</goal>
+                                </goals>
+                            </execution>
+                        </executions>
                     </plugin>
                 </plugins>
             </build>
         </profile>
 
         <profile>
-            <id>revapi</id>
+            <id>check-api</id>
             <build>
                 <plugins>
                     <plugin>
@@ -327,20 +360,54 @@
 
         <profile>
             <id>release</id>
+            <properties>
+                <skipITs>false</skipITs>
+            </properties>
             <build>
+                <defaultGoal>clean deploy</defaultGoal>
                 <plugins>
                     <plugin>
                         <groupId>org.sonatype.plugins</groupId>
                         <artifactId>nexus-staging-maven-plugin</artifactId>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <serverId>ossrh</serverId>
+                            <nexusUrl>https://s01.oss.sonatype.org</nexusUrl>
+                        </configuration>
                     </plugin>
                     <plugin>
                         <artifactId>maven-source-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>attach-sources</id>
+                                <goals>
+                                    <goal>jar-no-fork</goal>
+                                </goals>
+                            </execution>
+                        </executions>
                     </plugin>
                     <plugin>
                         <artifactId>maven-javadoc-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>attach-javadocs</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
                     </plugin>
                     <plugin>
                         <artifactId>maven-gpg-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
                     </plugin>
                 </plugins>
             </build>

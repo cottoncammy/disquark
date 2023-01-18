@@ -47,9 +47,6 @@ public interface Application {
 
     Optional<User> owner();
 
-    @Deprecated
-    String summary();
-
     @JsonProperty("verify_key")
     String verifyKey();
 

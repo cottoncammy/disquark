@@ -6,12 +6,10 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.example.immutables.ImmutableJson;
 import org.example.rest.resources.Snowflake;
-import org.example.rest.resources.application.Application;
 import org.example.rest.resources.guild.Guild;
 import org.example.rest.resources.guild.scheduledevent.GuildScheduledEvent;
 import org.example.rest.resources.user.User;
 import org.example.rest.resources.channel.Channel;
-import org.example.rest.util.Partial;
 import org.immutables.value.Value.Enclosing;
 
 import java.time.Instant;
@@ -42,9 +40,8 @@ public interface Invite {
     @JsonProperty("target_user")
     Optional<User> targetUser();
 
-    @Partial
     @JsonProperty("target_application")
-    Optional<Application> targetApplication();
+    Optional<EmbeddedApplication> targetApplication();
 
     @JsonProperty("approximate_presence_count")
     OptionalInt approximatePresenceCount();
@@ -137,6 +134,28 @@ public interface Invite {
         Instant createdAt();
 
         class Builder extends ImmutableInvite.Metadata.Builder {
+            protected Builder() {}
+        }
+    }
+
+    @ImmutableJson
+    @JsonDeserialize(as = Invite.EmbeddedApplication.class)
+    interface EmbeddedApplication {
+
+        static Builder builder () {
+            return new Builder();
+        }
+
+        String name();
+
+        Optional<String> icon();
+
+        String description();
+
+        @JsonProperty("max_participants")
+        int maxParticipants();
+
+        class Builder extends ImmutableInvite.EmbeddedApplication.Builder {
             protected Builder() {}
         }
     }

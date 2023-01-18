@@ -33,9 +33,6 @@ public interface Sticker {
 
     String tags();
 
-    @Deprecated
-    Optional<String> asset();
-
     Type type();
 
     @JsonProperty("format_type")

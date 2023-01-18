@@ -4,10 +4,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a5029c32-3a5b-4a65-b173-2d497ddb2a2d" name="Changes" comment="separate authenticated and unauthenticated requests">
+    <list default="true" id="a5029c32-3a5b-4a65-b173-2d497ddb2a2d" name="Changes" comment="use caffeine">
+      <change beforePath="$PROJECT_DIR$/.github/dependabot.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/dependabot.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/request/MultipartFormUpload.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/request/MultipartFormUpload.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/request/ratelimit/BucketRateLimitingRequester.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/request/ratelimit/BucketRateLimitingRequester.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/immutables/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/immutables/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/integration-tests/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/integration-tests/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nullable-optional/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/nullable-optional/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/rest/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/application/Application.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/application/Application.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/invite/Invite.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/invite/Invite.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/stageinstance/StageInstance.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/stageinstance/StageInstance.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/sticker/Sticker.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/sticker/Sticker.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -215,13 +223,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1661720293566</updated>
-    </task>
-    <task id="LOCAL-00029" summary="More work on interactions">
-      <created>1672209003448</created>
-      <option name="number" value="00029" />
-      <option name="presentableId" value="LOCAL-00029" />
-      <option name="project" value="LOCAL" />
-      <updated>1672209003448</updated>
     </task>
     <task id="LOCAL-00030" summary="More work on interactions">
       <created>1672292325140</created>
@@ -559,7 +560,14 @@
       <option name="project" value="LOCAL" />
       <updated>1674018532175</updated>
     </task>
-    <option name="localTasksCounter" value="78" />
+    <task id="LOCAL-00078" summary="use caffeine">
+      <created>1674021953527</created>
+      <option name="number" value="00078" />
+      <option name="presentableId" value="LOCAL-00078" />
+      <option name="project" value="LOCAL" />
+      <updated>1674021953527</updated>
+    </task>
+    <option name="localTasksCounter" value="79" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -574,7 +582,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Initial work on interactions" />
     <MESSAGE value="More work on interactions" />
     <MESSAGE value="Starting really bad dsl" />
     <MESSAGE value="Mostly finished with interactions" />
@@ -599,7 +606,8 @@
     <MESSAGE value="bugfixes (and start working on multipart stuff)" />
     <MESSAGE value="Multipart works" />
     <MESSAGE value="separate authenticated and unauthenticated requests" />
-    <option name="LAST_COMMIT_MESSAGE" value="separate authenticated and unauthenticated requests" />
+    <MESSAGE value="use caffeine" />
+    <option name="LAST_COMMIT_MESSAGE" value="use caffeine" />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>
