@@ -70,7 +70,7 @@
         <javadoc-plugin.version>3.4.1</javadoc-plugin.version>
         <nexus-staging-plugin.version>1.6.13</nexus-staging-plugin.version>
         <resources-plugin.version>3.3.0</resources-plugin.version>
-        <revapi-plugin.version>0.14.7</revapi-plugin.version>
+        <revapi-plugin.version>0.15.0</revapi-plugin.version>
         <source-plugin.version>3.2.1</source-plugin.version>
         <spotless-plugin.version>2.25.0</spotless-plugin.version>
         <surefire-plugin.version>${failsafe-plugin.version}</surefire-plugin.version>
