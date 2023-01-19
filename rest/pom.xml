@@ -11,6 +11,10 @@
 
     <artifactId>discord-rest</artifactId>
 
+    <properties>
+        <revapi.skip>false</revapi.skip>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>com.bucket4j</groupId>

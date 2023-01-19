@@ -1,0 +1,59 @@
+name: CI
+
+on:
+  push:
+    branches-ignore: [ 'dependabot/**' ]
+    paths-ignore: [ '.gitignore', '*.md', '.github/*.yml', '.github/ISSUE_TEMPLATE/**' ]
+  pull_request:
+    types: [opened, ready_for_review, reopened, synchronize]
+    paths-ignore: [ '.gitignore', '*.md', '.github/*.yml', '.github/ISSUE_TEMPLATE/**' ]
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.user.id || github.event.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' || github.repository != 'TODO/TODO' }}
+
+jobs:
+  build-test:
+    name: Build and test
+    runs-on: ubuntu-latest
+    if: "github.event_name != pull_request || ( \
+          github.event.pull_request.draft == false && \
+            github.event.pull_request.state != 'closed' \
+          )"
+    strategy:
+      fail-fast: false
+      matrix:
+        jdk-version: [ 11, 17, 18 ]
+    steps:
+      - name: git checkout
+        uses: actions/checkout@v3
+      - name: Setup JDK ${{ matrix.jdk-version }}
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: ${{ matrix.jdk-version }}
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+      - name: Maven test
+        run: |
+          ./mvnw -B -e -DskipFormatting -DskipITs clean test
+      - name: Maven verify
+        if: github.repository == 'TODO/TODO'
+        env:
+        run: |
+          ./mvnw -B -e -DskipFormatting -DskipTests verify
+      - name: Remove local artifacts
+        shell: bash
+        run: rm -r ~/.m2/repository/org.example
+      - name: Upload test reports (if run failed)
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: "test-reports-JDK-${{ matrix.jdk-version }}"
+          path: "**/target/*-reports/TEST-*.xml"

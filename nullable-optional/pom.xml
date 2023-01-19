@@ -11,6 +11,10 @@
 
     <artifactId>discord-nullable-optional</artifactId>
 
+    <properties>
+        <revapi.skip>false</revapi.skip>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>

@@ -43,6 +43,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <revapi.skip>true</revapi.skip>
         <skipITs>true</skipITs>
 
         <apache-tika.version>2.6.0</apache-tika.version>
@@ -59,8 +60,8 @@
         <smallrye-config.version>3.0.0</smallrye-config.version>
         <smallrye-mutiny-vertx-binding.version>2.28.0</smallrye-mutiny-vertx-binding.version>
 
+        <build-helper-plugin.version>3.3.0</build-helper-plugin.version>
         <compiler-plugin.version>3.10.1</compiler-plugin.version>
-        <dependency-plugin.version>3.5.0</dependency-plugin.version>
         <deploy-plugin.version>3.0.0</deploy-plugin.version>
         <enforcer-plugin.version>3.1.0</enforcer-plugin.version>
         <failsafe-plugin.version>3.0.0-M7</failsafe-plugin.version>
@@ -69,8 +70,11 @@
         <jar-plugin.version>3.3.0</jar-plugin.version>
         <javadoc-plugin.version>3.4.1</javadoc-plugin.version>
         <nexus-staging-plugin.version>1.6.13</nexus-staging-plugin.version>
+        <release-plugin.version>3.0.0-M7</release-plugin.version>
         <resources-plugin.version>3.3.0</resources-plugin.version>
-        <revapi-plugin.version>0.14.7</revapi-plugin.version>
+        <revapi-java.version>0.28.0</revapi-java.version>
+        <revapi-json-reporter.version>0.5.0</revapi-json-reporter.version>
+        <revapi-plugin.version>0.15.0</revapi-plugin.version>
         <source-plugin.version>3.2.1</source-plugin.version>
         <spotless-plugin.version>2.25.0</spotless-plugin.version>
         <surefire-plugin.version>${failsafe-plugin.version}</surefire-plugin.version>
@@ -186,16 +190,17 @@
         <pluginManagement>
             <plugins>
                 <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>build-helper-maven-plugin</artifactId>
+                    <version>${build-helper-plugin.version}</version>
+                </plugin>
+                <plugin>
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>${compiler-plugin.version}</version>
                     <configuration>
                         <release>11</release>
                         <parameters>true</parameters>
                     </configuration>
-                </plugin>
-                <plugin>
-                    <artifactId>maven-dependency-plugin</artifactId>
-                    <version>${dependency-plugin.version}</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-deploy-plugin</artifactId>
@@ -227,6 +232,10 @@
                     <version>${nexus-staging-plugin.version}</version>
                 </plugin>
                 <plugin>
+                    <artifactId>maven-release-plugin</artifactId>
+                    <version>${release-plugin.version}</version>
+                </plugin>
+                <plugin>
                     <artifactId>maven-resources-plugin</artifactId>
                     <version>${resources-plugin.version}</version>
                 </plugin>
@@ -234,6 +243,52 @@
                     <groupId>org.revapi</groupId>
                     <artifactId>revapi-maven-plugin</artifactId>
                     <version>${revapi-plugin.version}</version>
+                    <dependencies>
+                        <dependency>
+                            <groupId>org.revapi</groupId>
+                            <artifactId>revapi-java</artifactId>
+                            <version>${revapi-java.version}</version>
+                        </dependency>
+                        <dependency>
+                            <groupId>org.revapi</groupId>
+                            <artifactId>revapi-json-reporter</artifactId>
+                            <version>${revapi-json-reporter.version}</version>
+                        </dependency>
+                    </dependencies>
+                    <configuration>
+                        <skip>${revapi.skip}</skip>
+                        <buildFailureMessage>Missing justification for one or more API changes</buildFailureMessage>
+
+                        <failOnMissingConfigurationFiles>false</failOnMissingConfigurationFiles>
+                        <analysisConfigurationFiles>
+                            <configurationFile>
+                                <roots>
+                                    <root>changelog/${parsedVersion.majorVersion}.${parsedVersion.minorVersion}.${parsedVersion.incrementalVersion}</root>
+                                </roots>
+                                <path>changes.xml</path>
+                            </configurationFile>
+                        </analysisConfigurationFiles>
+
+                        <analysisConfiguration>
+                            <revapi.versions>
+                                <enabled>true</enabled>
+                                <onAllowed>
+                                    <criticality>documented</criticality>
+                                </onAllowed>
+                                <onDisallowed>
+                                    <criticality>error</criticality>
+                                </onDisallowed>
+                            </revapi.versions>
+
+                            <generateSiteReport>false</generateSiteReport>
+                            <revapi.reporter.json>
+                                <minSeverity>NON_BREAKING</minSeverity>
+                                <output>${project.build.directory}/revapi-report.json</output>
+                                <keepEmptyFile>false</keepEmptyFile>
+                                <indent>true</indent>
+                            </revapi.reporter.json>
+                        </analysisConfiguration>
+                    </configuration>
                 </plugin>
                 <plugin>
                     <artifactId>maven-source-plugin</artifactId>
@@ -244,12 +299,6 @@
                     <artifactId>spotless-maven-plugin</artifactId>
                     <version>${spotless-plugin.version}</version>
                     <configuration>
-                        <formats>
-                            <format>
-
-                            </format>
-                        </formats>
-
                         <java>
                             <palantirJavaFormat />
                             <toggleOnOff />
@@ -347,18 +396,6 @@
         </profile>
 
         <profile>
-            <id>check-api</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.revapi</groupId>
-                        <artifactId>revapi-maven-plugin</artifactId>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-
-        <profile>
             <id>release</id>
             <properties>
                 <skipITs>false</skipITs>
@@ -366,6 +403,38 @@
             <build>
                 <defaultGoal>clean deploy</defaultGoal>
                 <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>build-helper-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>parse-version</id>
+                                <phase>validate</phase>
+                                <goals>
+                                    <goal>parse-version</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.revapi</groupId>
+                        <artifactId>revapi-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>check</id>
+                                <goals>
+                                    <goal>check</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>generate-report</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>report</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
                     <plugin>
                         <groupId>org.sonatype.plugins</groupId>
                         <artifactId>nexus-staging-maven-plugin</artifactId>
