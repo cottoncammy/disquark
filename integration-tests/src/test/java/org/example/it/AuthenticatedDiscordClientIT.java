@@ -1,5 +1,6 @@
 package org.example.it;
 
+import io.smallrye.mutiny.Uni;
 import io.smallrye.mutiny.helpers.test.UniAssertSubscriber;
 import org.example.rest.AuthenticatedDiscordClient;
 import org.example.rest.oauth2.DiscordOAuth2Client;
@@ -22,18 +23,25 @@ class AuthenticatedDiscordClientIT {
 
     @BeforeAll
     void init(DiscordOAuth2Client<?> oAuth2Client) {
-        applicationId = configValue("DISCORD_APPLICATION_ID", Snowflake.class);
+        applicationId = oAuth2Client.getCurrentAuthorizationInformation()
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
+                .getItem()
+                .application().id();
+
         guildId = configValue("DISCORD_GUILD_ID", Snowflake.class);
 
         oAuth2Client.getGlobalApplicationCommands(applicationId, false)
                 .onItem().transformToUniAndMerge(command -> oAuth2Client.deleteGlobalApplicationCommand(applicationId, command.id()))
                 .collect().asList()
-                .await().indefinitely();
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem();
 
         oAuth2Client.getGuildApplicationCommands(applicationId, guildId, false)
                 .onItem().transformToUniAndMerge(command -> oAuth2Client.deleteGuildApplicationCommand(applicationId, guildId, command.id()))
                 .collect().asList()
-                .await().indefinitely();
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem();
     }
 
     @TestTemplate

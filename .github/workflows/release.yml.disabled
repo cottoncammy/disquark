@@ -37,8 +37,8 @@ jobs:
             gpg --batch --decrypt --passphrase="${{ secrets.GPG_PASSPHRASE }}" .github/secret-key.asc.gpg | \
               gpg --batch --no-tty --import
 
-            ./mvnw -B -e revapi:update-release-properties
-            ./mvnw -B -ntp -Prelease -Dgpg.passphrase=${{ secrets.GPG_PASSPHRASE }} \
+            ./mvnw -B -e -s .github/mvn-ci-settings.xml revapi:update-release-properties
+            ./mvnw -B -e -ntp -Prelease -Dgpg.passphrase=${{ secrets.GPG_PASSPHRASE }} \
                 -s .github/mvn-ci-settings.xml -pl !integration-tests
       - name: Remove local artifacts
         shell: bash

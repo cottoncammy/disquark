@@ -20,7 +20,8 @@ class GuildTemplateIT {
         botClient.getGuildTemplates(guildId)
                 .onItem().transformToUniAndMerge(template -> botClient.deleteGuildTemplate(guildId, template.code()))
                 .collect().asList()
-                .await().indefinitely();
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem();
     }
 
     @Test

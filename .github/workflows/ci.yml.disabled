@@ -27,7 +27,7 @@ jobs:
       matrix:
         jdk-version: [ 11, 17, 18 ]
     steps:
-      - name: git checkout
+      - name: Checkout repo
         uses: actions/checkout@v3
       - name: Setup JDK ${{ matrix.jdk-version }}
         uses: actions/setup-java@v3
@@ -42,14 +42,19 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
       - name: Maven test
-        run: ./mvnw -B -e -DskipFormatting clean test
+        run: |
+          ./mvnw -B -e -s .github/mvn-ci-settings.xml \
+            -DskipFormatting clean test
       - name: Maven verify
         if: github.repository == 'TODO/TODO'
         env:
           DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
           DISCORD_CLIENT_ID: ${{ secrets.DISCORD_CLIENT_ID }}
           DISCORD_CLIENT_SECRET: ${{ secrets.DISCORD_CLIENT_SECRET }}
-        run: ./mvnw -B -e verify
+          DISCORD_GUILD_ID: ${{ secrets.DISCORD_GUILD_ID }}
+          DISCORD_CHANNEL_ID: ${{ secrets.DISCORD_CHANNEL_ID }}
+          DISCORD_USER_ID: ${{ secrets.DISCORD_USER_ID }}
+        run: ./mvnw -B -e -s .github/mvn-ci-settings.xml verify
       - name: Remove local artifacts
         shell: bash
         run: rm -r ~/.m2/repository/org.example

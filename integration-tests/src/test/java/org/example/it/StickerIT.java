@@ -20,8 +20,8 @@ class StickerIT {
 
     @Test
     @Order(1)
-    void testGetSticker(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_STICKER_ID") Snowflake stickerId) {
-        botClient.getSticker(stickerId)
+    void testGetSticker(DiscordBotClient<?> botClient) {
+        botClient.getSticker(Snowflake.create(914968407202484244L))
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .awaitItem()
                 .assertCompleted();

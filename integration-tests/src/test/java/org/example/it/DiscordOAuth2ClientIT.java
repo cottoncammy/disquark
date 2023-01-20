@@ -14,7 +14,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 class DiscordOAuth2ClientIT {
 
     @Test
-    void testEditApplicationCommandPermissions(DiscordOAuth2Client<?> oAuth2Client, @ConfigValue("DISCORD_APPLICATION_ID") Snowflake applicationId, @ConfigValue("DISCORD_GUILD_ID") Snowflake guildId) {
+    void testEditApplicationCommandPermissions(DiscordOAuth2Client<?> oAuth2Client, @ConfigValue("DISCORD_GUILD_ID") Snowflake guildId) {
+        Snowflake applicationId = oAuth2Client.getCurrentAuthorizationInformation()
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
+                .getItem()
+                .application().id();
+
         CreateGuildApplicationCommand createGuildApplicationCommand = CreateGuildApplicationCommand.builder()
                 .applicationId(applicationId)
                 .guildId(guildId)

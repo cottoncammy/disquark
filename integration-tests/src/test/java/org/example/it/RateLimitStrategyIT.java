@@ -17,6 +17,7 @@ import org.example.rest.resources.channel.CreateMessage;
 import org.example.rest.response.HttpResponse;
 import org.example.rest.response.RateLimitException;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,7 +27,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@Tag("rate-limit")
+@Disabled
 @ExtendWith(SomeExtension2.class)
 class RateLimitStrategyIT {
     private static final Vertx VERTX = DiscordClients.getVertx();

@@ -5,6 +5,7 @@ import io.smallrye.mutiny.helpers.test.UniAssertSubscriber;
 import org.example.it.config.ConfigValue;
 import org.example.rest.DiscordBotClient;
 import org.example.rest.resources.Snowflake;
+import org.example.rest.resources.channel.Channel;
 import org.example.rest.resources.guild.scheduledevent.CreateGuildScheduledEvent;
 import org.example.rest.resources.guild.scheduledevent.GetGuildScheduledEventUsers;
 import org.example.rest.resources.guild.scheduledevent.GuildScheduledEvent;
@@ -32,7 +33,15 @@ class GuildScheduledEventIT {
 
     @Test
     @Order(2)
-    void testCreateGuildScheduledEvent(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_GUILD_ID") Snowflake guildId, @ConfigValue("DISCORD_VOICE_CHANNEL_ID") Snowflake voiceChannelId) {
+    void testCreateGuildScheduledEvent(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_GUILD_ID") Snowflake guildId) {
+        Snowflake voiceChannelId = botClient.getGuildChannels(guildId)
+                .filter(channel -> channel.type() == Channel.Type.GUILD_VOICE)
+                .toUni()
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
+                .getItem()
+                .id();
+
         CreateGuildScheduledEvent createGuildScheduledEvent = CreateGuildScheduledEvent.builder()
                 .guildId(guildId)
                 .channelId(voiceChannelId)

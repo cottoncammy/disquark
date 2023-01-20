@@ -1,0 +1,11 @@
+name: Bug Report
+description: Report a bug
+labels: ["bug"]
+body:
+  - type: textarea
+    attributes:
+      label: Description
+      description: |
+        Describe the bug. Explain what you were trying to do and what happened instead. Be sure to include any relevant code snippets or screenshots.
+    validations:
+      required: true

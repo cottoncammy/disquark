@@ -1,0 +1,17 @@
+name: Feature Request
+description: Suggest a feature
+labels: ["feature request"]
+body:
+  - type: textarea
+    attributes:
+      label: Description
+      description: |
+        Describe the proposed feature and justify why it should be added. The effort it would take to implement the feature should be equivalent to the effort put into the provided description.
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: `discord-api-docs` PR
+      description: |
+        If the feature request tracks a new change to the Discord API documented in a [`discord-api-docs`](https://github.com/discord/discord-api-docs) PR, please include the link to that PR here.
+      placeholder: https://github.com/discord/discord-api-docs/pulls

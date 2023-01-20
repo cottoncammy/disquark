@@ -31,7 +31,8 @@ class GuildIT {
                 .onItem().transformToUniAndMerge(guild -> botClient.deleteGuild(guild.id())
                         .onFailure(DiscordException.statusCodeIs(403)).recoverWithNull())
                 .collect().asList()
-                .await().indefinitely();
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem();
     }
 
     @Test
