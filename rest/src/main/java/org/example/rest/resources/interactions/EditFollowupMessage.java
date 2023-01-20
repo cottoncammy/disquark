@@ -1,12 +1,15 @@
 package org.example.rest.resources.interactions;
 
+import static org.example.rest.util.Variables.variables;
+
+import java.util.List;
+import java.util.Optional;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import io.vertx.core.http.HttpMethod;
-import io.vertx.core.json.JsonObject;
-import io.vertx.mutiny.uritemplate.Variables;
+
 import org.example.immutables.ImmutableJson;
 import org.example.rest.request.Endpoint;
 import org.example.rest.request.MultipartRequest;
@@ -17,11 +20,6 @@ import org.example.rest.resources.channel.message.AllowedMentions;
 import org.example.rest.resources.channel.message.Message;
 import org.example.rest.resources.interactions.components.Component;
 import org.example.rest.resources.partial.PartialAttachment;
-
-import java.util.List;
-import java.util.Optional;
-
-import static org.example.rest.util.Variables.variables;
 
 @ImmutableJson
 public interface EditFollowupMessage extends MultipartRequest, Requestable {

@@ -1,15 +1,14 @@
 package org.example.rest.request.ratelimit;
 
+import java.time.Duration;
+
 import io.smallrye.mutiny.Uni;
-import io.smallrye.mutiny.operators.multi.processors.BroadcastProcessor;
 import io.smallrye.mutiny.operators.multi.processors.UnicastProcessor;
-import io.vertx.mutiny.core.Promise;
+
 import org.example.rest.request.Requester;
 import org.example.rest.response.HttpResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.time.Duration;
 
 class BucketRateLimitingRequestStream {
     private static final Logger LOG = LoggerFactory.getLogger(BucketRateLimitingRequestStream.class);

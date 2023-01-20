@@ -1,7 +1,10 @@
 package org.example.it;
 
-import io.smallrye.mutiny.helpers.test.AssertSubscriber;
+import java.time.Duration;
+import java.time.Instant;
+
 import io.smallrye.mutiny.helpers.test.UniAssertSubscriber;
+
 import org.example.it.config.ConfigValue;
 import org.example.rest.DiscordBotClient;
 import org.example.rest.resources.Snowflake;
@@ -13,9 +16,6 @@ import org.example.rest.resources.guild.scheduledevent.ModifyGuildScheduledEvent
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-
-import java.time.Duration;
-import java.time.Instant;
 
 @ExtendWith(SomeExtension2.class)
 class GuildScheduledEventIT {

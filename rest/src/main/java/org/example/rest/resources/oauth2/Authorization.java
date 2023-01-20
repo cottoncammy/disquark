@@ -1,14 +1,14 @@
 package org.example.rest.resources.oauth2;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import org.example.immutables.ImmutableJson;
-import org.example.rest.jackson.ScopesDeserializer;
-import org.example.rest.resources.application.Application;
-import org.example.rest.resources.user.User;
-
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
+
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import org.example.immutables.ImmutableJson;
+import org.example.rest.resources.application.Application;
+import org.example.rest.resources.user.User;
 
 @ImmutableJson
 @JsonDeserialize(as = ImmutableAuthorization.class)

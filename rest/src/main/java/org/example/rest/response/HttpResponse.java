@@ -1,15 +1,16 @@
 package org.example.rest.response;
 
-import io.smallrye.mutiny.Uni;
-import io.vertx.mutiny.core.http.HttpClientResponse;
-import io.vertx.mutiny.core.http.HttpHeaders;
-import org.example.rest.request.Codec;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import static java.util.Objects.requireNonNull;
 
 import java.util.Map;
 
-import static java.util.Objects.requireNonNull;
+import io.smallrye.mutiny.Uni;
+import io.vertx.mutiny.core.http.HttpClientResponse;
+import io.vertx.mutiny.core.http.HttpHeaders;
+
+import org.example.rest.request.Codec;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class HttpResponse implements Response {
     private static final Logger LOG = LoggerFactory.getLogger(HttpResponse.class);

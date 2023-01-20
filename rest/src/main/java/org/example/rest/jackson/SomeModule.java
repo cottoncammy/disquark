@@ -1,12 +1,12 @@
 package org.example.rest.jackson;
 
-import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.fasterxml.jackson.databind.module.SimpleSerializers;
-import com.fasterxml.jackson.datatype.jdk8.OptionalSerializer;
-import org.example.rest.resources.FlagEnum;
-
 import java.time.Instant;
 import java.util.EnumSet;
+
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.databind.module.SimpleSerializers;
+
+import org.example.rest.resources.FlagEnum;
 
 public class SomeModule extends SimpleModule {
 

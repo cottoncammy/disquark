@@ -1,6 +1,7 @@
 package org.example.it;
 
 import io.smallrye.mutiny.helpers.test.UniAssertSubscriber;
+
 import org.example.it.config.ConfigValue;
 import org.example.rest.DiscordBotClient;
 import org.example.rest.resources.Snowflake;

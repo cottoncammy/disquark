@@ -1,28 +1,29 @@
 package org.example.rest.resources.channel;
 
-import com.fasterxml.jackson.annotation.JsonEnumDefaultValue;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonValue;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import org.example.nullableoptional.NullableOptional;
-import org.example.nullableoptional.jackson.NullableOptionalFilter;
-import org.example.rest.resources.Snowflake;
-import org.example.immutables.ImmutableJson;
-import org.example.rest.resources.channel.forum.DefaultReaction;
-import org.example.rest.resources.channel.forum.ForumTag;
-import org.example.rest.resources.channel.thread.ThreadMember;
-import org.example.rest.resources.channel.thread.ThreadMetadata;
-import org.example.rest.resources.user.User;
-import org.example.rest.resources.permissions.PermissionFlag;
-import org.example.rest.resources.FlagEnum;
-import org.immutables.value.Value.Enclosing;
-
 import java.time.Instant;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.OptionalInt;
+
+import com.fasterxml.jackson.annotation.JsonEnumDefaultValue;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import org.example.immutables.ImmutableJson;
+import org.example.nullableoptional.NullableOptional;
+import org.example.nullableoptional.jackson.NullableOptionalFilter;
+import org.example.rest.resources.FlagEnum;
+import org.example.rest.resources.Snowflake;
+import org.example.rest.resources.channel.forum.DefaultReaction;
+import org.example.rest.resources.channel.forum.ForumTag;
+import org.example.rest.resources.channel.thread.ThreadMember;
+import org.example.rest.resources.channel.thread.ThreadMetadata;
+import org.example.rest.resources.permissions.PermissionFlag;
+import org.example.rest.resources.user.User;
+import org.immutables.value.Value.Enclosing;
 
 @Enclosing
 @ImmutableJson

@@ -1,9 +1,16 @@
 package org.example.rest.resources.guild;
 
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.OptionalInt;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import io.vertx.core.http.HttpMethod;
 import io.vertx.mutiny.core.buffer.Buffer;
+
 import org.example.immutables.ImmutableJson;
 import org.example.rest.jackson.ImageDataSerializer;
 import org.example.rest.request.Endpoint;
@@ -15,11 +22,6 @@ import org.example.rest.resources.channel.forum.DefaultReaction;
 import org.example.rest.resources.channel.forum.ForumTag;
 import org.example.rest.resources.permissions.Role;
 import org.immutables.value.Value.Enclosing;
-
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.OptionalInt;
 
 @Enclosing
 @ImmutableJson

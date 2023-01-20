@@ -1,9 +1,9 @@
 package org.example.immutables;
 
+import java.util.Objects;
+
 import org.example.nullableoptional.NullableOptional;
 import org.immutables.encode.Encoding;
-
-import java.util.Objects;
 
 @Encoding
 class NullableOptionalEncoding<T> {

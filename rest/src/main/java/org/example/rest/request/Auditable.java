@@ -1,8 +1,8 @@
 package org.example.rest.request;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import java.util.Optional;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public interface Auditable {
 

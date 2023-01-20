@@ -2,28 +2,27 @@ package org.example.rest.request;
 
 import static java.util.Objects.requireNonNull;
 
-import io.smallrye.mutiny.Context;
-import io.smallrye.mutiny.Multi;
-import io.smallrye.mutiny.Uni;
-import io.smallrye.mutiny.infrastructure.Infrastructure;
-import io.vertx.core.http.HttpMethod;
-import io.vertx.core.http.RequestOptions;
-import io.vertx.mutiny.core.Vertx;
-import io.vertx.mutiny.core.buffer.Buffer;
-import io.vertx.mutiny.core.http.HttpClient;
-import io.vertx.mutiny.core.http.HttpClientRequest;
-import io.vertx.mutiny.core.http.HttpClientResponse;
-import io.vertx.mutiny.core.http.HttpHeaders;
-import org.example.rest.request.ratelimit.GlobalRateLimiter;
-import org.example.rest.response.*;
-import org.reactivestreams.Publisher;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
+
+import io.smallrye.mutiny.Context;
+import io.smallrye.mutiny.Uni;
+import io.vertx.core.http.RequestOptions;
+import io.vertx.mutiny.core.Vertx;
+import io.vertx.mutiny.core.http.HttpClient;
+import io.vertx.mutiny.core.http.HttpClientResponse;
+import io.vertx.mutiny.core.http.HttpHeaders;
+
+import org.example.rest.request.ratelimit.GlobalRateLimiter;
+import org.example.rest.response.DiscordException;
+import org.example.rest.response.ErrorResponse;
+import org.example.rest.response.HttpResponse;
+import org.example.rest.response.RateLimitException;
+import org.example.rest.response.RateLimitResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class HttpClientRequester implements Requester<HttpResponse> {
     private static final Logger LOG = LoggerFactory.getLogger(HttpClientRequester.class);

@@ -1,11 +1,17 @@
 package org.example.rest.interactions;
 
+import static java.util.Objects.requireNonNull;
+import static org.example.rest.util.Variables.variables;
+
+import java.security.Security;
+
 import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.mutiny.core.Vertx;
 import io.vertx.mutiny.core.http.HttpServer;
 import io.vertx.mutiny.ext.web.Router;
+
 import org.example.rest.DiscordClient;
 import org.example.rest.interactions.dsl.InteractionSchema;
 import org.example.rest.request.AccessTokenSource;
@@ -22,12 +28,6 @@ import org.example.rest.resources.interactions.EditOriginalInteractionResponse;
 import org.example.rest.response.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.security.Security;
-import java.util.function.Function;
-
-import static java.util.Objects.requireNonNull;
-import static org.example.rest.util.Variables.variables;
 
 public class DiscordInteractionsClient<T extends Response> extends DiscordClient<T> implements InteractionsCapable {
     private static final Logger LOG = LoggerFactory.getLogger(DiscordInteractionsClient.class);

@@ -1,13 +1,17 @@
 package org.example.rest.jackson;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.*;
-import com.fasterxml.jackson.databind.deser.ContextualDeserializer;
-import org.example.rest.resources.FlagEnum;
-
 import java.io.IOException;
 import java.util.EnumSet;
 import java.util.Optional;
+
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.BeanProperty;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.deser.ContextualDeserializer;
+
+import org.example.rest.resources.FlagEnum;
 
 public class FlagsDeserializer<E extends Enum<E> & FlagEnum> extends JsonDeserializer<EnumSet<E>> implements ContextualDeserializer {
     private final JavaType enumType;

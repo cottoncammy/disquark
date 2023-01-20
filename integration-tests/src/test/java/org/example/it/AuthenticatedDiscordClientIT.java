@@ -1,16 +1,25 @@
 package org.example.it;
 
-import io.smallrye.mutiny.Uni;
+import static org.example.it.config.ConfigHelper.configValue;
+
 import io.smallrye.mutiny.helpers.test.UniAssertSubscriber;
+
 import org.example.rest.AuthenticatedDiscordClient;
 import org.example.rest.oauth2.DiscordOAuth2Client;
 import org.example.rest.resources.Snowflake;
-import org.example.rest.resources.application.command.*;
+import org.example.rest.resources.application.command.BulkOverwriteGlobalApplicationCommands;
+import org.example.rest.resources.application.command.BulkOverwriteGuildApplicationCommands;
+import org.example.rest.resources.application.command.CreateGlobalApplicationCommand;
+import org.example.rest.resources.application.command.CreateGuildApplicationCommand;
+import org.example.rest.resources.application.command.EditGlobalApplicationCommand;
+import org.example.rest.resources.application.command.EditGuildApplicationCommand;
 import org.example.rest.resources.user.GetCurrentUserGuilds;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.TestTemplate;
 import org.junit.jupiter.api.extension.ExtendWith;
-
-import static org.example.it.config.ConfigHelper.configValue;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @ExtendWith(SomeExtension2.class)

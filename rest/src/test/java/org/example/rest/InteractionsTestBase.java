@@ -1,15 +1,16 @@
 package org.example.rest;
 
+import java.time.Instant;
+import java.util.Optional;
+
 import io.smallrye.mutiny.Uni;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.json.Json;
 import io.vertx.mutiny.core.http.HttpClientResponse;
 import io.vertx.mutiny.core.http.HttpHeaders;
+
 import org.example.rest.resources.Snowflake;
 import org.example.rest.resources.interactions.Interaction;
-
-import java.time.Instant;
-import java.util.Optional;
 
 abstract class InteractionsTestBase {
 

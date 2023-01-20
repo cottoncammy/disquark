@@ -1,9 +1,15 @@
 package org.example.rest.webhook;
 
 import io.smallrye.mutiny.Uni;
+
 import org.example.rest.resources.Snowflake;
 import org.example.rest.resources.channel.message.Message;
-import org.example.rest.resources.webhook.*;
+import org.example.rest.resources.webhook.EditWebhookMessage;
+import org.example.rest.resources.webhook.ExecuteWebhook;
+import org.example.rest.resources.webhook.ExecuteWebhookOptions;
+import org.example.rest.resources.webhook.ModifyWebhookWithToken;
+import org.example.rest.resources.webhook.Webhook;
+import org.example.rest.resources.webhook.WebhookMessageOptions;
 
 public interface WebhooksCapable {
 

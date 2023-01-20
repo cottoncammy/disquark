@@ -1,14 +1,15 @@
 package org.example.rest.request;
 
+import java.util.List;
+import java.util.Map;
+
 import io.netty.util.internal.StringUtil;
 import io.vertx.core.json.Json;
 import io.vertx.mutiny.core.MultiMap;
 import io.vertx.mutiny.core.buffer.Buffer;
 import io.vertx.mutiny.ext.web.multipart.MultipartForm;
-import org.example.rest.util.Tika;
 
-import java.util.List;
-import java.util.Map;
+import org.example.rest.util.Tika;
 
 class MultipartCodec implements Codec {
 

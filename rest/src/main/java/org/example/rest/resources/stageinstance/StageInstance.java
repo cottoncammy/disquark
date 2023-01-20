@@ -1,13 +1,14 @@
 package org.example.rest.resources.stageinstance;
 
+import java.util.Optional;
+
 import com.fasterxml.jackson.annotation.JsonEnumDefaultValue;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
 import org.example.immutables.ImmutableJson;
 import org.example.rest.resources.Snowflake;
-
-import java.util.Optional;
 
 @ImmutableJson
 @JsonDeserialize(as = ImmutableStageInstance.class)

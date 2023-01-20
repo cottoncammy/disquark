@@ -1,8 +1,18 @@
 package org.example.rest.resources.guild;
 
-import com.fasterxml.jackson.annotation.*;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import static org.example.rest.util.Variables.variables;
+
+import java.util.List;
+import java.util.OptionalInt;
+
+import javax.annotation.Nullable;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonValue;
+
 import io.vertx.core.http.HttpMethod;
+
 import org.example.immutables.ImmutableJson;
 import org.example.rest.request.Auditable;
 import org.example.rest.request.Endpoint;
@@ -10,12 +20,6 @@ import org.example.rest.request.Request;
 import org.example.rest.request.Requestable;
 import org.example.rest.resources.Snowflake;
 import org.immutables.value.Value.Enclosing;
-
-import javax.annotation.Nullable;
-import java.util.List;
-import java.util.OptionalInt;
-
-import static org.example.rest.util.Variables.variables;
 
 @Enclosing
 @ImmutableJson

@@ -1,22 +1,27 @@
 package org.example.rest.webhook;
 
+import static java.util.Objects.requireNonNull;
+import static org.example.rest.util.Variables.variables;
+
 import io.smallrye.mutiny.Uni;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.json.JsonObject;
 import io.vertx.mutiny.core.Vertx;
 import io.vertx.mutiny.uritemplate.Variables;
-import org.example.rest.AuthenticatedDiscordClient;
+
 import org.example.rest.DiscordClient;
 import org.example.rest.request.AccessTokenSource;
 import org.example.rest.request.EmptyRequest;
 import org.example.rest.request.Requester;
 import org.example.rest.resources.Snowflake;
 import org.example.rest.resources.channel.message.Message;
-import org.example.rest.resources.webhook.*;
+import org.example.rest.resources.webhook.EditWebhookMessage;
+import org.example.rest.resources.webhook.ExecuteWebhook;
+import org.example.rest.resources.webhook.ExecuteWebhookOptions;
+import org.example.rest.resources.webhook.ModifyWebhookWithToken;
+import org.example.rest.resources.webhook.Webhook;
+import org.example.rest.resources.webhook.WebhookMessageOptions;
 import org.example.rest.response.Response;
-
-import static java.util.Objects.requireNonNull;
-import static org.example.rest.util.Variables.variables;
 
 public class DiscordWebhookClient<T extends Response> extends DiscordClient<T> implements WebhooksCapable {
 

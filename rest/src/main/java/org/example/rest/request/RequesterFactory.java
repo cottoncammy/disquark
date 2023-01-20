@@ -1,14 +1,14 @@
 package org.example.rest.request;
 
+import static java.util.Objects.requireNonNull;
+
+import java.util.function.Function;
+
 import org.example.rest.DiscordClient;
 import org.example.rest.request.ratelimit.GlobalRateLimiter;
 import org.example.rest.request.ratelimit.RateLimitStrategy;
 import org.example.rest.response.HttpResponse;
 import org.example.rest.response.Response;
-
-import java.util.function.Function;
-
-import static java.util.Objects.requireNonNull;
 
 public interface RequesterFactory<T extends Response> extends Function<DiscordClient.Builder<T, ? extends DiscordClient<T>>, Requester<T>> {
 

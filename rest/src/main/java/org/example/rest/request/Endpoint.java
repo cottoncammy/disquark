@@ -1,12 +1,13 @@
 package org.example.rest.request;
 
-import io.vertx.core.http.HttpMethod;
-import io.vertx.mutiny.uritemplate.Variables;
-import org.example.rest.util.UriTemplate;
+import static java.util.Objects.requireNonNull;
 
 import java.util.Optional;
 
-import static java.util.Objects.requireNonNull;
+import io.vertx.core.http.HttpMethod;
+import io.vertx.mutiny.uritemplate.Variables;
+
+import org.example.rest.util.UriTemplate;
 
 public class Endpoint {
     private final HttpMethod httpMethod;

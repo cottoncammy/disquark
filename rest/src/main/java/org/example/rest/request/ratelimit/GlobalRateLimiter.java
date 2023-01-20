@@ -1,10 +1,10 @@
 package org.example.rest.request.ratelimit;
 
-import io.smallrye.mutiny.Uni;
-
 import java.time.Duration;
 import java.time.Instant;
 import java.util.function.Supplier;
+
+import io.smallrye.mutiny.Uni;
 
 public abstract class GlobalRateLimiter {
     private volatile int ipRetryAfter;

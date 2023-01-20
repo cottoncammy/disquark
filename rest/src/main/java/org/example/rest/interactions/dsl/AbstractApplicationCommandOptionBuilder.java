@@ -1,15 +1,16 @@
 package org.example.rest.interactions.dsl;
 
-import org.example.rest.resources.application.command.ApplicationCommand;
-import org.example.rest.resources.interactions.ApplicationCommandInteractionDataOption;
+import static java.util.Objects.requireNonNull;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
 
-import static java.util.Objects.requireNonNull;
+import javax.annotation.Nullable;
+
+import org.example.rest.resources.application.command.ApplicationCommand;
+import org.example.rest.resources.interactions.ApplicationCommandInteractionDataOption;
 
 public abstract class AbstractApplicationCommandOptionBuilder<O extends AbstractApplicationCommandOptionBuilder<O>> implements Predicate<ApplicationCommandInteractionDataOption> {
     protected final List<O> options = new ArrayList<>();

@@ -1,16 +1,17 @@
 package org.example.rest.interactions;
 
+import java.util.EnumSet;
+import java.util.List;
+
 import io.smallrye.mutiny.Uni;
 import io.vertx.core.json.Json;
 import io.vertx.mutiny.core.http.HttpServerResponse;
+
 import org.example.rest.resources.channel.message.Message;
 import org.example.rest.resources.interactions.Interaction;
 import org.example.rest.resources.interactions.components.Component;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.EnumSet;
-import java.util.List;
 
 public abstract class CompletableInteraction<T> {
     protected static final Logger LOG = LoggerFactory.getLogger(CompletableInteraction.class);

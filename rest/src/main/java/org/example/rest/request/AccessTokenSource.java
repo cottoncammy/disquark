@@ -1,6 +1,7 @@
 package org.example.rest.request;
 
 import io.smallrye.mutiny.Uni;
+
 import org.example.rest.resources.oauth2.AccessToken;
 import org.example.rest.resources.oauth2.TokenType;
 

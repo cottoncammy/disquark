@@ -1,14 +1,15 @@
 package org.example.rest.resources.guild;
 
+import static org.example.rest.util.Variables.variables;
+
 import io.vertx.core.http.HttpMethod;
+
 import org.example.immutables.ImmutableBuilder;
 import org.example.rest.request.Endpoint;
 import org.example.rest.request.Request;
 import org.example.rest.request.Requestable;
 import org.example.rest.resources.Snowflake;
 import org.immutables.value.Value.Default;
-
-import static org.example.rest.util.Variables.variables;
 
 @ImmutableBuilder
 public interface SearchGuildMembers extends Requestable {

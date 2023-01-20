@@ -1,17 +1,19 @@
 package org.example.rest.request.ratelimit;
 
+import java.time.Duration;
+import java.util.function.Consumer;
+
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
+
 import io.smallrye.mutiny.Uni;
 import io.smallrye.mutiny.infrastructure.Infrastructure;
+
 import org.example.rest.request.Request;
 import org.example.rest.request.Requester;
 import org.example.rest.response.HttpResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.time.Duration;
-import java.util.function.Consumer;
 
 public class BucketRateLimitingRequester implements Requester<HttpResponse> {
     private static final Logger LOG = LoggerFactory.getLogger(BucketRateLimitingRequester.class);

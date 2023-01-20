@@ -1,16 +1,21 @@
 package org.example.rest.jackson;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.*;
-import com.fasterxml.jackson.databind.ser.ContextualSerializer;
-import com.fasterxml.jackson.databind.ser.std.StdSerializer;
-import org.example.rest.resources.FlagEnum;
-import org.example.rest.resources.permissions.PermissionFlag;
-import org.example.nullableoptional.NullableOptional;
-
 import java.io.IOException;
 import java.util.EnumSet;
 import java.util.Optional;
+
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.BeanProperty;
+import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.ser.ContextualSerializer;
+import com.fasterxml.jackson.databind.ser.std.StdSerializer;
+
+import org.example.nullableoptional.NullableOptional;
+import org.example.rest.resources.FlagEnum;
+import org.example.rest.resources.permissions.PermissionFlag;
 
 public class FlagsSerializer extends StdSerializer<EnumSet<? extends FlagEnum>> implements ContextualSerializer {
 

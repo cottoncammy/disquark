@@ -1,9 +1,10 @@
 package org.example.rest.response;
 
-import io.vertx.mutiny.core.http.HttpClientResponse;
+import java.util.Optional;
 
 import javax.annotation.Nullable;
-import java.util.Optional;
+
+import io.vertx.mutiny.core.http.HttpClientResponse;
 
 public class RateLimitException extends RuntimeException {
     @Nullable

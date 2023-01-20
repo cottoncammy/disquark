@@ -1,7 +1,5 @@
 package org.example.rest.interactions;
 
-import io.vertx.mutiny.core.buffer.Buffer;
-
 import java.util.function.Function;
 
 public interface InteractionValidatorFactory extends Function<String, InteractionValidator> {

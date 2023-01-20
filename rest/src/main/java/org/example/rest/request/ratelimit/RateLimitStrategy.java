@@ -1,10 +1,10 @@
 package org.example.rest.request.ratelimit;
 
+import java.util.function.Function;
+
 import org.example.rest.request.Requester;
 import org.example.rest.response.HttpResponse;
 import org.example.rest.response.Response;
-
-import java.util.function.Function;
 
 public interface RateLimitStrategy<T extends Response> extends Function<Requester<T>, Requester<T>> {
 

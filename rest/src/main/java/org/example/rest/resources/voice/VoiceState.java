@@ -1,13 +1,14 @@
 package org.example.rest.resources.voice;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import org.example.rest.resources.Snowflake;
-import org.example.immutables.ImmutableJson;
-import org.example.rest.resources.guild.Guild;
-
 import java.time.Instant;
 import java.util.Optional;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import org.example.immutables.ImmutableJson;
+import org.example.rest.resources.Snowflake;
+import org.example.rest.resources.guild.Guild;
 
 @ImmutableJson
 @JsonDeserialize(as = ImmutableVoiceState.class)

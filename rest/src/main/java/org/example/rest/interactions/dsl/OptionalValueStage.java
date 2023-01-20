@@ -1,9 +1,9 @@
 package org.example.rest.interactions.dsl;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
-
-import static java.util.Objects.requireNonNull;
 
 class OptionalValueStage<S, T> {
     private final S previousStage;

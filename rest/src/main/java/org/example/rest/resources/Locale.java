@@ -3,8 +3,6 @@ package org.example.rest.resources;
 import com.fasterxml.jackson.annotation.JsonEnumDefaultValue;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-import static java.util.Objects.requireNonNull;
-
 public enum Locale {
     @JsonEnumDefaultValue
     UNKNOWN("unknown"),

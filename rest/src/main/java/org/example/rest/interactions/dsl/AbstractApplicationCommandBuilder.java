@@ -1,19 +1,25 @@
 package org.example.rest.interactions.dsl;
 
+import static java.util.Objects.requireNonNull;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.function.Predicate;
+
+import javax.annotation.Nullable;
+
 import io.smallrye.mutiny.tuples.Functions;
 import io.vertx.mutiny.core.http.HttpServerResponse;
+
 import org.example.rest.interactions.CompletableInteraction;
 import org.example.rest.interactions.DiscordInteractionsClient;
 import org.example.rest.resources.Snowflake;
 import org.example.rest.resources.application.command.ApplicationCommand;
 import org.example.rest.resources.interactions.ApplicationCommandInteractionDataOption;
 import org.example.rest.resources.interactions.Interaction;
-
-import javax.annotation.Nullable;
-import java.util.*;
-import java.util.function.Predicate;
-
-import static java.util.Objects.requireNonNull;
 
 public abstract class AbstractApplicationCommandBuilder<C extends CompletableInteraction<Interaction.ApplicationCommandData>, O extends AbstractApplicationCommandOptionBuilder<O>> implements InteractionSchema<Interaction.ApplicationCommandData, C> {
     private final Interaction.Type interactionType;

@@ -1,14 +1,15 @@
 package org.example.rest.request;
 
-import io.vertx.core.http.HttpMethod;
-import io.vertx.mutiny.core.buffer.Buffer;
-import io.vertx.mutiny.uritemplate.Variables;
-
-import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
+import javax.annotation.Nullable;
+
+import io.vertx.core.http.HttpMethod;
+import io.vertx.mutiny.core.buffer.Buffer;
+import io.vertx.mutiny.uritemplate.Variables;
 
 public class EmptyRequest implements Request {
     private final Endpoint endpoint;

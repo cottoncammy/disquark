@@ -1,5 +1,7 @@
 package org.example.it;
 
+import java.util.Optional;
+
 import org.example.it.config.ConfigHelper;
 import org.example.it.config.ConfigValue;
 import org.example.rest.DiscordBotClient;
@@ -8,8 +10,6 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.ParameterContext;
 import org.junit.jupiter.api.extension.ParameterResolutionException;
 import org.junit.jupiter.api.extension.ParameterResolver;
-
-import java.util.Optional;
 
 public class SomeExtension2 implements ParameterResolver {
 

@@ -2,24 +2,24 @@ package org.example.rest.oauth2;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.EnumSet;
+import java.util.stream.Collectors;
+
+import javax.annotation.Nullable;
+
 import io.smallrye.mutiny.Uni;
-import io.vertx.ext.auth.JWTOptions;
 import io.vertx.ext.auth.oauth2.OAuth2FlowType;
 import io.vertx.ext.auth.oauth2.OAuth2Options;
 import io.vertx.ext.auth.oauth2.Oauth2Credentials;
 import io.vertx.mutiny.core.Vertx;
 import io.vertx.mutiny.ext.auth.User;
 import io.vertx.mutiny.ext.auth.oauth2.OAuth2Auth;
+
 import org.example.rest.request.AccessTokenSource;
 import org.example.rest.resources.oauth2.AccessToken;
 import org.example.rest.resources.oauth2.Scope;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.annotation.Nullable;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class BearerTokenSource implements AccessTokenSource {
     private static final Logger LOG = LoggerFactory.getLogger(BearerTokenSource.class);

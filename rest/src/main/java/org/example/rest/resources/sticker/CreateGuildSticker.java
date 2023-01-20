@@ -1,12 +1,18 @@
 package org.example.rest.resources.sticker;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.vertx.core.http.HttpMethod;
-import org.example.immutables.ImmutableJson;
-import org.example.rest.request.*;
-import org.example.rest.resources.Snowflake;
-
 import static org.example.rest.util.Variables.variables;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import io.vertx.core.http.HttpMethod;
+
+import org.example.immutables.ImmutableJson;
+import org.example.rest.request.Auditable;
+import org.example.rest.request.Endpoint;
+import org.example.rest.request.MultipartRequest;
+import org.example.rest.request.Request;
+import org.example.rest.request.Requestable;
+import org.example.rest.resources.Snowflake;
 
 @ImmutableJson
 public interface CreateGuildSticker extends Auditable, MultipartRequest, Requestable {

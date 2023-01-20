@@ -1,14 +1,16 @@
 package org.example.rest.interactions.dsl;
 
+import static java.util.Objects.requireNonNull;
+
+import java.util.Objects;
+
+import javax.annotation.Nullable;
+
 import io.vertx.mutiny.core.http.HttpServerResponse;
+
 import org.example.rest.interactions.DiscordInteractionsClient;
 import org.example.rest.interactions.ModalSubmitInteraction;
 import org.example.rest.resources.interactions.Interaction;
-
-import javax.annotation.Nullable;
-import java.util.Objects;
-
-import static java.util.Objects.requireNonNull;
 
 public class ModalSubmitBuilder implements InteractionSchema<Interaction.ModalSubmitData, ModalSubmitInteraction> {
     @Nullable

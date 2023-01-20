@@ -1,13 +1,14 @@
 package org.example.rest.resources.auditlog;
 
+import java.util.Optional;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import org.example.rest.resources.Snowflake;
+
 import org.example.immutables.ImmutableJson;
+import org.example.rest.resources.Snowflake;
 import org.example.rest.resources.automod.AutoModerationRule;
 import org.example.rest.resources.channel.Channel;
-
-import java.util.Optional;
 
 @ImmutableJson
 @JsonDeserialize(as = ImmutableAuditEntryInfo.class)

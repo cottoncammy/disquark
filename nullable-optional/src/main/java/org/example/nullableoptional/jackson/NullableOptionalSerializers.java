@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.SerializationConfig;
 import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
 import com.fasterxml.jackson.databind.ser.Serializers;
 import com.fasterxml.jackson.databind.type.ReferenceType;
+
 import org.example.nullableoptional.NullableOptional;
 
 public class NullableOptionalSerializers extends Serializers.Base {

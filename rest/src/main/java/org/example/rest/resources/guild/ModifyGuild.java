@@ -1,13 +1,22 @@
 package org.example.rest.resources.guild;
 
+import static org.example.rest.util.Variables.variables;
+
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Optional;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import io.vertx.core.http.HttpMethod;
 import io.vertx.mutiny.core.buffer.Buffer;
+
 import org.example.immutables.ImmutableJson;
+import org.example.nullableoptional.NullableOptional;
 import org.example.nullableoptional.jackson.NullableOptionalFilter;
 import org.example.rest.jackson.ImageDataSerializer;
 import org.example.rest.request.Auditable;
@@ -16,14 +25,7 @@ import org.example.rest.request.Request;
 import org.example.rest.request.Requestable;
 import org.example.rest.resources.Locale;
 import org.example.rest.resources.Snowflake;
-import org.example.nullableoptional.NullableOptional;
 import org.immutables.value.Value.Redacted;
-
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Optional;
-
-import static org.example.rest.util.Variables.variables;
 
 @ImmutableJson
 @JsonInclude(value = Include.CUSTOM, valueFilter = NullableOptionalFilter.class)

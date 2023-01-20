@@ -1,11 +1,14 @@
 package org.example.immutables;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import org.immutables.value.Value.Style;
-import org.immutables.value.Value.Immutable;
-import org.immutables.value.Value.Style.ImplementationVisibility;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Target;
 
-import java.lang.annotation.*;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import org.immutables.value.Value.Immutable;
+import org.immutables.value.Value.Style;
+import org.immutables.value.Value.Style.ImplementationVisibility;
 
 @Target({ElementType.PACKAGE, ElementType.TYPE})
 @NullableOptionalEncodingEnabled

@@ -1,7 +1,7 @@
 package org.example.it;
 
-import io.smallrye.mutiny.helpers.test.AssertSubscriber;
 import io.smallrye.mutiny.helpers.test.UniAssertSubscriber;
+
 import org.example.it.config.ConfigValue;
 import org.example.rest.DiscordBotClient;
 import org.example.rest.resources.Snowflake;
@@ -9,7 +9,10 @@ import org.example.rest.resources.automod.AutoModerationAction;
 import org.example.rest.resources.automod.AutoModerationRule;
 import org.example.rest.resources.automod.CreateAutoModerationRule;
 import org.example.rest.resources.automod.ModifyAutoModerationRule;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)

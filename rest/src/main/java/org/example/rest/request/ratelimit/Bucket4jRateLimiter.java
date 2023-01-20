@@ -7,16 +7,16 @@ import static org.example.rest.request.HttpClientRequester.REQUEST_ID;
 import static org.example.rest.util.ExceptionPredicate.is;
 import static org.example.rest.util.ExceptionPredicate.wasCausedBy;
 
+import java.time.Duration;
+
 import io.github.bucket4j.Bandwidth;
 import io.github.bucket4j.Bucket;
 import io.smallrye.mutiny.Context;
 import io.smallrye.mutiny.Uni;
 import io.smallrye.mutiny.infrastructure.Infrastructure;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.time.Duration;
-import java.util.function.Supplier;
 
 public class Bucket4jRateLimiter extends GlobalRateLimiter {
     private static final Logger LOG = LoggerFactory.getLogger(Bucket4jRateLimiter.class);

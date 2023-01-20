@@ -1,12 +1,12 @@
 package org.example.rest.resources;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import static java.util.Objects.requireNonNull;
 
 import java.time.Instant;
 import java.util.Objects;
 
-import static java.util.Objects.requireNonNull;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 public class Snowflake {
     private static final long DISCORD_EPOCH = 1420070400000L;

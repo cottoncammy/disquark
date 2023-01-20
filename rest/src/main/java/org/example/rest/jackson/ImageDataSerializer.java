@@ -1,12 +1,15 @@
 package org.example.rest.jackson;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.*;
-import io.vertx.mutiny.core.buffer.Buffer;
-import org.example.rest.util.Tika;
-
 import java.io.IOException;
 import java.util.Base64;
+
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.SerializerProvider;
+
+import io.vertx.mutiny.core.buffer.Buffer;
+
+import org.example.rest.util.Tika;
 
 public class ImageDataSerializer extends JsonSerializer<Buffer> {
     private static final Base64.Encoder BASE64_ENCODER = Base64.getEncoder();

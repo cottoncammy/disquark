@@ -1,16 +1,14 @@
 package org.example.it;
 
+import java.util.EnumSet;
+
 import io.vertx.mutiny.core.Vertx;
+
 import org.example.it.config.ConfigHelper;
 import org.example.rest.DiscordBotClient;
 import org.example.rest.oauth2.BearerTokenSource;
 import org.example.rest.oauth2.DiscordOAuth2Client;
-import org.example.rest.request.Requester;
 import org.example.rest.resources.oauth2.Scope;
-import org.example.rest.response.Response;
-
-import java.util.EnumSet;
-import java.util.List;
 
 public class DiscordClients {
 

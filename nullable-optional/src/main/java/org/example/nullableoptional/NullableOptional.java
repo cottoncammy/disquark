@@ -1,10 +1,11 @@
 package org.example.nullableoptional;
 
-import javax.annotation.Nullable;
+import static java.util.Objects.requireNonNull;
+
 import java.util.Objects;
 import java.util.Optional;
 
-import static java.util.Objects.requireNonNull;
+import javax.annotation.Nullable;
 
 public class NullableOptional<T> {
     @Nullable

@@ -1,14 +1,15 @@
 package org.example.rest;
 
+import static java.util.Objects.requireNonNull;
+
 import io.vertx.mutiny.core.Vertx;
+
 import org.example.rest.request.AccessTokenSource;
 import org.example.rest.request.Requester;
 import org.example.rest.request.RequesterFactory;
 import org.example.rest.request.ratelimit.GlobalRateLimiter;
 import org.example.rest.request.ratelimit.RateLimitStrategy;
 import org.example.rest.response.Response;
-
-import static java.util.Objects.requireNonNull;
 
 public abstract class DiscordClient<T extends Response> {
     protected final Vertx vertx;

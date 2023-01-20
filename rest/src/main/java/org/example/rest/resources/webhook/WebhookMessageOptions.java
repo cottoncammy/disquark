@@ -1,9 +1,9 @@
 package org.example.rest.resources.webhook;
 
+import java.util.Optional;
+
 import org.example.immutables.ImmutableBuilder;
 import org.example.rest.resources.Snowflake;
-
-import java.util.Optional;
 
 @ImmutableBuilder
 public interface WebhookMessageOptions {

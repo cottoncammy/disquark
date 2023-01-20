@@ -1,16 +1,18 @@
 package org.example.rest.interactions.dsl;
 
+import static java.util.Objects.requireNonNull;
+
+import java.util.Objects;
+import java.util.Optional;
+
+import javax.annotation.Nullable;
+
 import io.vertx.mutiny.core.http.HttpServerResponse;
+
 import org.example.rest.interactions.DiscordInteractionsClient;
 import org.example.rest.interactions.MessageComponentInteraction;
 import org.example.rest.resources.interactions.Interaction;
 import org.example.rest.resources.interactions.components.Component;
-
-import javax.annotation.Nullable;
-import java.util.Objects;
-import java.util.Optional;
-
-import static java.util.Objects.requireNonNull;
 
 public class MessageComponentBuilder implements InteractionSchema<Interaction.MessageComponentData, MessageComponentInteraction> {
     @Nullable

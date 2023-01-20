@@ -1,9 +1,9 @@
 package org.example.rest.interactions;
 
+import java.nio.charset.StandardCharsets;
+
 import org.bouncycastle.math.ec.rfc8032.Ed25519;
 import org.example.rest.util.Hex;
-
-import java.nio.charset.StandardCharsets;
 
 class BouncyCastleInteractionValidator extends InteractionValidator {
 

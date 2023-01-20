@@ -1,8 +1,8 @@
 package org.example.rest.util;
 
-import io.vertx.mutiny.uritemplate.Variables;
-
 import java.util.Objects;
+
+import io.vertx.mutiny.uritemplate.Variables;
 
 public class UriTemplate {
     private final String uri;

@@ -1,14 +1,15 @@
 package org.example.rest.resources.partial;
 
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Optional;
+
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
 import org.example.immutables.ImmutableJson;
 import org.example.rest.resources.Snowflake;
 import org.example.rest.resources.guild.Guild;
 import org.example.rest.resources.permissions.PermissionFlag;
-
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Optional;
 
 @ImmutableJson
 @JsonDeserialize(as = ImmutablePartialGuild.class)

@@ -1,9 +1,9 @@
 package org.example.rest.emoji;
 
+import static java.util.Objects.requireNonNull;
+
 import org.example.rest.resources.Snowflake;
 import org.example.rest.resources.emoji.Emoji;
-
-import static java.util.Objects.requireNonNull;
 
 public interface ReactionEmoji {
 

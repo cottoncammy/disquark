@@ -1,11 +1,12 @@
 package org.example.rest.resources.partial;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import org.example.immutables.ImmutableJson;
-import org.example.rest.resources.Snowflake;
-
 import java.util.Optional;
 import java.util.OptionalInt;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import org.example.immutables.ImmutableJson;
+import org.example.rest.resources.Snowflake;
 
 @ImmutableJson
 public interface PartialAttachment {

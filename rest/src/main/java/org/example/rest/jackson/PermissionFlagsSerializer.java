@@ -1,13 +1,14 @@
 package org.example.rest.jackson;
 
+import java.io.IOException;
+import java.util.EnumSet;
+
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
-import org.example.rest.resources.permissions.PermissionFlag;
 
-import java.io.IOException;
-import java.util.EnumSet;
+import org.example.rest.resources.permissions.PermissionFlag;
 
 public class PermissionFlagsSerializer extends StdSerializer<EnumSet<PermissionFlag>> {
 

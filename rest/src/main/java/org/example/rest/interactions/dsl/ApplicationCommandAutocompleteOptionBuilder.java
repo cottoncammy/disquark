@@ -1,10 +1,10 @@
 package org.example.rest.interactions.dsl;
 
-import org.example.rest.resources.application.command.ApplicationCommand;
-import org.example.rest.resources.interactions.ApplicationCommandInteractionDataOption;
-
 import java.util.Collections;
 import java.util.Objects;
+
+import org.example.rest.resources.application.command.ApplicationCommand;
+import org.example.rest.resources.interactions.ApplicationCommandInteractionDataOption;
 
 public class ApplicationCommandAutocompleteOptionBuilder extends AbstractApplicationCommandOptionBuilder<ApplicationCommandAutocompleteOptionBuilder> {
     private boolean focused;

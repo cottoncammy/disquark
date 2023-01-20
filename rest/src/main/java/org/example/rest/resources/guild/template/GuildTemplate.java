@@ -1,7 +1,13 @@
 package org.example.rest.resources.guild.template;
 
+import java.time.Instant;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Optional;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
 import org.example.immutables.ImmutableJson;
 import org.example.rest.resources.Locale;
 import org.example.rest.resources.Snowflake;
@@ -10,11 +16,6 @@ import org.example.rest.resources.guild.Guild;
 import org.example.rest.resources.permissions.PermissionFlag;
 import org.example.rest.resources.user.User;
 import org.immutables.value.Value.Enclosing;
-
-import java.time.Instant;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Optional;
 
 @Enclosing
 @ImmutableJson

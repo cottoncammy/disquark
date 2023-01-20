@@ -1,10 +1,11 @@
 package org.example.rest.response;
 
+import java.util.OptionalInt;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import org.example.immutables.ImmutableJson;
 
-import java.util.OptionalInt;
+import org.example.immutables.ImmutableJson;
 
 @ImmutableJson
 @JsonDeserialize(as = ImmutableRateLimitResponse.class)

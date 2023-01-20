@@ -1,15 +1,15 @@
 package org.example.rest.jackson;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import static java.time.format.DateTimeFormatter.ISO_DATE_TIME;
 
 import java.io.IOException;
 import java.time.DateTimeException;
 import java.time.Instant;
 
-import static java.time.format.DateTimeFormatter.ISO_DATE_TIME;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 
 public class InstantDeserializer extends JsonDeserializer<Instant> {
 

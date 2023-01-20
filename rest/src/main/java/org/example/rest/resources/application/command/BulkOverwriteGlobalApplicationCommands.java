@@ -1,22 +1,24 @@
 package org.example.rest.resources.application.command;
 
+import static org.example.rest.util.Variables.variables;
+
+import java.util.List;
+import java.util.Optional;
+
+import javax.annotation.Nullable;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
+
 import io.vertx.core.http.HttpMethod;
+
 import org.example.immutables.ImmutableJson;
 import org.example.rest.request.Endpoint;
 import org.example.rest.request.Request;
 import org.example.rest.request.Requestable;
 import org.example.rest.resources.Snowflake;
-import org.example.nullableoptional.NullableOptional;
 import org.immutables.value.Value.Enclosing;
-
-import javax.annotation.Nullable;
-import java.util.List;
-import java.util.Optional;
-
-import static org.example.rest.util.Variables.variables;
 
 @Enclosing
 @ImmutableJson

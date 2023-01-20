@@ -1,13 +1,14 @@
 package org.example.it;
 
 import io.smallrye.mutiny.helpers.test.UniAssertSubscriber;
+
 import org.example.it.config.ConfigValue;
 import org.example.rest.oauth2.DiscordOAuth2Client;
 import org.example.rest.resources.Snowflake;
 import org.example.rest.resources.application.command.ApplicationCommand;
 import org.example.rest.resources.application.command.CreateGuildApplicationCommand;
 import org.example.rest.resources.application.command.EditApplicationCommandPermissions;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 @ExtendWith(SomeExtension2.class)

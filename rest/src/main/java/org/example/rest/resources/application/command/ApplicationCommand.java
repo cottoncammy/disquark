@@ -1,21 +1,27 @@
 package org.example.rest.resources.application.command;
 
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.OptionalDouble;
+import java.util.OptionalInt;
+
 import com.fasterxml.jackson.annotation.JsonEnumDefaultValue;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import org.example.immutables.ImmutableJson;
+import org.example.nullableoptional.NullableOptional;
 import org.example.nullableoptional.jackson.NullableOptionalFilter;
 import org.example.rest.resources.Locale;
 import org.example.rest.resources.Snowflake;
-import org.example.immutables.ImmutableJson;
 import org.example.rest.resources.channel.Channel;
 import org.example.rest.resources.permissions.PermissionFlag;
-import org.example.nullableoptional.NullableOptional;
 import org.immutables.value.Value.Enclosing;
-
-import java.util.*;
 
 @Enclosing
 @ImmutableJson

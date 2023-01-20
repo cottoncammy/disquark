@@ -1,11 +1,11 @@
 package org.example.rest.response;
 
-import io.vertx.mutiny.core.http.HttpClientResponse;
+import static org.example.rest.util.ExceptionPredicate.is;
 
 import java.util.Arrays;
 import java.util.function.Predicate;
 
-import static org.example.rest.util.ExceptionPredicate.is;
+import io.vertx.mutiny.core.http.HttpClientResponse;
 
 public class DiscordException extends RuntimeException {
     private final ErrorResponse errorResponse;

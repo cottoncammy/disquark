@@ -1,9 +1,12 @@
 package org.example.rest;
 
+import static org.example.rest.interactions.dsl.InteractionSchema.ping;
+
 import io.smallrye.mutiny.helpers.test.AssertSubscriber;
 import io.smallrye.mutiny.helpers.test.UniAssertSubscriber;
 import io.vertx.mutiny.core.Vertx;
 import io.vertx.mutiny.core.http.HttpClientResponse;
+
 import org.example.rest.interactions.DiscordInteractionsClient;
 import org.example.rest.interactions.InteractionValidatorFactory;
 import org.example.rest.request.AccessTokenSource;
@@ -11,8 +14,6 @@ import org.example.rest.resources.interactions.Interaction;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-
-import static org.example.rest.interactions.dsl.InteractionSchema.ping;
 
 class InteractionsVerticleTest extends InteractionsTestBase {
     private static DiscordBotClient<?> botClient;

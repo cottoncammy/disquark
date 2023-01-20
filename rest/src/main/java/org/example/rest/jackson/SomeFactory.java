@@ -5,10 +5,12 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
+
 import io.vertx.core.json.jackson.DatabindCodec;
 import io.vertx.core.json.jackson.JacksonFactory;
 import io.vertx.core.spi.JsonFactory;
 import io.vertx.core.spi.json.JsonCodec;
+
 import org.example.nullableoptional.jackson.NullableOptionalModule;
 
 public class SomeFactory implements JsonFactory {

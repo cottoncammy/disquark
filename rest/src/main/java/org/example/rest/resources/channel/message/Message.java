@@ -1,26 +1,27 @@
 package org.example.rest.resources.channel.message;
 
+import java.time.Instant;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.OptionalInt;
+
 import com.fasterxml.jackson.annotation.JsonEnumDefaultValue;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.deser.std.StringDeserializer;
-import org.example.rest.resources.Snowflake;
+
 import org.example.immutables.ImmutableJson;
+import org.example.rest.resources.FlagEnum;
+import org.example.rest.resources.Snowflake;
 import org.example.rest.resources.channel.Channel;
 import org.example.rest.resources.emoji.Emoji;
 import org.example.rest.resources.interactions.MessageInteraction;
 import org.example.rest.resources.interactions.components.Component;
 import org.example.rest.resources.sticker.Sticker;
 import org.example.rest.resources.user.User;
-import org.example.rest.resources.FlagEnum;
 import org.immutables.value.Value.Enclosing;
-
-import java.time.Instant;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.OptionalInt;
 
 @Enclosing
 @ImmutableJson

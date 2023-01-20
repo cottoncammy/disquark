@@ -1,8 +1,16 @@
 package org.example.it;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
+
 import io.smallrye.mutiny.Uni;
 import io.smallrye.mutiny.helpers.test.AssertSubscriber;
 import io.vertx.mutiny.core.Vertx;
+
 import org.example.it.config.ConfigValue;
 import org.example.rest.DiscordBotClient;
 import org.example.rest.DiscordClient;
@@ -18,14 +26,8 @@ import org.example.rest.response.HttpResponse;
 import org.example.rest.response.RateLimitException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-
-import java.util.Optional;
-import java.util.concurrent.atomic.AtomicInteger;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @Disabled
 @ExtendWith(SomeExtension2.class)

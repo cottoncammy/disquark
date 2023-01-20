@@ -1,10 +1,11 @@
 package org.example.rest.resources.guild.prune;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Optional;
 
 import javax.annotation.Nullable;
-import java.util.Optional;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class GuildPruneResponse {
     @Nullable

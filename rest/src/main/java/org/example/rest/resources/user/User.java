@@ -1,20 +1,22 @@
 package org.example.rest.resources.user;
 
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.OptionalInt;
+
 import com.fasterxml.jackson.annotation.JsonEnumDefaultValue;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
 import org.example.immutables.ImmutableJson;
+import org.example.rest.resources.FlagEnum;
 import org.example.rest.resources.Locale;
 import org.example.rest.resources.Snowflake;
 import org.example.rest.resources.guild.Guild;
-import org.example.rest.resources.FlagEnum;
-import org.example.rest.util.Partial;
 import org.immutables.value.Value.Enclosing;
-
-import java.util.*;
 
 @Enclosing
 @ImmutableJson

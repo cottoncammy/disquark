@@ -1,30 +1,31 @@
 package org.example.rest.resources.interactions;
 
-import com.fasterxml.jackson.annotation.JsonEnumDefaultValue;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonValue;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import org.example.rest.resources.Locale;
-import org.example.rest.resources.Snowflake;
-import org.example.immutables.ImmutableJson;
-import org.example.rest.resources.application.command.ApplicationCommand;
-import org.example.rest.resources.channel.Channel;
-import org.example.rest.resources.channel.thread.ThreadMetadata;
-import org.example.rest.resources.partial.PartialAttachment;
-import org.example.rest.resources.user.User;
-import org.example.rest.resources.channel.message.AllowedMentions;
-import org.example.rest.resources.channel.message.Message;
-import org.example.rest.resources.guild.Guild;
-import org.example.rest.resources.interactions.components.Component;
-import org.example.rest.resources.permissions.PermissionFlag;
-import org.example.rest.resources.permissions.Role;
-import org.immutables.value.Value.Enclosing;
-
 import java.time.Instant;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
+import com.fasterxml.jackson.annotation.JsonEnumDefaultValue;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import org.example.immutables.ImmutableJson;
+import org.example.rest.resources.Locale;
+import org.example.rest.resources.Snowflake;
+import org.example.rest.resources.application.command.ApplicationCommand;
+import org.example.rest.resources.channel.Channel;
+import org.example.rest.resources.channel.message.AllowedMentions;
+import org.example.rest.resources.channel.message.Message;
+import org.example.rest.resources.channel.thread.ThreadMetadata;
+import org.example.rest.resources.guild.Guild;
+import org.example.rest.resources.interactions.components.Component;
+import org.example.rest.resources.partial.PartialAttachment;
+import org.example.rest.resources.permissions.PermissionFlag;
+import org.example.rest.resources.permissions.Role;
+import org.example.rest.resources.user.User;
+import org.immutables.value.Value.Enclosing;
 
 @Enclosing
 @ImmutableJson

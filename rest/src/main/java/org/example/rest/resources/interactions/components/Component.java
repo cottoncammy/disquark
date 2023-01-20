@@ -1,18 +1,17 @@
 package org.example.rest.resources.interactions.components;
 
-import com.fasterxml.jackson.annotation.JsonEnumDefaultValue;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonValue;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import org.example.rest.resources.emoji.Emoji;
-import org.example.immutables.ImmutableJson;
-import org.example.rest.resources.channel.Channel;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.OptionalInt;
+
+import com.fasterxml.jackson.annotation.JsonEnumDefaultValue;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import org.example.immutables.ImmutableJson;
+import org.example.rest.resources.channel.Channel;
+import org.example.rest.resources.emoji.Emoji;
 
 @ImmutableJson
 @JsonDeserialize(as = ImmutableComponent.class)

@@ -1,12 +1,13 @@
 package org.example.rest.resources.channel.message;
 
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import org.example.rest.resources.Snowflake;
-import org.example.immutables.ImmutableJson;
 
-import java.util.List;
+import org.example.immutables.ImmutableJson;
+import org.example.rest.resources.Snowflake;
 
 @ImmutableJson
 @JsonDeserialize(as = ImmutableAllowedMentions.class)

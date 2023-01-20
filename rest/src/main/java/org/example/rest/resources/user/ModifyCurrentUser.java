@@ -1,20 +1,22 @@
 package org.example.rest.resources.user;
 
+import java.util.Optional;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import io.vertx.core.http.HttpMethod;
 import io.vertx.mutiny.core.buffer.Buffer;
+
 import org.example.immutables.ImmutableJson;
+import org.example.nullableoptional.NullableOptional;
 import org.example.nullableoptional.jackson.NullableOptionalFilter;
 import org.example.rest.jackson.ImageDataSerializer;
 import org.example.rest.request.Endpoint;
 import org.example.rest.request.Request;
 import org.example.rest.request.Requestable;
-import org.example.nullableoptional.NullableOptional;
 import org.immutables.value.Value.Redacted;
-
-import java.util.Optional;
 
 @ImmutableJson
 public interface ModifyCurrentUser extends Requestable {

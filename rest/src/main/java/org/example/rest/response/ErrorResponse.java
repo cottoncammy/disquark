@@ -1,9 +1,10 @@
 package org.example.rest.response;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import org.example.immutables.ImmutableJson;
-
 import java.util.Map;
+
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import org.example.immutables.ImmutableJson;
 
 @ImmutableJson
 @JsonDeserialize(as = ImmutableErrorResponse.class)

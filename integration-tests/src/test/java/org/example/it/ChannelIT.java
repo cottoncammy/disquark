@@ -1,14 +1,25 @@
 package org.example.it;
 
+import java.util.EnumSet;
+import java.util.List;
+
 import io.smallrye.mutiny.Uni;
-import io.smallrye.mutiny.helpers.test.AssertSubscriber;
 import io.smallrye.mutiny.helpers.test.UniAssertSubscriber;
+
 import org.example.it.config.ConfigValue;
 import org.example.rest.DiscordBotClient;
 import org.example.rest.emoji.ReactionEmoji;
 import org.example.rest.oauth2.BearerTokenSource;
 import org.example.rest.resources.Snowflake;
-import org.example.rest.resources.channel.*;
+import org.example.rest.resources.channel.BulkDeleteMessages;
+import org.example.rest.resources.channel.Channel;
+import org.example.rest.resources.channel.CreateMessage;
+import org.example.rest.resources.channel.EditChannelPermissions;
+import org.example.rest.resources.channel.GetChannelMessages;
+import org.example.rest.resources.channel.ListThreads;
+import org.example.rest.resources.channel.ModifyDmChannel;
+import org.example.rest.resources.channel.ModifyGuildChannel;
+import org.example.rest.resources.channel.StartThreadWithoutMessage;
 import org.example.rest.resources.channel.forum.StartThreadInForumChannel;
 import org.example.rest.resources.channel.message.EditMessage;
 import org.example.rest.resources.channel.message.GetReactions;
@@ -19,11 +30,13 @@ import org.example.rest.resources.channel.thread.ModifyThread;
 import org.example.rest.resources.guild.CreateGuildChannel;
 import org.example.rest.resources.oauth2.AccessToken;
 import org.example.rest.resources.oauth2.Scope;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ExtendWith;
-
-import java.util.EnumSet;
-import java.util.List;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @ExtendWith(SomeExtension2.class)

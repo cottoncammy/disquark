@@ -1,13 +1,14 @@
 package org.example.rest.request.ratelimit;
 
-import io.vertx.core.http.HttpMethod;
-import io.vertx.mutiny.uritemplate.Variables;
-import org.example.rest.request.Request;
-import org.example.rest.util.UriTemplate;
-
-import javax.annotation.Nullable;
 import java.util.Objects;
 import java.util.Optional;
+
+import javax.annotation.Nullable;
+
+import io.vertx.core.http.HttpMethod;
+
+import org.example.rest.request.Request;
+import org.example.rest.util.UriTemplate;
 
 class BucketCacheKey {
     private final HttpMethod httpMethod;

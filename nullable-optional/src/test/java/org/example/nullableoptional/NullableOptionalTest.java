@@ -1,15 +1,16 @@
 package org.example.nullableoptional;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.example.nullableoptional.jackson.NullableOptionalFilter;
 import org.example.nullableoptional.jackson.NullableOptionalModule;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class NullableOptionalTest {
     private static ObjectMapper objectMapper;

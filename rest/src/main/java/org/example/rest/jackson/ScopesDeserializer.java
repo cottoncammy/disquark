@@ -1,18 +1,19 @@
 package org.example.rest.jackson;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.exc.InvalidFormatException;
-import org.example.rest.resources.oauth2.Scope;
+import static java.util.Objects.requireNonNull;
+import static org.example.rest.resources.oauth2.Scope.*;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static java.util.Objects.requireNonNull;
-import static org.example.rest.resources.oauth2.Scope.*;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+
+import org.example.rest.resources.oauth2.Scope;
 
 public class ScopesDeserializer extends JsonDeserializer<List<Scope>> {
 

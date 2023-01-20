@@ -1,6 +1,7 @@
 package org.example.it;
 
 import io.smallrye.mutiny.helpers.test.UniAssertSubscriber;
+
 import org.example.rest.DiscordBotClient;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

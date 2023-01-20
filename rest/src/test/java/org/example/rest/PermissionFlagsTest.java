@@ -1,22 +1,21 @@
 package org.example.rest;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.vertx.core.json.Json;
-import io.vertx.core.json.jackson.DatabindCodec;
-import org.example.rest.resources.application.Application;
-import org.example.rest.resources.permissions.PermissionFlag;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import io.vertx.core.json.Json;
+import io.vertx.core.json.jackson.DatabindCodec;
+
+import org.example.rest.resources.permissions.PermissionFlag;
+import org.junit.jupiter.api.Test;
 
 class PermissionFlagsTest {
     private static final long NO_ADMIN = Arrays.stream(PermissionFlag.values())

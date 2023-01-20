@@ -1,14 +1,24 @@
 package org.example.rest;
 
+import static java.time.format.DateTimeFormatter.ISO_DATE_TIME;
+import static java.util.Objects.requireNonNull;
+import static org.example.rest.util.Variables.variables;
+
+import javax.annotation.Nullable;
+
 import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.json.JsonObject;
 import io.vertx.mutiny.core.Vertx;
 import io.vertx.mutiny.uritemplate.Variables;
+
+import org.example.rest.emoji.ReactionEmoji;
 import org.example.rest.interactions.DiscordInteractionsClient;
-import org.example.rest.request.*;
-import org.example.rest.resources.*;
+import org.example.rest.request.AccessTokenSource;
+import org.example.rest.request.EmptyRequest;
+import org.example.rest.request.Requester;
+import org.example.rest.resources.Snowflake;
 import org.example.rest.resources.application.Application;
 import org.example.rest.resources.application.ApplicationRoleConnectionMetadata;
 import org.example.rest.resources.application.UpdateApplicationRoleConnectionMetadataRecords;
@@ -17,14 +27,51 @@ import org.example.rest.resources.auditlog.GetGuildAuditLog;
 import org.example.rest.resources.automod.AutoModerationRule;
 import org.example.rest.resources.automod.CreateAutoModerationRule;
 import org.example.rest.resources.automod.ModifyAutoModerationRule;
-import org.example.rest.resources.channel.*;
+import org.example.rest.resources.channel.BulkDeleteMessages;
+import org.example.rest.resources.channel.Channel;
+import org.example.rest.resources.channel.CreateChannelInvite;
+import org.example.rest.resources.channel.CreateMessage;
+import org.example.rest.resources.channel.EditChannelPermissions;
+import org.example.rest.resources.channel.FollowAnnouncementChannel;
+import org.example.rest.resources.channel.FollowedChannel;
+import org.example.rest.resources.channel.GetChannelMessages;
+import org.example.rest.resources.channel.GroupDmAddRecipient;
+import org.example.rest.resources.channel.ListThreads;
+import org.example.rest.resources.channel.ListThreadsResult;
+import org.example.rest.resources.channel.ModifyDmChannel;
+import org.example.rest.resources.channel.ModifyGuildChannel;
+import org.example.rest.resources.channel.StartThreadWithoutMessage;
 import org.example.rest.resources.channel.forum.StartThreadInForumChannel;
-import org.example.rest.resources.channel.message.*;
-import org.example.rest.resources.channel.thread.*;
+import org.example.rest.resources.channel.message.EditMessage;
+import org.example.rest.resources.channel.message.GetReactions;
+import org.example.rest.resources.channel.message.Message;
+import org.example.rest.resources.channel.message.StartThreadFromMessage;
+import org.example.rest.resources.channel.thread.ListThreadMembers;
+import org.example.rest.resources.channel.thread.ModifyThread;
+import org.example.rest.resources.channel.thread.ThreadMember;
 import org.example.rest.resources.emoji.CreateGuildEmoji;
 import org.example.rest.resources.emoji.Emoji;
 import org.example.rest.resources.emoji.ModifyGuildEmoji;
-import org.example.rest.resources.guild.*;
+import org.example.rest.resources.guild.AddGuildMember;
+import org.example.rest.resources.guild.CreateGuild;
+import org.example.rest.resources.guild.CreateGuildBan;
+import org.example.rest.resources.guild.CreateGuildChannel;
+import org.example.rest.resources.guild.CreateGuildRole;
+import org.example.rest.resources.guild.GetGuildBans;
+import org.example.rest.resources.guild.Guild;
+import org.example.rest.resources.guild.ListGuildMembers;
+import org.example.rest.resources.guild.ModifyCurrentMember;
+import org.example.rest.resources.guild.ModifyCurrentUserVoiceState;
+import org.example.rest.resources.guild.ModifyGuild;
+import org.example.rest.resources.guild.ModifyGuildChannelPositions;
+import org.example.rest.resources.guild.ModifyGuildMember;
+import org.example.rest.resources.guild.ModifyGuildMfaLevel;
+import org.example.rest.resources.guild.ModifyGuildRole;
+import org.example.rest.resources.guild.ModifyGuildRolePositions;
+import org.example.rest.resources.guild.ModifyGuildWelcomeScreen;
+import org.example.rest.resources.guild.ModifyGuildWidget;
+import org.example.rest.resources.guild.ModifyUserVoiceState;
+import org.example.rest.resources.guild.SearchGuildMembers;
 import org.example.rest.resources.guild.prune.BeginGuildPrune;
 import org.example.rest.resources.guild.prune.GetGuildPruneCount;
 import org.example.rest.resources.guild.prune.GuildPruneResponse;
@@ -46,8 +93,8 @@ import org.example.rest.resources.stageinstance.CreateStageInstance;
 import org.example.rest.resources.stageinstance.ModifyStageInstance;
 import org.example.rest.resources.stageinstance.StageInstance;
 import org.example.rest.resources.sticker.CreateGuildSticker;
-import org.example.rest.resources.sticker.ModifyGuildSticker;
 import org.example.rest.resources.sticker.ListNitroStickerPacksResponse;
+import org.example.rest.resources.sticker.ModifyGuildSticker;
 import org.example.rest.resources.sticker.Sticker;
 import org.example.rest.resources.user.CreateDm;
 import org.example.rest.resources.user.ModifyCurrentUser;
@@ -57,13 +104,6 @@ import org.example.rest.resources.webhook.CreateWebhook;
 import org.example.rest.resources.webhook.ModifyWebhook;
 import org.example.rest.resources.webhook.Webhook;
 import org.example.rest.response.Response;
-import org.example.rest.emoji.ReactionEmoji;
-
-import javax.annotation.Nullable;
-
-import static java.time.format.DateTimeFormatter.ISO_DATE_TIME;
-import static java.util.Objects.requireNonNull;
-import static org.example.rest.util.Variables.variables;
 
 public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordClient<T> {
 

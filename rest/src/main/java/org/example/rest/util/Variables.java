@@ -2,8 +2,6 @@ package org.example.rest.util;
 
 import io.vertx.core.json.JsonObject;
 
-import static java.util.Objects.requireNonNull;
-
 public class Variables {
 
     public static io.vertx.mutiny.uritemplate.Variables variables(String k1, Object v1) {

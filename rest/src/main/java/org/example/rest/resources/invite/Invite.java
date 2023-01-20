@@ -1,21 +1,22 @@
 package org.example.rest.resources.invite;
 
-import com.fasterxml.jackson.annotation.JsonEnumDefaultValue;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonValue;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import org.example.immutables.ImmutableJson;
-import org.example.rest.resources.Snowflake;
-import org.example.rest.resources.guild.Guild;
-import org.example.rest.resources.guild.scheduledevent.GuildScheduledEvent;
-import org.example.rest.resources.user.User;
-import org.example.rest.resources.channel.Channel;
-import org.immutables.value.Value.Enclosing;
-
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import java.util.OptionalInt;
+
+import com.fasterxml.jackson.annotation.JsonEnumDefaultValue;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import org.example.immutables.ImmutableJson;
+import org.example.rest.resources.Snowflake;
+import org.example.rest.resources.channel.Channel;
+import org.example.rest.resources.guild.Guild;
+import org.example.rest.resources.guild.scheduledevent.GuildScheduledEvent;
+import org.example.rest.resources.user.User;
+import org.immutables.value.Value.Enclosing;
 
 @Enclosing
 @ImmutableJson

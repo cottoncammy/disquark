@@ -1,16 +1,17 @@
 package org.example.rest.resources.application;
 
+import java.util.List;
+import java.util.Optional;
+
 import com.fasterxml.jackson.annotation.JsonEnumDefaultValue;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
 import org.example.immutables.ImmutableJson;
 import org.example.rest.resources.Snowflake;
 import org.example.rest.resources.user.User;
 import org.immutables.value.Value.Enclosing;
-
-import java.util.List;
-import java.util.Optional;
 
 @Enclosing
 @ImmutableJson

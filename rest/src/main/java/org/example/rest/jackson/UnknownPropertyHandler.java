@@ -1,13 +1,14 @@
 package org.example.rest.jackson;
 
+import java.io.IOException;
+
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.deser.DeserializationProblemHandler;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.IOException;
 
 public class UnknownPropertyHandler extends DeserializationProblemHandler {
     private static final Logger LOG = LoggerFactory.getLogger(UnknownPropertyHandler.class);

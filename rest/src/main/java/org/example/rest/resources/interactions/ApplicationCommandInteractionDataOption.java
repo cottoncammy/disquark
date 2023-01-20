@@ -1,11 +1,12 @@
 package org.example.rest.resources.interactions;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import org.example.immutables.ImmutableJson;
-import org.example.rest.resources.application.command.ApplicationCommand;
-
 import java.util.List;
 import java.util.Optional;
+
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import org.example.immutables.ImmutableJson;
+import org.example.rest.resources.application.command.ApplicationCommand;
 
 @ImmutableJson
 @JsonDeserialize(as = ImmutableApplicationCommandInteractionDataOption.class)

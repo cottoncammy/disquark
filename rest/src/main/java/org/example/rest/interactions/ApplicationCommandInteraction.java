@@ -1,11 +1,12 @@
 package org.example.rest.interactions;
 
+import java.util.List;
+
 import io.smallrye.mutiny.Uni;
 import io.vertx.mutiny.core.http.HttpServerResponse;
+
 import org.example.rest.resources.interactions.Interaction;
 import org.example.rest.resources.interactions.components.Component;
-
-import java.util.List;
 
 public class ApplicationCommandInteraction extends CompletableInteraction<Interaction.ApplicationCommandData> {
 

@@ -1,6 +1,7 @@
 package org.example.rest.interactions.dsl;
 
 import io.vertx.mutiny.core.http.HttpServerResponse;
+
 import org.example.rest.interactions.CompletableInteraction;
 import org.example.rest.interactions.DiscordInteractionsClient;
 import org.example.rest.interactions.PingInteraction;

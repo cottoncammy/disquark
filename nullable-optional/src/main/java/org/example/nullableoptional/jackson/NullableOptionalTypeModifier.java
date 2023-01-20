@@ -1,13 +1,14 @@
 package org.example.nullableoptional.jackson;
 
+import java.lang.reflect.Type;
+
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.type.ReferenceType;
 import com.fasterxml.jackson.databind.type.TypeBindings;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.fasterxml.jackson.databind.type.TypeModifier;
-import org.example.nullableoptional.NullableOptional;
 
-import java.lang.reflect.Type;
+import org.example.nullableoptional.NullableOptional;
 
 public class NullableOptionalTypeModifier extends TypeModifier {
 

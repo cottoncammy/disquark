@@ -1,11 +1,12 @@
 package org.example.rest.request;
 
-import io.vertx.mutiny.uritemplate.Variables;
-import org.example.immutables.ImmutableBuilder;
-import org.immutables.value.Value.Redacted;
-import org.immutables.value.Value.Default;
-
 import java.util.Optional;
+
+import io.vertx.mutiny.uritemplate.Variables;
+
+import org.example.immutables.ImmutableBuilder;
+import org.immutables.value.Value.Default;
+import org.immutables.value.Value.Redacted;
 
 @ImmutableBuilder
 public interface Request extends Auditable, MultipartRequest {

@@ -1,31 +1,30 @@
 package org.example.rest.interactions;
 
+import static java.util.Objects.requireNonNull;
+import static org.example.rest.util.ExceptionPredicate.is;
+import static org.example.rest.util.ExceptionPredicate.isNot;
+
+import java.util.function.Consumer;
+
 import io.smallrye.mutiny.Context;
 import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
-import io.smallrye.mutiny.operators.multi.processors.BroadcastProcessor;
 import io.smallrye.mutiny.operators.multi.processors.UnicastProcessor;
 import io.smallrye.mutiny.vertx.core.AbstractVerticle;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.json.DecodeException;
 import io.vertx.mutiny.core.http.HttpServer;
 import io.vertx.mutiny.core.http.HttpServerRequest;
-import io.vertx.mutiny.core.http.HttpServerResponse;
 import io.vertx.mutiny.ext.web.Route;
 import io.vertx.mutiny.ext.web.Router;
 import io.vertx.mutiny.ext.web.RoutingContext;
 import io.vertx.mutiny.ext.web.handler.CorsHandler;
 import io.vertx.mutiny.ext.web.handler.ResponseContentTypeHandler;
+
 import org.example.rest.interactions.dsl.InteractionSchema;
 import org.example.rest.resources.interactions.Interaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.function.Consumer;
-
-import static java.util.Objects.requireNonNull;
-import static org.example.rest.util.ExceptionPredicate.is;
-import static org.example.rest.util.ExceptionPredicate.isNot;
 
 class InteractionsVerticle extends AbstractVerticle {
     private static final String REQUEST_ID = "request-id";

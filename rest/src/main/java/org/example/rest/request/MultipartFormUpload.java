@@ -1,5 +1,10 @@
 package org.example.rest.request;
 
+import static io.smallrye.mutiny.helpers.ParameterValidation.nonNull;
+import static io.smallrye.mutiny.unchecked.Unchecked.supplier;
+
+import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
+
 import io.netty.buffer.UnpooledByteBufAllocator;
 import io.netty.handler.codec.http.DefaultFullHttpRequest;
 import io.netty.handler.codec.http.HttpMethod;
@@ -15,14 +20,8 @@ import io.vertx.mutiny.core.MultiMap;
 import io.vertx.mutiny.core.buffer.Buffer;
 import io.vertx.mutiny.ext.web.multipart.FormDataPart;
 import io.vertx.mutiny.ext.web.multipart.MultipartForm;
+
 import org.reactivestreams.Subscriber;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
-
-import static io.smallrye.mutiny.helpers.ParameterValidation.nonNull;
-import static io.smallrye.mutiny.unchecked.Unchecked.supplier;
 
 class MultipartFormUpload extends AbstractMulti<Buffer> {
     private static final AtomicReferenceFieldUpdater<MultipartFormUpload, Subscriber> DOWNSTREAM_UPDATER = AtomicReferenceFieldUpdater

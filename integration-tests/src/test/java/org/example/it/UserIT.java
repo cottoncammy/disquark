@@ -7,15 +7,13 @@ import io.vertx.mutiny.core.buffer.Buffer;
 import io.vertx.mutiny.core.http.HttpClient;
 import io.vertx.mutiny.core.http.HttpClientRequest;
 import io.vertx.mutiny.core.http.HttpClientResponse;
+
 import org.example.it.config.ConfigValue;
 import org.example.rest.DiscordBotClient;
 import org.example.rest.resources.Snowflake;
-import org.example.rest.resources.guild.CreateGuild;
 import org.example.rest.resources.user.ModifyCurrentUser;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-
-import java.util.Optional;
 
 @ExtendWith(SomeExtension2.class)
 class UserIT {

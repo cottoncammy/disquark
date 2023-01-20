@@ -1,13 +1,12 @@
 package org.example.rest.resources.interactions.components;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import java.util.Optional;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import org.example.rest.resources.emoji.Emoji;
-import org.example.immutables.ImmutableJson;
 
-import java.util.Optional;
+import org.example.immutables.ImmutableJson;
+import org.example.rest.resources.emoji.Emoji;
 
 @ImmutableJson
 @JsonDeserialize(as = ImmutableSelectOption.class)

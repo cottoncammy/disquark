@@ -1,8 +1,8 @@
 package org.example.it.config;
 
-import org.eclipse.microprofile.config.ConfigProvider;
-
 import java.util.Optional;
+
+import org.eclipse.microprofile.config.ConfigProvider;
 
 public class ConfigHelper {
 

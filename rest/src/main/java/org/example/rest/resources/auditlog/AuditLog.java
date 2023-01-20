@@ -1,24 +1,24 @@
 package org.example.rest.resources.auditlog;
 
+import java.util.List;
+import java.util.Optional;
+
 import com.fasterxml.jackson.annotation.JsonEnumDefaultValue;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import org.example.rest.resources.Snowflake;
-import org.example.rest.resources.guild.scheduledevent.GuildScheduledEvent;
+
 import org.example.immutables.ImmutableJson;
-import org.example.rest.resources.user.User;
-import org.example.rest.resources.webhook.Webhook;
+import org.example.rest.resources.Snowflake;
+import org.example.rest.resources.application.command.ApplicationCommand;
 import org.example.rest.resources.automod.AutoModerationRule;
 import org.example.rest.resources.channel.Channel;
 import org.example.rest.resources.guild.Guild;
-import org.example.rest.resources.application.command.ApplicationCommand;
-import org.example.rest.util.Partial;
+import org.example.rest.resources.guild.scheduledevent.GuildScheduledEvent;
+import org.example.rest.resources.user.User;
+import org.example.rest.resources.webhook.Webhook;
 import org.immutables.value.Value.Enclosing;
-
-import java.util.List;
-import java.util.Optional;
 
 @Enclosing
 @ImmutableJson

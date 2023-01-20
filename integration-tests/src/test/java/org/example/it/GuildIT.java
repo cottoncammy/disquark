@@ -1,22 +1,44 @@
 package org.example.it;
 
+import java.util.EnumSet;
+
 import io.smallrye.mutiny.Uni;
 import io.smallrye.mutiny.helpers.test.UniAssertSubscriber;
+
 import org.example.it.config.ConfigValue;
 import org.example.rest.DiscordBotClient;
 import org.example.rest.oauth2.BearerTokenSource;
 import org.example.rest.resources.Snowflake;
-import org.example.rest.resources.guild.*;
+import org.example.rest.resources.guild.AddGuildMember;
+import org.example.rest.resources.guild.CreateGuild;
+import org.example.rest.resources.guild.CreateGuildBan;
+import org.example.rest.resources.guild.CreateGuildRole;
+import org.example.rest.resources.guild.GetGuildBans;
+import org.example.rest.resources.guild.Guild;
+import org.example.rest.resources.guild.ListGuildMembers;
+import org.example.rest.resources.guild.ModifyCurrentMember;
+import org.example.rest.resources.guild.ModifyCurrentUserVoiceState;
+import org.example.rest.resources.guild.ModifyGuild;
+import org.example.rest.resources.guild.ModifyGuildChannelPositions;
+import org.example.rest.resources.guild.ModifyGuildMember;
+import org.example.rest.resources.guild.ModifyGuildRole;
+import org.example.rest.resources.guild.ModifyGuildRolePositions;
+import org.example.rest.resources.guild.ModifyGuildWelcomeScreen;
+import org.example.rest.resources.guild.ModifyGuildWidget;
+import org.example.rest.resources.guild.SearchGuildMembers;
 import org.example.rest.resources.guild.prune.BeginGuildPrune;
 import org.example.rest.resources.guild.prune.GetGuildPruneCount;
 import org.example.rest.resources.oauth2.AccessToken;
 import org.example.rest.resources.oauth2.Scope;
 import org.example.rest.resources.user.GetCurrentUserGuilds;
 import org.example.rest.response.DiscordException;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ExtendWith;
-
-import java.util.EnumSet;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @ExtendWith(SomeExtension2.class)

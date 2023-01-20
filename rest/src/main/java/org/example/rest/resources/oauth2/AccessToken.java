@@ -1,16 +1,17 @@
 package org.example.rest.resources.oauth2;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.OptionalLong;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
 import org.example.immutables.ImmutableJson;
 import org.example.rest.jackson.ScopesDeserializer;
 import org.example.rest.resources.guild.Guild;
 import org.example.rest.resources.webhook.Webhook;
 import org.immutables.value.Value.Redacted;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.OptionalLong;
 
 @ImmutableJson
 @JsonDeserialize(as = ImmutableAccessToken.class)

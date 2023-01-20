@@ -1,24 +1,24 @@
 package org.example.rest.request.ratelimit;
 
-import io.smallrye.mutiny.Context;
-import io.smallrye.mutiny.Uni;
-import io.smallrye.mutiny.infrastructure.Infrastructure;
-import io.smallrye.mutiny.subscription.MultiSubscriber;
-import io.vertx.mutiny.core.Promise;
-import org.example.rest.request.Request;
-import org.example.rest.request.Requester;
-import org.example.rest.response.HttpResponse;
-import org.example.rest.response.RateLimitException;
-import org.slf4j.Logger;
-import org.reactivestreams.Subscription;
-import org.slf4j.LoggerFactory;
+import static org.example.rest.request.HttpClientRequester.FALLBACK_REQUEST_ID;
+import static org.example.rest.request.HttpClientRequester.REQUEST_ID;
+import static org.example.rest.util.ExceptionPredicate.is;
 
 import java.time.Duration;
 import java.time.Instant;
 
-import static org.example.rest.request.HttpClientRequester.FALLBACK_REQUEST_ID;
-import static org.example.rest.request.HttpClientRequester.REQUEST_ID;
-import static org.example.rest.util.ExceptionPredicate.is;
+import io.smallrye.mutiny.Context;
+import io.smallrye.mutiny.Uni;
+import io.smallrye.mutiny.subscription.MultiSubscriber;
+import io.vertx.mutiny.core.Promise;
+
+import org.example.rest.request.Request;
+import org.example.rest.request.Requester;
+import org.example.rest.response.HttpResponse;
+import org.example.rest.response.RateLimitException;
+import org.reactivestreams.Subscription;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 class BucketRateLimitingRequestSubscriber implements MultiSubscriber<CompletableRequest> {
     private static final Logger LOG = LoggerFactory.getLogger(BucketRateLimitingRequestSubscriber.class);

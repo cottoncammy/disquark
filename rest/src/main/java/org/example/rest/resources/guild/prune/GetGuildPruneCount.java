@@ -1,19 +1,19 @@
 package org.example.rest.resources.guild.prune;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.json.JsonObject;
 import io.vertx.mutiny.uritemplate.Variables;
+
 import org.example.immutables.ImmutableBuilder;
 import org.example.rest.request.Endpoint;
 import org.example.rest.request.Request;
 import org.example.rest.request.Requestable;
 import org.example.rest.resources.Snowflake;
-import org.immutables.value.Value.Immutable;
 import org.immutables.value.Value.Default;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @ImmutableBuilder
 public interface GetGuildPruneCount extends Requestable {

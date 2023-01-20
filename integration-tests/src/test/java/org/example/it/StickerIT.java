@@ -1,17 +1,20 @@
 package org.example.it;
 
+import java.util.Map;
+
 import io.smallrye.mutiny.helpers.test.UniAssertSubscriber;
 import io.vertx.mutiny.core.buffer.Buffer;
+
 import org.example.it.config.ConfigValue;
 import org.example.rest.DiscordBotClient;
 import org.example.rest.resources.Snowflake;
-import org.example.rest.resources.channel.CreateMessage;
 import org.example.rest.resources.sticker.CreateGuildSticker;
 import org.example.rest.resources.sticker.ModifyGuildSticker;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ExtendWith;
-
-import java.util.Map;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @ExtendWith(SomeExtension2.class)

@@ -1,16 +1,15 @@
 package org.example.rest.resources.emoji;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import org.example.immutables.ImmutableJson;
-import org.example.rest.resources.Snowflake;
-import org.example.rest.resources.user.User;
-import org.example.rest.resources.permissions.Role;
-
 import java.util.List;
 import java.util.Optional;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import org.example.immutables.ImmutableJson;
+import org.example.rest.resources.Snowflake;
+import org.example.rest.resources.permissions.Role;
+import org.example.rest.resources.user.User;
 
 @ImmutableJson
 @JsonDeserialize(as = ImmutableEmoji.class)

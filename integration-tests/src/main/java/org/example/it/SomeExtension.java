@@ -1,12 +1,18 @@
 package org.example.it;
 
-import org.example.rest.AuthenticatedDiscordClient;
-import org.example.rest.DiscordBotClient;
-import org.junit.jupiter.api.extension.*;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
+
+import org.example.rest.AuthenticatedDiscordClient;
+import org.example.rest.DiscordBotClient;
+import org.junit.jupiter.api.extension.Extension;
+import org.junit.jupiter.api.extension.ExtensionContext;
+import org.junit.jupiter.api.extension.ParameterContext;
+import org.junit.jupiter.api.extension.ParameterResolutionException;
+import org.junit.jupiter.api.extension.ParameterResolver;
+import org.junit.jupiter.api.extension.TestTemplateInvocationContext;
+import org.junit.jupiter.api.extension.TestTemplateInvocationContextProvider;
 
 public class SomeExtension implements TestTemplateInvocationContextProvider {
 

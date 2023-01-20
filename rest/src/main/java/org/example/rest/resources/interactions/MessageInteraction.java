@@ -1,13 +1,13 @@
 package org.example.rest.resources.interactions;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import org.example.rest.resources.Snowflake;
-import org.example.immutables.ImmutableJson;
-import org.example.rest.resources.user.User;
-import org.example.rest.resources.guild.Guild;
-import org.example.rest.util.Partial;
-
 import java.util.Optional;
+
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import org.example.immutables.ImmutableJson;
+import org.example.rest.resources.Snowflake;
+import org.example.rest.resources.guild.Guild;
+import org.example.rest.resources.user.User;
 
 @ImmutableJson
 @JsonDeserialize(as = ImmutableMessageInteraction.class)

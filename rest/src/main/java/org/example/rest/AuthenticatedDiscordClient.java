@@ -1,9 +1,13 @@
 package org.example.rest;
 
+import static java.util.Objects.requireNonNull;
+import static org.example.rest.util.Variables.variables;
+
 import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.mutiny.core.Vertx;
+
 import org.example.rest.interactions.CompletableInteraction;
 import org.example.rest.interactions.DiscordInteractionsClient;
 import org.example.rest.interactions.InteractionsCapable;
@@ -16,7 +20,14 @@ import org.example.rest.request.ratelimit.BucketRateLimitingRequester;
 import org.example.rest.request.ratelimit.GlobalRateLimiter;
 import org.example.rest.request.ratelimit.RateLimitStrategy;
 import org.example.rest.resources.Snowflake;
-import org.example.rest.resources.application.command.*;
+import org.example.rest.resources.application.command.ApplicationCommand;
+import org.example.rest.resources.application.command.BulkOverwriteGlobalApplicationCommands;
+import org.example.rest.resources.application.command.BulkOverwriteGuildApplicationCommands;
+import org.example.rest.resources.application.command.CreateGlobalApplicationCommand;
+import org.example.rest.resources.application.command.CreateGuildApplicationCommand;
+import org.example.rest.resources.application.command.EditGlobalApplicationCommand;
+import org.example.rest.resources.application.command.EditGuildApplicationCommand;
+import org.example.rest.resources.application.command.GuildApplicationCommandPermissions;
 import org.example.rest.resources.channel.message.Message;
 import org.example.rest.resources.interactions.CreateFollowupMessage;
 import org.example.rest.resources.interactions.EditFollowupMessage;
@@ -24,13 +35,15 @@ import org.example.rest.resources.interactions.EditOriginalInteractionResponse;
 import org.example.rest.resources.partial.PartialGuild;
 import org.example.rest.resources.user.GetCurrentUserGuilds;
 import org.example.rest.resources.user.User;
-import org.example.rest.resources.webhook.*;
+import org.example.rest.resources.webhook.EditWebhookMessage;
+import org.example.rest.resources.webhook.ExecuteWebhook;
+import org.example.rest.resources.webhook.ExecuteWebhookOptions;
+import org.example.rest.resources.webhook.ModifyWebhookWithToken;
+import org.example.rest.resources.webhook.Webhook;
+import org.example.rest.resources.webhook.WebhookMessageOptions;
 import org.example.rest.response.Response;
 import org.example.rest.webhook.DiscordWebhookClient;
 import org.example.rest.webhook.WebhooksCapable;
-
-import static java.util.Objects.requireNonNull;
-import static org.example.rest.util.Variables.variables;
 
 public abstract class AuthenticatedDiscordClient<T extends Response> extends DiscordClient<T> implements InteractionsCapable, WebhooksCapable {
     private final DiscordWebhookClient<T> webhookClient;

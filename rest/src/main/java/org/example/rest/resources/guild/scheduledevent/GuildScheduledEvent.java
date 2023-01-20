@@ -1,18 +1,19 @@
 package org.example.rest.resources.guild.scheduledevent;
 
+import java.time.Instant;
+import java.util.Optional;
+import java.util.OptionalInt;
+
 import com.fasterxml.jackson.annotation.JsonEnumDefaultValue;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
 import org.example.immutables.ImmutableJson;
 import org.example.rest.resources.Snowflake;
 import org.example.rest.resources.guild.Guild;
 import org.example.rest.resources.user.User;
 import org.immutables.value.Value.Enclosing;
-
-import java.time.Instant;
-import java.util.Optional;
-import java.util.OptionalInt;
 
 @Enclosing
 @ImmutableJson

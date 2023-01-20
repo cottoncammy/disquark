@@ -6,19 +6,20 @@ import static org.example.rest.util.Variables.variables;
 import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
 import io.vertx.mutiny.core.Vertx;
+
 import org.example.rest.AuthenticatedDiscordClient;
 import org.example.rest.interactions.DiscordInteractionsClient;
-import org.example.rest.request.*;
+import org.example.rest.request.AccessTokenSource;
+import org.example.rest.request.EmptyRequest;
+import org.example.rest.request.Requester;
 import org.example.rest.resources.Snowflake;
 import org.example.rest.resources.application.command.EditApplicationCommandPermissions;
+import org.example.rest.resources.application.command.GuildApplicationCommandPermissions;
 import org.example.rest.resources.guild.Guild;
+import org.example.rest.resources.oauth2.Authorization;
 import org.example.rest.resources.user.UpdateUserApplicationRoleConnections;
 import org.example.rest.resources.user.User;
-import org.example.rest.resources.application.command.GuildApplicationCommandPermissions;
-import org.example.rest.resources.oauth2.Authorization;
 import org.example.rest.response.Response;
-import org.example.rest.util.Hex;
-import org.example.rest.util.Partial;
 
 public class DiscordOAuth2Client<T extends Response> extends AuthenticatedDiscordClient<T> {
 

@@ -1,11 +1,21 @@
 package org.example.rest.resources.channel;
 
+import static org.example.rest.util.Variables.variables;
+
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.OptionalInt;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import io.vertx.core.http.HttpMethod;
+
 import org.example.immutables.ImmutableJson;
+import org.example.nullableoptional.NullableOptional;
 import org.example.nullableoptional.jackson.NullableOptionalFilter;
 import org.example.rest.request.Auditable;
 import org.example.rest.request.Endpoint;
@@ -14,15 +24,6 @@ import org.example.rest.request.Requestable;
 import org.example.rest.resources.Snowflake;
 import org.example.rest.resources.channel.forum.DefaultReaction;
 import org.example.rest.resources.channel.forum.ForumTag;
-import org.example.nullableoptional.NullableOptional;
-import org.example.rest.util.Partial;
-
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.OptionalInt;
-
-import static org.example.rest.util.Variables.variables;
 
 @ImmutableJson
 public interface ModifyGuildChannel extends Auditable, Requestable {

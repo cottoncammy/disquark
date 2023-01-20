@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
 import com.fasterxml.jackson.databind.ser.std.ReferenceTypeSerializer;
 import com.fasterxml.jackson.databind.type.ReferenceType;
 import com.fasterxml.jackson.databind.util.NameTransformer;
+
 import org.example.nullableoptional.NullableOptional;
 
 public class NullableOptionalSerializer extends ReferenceTypeSerializer<NullableOptional<?>> {
