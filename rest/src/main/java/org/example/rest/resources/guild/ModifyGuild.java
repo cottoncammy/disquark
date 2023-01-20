@@ -17,6 +17,7 @@ import org.example.rest.request.Requestable;
 import org.example.rest.resources.Locale;
 import org.example.rest.resources.Snowflake;
 import org.example.nullableoptional.NullableOptional;
+import org.immutables.value.Value.Redacted;
 
 import java.util.EnumSet;
 import java.util.List;
@@ -54,6 +55,7 @@ public interface ModifyGuild extends Auditable, Requestable {
     @JsonProperty("afk_timeout")
     NullableOptional<Integer> afkTimeout();
 
+    @Redacted
     @JsonSerialize(contentUsing = ImageDataSerializer.class)
     NullableOptional<Buffer> icon();
 

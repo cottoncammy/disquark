@@ -7,6 +7,7 @@ on:
   pull_request:
     types: [opened, ready_for_review, reopened, synchronize]
     paths-ignore: [ '.gitignore', '*.md', '.github/*.yml', '.github/ISSUE_TEMPLATE/**' ]
+  workflow_call:
   workflow_dispatch:
 
 concurrency:
@@ -41,13 +42,14 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
       - name: Maven test
-        run: |
-          ./mvnw -B -e -DskipFormatting -DskipITs clean test
+        run: ./mvnw -B -e -DskipFormatting clean test
       - name: Maven verify
         if: github.repository == 'TODO/TODO'
         env:
-        run: |
-          ./mvnw -B -e -DskipFormatting -DskipTests verify
+          DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
+          DISCORD_CLIENT_ID: ${{ secrets.DISCORD_CLIENT_ID }}
+          DISCORD_CLIENT_SECRET: ${{ secrets.DISCORD_CLIENT_SECRET }}
+        run: ./mvnw -B -e verify
       - name: Remove local artifacts
         shell: bash
         run: rm -r ~/.m2/repository/org.example

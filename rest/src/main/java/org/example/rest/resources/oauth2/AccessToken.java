@@ -6,6 +6,7 @@ import org.example.immutables.ImmutableJson;
 import org.example.rest.jackson.ScopesDeserializer;
 import org.example.rest.resources.guild.Guild;
 import org.example.rest.resources.webhook.Webhook;
+import org.immutables.value.Value.Redacted;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,6 +20,7 @@ public interface AccessToken {
         return new Builder();
     }
 
+    @Redacted
     @JsonProperty("access_token")
     String accessToken();
 

@@ -14,6 +14,7 @@ import org.example.rest.request.Request;
 import org.example.rest.request.Requestable;
 import org.example.rest.resources.Snowflake;
 import org.example.nullableoptional.NullableOptional;
+import org.immutables.value.Value.Redacted;
 
 import java.util.Optional;
 
@@ -34,6 +35,7 @@ public interface ModifyWebhookWithToken extends Requestable {
 
     Optional<String> name();
 
+    @Redacted
     @JsonSerialize(contentUsing = ImageDataSerializer.class)
     @JsonInclude(value = Include.CUSTOM, valueFilter = NullableOptionalFilter.class)
     NullableOptional<Buffer> avatar();

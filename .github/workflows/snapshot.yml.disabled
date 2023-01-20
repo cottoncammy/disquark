@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     if: github.repository == 'TODO/TODO'
     steps:
-      - name: git checkout
+      - name: Checkout repo
         uses: actions/checkout@v3
       - name: Setup JDK 11
         uses: actions/setup-java@v3
@@ -24,6 +24,8 @@ jobs:
             ${{ runner.os }}-maven-
       - name: Maven deploy
         env:
+          JIRA_ID: ${{ secrets.JIRA_ID }}
+          JIRA_TOKEN: ${{ secrets.JIRA_TOKEN }}
         run: |
           ./mvnw -B -e -s .github/mvn-ci-settings.xml \
             -DskipFormatting -DskipTests -pl !integration-tests

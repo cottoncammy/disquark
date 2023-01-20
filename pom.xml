@@ -205,6 +205,9 @@
                 <plugin>
                     <artifactId>maven-deploy-plugin</artifactId>
                     <version>${deploy-plugin.version}</version>
+                    <configuration>
+                        <skip>true</skip>
+                    </configuration>
                 </plugin>
                 <plugin>
                     <artifactId>maven-enforcer-plugin</artifactId>
@@ -255,40 +258,6 @@
                             <version>${revapi-json-reporter.version}</version>
                         </dependency>
                     </dependencies>
-                    <configuration>
-                        <skip>${revapi.skip}</skip>
-                        <buildFailureMessage>Missing justification for one or more API changes</buildFailureMessage>
-
-                        <failOnMissingConfigurationFiles>false</failOnMissingConfigurationFiles>
-                        <analysisConfigurationFiles>
-                            <configurationFile>
-                                <roots>
-                                    <root>changelog/${parsedVersion.majorVersion}.${parsedVersion.minorVersion}.${parsedVersion.incrementalVersion}</root>
-                                </roots>
-                                <path>changes.xml</path>
-                            </configurationFile>
-                        </analysisConfigurationFiles>
-
-                        <analysisConfiguration>
-                            <revapi.versions>
-                                <enabled>true</enabled>
-                                <onAllowed>
-                                    <criticality>documented</criticality>
-                                </onAllowed>
-                                <onDisallowed>
-                                    <criticality>error</criticality>
-                                </onDisallowed>
-                            </revapi.versions>
-
-                            <generateSiteReport>false</generateSiteReport>
-                            <revapi.reporter.json>
-                                <minSeverity>NON_BREAKING</minSeverity>
-                                <output>${project.build.directory}/revapi-report.json</output>
-                                <keepEmptyFile>false</keepEmptyFile>
-                                <indent>true</indent>
-                            </revapi.reporter.json>
-                        </analysisConfiguration>
-                    </configuration>
                 </plugin>
                 <plugin>
                     <artifactId>maven-source-plugin</artifactId>
@@ -370,7 +339,6 @@
         <profile>
             <id>format</id>
             <activation>
-                <activeByDefault>true</activeByDefault>
                 <property>
                     <name>skipFormatting</name>
                     <value>!true</value>
@@ -398,7 +366,9 @@
         <profile>
             <id>release</id>
             <properties>
-                <skipITs>false</skipITs>
+                <skipFormatting />
+                <skipTests />
+                <skipITs />
             </properties>
             <build>
                 <defaultGoal>clean deploy</defaultGoal>
@@ -434,14 +404,56 @@
                                 </goals>
                             </execution>
                         </executions>
+                        <configuration>
+                            <skip>${revapi.skip}</skip>
+                            <buildFailureMessage>Missing justification for one or more breaking API changes</buildFailureMessage>
+
+                            <failOnMissingConfigurationFiles>false</failOnMissingConfigurationFiles>
+                            <analysisConfigurationFiles>
+                                <configurationFile>
+                                    <roots>
+                                        <root>changelog/${parsedVersion.majorVersion}.${parsedVersion.minorVersion}.${parsedVersion.incrementalVersion}</root>
+                                    </roots>
+                                    <path>changes.xml</path>
+                                </configurationFile>
+                            </analysisConfigurationFiles>
+
+                            <analysisConfiguration>
+                                <revapi.versions>
+                                    <enabled>true</enabled>
+                                    <onAllowed>
+                                        <criticality>documented</criticality>
+                                    </onAllowed>
+                                    <onDisallowed>
+                                        <criticality>error</criticality>
+                                    </onDisallowed>
+                                </revapi.versions>
+
+                                <generateSiteReport>false</generateSiteReport>
+                                <revapi.reporter.json>
+                                    <minSeverity>NON_BREAKING</minSeverity>
+                                    <output>${project.build.directory}/revapi-report.json</output>
+                                    <keepEmptyFile>false</keepEmptyFile>
+                                    <indent>true</indent>
+                                </revapi.reporter.json>
+                            </analysisConfiguration>
+                        </configuration>
                     </plugin>
                     <plugin>
-                        <groupId>org.sonatype.plugins</groupId>
-                        <artifactId>nexus-staging-maven-plugin</artifactId>
-                        <extensions>true</extensions>
+                        <artifactId>maven-release-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>release</id>
+                                <goals>
+                                    <goal>prepare</goal>
+                                    <goal>perform</goal>
+                                </goals>
+                            </execution>
+                        </executions>
                         <configuration>
-                            <serverId>ossrh</serverId>
-                            <nexusUrl>https://s01.oss.sonatype.org</nexusUrl>
+                            <autoVersionSubmodules>true</autoVersionSubmodules>
+                            <preparationGoals>verify</preparationGoals>
+                            <localCheckout>true</localCheckout>
                         </configuration>
                     </plugin>
                     <plugin>
@@ -477,6 +489,31 @@
                                 </goals>
                             </execution>
                         </executions>
+                        <configuration>
+                            <gpgArguments>
+                                <arg>--pinentry-mode</arg>
+                                <arg>loopback</arg>
+                            </gpgArguments>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.sonatype.plugins</groupId>
+                        <artifactId>nexus-staging-maven-plugin</artifactId>
+                        <extensions>true</extensions>
+                        <executions>
+                            <execution>
+                                <id>default-deploy</id>
+                                <phase>deploy</phase>
+                                <goals>
+                                    <goal>deploy</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <serverId>ossrh</serverId>
+                            <nexusUrl>https://s01.oss.sonatype.org</nexusUrl>
+                            <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                        </configuration>
                     </plugin>
                 </plugins>
             </build>

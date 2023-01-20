@@ -98,8 +98,6 @@ public class HttpClientRequester implements Requester<HttpResponse> {
                                 .flatMap(body -> {
                                     LOG.debug("Sending outgoing request {} with body {}",
                                             ctx.get(REQUEST_ID), body.getAsString());
-                                    LOG.trace("Headers for outgoing request {}: {}",
-                                            ctx.get(REQUEST_ID), req.headers().entries());
 
                                     if (body.asString().isPresent()) {
                                         return req.send(body.asString().get());

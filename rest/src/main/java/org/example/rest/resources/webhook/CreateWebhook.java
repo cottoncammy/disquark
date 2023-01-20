@@ -15,6 +15,7 @@ import org.example.rest.request.Request;
 import org.example.rest.request.Requestable;
 import org.example.rest.resources.Snowflake;
 import org.example.nullableoptional.NullableOptional;
+import org.immutables.value.Value.Redacted;
 
 import static org.example.rest.util.Variables.variables;
 
@@ -30,6 +31,7 @@ public interface CreateWebhook extends Auditable, Requestable {
 
     String name();
 
+    @Redacted
     @JsonSerialize(contentUsing = ImageDataSerializer.class)
     @JsonInclude(value = Include.CUSTOM, valueFilter = NullableOptionalFilter.class)
     NullableOptional<Buffer> avatar();

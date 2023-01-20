@@ -17,6 +17,7 @@ import org.example.rest.request.Requestable;
 import org.example.rest.resources.Snowflake;
 import org.example.rest.resources.permissions.PermissionFlag;
 import org.example.nullableoptional.NullableOptional;
+import org.immutables.value.Value.Redacted;
 
 import java.util.EnumSet;
 import java.util.Optional;
@@ -46,6 +47,7 @@ public interface ModifyGuildRole extends Auditable, Requestable {
     @JsonInclude(Include.NON_ABSENT)
     Optional<Boolean> hoist();
 
+    @Redacted
     @JsonSerialize(contentUsing = ImageDataSerializer.class)
     NullableOptional<Buffer> icon();
 

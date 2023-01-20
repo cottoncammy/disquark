@@ -11,6 +11,7 @@ import org.example.rest.jackson.ImageDataSerializer;
 import org.example.rest.request.Endpoint;
 import org.example.rest.request.Request;
 import org.example.rest.request.Requestable;
+import org.immutables.value.Value.Redacted;
 
 import java.util.Optional;
 
@@ -28,6 +29,7 @@ public interface CreateGuildFromGuildTemplate extends Requestable {
 
     String name();
 
+    @Redacted
     @JsonSerialize(contentUsing = ImageDataSerializer.class)
     Optional<Buffer> icon();
 

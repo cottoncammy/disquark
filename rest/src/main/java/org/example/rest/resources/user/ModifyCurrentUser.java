@@ -12,6 +12,7 @@ import org.example.rest.request.Endpoint;
 import org.example.rest.request.Request;
 import org.example.rest.request.Requestable;
 import org.example.nullableoptional.NullableOptional;
+import org.immutables.value.Value.Redacted;
 
 import java.util.Optional;
 
@@ -24,6 +25,7 @@ public interface ModifyCurrentUser extends Requestable {
 
     Optional<String> username();
 
+    @Redacted
     @JsonSerialize(contentUsing = ImageDataSerializer.class)
     @JsonInclude(value = Include.CUSTOM, valueFilter = NullableOptionalFilter.class)
     NullableOptional<Buffer> avatar();

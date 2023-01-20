@@ -8,6 +8,7 @@ import org.example.rest.request.Endpoint;
 import org.example.rest.request.Request;
 import org.example.rest.request.Requestable;
 import org.example.rest.resources.Snowflake;
+import org.immutables.value.Value.Redacted;
 
 import static org.example.rest.util.Variables.variables;
 
@@ -24,6 +25,7 @@ public interface GroupDmAddRecipient extends Requestable {
     @JsonIgnore
     Snowflake userId();
 
+    @Redacted
     @JsonProperty("access_token")
     String accessToken();
 

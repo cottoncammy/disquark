@@ -7,11 +7,12 @@ jobs:
     name: Release
     runs-on: ubuntu-latest
     if: github.repository == 'TODO/TODO'
-    env:
     steps:
-      - name:
+      - name: Call CI workflow
+        uses: ./.github/workflows/ci.yml@main
+      - name: Checkout repo
         uses: actions/checkout@v3
-      - name:
+      - name: Setup JDK 11
         uses: actions/setup-java@v3
         with:
           distribution: temurin
@@ -23,9 +24,22 @@ jobs:
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
             ${{ runner.os }}-maven-
+      - name:
+        run:
       - name: Maven release
         env:
-        run:
+          JIRA_ID: ${{ secrets.JIRA_ID }}
+          JIRA_TOKEN: ${{ secrets.JIRA_TOKEN }}
+        run: |
+            git config user.name "GitHub Actions"
+            git config user.email "actions@github.com"
+
+            gpg --batch --decrypt --passphrase="${{ secrets.GPG_PASSPHRASE }}" .github/secret-key.asc.gpg | \
+              gpg --batch --no-tty --import
+
+            ./mvnw -B -e revapi:update-release-properties
+            ./mvnw -B -ntp -Prelease -Dgpg.passphrase=${{ secrets.GPG_PASSPHRASE }} \
+                -s .github/mvn-ci-settings.xml -pl !integration-tests
       - name: Remove local artifacts
         shell: bash
         run: rm -r ~/.m2/repository/org.example

@@ -25,7 +25,6 @@ import static io.smallrye.mutiny.helpers.ParameterValidation.nonNull;
 import static io.smallrye.mutiny.unchecked.Unchecked.supplier;
 
 class MultipartFormUpload extends AbstractMulti<Buffer> {
-    private static final Logger LOG = LoggerFactory.getLogger(MultipartFormUpload.class);
     private static final AtomicReferenceFieldUpdater<MultipartFormUpload, Subscriber> DOWNSTREAM_UPDATER = AtomicReferenceFieldUpdater
             .newUpdater(MultipartFormUpload.class, Subscriber.class, "downstream");
     private static final UnpooledByteBufAllocator ALLOC = new UnpooledByteBufAllocator(false);
@@ -51,8 +50,7 @@ class MultipartFormUpload extends AbstractMulti<Buffer> {
 
     private Multi<Buffer> encodeBody() {
         return Uni.createFrom().item(supplier(() -> Buffer.buffer(encoder.readChunk(ALLOC).content())))
-                .repeat().until(x -> supplier(encoder::isEndOfInput).get())
-                .onItem().invoke(() -> LOG.debug("Writing multipart-form body chunk"));
+                .repeat().until(x -> supplier(encoder::isEndOfInput).get());
     }
 
     public MultiMap headers() {
