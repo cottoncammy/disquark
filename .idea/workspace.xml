@@ -4,17 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a5029c32-3a5b-4a65-b173-2d497ddb2a2d" name="Changes" comment="build, ci/cd, log stuff">
+    <list default="true" id="a5029c32-3a5b-4a65-b173-2d497ddb2a2d" name="Changes" comment="update ci env, tests, issue templates">
+      <change beforePath="$PROJECT_DIR$/.github/ISSUE_TEMPLATE/bug_report.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/ISSUE_TEMPLATE/bug_report.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.github/ISSUE_TEMPLATE/feature_request.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/ISSUE_TEMPLATE/feature_request.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.github/workflows/ci.yml.disabled" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/ci.yml.disabled" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.github/workflows/release.yml.disabled" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/release.yml.disabled" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/integration-tests/src/test/java/org/example/it/AuthenticatedDiscordClientIT.java" beforeDir="false" afterPath="$PROJECT_DIR$/integration-tests/src/test/java/org/example/it/AuthenticatedDiscordClientIT.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/integration-tests/src/test/java/org/example/it/DiscordOAuth2ClientIT.java" beforeDir="false" afterPath="$PROJECT_DIR$/integration-tests/src/test/java/org/example/it/DiscordOAuth2ClientIT.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/integration-tests/src/test/java/org/example/it/GuildIT.java" beforeDir="false" afterPath="$PROJECT_DIR$/integration-tests/src/test/java/org/example/it/GuildIT.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/integration-tests/src/test/java/org/example/it/GuildScheduledEventIT.java" beforeDir="false" afterPath="$PROJECT_DIR$/integration-tests/src/test/java/org/example/it/GuildScheduledEventIT.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/integration-tests/src/test/java/org/example/it/GuildTemplateIT.java" beforeDir="false" afterPath="$PROJECT_DIR$/integration-tests/src/test/java/org/example/it/GuildTemplateIT.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/integration-tests/src/test/java/org/example/it/RateLimitStrategyIT.java" beforeDir="false" afterPath="$PROJECT_DIR$/integration-tests/src/test/java/org/example/it/RateLimitStrategyIT.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/integration-tests/src/test/java/org/example/it/StickerIT.java" beforeDir="false" afterPath="$PROJECT_DIR$/integration-tests/src/test/java/org/example/it/StickerIT.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -66,19 +62,19 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;11&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Cameron/IdeaProjects/discord&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Problems&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.21954022&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "jdk.selected.JAVA_MODULE": "11",
+    "last_opened_file_path": "C:/Users/Cameron/IdeaProjects/discord",
+    "project.structure.last.edited": "Problems",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.21954022",
+    "settings.editor.selected.configurable": "MavenRunHelper"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Cameron\IdeaProjects\discord\integration-tests\src\test\resources" />
@@ -103,7 +99,7 @@
       <recent name="org.example.it" />
     </key>
   </component>
-  <component name="RunManager" selected="Maven.debug">
+  <component name="RunManager" selected="Maven.discord-parent">
     <configuration name="debug" type="MavenRunConfiguration" factoryName="Maven">
       <MavenSettings>
         <option name="myGeneralSettings" />
@@ -187,9 +183,9 @@
             </option>
             <option name="goals">
               <list>
-                <option value="-X" />
                 <option value="clean" />
                 <option value="install" />
+                <option value="-DskipFormatting" />
               </list>
             </option>
             <option name="pomFileName" />
@@ -216,13 +212,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1661720293566</updated>
-    </task>
-    <task id="LOCAL-00033" summary="Starting really bad dsl">
-      <created>1672471770344</created>
-      <option name="number" value="00033" />
-      <option name="presentableId" value="LOCAL-00033" />
-      <option name="project" value="LOCAL" />
-      <updated>1672471770344</updated>
     </task>
     <task id="LOCAL-00034" summary="Starting really bad dsl">
       <created>1672600858672</created>
@@ -560,7 +549,14 @@
       <option name="project" value="LOCAL" />
       <updated>1674183274107</updated>
     </task>
-    <option name="localTasksCounter" value="82" />
+    <task id="LOCAL-00082" summary="update ci env, tests, issue templates">
+      <created>1674184470786</created>
+      <option name="number" value="00082" />
+      <option name="presentableId" value="LOCAL-00082" />
+      <option name="project" value="LOCAL" />
+      <updated>1674184470786</updated>
+    </task>
+    <option name="localTasksCounter" value="83" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -575,7 +571,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Start adding tests" />
     <MESSAGE value="Test fix round one" />
     <MESSAGE value="Test fix round two" />
     <MESSAGE value="Test fix round three" />
@@ -600,7 +595,8 @@
     <MESSAGE value="start work on build" />
     <MESSAGE value="continue working on build, start adding CI" />
     <MESSAGE value="build, ci/cd, log stuff" />
-    <option name="LAST_COMMIT_MESSAGE" value="build, ci/cd, log stuff" />
+    <MESSAGE value="update ci env, tests, issue templates" />
+    <option name="LAST_COMMIT_MESSAGE" value="update ci env, tests, issue templates" />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>

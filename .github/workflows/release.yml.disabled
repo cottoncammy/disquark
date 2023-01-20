@@ -24,8 +24,6 @@ jobs:
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
             ${{ runner.os }}-maven-
-      - name:
-        run:
       - name: Maven release
         env:
           JIRA_ID: ${{ secrets.JIRA_ID }}
@@ -34,12 +32,13 @@ jobs:
             git config user.name "GitHub Actions"
             git config user.email "actions@github.com"
 
-            gpg --batch --decrypt --passphrase="${{ secrets.GPG_PASSPHRASE }}" .github/secret-key.asc.gpg | \
-              gpg --batch --no-tty --import
+            gpg --batch --decrypt --passphrase="${{ secrets.GPG_PASSPHRASE }}" \
+              .github/secret-key.asc.gpg | gpg --batch --no-tty --import
 
-            ./mvnw -B -e -s .github/mvn-ci-settings.xml revapi:update-release-properties
-            ./mvnw -B -e -ntp -Prelease -Dgpg.passphrase=${{ secrets.GPG_PASSPHRASE }} \
-                -s .github/mvn-ci-settings.xml -pl !integration-tests
+            ./mvnw -B revapi:update-release-properties
+            ./mvnw -B -Prelease release:prepare
+            ./mvnw -B -ntp -Prelease -Dgpg.passphrase=${{ secrets.GPG_PASSPHRASE }} \
+                -s .github/mvn-ci-settings.xml -pl !integration-tests release:perform
       - name: Remove local artifacts
         shell: bash
         run: rm -r ~/.m2/repository/org.example

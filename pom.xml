@@ -270,7 +270,7 @@
                     <configuration>
                         <java>
                             <palantirJavaFormat />
-                            <toggleOnOff />
+                            <toggleOffOn />
 
                             <importOrder />
                             <removeUnusedImports />
@@ -371,7 +371,6 @@
                 <skipITs />
             </properties>
             <build>
-                <defaultGoal>clean deploy</defaultGoal>
                 <plugins>
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
@@ -441,15 +440,6 @@
                     </plugin>
                     <plugin>
                         <artifactId>maven-release-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>release</id>
-                                <goals>
-                                    <goal>prepare</goal>
-                                    <goal>perform</goal>
-                                </goals>
-                            </execution>
-                        </executions>
                         <configuration>
                             <autoVersionSubmodules>true</autoVersionSubmodules>
                             <preparationGoals>verify</preparationGoals>
