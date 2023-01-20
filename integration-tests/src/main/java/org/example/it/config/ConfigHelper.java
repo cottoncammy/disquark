@@ -14,5 +14,6 @@ public class ConfigHelper {
         return ConfigProvider.getConfig().getOptionalValue(name, type);
     }
 
-    private ConfigHelper() {}
+    private ConfigHelper() {
+    }
 }

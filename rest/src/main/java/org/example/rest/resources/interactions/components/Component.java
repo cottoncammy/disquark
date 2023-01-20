@@ -85,6 +85,7 @@ public interface Component {
     }
 
     class Builder extends ImmutableComponent.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

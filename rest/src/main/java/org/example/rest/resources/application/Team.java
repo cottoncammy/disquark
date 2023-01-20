@@ -52,7 +52,8 @@ public interface Team {
         User user();
 
         class Builder extends ImmutableTeam.Member.Builder {
-            protected Builder() {}
+            protected Builder() {
+            }
         }
     }
 
@@ -75,6 +76,7 @@ public interface Team {
     }
 
     class Builder extends ImmutableTeam.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

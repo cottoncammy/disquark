@@ -34,7 +34,8 @@ class BucketRateLimitingRequestStream {
                 .onItem().transformToMulti(x -> processor)
                 .ifNoItem().after(Duration.ofSeconds(30)).recoverWithCompletion()
                 .onCompletion().invoke(() -> {
-                    LOG.debug("Unsubscribing from stream: no requests received for buckets matching key {} after timeout", bucketKey);
+                    LOG.debug("Unsubscribing from stream: no requests received for buckets matching key {} after timeout",
+                            bucketKey);
                     subscribed = false;
                 })
                 .subscribe().withSubscriber(new BucketRateLimitingRequestSubscriber(bucketKey, requester));

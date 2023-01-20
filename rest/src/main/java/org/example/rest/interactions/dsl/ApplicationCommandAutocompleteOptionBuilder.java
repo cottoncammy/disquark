@@ -6,7 +6,8 @@ import java.util.Objects;
 import org.example.rest.resources.application.command.ApplicationCommand;
 import org.example.rest.resources.interactions.ApplicationCommandInteractionDataOption;
 
-public class ApplicationCommandAutocompleteOptionBuilder extends AbstractApplicationCommandOptionBuilder<ApplicationCommandAutocompleteOptionBuilder> {
+public class ApplicationCommandAutocompleteOptionBuilder
+        extends AbstractApplicationCommandOptionBuilder<ApplicationCommandAutocompleteOptionBuilder> {
     private boolean focused;
 
     public static ApplicationCommandAutocompleteOptionBuilder option() {

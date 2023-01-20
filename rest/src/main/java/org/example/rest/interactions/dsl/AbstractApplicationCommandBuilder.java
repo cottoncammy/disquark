@@ -21,7 +21,8 @@ import org.example.rest.resources.application.command.ApplicationCommand;
 import org.example.rest.resources.interactions.ApplicationCommandInteractionDataOption;
 import org.example.rest.resources.interactions.Interaction;
 
-public abstract class AbstractApplicationCommandBuilder<C extends CompletableInteraction<Interaction.ApplicationCommandData>, O extends AbstractApplicationCommandOptionBuilder<O>> implements InteractionSchema<Interaction.ApplicationCommandData, C> {
+public abstract class AbstractApplicationCommandBuilder<C extends CompletableInteraction<Interaction.ApplicationCommandData>, O extends AbstractApplicationCommandOptionBuilder<O>>
+        implements InteractionSchema<Interaction.ApplicationCommandData, C> {
     private final Interaction.Type interactionType;
     private final Functions.Function3<Interaction<Interaction.ApplicationCommandData>, HttpServerResponse, DiscordInteractionsClient<?>, C> completableInteractionFunction;
 
@@ -95,7 +96,8 @@ public abstract class AbstractApplicationCommandBuilder<C extends CompletableInt
     }
 
     @Override
-    public C getCompletableInteraction(Interaction<Interaction.ApplicationCommandData> interaction, HttpServerResponse response, DiscordInteractionsClient<?> interactionsClient) {
+    public C getCompletableInteraction(Interaction<Interaction.ApplicationCommandData> interaction, HttpServerResponse response,
+            DiscordInteractionsClient<?> interactionsClient) {
         return completableInteractionFunction.apply(interaction, response, interactionsClient);
     }
 }

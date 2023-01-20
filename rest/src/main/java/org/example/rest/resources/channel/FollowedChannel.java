@@ -21,6 +21,7 @@ public interface FollowedChannel {
     Snowflake webhookId();
 
     class Builder extends ImmutableFollowedChannel.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

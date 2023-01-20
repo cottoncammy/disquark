@@ -59,11 +59,13 @@ public interface ModifyGuildRolePositions extends Auditable, Requestable {
         OptionalInt position();
 
         class Builder extends ImmutableModifyGuildRolePositions.GuildRolePosition.Builder {
-            protected Builder() {}
+            protected Builder() {
+            }
         }
     }
 
     class Builder extends ImmutableModifyGuildRolePositions.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

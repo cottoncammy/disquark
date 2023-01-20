@@ -38,6 +38,7 @@ public interface CreateGuildTemplate extends Requestable {
     }
 
     class Builder extends ImmutableCreateGuildTemplate.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

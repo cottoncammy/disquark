@@ -10,12 +10,15 @@ import org.example.rest.request.ratelimit.RateLimitStrategy;
 import org.example.rest.response.HttpResponse;
 import org.example.rest.response.Response;
 
-public interface RequesterFactory<T extends Response> extends Function<DiscordClient.Builder<T, ? extends DiscordClient<T>>, Requester<T>> {
+public interface RequesterFactory<T extends Response>
+        extends Function<DiscordClient.Builder<T, ? extends DiscordClient<T>>, Requester<T>> {
 
-    static RequesterFactory<HttpResponse> customHttpRequester(Function<HttpClientRequester.Builder, HttpClientRequester> httpRequesterFactory) {
+    static RequesterFactory<HttpResponse> customHttpRequester(
+            Function<HttpClientRequester.Builder, HttpClientRequester> httpRequesterFactory) {
         return new RequesterFactory<>() {
             @Override
-            public Requester<HttpResponse> apply(DiscordClient.Builder<HttpResponse, ? extends DiscordClient<HttpResponse>> builder) {
+            public Requester<HttpResponse> apply(
+                    DiscordClient.Builder<HttpResponse, ? extends DiscordClient<HttpResponse>> builder) {
                 RateLimitStrategy<HttpResponse> rateLimitStrategy = builder.getRateLimitStrategy();
                 if (rateLimitStrategy == null) {
                     rateLimitStrategy = RateLimitStrategy.ALL;
@@ -34,7 +37,8 @@ public interface RequesterFactory<T extends Response> extends Function<DiscordCl
 
     RequesterFactory<HttpResponse> DEFAULT_HTTP_REQUESTER = new RequesterFactory<>() {
         @Override
-        public Requester<HttpResponse> apply(DiscordClient.Builder<HttpResponse, ? extends DiscordClient<HttpResponse>> builder) {
+        public Requester<HttpResponse> apply(
+                DiscordClient.Builder<HttpResponse, ? extends DiscordClient<HttpResponse>> builder) {
             return customHttpRequester(HttpClientRequester.Builder::build).apply(builder);
         }
     };

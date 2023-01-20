@@ -58,6 +58,7 @@ public interface ApplicationRoleConnectionMetadata {
     }
 
     class Builder extends ImmutableApplicationRoleConnectionMetadata.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

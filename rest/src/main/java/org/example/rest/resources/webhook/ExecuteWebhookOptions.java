@@ -29,6 +29,7 @@ public interface ExecuteWebhookOptions {
     }
 
     class Builder extends ImmutableExecuteWebhookOptions.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

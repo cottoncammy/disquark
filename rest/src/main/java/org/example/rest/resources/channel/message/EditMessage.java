@@ -61,6 +61,7 @@ public interface EditMessage extends MultipartRequest, Requestable {
     }
 
     class Builder extends ImmutableEditMessage.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

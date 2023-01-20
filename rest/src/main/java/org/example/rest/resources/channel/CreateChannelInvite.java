@@ -62,6 +62,7 @@ public interface CreateChannelInvite extends Auditable, Requestable {
     }
 
     class Builder extends ImmutableCreateChannelInvite.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

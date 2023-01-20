@@ -41,6 +41,7 @@ public interface ModifyCurrentMember extends Auditable, Requestable {
     }
 
     class Builder extends ImmutableModifyCurrentMember.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

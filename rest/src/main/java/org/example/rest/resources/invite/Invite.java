@@ -109,7 +109,8 @@ public interface Invite {
         Guild.NsfwLevel nsfwLevel();
 
         class Builder extends ImmutableInvite.PartialGuild.Builder {
-            protected Builder() {}
+            protected Builder() {
+            }
         }
     }
 
@@ -135,7 +136,8 @@ public interface Invite {
         Instant createdAt();
 
         class Builder extends ImmutableInvite.Metadata.Builder {
-            protected Builder() {}
+            protected Builder() {
+            }
         }
     }
 
@@ -143,7 +145,7 @@ public interface Invite {
     @JsonDeserialize(as = Invite.EmbeddedApplication.class)
     interface EmbeddedApplication {
 
-        static Builder builder () {
+        static Builder builder() {
             return new Builder();
         }
 
@@ -157,11 +159,13 @@ public interface Invite {
         int maxParticipants();
 
         class Builder extends ImmutableInvite.EmbeddedApplication.Builder {
-            protected Builder() {}
+            protected Builder() {
+            }
         }
     }
 
     class Builder extends ImmutableInvite.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

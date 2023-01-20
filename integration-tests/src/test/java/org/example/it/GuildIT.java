@@ -141,13 +141,15 @@ class GuildIT {
 
     @Test
     @Order(9)
-    void testAddGuildMember(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_CLIENT_ID") String clientId, @ConfigValue("DISCORD_CLIENT_SECRET") String clientSecret, @ConfigValue("DISCORD_USER_ID") Snowflake userId) {
+    void testAddGuildMember(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_CLIENT_ID") String clientId,
+            @ConfigValue("DISCORD_CLIENT_SECRET") String clientSecret, @ConfigValue("DISCORD_USER_ID") Snowflake userId) {
         Uni<String> tokenUni = BearerTokenSource.create(botClient.getVertx(), clientId, clientSecret)
                 .fromClientCredentials(EnumSet.of(Scope.GUILDS_JOIN))
                 .getToken()
                 .map(AccessToken::accessToken);
 
-        tokenUni.call(token -> botClient.addGuildMember(AddGuildMember.builder().guildId(guildId).userId(userId).accessToken(token).build()))
+        tokenUni.call(token -> botClient
+                .addGuildMember(AddGuildMember.builder().guildId(guildId).userId(userId).accessToken(token).build()))
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .awaitItem()
                 .assertCompleted();
@@ -432,7 +434,8 @@ class GuildIT {
     @Test
     @Tag("stage-channel")
     @Order(38)
-    void testModifyUserVoiceState(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_USER_ID") Snowflake userId, @ConfigValue("DISCORD_STAGE_CHANNEL_ID") Snowflake channelId) {
+    void testModifyUserVoiceState(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_USER_ID") Snowflake userId,
+            @ConfigValue("DISCORD_STAGE_CHANNEL_ID") Snowflake channelId) {
         botClient.modifyUserVoiceState(guildId, userId, channelId, true)
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .awaitItem()

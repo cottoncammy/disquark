@@ -10,16 +10,20 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.vertx.core.http.HttpMethod;
 
+import io.vertx.mutiny.core.buffer.Buffer;
 import org.example.immutables.ImmutableJson;
 import org.example.nullableoptional.NullableOptional;
 import org.example.nullableoptional.jackson.NullableOptionalFilter;
+import org.example.rest.jackson.ImageDataSerializer;
 import org.example.rest.request.Auditable;
 import org.example.rest.request.Endpoint;
 import org.example.rest.request.Request;
 import org.example.rest.request.Requestable;
 import org.example.rest.resources.Snowflake;
+import org.immutables.value.Value.Redacted;
 
 @ImmutableJson
 public interface ModifyGuildScheduledEvent extends Auditable, Requestable {
@@ -61,19 +65,23 @@ public interface ModifyGuildScheduledEvent extends Auditable, Requestable {
 
     Optional<GuildScheduledEvent.Status> status();
 
-    Optional<String> image();
+    @Redacted
+    @JsonSerialize(contentUsing = ImageDataSerializer.class)
+    Optional<Buffer> image();
 
     @Override
     default Request asRequest() {
         return Request.builder()
                 .endpoint(Endpoint.create(HttpMethod.PATCH, "/guilds/{guild.id}/scheduled-events/{guild_scheduled_event.id}"))
-                .variables(variables("guild.id", guildId().getValue(), "guild_scheduled_event.id", guildScheduledEventId().getValue()))
+                .variables(variables("guild.id", guildId().getValue(), "guild_scheduled_event.id",
+                        guildScheduledEventId().getValue()))
                 .body(this)
                 .auditLogReason(auditLogReason())
                 .build();
     }
 
     class Builder extends ImmutableModifyGuildScheduledEvent.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

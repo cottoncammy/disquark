@@ -16,7 +16,8 @@ public class ModalSubmitBuilder implements InteractionSchema<Interaction.ModalSu
     @Nullable
     private String customId;
 
-    protected ModalSubmitBuilder() {}
+    protected ModalSubmitBuilder() {
+    }
 
     public ModalSubmitBuilder customId(String customId) {
         this.customId = requireNonNull(customId, "customId");
@@ -26,11 +27,13 @@ public class ModalSubmitBuilder implements InteractionSchema<Interaction.ModalSu
     @Override
     public boolean validate(Interaction<Interaction.ModalSubmitData> interaction) {
         return interaction.type() == Interaction.Type.MODAL_SUBMIT &&
-                (customId == null || Objects.equals(customId, interaction.data().map(Interaction.ModalSubmitData::customId).orElse(null)));
+                (customId == null || Objects.equals(customId,
+                        interaction.data().map(Interaction.ModalSubmitData::customId).orElse(null)));
     }
 
     @Override
-    public ModalSubmitInteraction getCompletableInteraction(Interaction<Interaction.ModalSubmitData> interaction, HttpServerResponse response, DiscordInteractionsClient<?> interactionsClient) {
+    public ModalSubmitInteraction getCompletableInteraction(Interaction<Interaction.ModalSubmitData> interaction,
+            HttpServerResponse response, DiscordInteractionsClient<?> interactionsClient) {
         return new ModalSubmitInteraction(interaction, response, interactionsClient);
     }
 }

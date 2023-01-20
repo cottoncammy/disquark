@@ -32,6 +32,7 @@ public interface ThreadMetadata {
     Optional<Instant> createTimestamp();
 
     class Builder extends ImmutableThreadMetadata.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

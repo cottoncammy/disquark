@@ -64,6 +64,7 @@ public interface CreateFollowupMessage extends MultipartRequest, Requestable {
     }
 
     class Builder extends ImmutableCreateFollowupMessage.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

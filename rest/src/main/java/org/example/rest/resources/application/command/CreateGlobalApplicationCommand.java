@@ -65,6 +65,7 @@ public interface CreateGlobalApplicationCommand extends Requestable {
     }
 
     class Builder extends ImmutableCreateGlobalApplicationCommand.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

@@ -36,18 +36,22 @@ class AuthenticatedDiscordClientIT {
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .awaitItem()
                 .getItem()
-                .application().id();
+                .application()
+                .id();
 
         guildId = configValue("DISCORD_GUILD_ID", Snowflake.class);
 
         oAuth2Client.getGlobalApplicationCommands(applicationId, false)
-                .onItem().transformToUniAndMerge(command -> oAuth2Client.deleteGlobalApplicationCommand(applicationId, command.id()))
+                .onItem()
+                .transformToUniAndMerge(command -> oAuth2Client.deleteGlobalApplicationCommand(applicationId, command.id()))
                 .collect().asList()
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .awaitItem();
 
         oAuth2Client.getGuildApplicationCommands(applicationId, guildId, false)
-                .onItem().transformToUniAndMerge(command -> oAuth2Client.deleteGuildApplicationCommand(applicationId, guildId, command.id()))
+                .onItem()
+                .transformToUniAndMerge(
+                        command -> oAuth2Client.deleteGuildApplicationCommand(applicationId, guildId, command.id()))
                 .collect().asList()
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .awaitItem();
@@ -111,12 +115,14 @@ class AuthenticatedDiscordClientIT {
     @ExtendWith(SomeExtension.class)
     @Order(5)
     void testBulkOverwriteGlobalApplicationCommands(AuthenticatedDiscordClient<?> discordClient) {
-        BulkOverwriteGlobalApplicationCommands bulkOverwriteGlobalApplicationCommands = BulkOverwriteGlobalApplicationCommands.builder()
+        BulkOverwriteGlobalApplicationCommands bulkOverwriteGlobalApplicationCommands = BulkOverwriteGlobalApplicationCommands
+                .builder()
                 .applicationId(applicationId)
-                .addGlobalApplicationCommandOverwrite(BulkOverwriteGlobalApplicationCommands.GlobalApplicationCommandOverwrite.builder()
-                        .name("bar")
-                        .description("foo bar")
-                        .build())
+                .addGlobalApplicationCommandOverwrite(
+                        BulkOverwriteGlobalApplicationCommands.GlobalApplicationCommandOverwrite.builder()
+                                .name("bar")
+                                .description("foo bar")
+                                .build())
                 .build();
 
         discordClient.bulkOverwriteGlobalApplicationCommands(bulkOverwriteGlobalApplicationCommands)
@@ -186,13 +192,15 @@ class AuthenticatedDiscordClientIT {
     @ExtendWith(SomeExtension.class)
     @Order(10)
     void testBulkOverwriteGuildApplicationCommands(AuthenticatedDiscordClient<?> discordClient) {
-        BulkOverwriteGuildApplicationCommands bulkOverwriteGuildApplicationCommands = BulkOverwriteGuildApplicationCommands.builder()
+        BulkOverwriteGuildApplicationCommands bulkOverwriteGuildApplicationCommands = BulkOverwriteGuildApplicationCommands
+                .builder()
                 .applicationId(applicationId)
                 .guildId(guildId)
-                .addGuildApplicationCommandOverwrite(BulkOverwriteGuildApplicationCommands.GuildApplicationCommandOverwrite.builder()
-                        .name("bar")
-                        .description("foo bar")
-                        .build())
+                .addGuildApplicationCommandOverwrite(
+                        BulkOverwriteGuildApplicationCommands.GuildApplicationCommandOverwrite.builder()
+                                .name("bar")
+                                .description("foo bar")
+                                .build())
                 .build();
 
         discordClient.bulkOverwriteGuildApplicationCommands(bulkOverwriteGuildApplicationCommands)

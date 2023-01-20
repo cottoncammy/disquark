@@ -7,7 +7,8 @@ import org.example.rest.interactions.CompletableInteraction;
 import org.example.rest.resources.Snowflake;
 import org.example.rest.resources.interactions.Interaction;
 
-public class GuildIdStage<C extends CompletableInteraction<Interaction.ApplicationCommandData>, O extends AbstractApplicationCommandOptionBuilder<O>, T extends AbstractApplicationCommandBuilder<C, O>> extends OptionalValueStage<T, Snowflake> {
+public class GuildIdStage<C extends CompletableInteraction<Interaction.ApplicationCommandData>, O extends AbstractApplicationCommandOptionBuilder<O>, T extends AbstractApplicationCommandBuilder<C, O>>
+        extends OptionalValueStage<T, Snowflake> {
 
     protected GuildIdStage(T previousStage) {
         super(previousStage,

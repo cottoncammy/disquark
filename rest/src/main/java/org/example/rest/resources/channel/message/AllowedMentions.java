@@ -44,6 +44,7 @@ public interface AllowedMentions {
     }
 
     class Builder extends ImmutableAllowedMentions.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

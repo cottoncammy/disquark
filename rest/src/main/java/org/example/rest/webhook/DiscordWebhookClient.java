@@ -40,7 +40,9 @@ public class DiscordWebhookClient<T extends Response> extends DiscordClient<T> i
 
     @Override
     public Uni<Webhook> getWebhookWithToken(Snowflake webhookId, String webhookToken) {
-        return requester.request(new EmptyRequest("/webhooks/{webhook.id}/{webhook.token}", false, variables("webhook.id", requireNonNull(webhookId, "webhookId").getValue(), "webhook.token", requireNonNull(webhookToken, "webhookToken"))))
+        return requester.request(new EmptyRequest("/webhooks/{webhook.id}/{webhook.token}", false,
+                variables("webhook.id", requireNonNull(webhookId, "webhookId").getValue(), "webhook.token",
+                        requireNonNull(webhookToken, "webhookToken"))))
                 .flatMap(res -> res.as(Webhook.class));
     }
 
@@ -52,7 +54,9 @@ public class DiscordWebhookClient<T extends Response> extends DiscordClient<T> i
 
     @Override
     public Uni<Void> deleteWebhookWithToken(Snowflake webhookId, String webhookToken) {
-        return requester.request(new EmptyRequest(HttpMethod.DELETE, "/webhooks/{webhook.id}/{webhook.token}", false, variables("webhook.id", requireNonNull(webhookId, "webhookId").getValue(), "webhook.token", requireNonNull(webhookToken, "webhookToken"))))
+        return requester.request(new EmptyRequest(HttpMethod.DELETE, "/webhooks/{webhook.id}/{webhook.token}", false,
+                variables("webhook.id", requireNonNull(webhookId, "webhookId").getValue(), "webhook.token",
+                        requireNonNull(webhookToken, "webhookToken"))))
                 .replaceWithVoid();
     }
 
@@ -63,7 +67,8 @@ public class DiscordWebhookClient<T extends Response> extends DiscordClient<T> i
     }
 
     private Uni<Message> executeWebhook(ExecuteWebhookOptions options, String uri) {
-        JsonObject json = JsonObject.of("webhook.id", requireNonNull(options, "options").webhookId().getValue(), "webhook.token", options.webhookToken(), "wait", options.waitForServer());
+        JsonObject json = JsonObject.of("webhook.id", requireNonNull(options, "options").webhookId().getValue(),
+                "webhook.token", options.webhookToken(), "wait", options.waitForServer());
         if (options.threadId().isPresent()) {
             json.put("thread_id", options.threadId().get());
         }
@@ -83,12 +88,14 @@ public class DiscordWebhookClient<T extends Response> extends DiscordClient<T> i
     }
 
     private Uni<T> webhookMessageRequest(WebhookMessageOptions options, HttpMethod httpMethod) {
-        JsonObject json = JsonObject.of("webhook.id", requireNonNull(options, "options").webhookId().getValue(), "webhook.token", options.webhookToken(), "message.id", options.messageId().getValue());
+        JsonObject json = JsonObject.of("webhook.id", requireNonNull(options, "options").webhookId().getValue(),
+                "webhook.token", options.webhookToken(), "message.id", options.messageId().getValue());
         if (options.threadId().isPresent()) {
             json.put("thread_id", options.threadId().get());
         }
 
-        return requester.request(new EmptyRequest(httpMethod, "/webhooks/{webhook.id}/{webhook.token}/messages/{message.id}{?thread_id}", false, Variables.variables(json)));
+        return requester.request(new EmptyRequest(httpMethod,
+                "/webhooks/{webhook.id}/{webhook.token}/messages/{message.id}{?thread_id}", false, Variables.variables(json)));
     }
 
     @Override

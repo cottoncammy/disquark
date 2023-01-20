@@ -51,6 +51,7 @@ public interface ModifyGuildWelcomeScreen extends Auditable, Requestable {
     }
 
     class Builder extends ImmutableModifyGuildWelcomeScreen.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

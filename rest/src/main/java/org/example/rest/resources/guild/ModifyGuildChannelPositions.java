@@ -65,11 +65,13 @@ public interface ModifyGuildChannelPositions extends Requestable {
         Optional<Snowflake> parentId();
 
         class Builder extends ImmutableModifyGuildChannelPositions.GuildChannelPosition.Builder {
-            protected Builder() {}
+            protected Builder() {
+            }
         }
     }
 
     class Builder extends ImmutableModifyGuildChannelPositions.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

@@ -10,17 +10,12 @@ import org.immutables.value.Value.Immutable;
 import org.immutables.value.Value.Style;
 import org.immutables.value.Value.Style.ImplementationVisibility;
 
-@Target({ElementType.PACKAGE, ElementType.TYPE})
+@Target({ ElementType.PACKAGE, ElementType.TYPE })
 @NullableOptionalEncodingEnabled
 @JsonSerialize
-@Style(
-        of = "create",
-        defaults = @Immutable(copy = false),
-        visibility = ImplementationVisibility.PACKAGE,
-        overshadowImplementation = true,
-        depluralize = true,
-        allMandatoryParameters = true
-)
+// formatter:off
+@Style(of = "create", defaults = @Immutable(copy = false), visibility = ImplementationVisibility.PACKAGE, overshadowImplementation = true, depluralize = true, allMandatoryParameters = true)
+// formatter:on
 @Documented
 public @interface ImmutableJson {
 }

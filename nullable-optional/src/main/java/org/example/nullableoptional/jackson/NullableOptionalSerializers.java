@@ -13,7 +13,8 @@ import org.example.nullableoptional.NullableOptional;
 public class NullableOptionalSerializers extends Serializers.Base {
 
     @Override
-    public JsonSerializer<?> findReferenceSerializer(SerializationConfig config, ReferenceType type, BeanDescription beanDesc, TypeSerializer contentTypeSerializer, JsonSerializer<Object> contentValueSerializer) {
+    public JsonSerializer<?> findReferenceSerializer(SerializationConfig config, ReferenceType type, BeanDescription beanDesc,
+            TypeSerializer contentTypeSerializer, JsonSerializer<Object> contentValueSerializer) {
         if (type.isTypeOrSubTypeOf(NullableOptional.class)) {
             boolean staticTyping = contentTypeSerializer == null && config.isEnabled(MapperFeature.USE_STATIC_TYPING);
             return new NullableOptionalSerializer(type, staticTyping, contentTypeSerializer, contentValueSerializer);

@@ -51,6 +51,7 @@ public interface GetCurrentUserGuilds extends Requestable {
     }
 
     class Builder extends ImmutableGetCurrentUserGuilds.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

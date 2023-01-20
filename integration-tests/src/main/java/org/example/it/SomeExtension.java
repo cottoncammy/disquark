@@ -44,12 +44,14 @@ public class SomeExtension implements TestTemplateInvocationContextProvider {
     private ParameterResolver parameterResolver(AuthenticatedDiscordClient<?> discordClient) {
         return new ParameterResolver() {
             @Override
-            public boolean supportsParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
+            public boolean supportsParameter(ParameterContext parameterContext, ExtensionContext extensionContext)
+                    throws ParameterResolutionException {
                 return true;
             }
 
             @Override
-            public Object resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
+            public Object resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext)
+                    throws ParameterResolutionException {
                 return discordClient;
             }
         };

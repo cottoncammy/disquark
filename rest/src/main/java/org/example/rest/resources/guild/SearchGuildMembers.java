@@ -40,6 +40,7 @@ public interface SearchGuildMembers extends Requestable {
     }
 
     class Builder extends ImmutableSearchGuildMembers.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

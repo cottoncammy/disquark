@@ -108,6 +108,7 @@ public interface ModifyGuild extends Auditable, Requestable {
     }
 
     class Builder extends ImmutableModifyGuild.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

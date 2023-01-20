@@ -47,6 +47,7 @@ public interface ModifyGuildWidget extends Auditable, Requestable {
     }
 
     class Builder extends ImmutableModifyGuildWidget.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

@@ -59,11 +59,13 @@ public interface AutoModerationAction {
         OptionalInt durationSeconds();
 
         class Builder extends ImmutableAutoModerationAction.Metadata.Builder {
-            protected Builder() {}
+            protected Builder() {
+            }
         }
     }
 
     class Builder extends ImmutableAutoModerationAction.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

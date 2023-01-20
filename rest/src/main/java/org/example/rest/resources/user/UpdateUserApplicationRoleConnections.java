@@ -44,6 +44,7 @@ public interface UpdateUserApplicationRoleConnections extends Requestable {
     }
 
     class Builder extends ImmutableUpdateUserApplicationRoleConnections.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

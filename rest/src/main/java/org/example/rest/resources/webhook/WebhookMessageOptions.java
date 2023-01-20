@@ -25,6 +25,7 @@ public interface WebhookMessageOptions {
     Optional<Snowflake> threadId();
 
     class Builder extends ImmutableWebhookMessageOptions.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

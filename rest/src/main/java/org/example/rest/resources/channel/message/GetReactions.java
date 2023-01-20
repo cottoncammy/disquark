@@ -40,18 +40,21 @@ public interface GetReactions extends Requestable {
 
     @Override
     default Request asRequest() {
-        JsonObject json = JsonObject.of("channel.id", channelId().getValue(), "message.id", messageId().getValue(), "emoji", emoji().getValue(), "limit", limit());
+        JsonObject json = JsonObject.of("channel.id", channelId().getValue(), "message.id", messageId().getValue(), "emoji",
+                emoji().getValue(), "limit", limit());
         if (after().isPresent()) {
             json.put("after", after().get().getValue());
         }
 
         return Request.builder()
-                .endpoint(Endpoint.create(HttpMethod.GET, "/channels/{channel.id}/messages/{message.id}/reactions/{emoji}{?after,limit}"))
+                .endpoint(Endpoint.create(HttpMethod.GET,
+                        "/channels/{channel.id}/messages/{message.id}/reactions/{emoji}{?after,limit}"))
                 .variables(Variables.variables(json))
                 .build();
     }
 
     class Builder extends ImmutableGetReactions.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

@@ -65,6 +65,7 @@ public interface CreateGuildApplicationCommand extends Requestable {
     }
 
     class Builder extends ImmutableCreateGuildApplicationCommand.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

@@ -44,7 +44,8 @@ public class MessageComponentInteraction extends CompletableInteraction<Interact
     }
 
     @Override
-    public Uni<RespondedInteraction<Interaction.MessageComponentData>> popUpModal(String customId, String title, List<Component> components) {
+    public Uni<RespondedInteraction<Interaction.MessageComponentData>> popUpModal(String customId, String title,
+            List<Component> components) {
         return super.popUpModal(customId, title, components);
     }
 }

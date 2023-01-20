@@ -29,19 +29,24 @@ class PermissionFlagsTest {
     @Test
     void testSerialization() {
         assertEquals("{\"flags\":\"0\"}", Json.encode(new Foo(EnumSet.noneOf(PermissionFlag.class))));
-        assertEquals("{\"flags\":\"8\"}", Json.encode(new Foo(EnumSet.of(PermissionFlag.CREATE_INSTANT_INVITE, PermissionFlag.ADMINISTRATOR))));
-        assertEquals(String.format("{\"flags\":\"%d\"}", NO_ADMIN), Json.encode(new Foo(EnumSet.complementOf(EnumSet.of(PermissionFlag.ADMINISTRATOR)))));
+        assertEquals("{\"flags\":\"8\"}",
+                Json.encode(new Foo(EnumSet.of(PermissionFlag.CREATE_INSTANT_INVITE, PermissionFlag.ADMINISTRATOR))));
+        assertEquals(String.format("{\"flags\":\"%d\"}", NO_ADMIN),
+                Json.encode(new Foo(EnumSet.complementOf(EnumSet.of(PermissionFlag.ADMINISTRATOR)))));
     }
 
     @Test
     void testDeserialization() throws JsonProcessingException {
         ObjectMapper objectMapper = DatabindCodec.mapper();
-        TypeReference<EnumSet<PermissionFlag>> typeRef = new TypeReference<>() {};
-        TypeReference<Optional<EnumSet<PermissionFlag>>> optionalTypeRef = new TypeReference<>() {};
+        TypeReference<EnumSet<PermissionFlag>> typeRef = new TypeReference<>() {
+        };
+        TypeReference<Optional<EnumSet<PermissionFlag>>> optionalTypeRef = new TypeReference<>() {
+        };
 
         assertEquals(EnumSet.noneOf(PermissionFlag.class), objectMapper.readValue("0", typeRef));
         assertEquals(EnumSet.allOf(PermissionFlag.class), objectMapper.readValue(Long.toUnsignedString(ALL_PERMS), typeRef));
-        assertEquals(Optional.of(EnumSet.allOf(PermissionFlag.class)), objectMapper.readValue(Long.toUnsignedString(ALL_PERMS), optionalTypeRef));
+        assertEquals(Optional.of(EnumSet.allOf(PermissionFlag.class)),
+                objectMapper.readValue(Long.toUnsignedString(ALL_PERMS), optionalTypeRef));
         assertEquals(Optional.empty(), objectMapper.readValue("null", optionalTypeRef));
     }
 

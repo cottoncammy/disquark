@@ -49,6 +49,7 @@ public interface AuditEntryInfo {
     Optional<Channel.Overwrite.Type> type();
 
     class Builder extends ImmutableAuditEntryInfo.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

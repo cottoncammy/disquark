@@ -15,12 +15,14 @@ import org.junit.jupiter.api.extension.ExtendWith;
 class DiscordOAuth2ClientIT {
 
     @Test
-    void testEditApplicationCommandPermissions(DiscordOAuth2Client<?> oAuth2Client, @ConfigValue("DISCORD_GUILD_ID") Snowflake guildId) {
+    void testEditApplicationCommandPermissions(DiscordOAuth2Client<?> oAuth2Client,
+            @ConfigValue("DISCORD_GUILD_ID") Snowflake guildId) {
         Snowflake applicationId = oAuth2Client.getCurrentAuthorizationInformation()
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .awaitItem()
                 .getItem()
-                .application().id();
+                .application()
+                .id();
 
         CreateGuildApplicationCommand createGuildApplicationCommand = CreateGuildApplicationCommand.builder()
                 .applicationId(applicationId)
@@ -39,15 +41,17 @@ class DiscordOAuth2ClientIT {
                                 .type(ApplicationCommand.Permissions.Type.ROLE)
                                 .permission(true)
                                 .build())
-                                .build()))
-                .onItemOrFailure().call((command, e) -> oAuth2Client.deleteGuildApplicationCommand(applicationId, guildId, command.id()))
+                        .build()))
+                .onItemOrFailure()
+                .call((command, e) -> oAuth2Client.deleteGuildApplicationCommand(applicationId, guildId, command.id()))
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .awaitItem()
                 .assertCompleted();
     }
 
     @Test
-    void testGetCurrentUserGuildMember(DiscordOAuth2Client<?> oAuth2Client, @ConfigValue("DISCORD_GUILD_ID") Snowflake guildId) {
+    void testGetCurrentUserGuildMember(DiscordOAuth2Client<?> oAuth2Client,
+            @ConfigValue("DISCORD_GUILD_ID") Snowflake guildId) {
         oAuth2Client.getCurrentUserGuildMember(guildId)
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .awaitItem()

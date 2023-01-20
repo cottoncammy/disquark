@@ -37,6 +37,7 @@ public interface Emoji {
     Optional<Boolean> available();
 
     class Builder extends ImmutableEmoji.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

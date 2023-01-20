@@ -19,5 +19,6 @@ public class Hex {
         return b;
     }
 
-    private Hex() {}
+    private Hex() {
+    }
 }

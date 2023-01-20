@@ -52,6 +52,7 @@ public interface AddGuildMember extends Requestable {
     }
 
     class Builder extends ImmutableAddGuildMember.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

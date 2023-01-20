@@ -59,6 +59,7 @@ public interface GetGuildAuditLog extends Requestable {
     }
 
     class Builder extends ImmutableGetGuildAuditLog.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

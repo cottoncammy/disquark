@@ -25,6 +25,7 @@ public interface ListThreadsResult {
     Optional<Boolean> hasMore();
 
     class Builder extends ImmutableListThreadsResult.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

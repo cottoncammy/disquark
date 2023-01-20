@@ -48,6 +48,7 @@ public interface StartThreadFromMessage extends Auditable, Requestable {
     }
 
     class Builder extends ImmutableStartThreadFromMessage.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

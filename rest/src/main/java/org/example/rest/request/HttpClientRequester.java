@@ -37,7 +37,8 @@ public class HttpClientRequester implements Requester<HttpResponse> {
     private final GlobalRateLimiter rateLimiter;
 
     public static Builder builder(Vertx vertx, AccessTokenSource tokenSource, GlobalRateLimiter rateLimiter) {
-        return new Builder(requireNonNull(vertx, "vertx"), requireNonNull(tokenSource, "tokenSource"), requireNonNull(rateLimiter, "rateLimiter"));
+        return new Builder(requireNonNull(vertx, "vertx"), requireNonNull(tokenSource, "tokenSource"),
+                requireNonNull(rateLimiter, "rateLimiter"));
     }
 
     public static HttpClientRequester create(Vertx vertx, AccessTokenSource tokenSource, GlobalRateLimiter rateLimiter) {
@@ -71,10 +72,12 @@ public class HttpClientRequester implements Requester<HttpResponse> {
                             .setAbsoluteURI(baseUrl + request.endpoint().getUriTemplate().expandToString(request.variables()))
                             .setFollowRedirects(true)
                             .setMethod(request.endpoint().getHttpMethod())
-                            .putHeader(HttpHeaders.USER_AGENT, String.format("DiscordBot (%s, %s)", "https://github.com/cameronprater/discord-TODO", "0.1.0"));
+                            .putHeader(HttpHeaders.USER_AGENT, String.format("DiscordBot (%s, %s)",
+                                    "https://github.com/cameronprater/discord-TODO", "0.1.0"));
 
                     if (authentication) {
-                        options.putHeader(HttpHeaders.AUTHORIZATION, String.format("%s %s", token.tokenType().getValue(), token.accessToken()));
+                        options.putHeader(HttpHeaders.AUTHORIZATION,
+                                String.format("%s %s", token.tokenType().getValue(), token.accessToken()));
                     }
 
                     if (request.auditLogReason().isPresent()) {
@@ -85,7 +88,7 @@ public class HttpClientRequester implements Requester<HttpResponse> {
                         if (request.contentType().isEmpty()) {
                             req.putHeader(HttpHeaders.CONTENT_LENGTH, "0");
 
-                            LOG.debug("Sending outgoing request {}", ctx.<Object>get(REQUEST_ID));
+                            LOG.debug("Sending outgoing request {}", ctx.<Object> get(REQUEST_ID));
                             return req.send();
                         }
 
@@ -133,9 +136,11 @@ public class HttpClientRequester implements Requester<HttpResponse> {
                             ctx.get(REQUEST_ID), httpResponse.headers().entries());
 
                     if (httpResponse.statusCode() == 429) {
-                        return response.as(RateLimitResponse.class).onItem().failWith(res -> new RateLimitException(res, httpResponse));
+                        return response.as(RateLimitResponse.class).onItem()
+                                .failWith(res -> new RateLimitException(res, httpResponse));
                     } else if (httpResponse.statusCode() >= 400) {
-                        return response.as(ErrorResponse.class).onItem().failWith(res -> new DiscordException(res, httpResponse));
+                        return response.as(ErrorResponse.class).onItem()
+                                .failWith(res -> new DiscordException(res, httpResponse));
                     }
                     return Uni.createFrom().voidItem();
                 });

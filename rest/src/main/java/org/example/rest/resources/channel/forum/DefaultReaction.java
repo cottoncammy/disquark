@@ -23,6 +23,7 @@ public interface DefaultReaction {
     Optional<String> emojiName();
 
     class Builder extends ImmutableDefaultReaction.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

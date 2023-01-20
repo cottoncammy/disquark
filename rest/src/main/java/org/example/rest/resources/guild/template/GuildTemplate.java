@@ -56,7 +56,8 @@ public interface GuildTemplate {
     Optional<Boolean> isDirty();
 
     class Builder extends ImmutableGuildTemplate.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 
     @ImmutableJson
@@ -131,12 +132,14 @@ public interface GuildTemplate {
             boolean mentionable();
 
             class Builder extends ImmutableGuildTemplate.PartialRole.Builder {
-                protected Builder() {}
+                protected Builder() {
+                }
             }
         }
 
         class Builder extends ImmutableGuildTemplate.PartialGuild.Builder {
-            protected Builder() {}
+            protected Builder() {
+            }
         }
     }
 }

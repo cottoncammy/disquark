@@ -51,6 +51,7 @@ public interface EditChannelPermissions extends Auditable, Requestable {
     }
 
     class Builder extends ImmutableEditChannelPermissions.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

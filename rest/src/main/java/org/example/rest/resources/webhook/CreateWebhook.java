@@ -49,6 +49,7 @@ public interface CreateWebhook extends Auditable, Requestable {
     }
 
     class Builder extends ImmutableCreateWebhook.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

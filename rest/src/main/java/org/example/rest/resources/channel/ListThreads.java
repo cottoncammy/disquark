@@ -25,6 +25,7 @@ public interface ListThreads {
     OptionalInt limit();
 
     class Builder extends ImmutableListThreads.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

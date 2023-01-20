@@ -18,7 +18,8 @@ public class EmptyRequest implements Request {
     @Nullable
     private final String auditLogReason;
 
-    private EmptyRequest(HttpMethod httpMethod, String uri, boolean requiresAuthentication, Variables variables, String auditLogReason) {
+    private EmptyRequest(HttpMethod httpMethod, String uri, boolean requiresAuthentication, Variables variables,
+            String auditLogReason) {
         this.endpoint = Endpoint.create(httpMethod, uri, requiresAuthentication);
         this.variables = variables;
         this.auditLogReason = auditLogReason;

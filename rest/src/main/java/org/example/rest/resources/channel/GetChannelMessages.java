@@ -59,6 +59,7 @@ public interface GetChannelMessages extends Requestable {
     }
 
     class Builder extends ImmutableGetChannelMessages.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

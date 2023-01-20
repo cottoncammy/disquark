@@ -46,6 +46,7 @@ public interface ModifyGuildTemplate extends Requestable {
     }
 
     class Builder extends ImmutableModifyGuildTemplate.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

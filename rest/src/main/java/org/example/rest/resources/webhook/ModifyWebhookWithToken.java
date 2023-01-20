@@ -52,6 +52,7 @@ public interface ModifyWebhookWithToken extends Requestable {
     }
 
     class Builder extends ImmutableModifyWebhookWithToken.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

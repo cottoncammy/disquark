@@ -19,7 +19,8 @@ public abstract class CompletableInteraction<T> {
     protected final HttpServerResponse response;
     protected final DiscordInteractionsClient<?> interactionsClient;
 
-    CompletableInteraction(Interaction<T> interaction, HttpServerResponse response, DiscordInteractionsClient<?> interactionsClient) {
+    CompletableInteraction(Interaction<T> interaction, HttpServerResponse response,
+            DiscordInteractionsClient<?> interactionsClient) {
         this.interaction = interaction;
         this.response = response;
         this.interactionsClient = interactionsClient;
@@ -30,7 +31,8 @@ public abstract class CompletableInteraction<T> {
     }
 
     protected Uni<RespondedInteraction<T>> respond(Interaction.MessageCallbackData data) {
-        return serialize(Interaction.Response.builder().type(Interaction.CallbackType.CHANNEL_MESSAGE_WITH_SOURCE).data(data).build())
+        return serialize(
+                Interaction.Response.builder().type(Interaction.CallbackType.CHANNEL_MESSAGE_WITH_SOURCE).data(data).build())
                 .invoke(json -> LOG.debug("Responding to interaction {} with message {}",
                         interaction.id().getValueAsString(), json))
                 .flatMap(response::end)
@@ -38,7 +40,8 @@ public abstract class CompletableInteraction<T> {
     }
 
     protected Uni<RespondedInteraction<T>> deferResponse(boolean ephemeral) {
-        Interaction.Response.Builder<Interaction.CallbackData> builder = Interaction.Response.<Interaction.CallbackData>builder().type(Interaction.CallbackType.DEFERRED_CHANNEL_MESSAGE_WITH_SOURCE);
+        Interaction.Response.Builder<Interaction.CallbackData> builder = Interaction.Response.<Interaction.CallbackData> builder()
+                .type(Interaction.CallbackType.DEFERRED_CHANNEL_MESSAGE_WITH_SOURCE);
         if (ephemeral) {
             builder.data(Interaction.CallbackData.builder().flags(EnumSet.of(Message.Flag.EPHEMERAL)).build());
         }

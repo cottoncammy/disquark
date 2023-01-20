@@ -70,7 +70,8 @@ public interface Webhook {
     }
 
     class Builder extends ImmutableWebhook.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 
     @ImmutableJson
@@ -88,7 +89,8 @@ public interface Webhook {
         Optional<String> icon();
 
         class Builder extends ImmutableWebhook.PartialGuild.Builder {
-            protected Builder() {}
+            protected Builder() {
+            }
         }
     }
 
@@ -105,7 +107,8 @@ public interface Webhook {
         Optional<String> name();
 
         class Builder extends ImmutableWebhook.PartialChannel.Builder {
-            protected Builder() {}
+            protected Builder() {
+            }
         }
     }
 }

@@ -51,6 +51,7 @@ public interface BeginGuildPrune extends Auditable, Requestable {
     }
 
     class Builder extends ImmutableBeginGuildPrune.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

@@ -75,7 +75,8 @@ public interface AuditLog {
         Optional<String> reason();
 
         class Builder extends ImmutableAuditLog.Entry.Builder {
-            protected Builder() {}
+            protected Builder() {
+            }
         }
     }
 
@@ -166,11 +167,13 @@ public interface AuditLog {
         String key();
 
         class Builder extends ImmutableAuditLog.Change.Builder {
-            protected Builder() {}
+            protected Builder() {
+            }
         }
     }
 
     class Builder extends ImmutableAuditLog.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

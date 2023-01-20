@@ -28,6 +28,7 @@ public interface ApplicationCommandInteractionDataOption {
     Optional<Boolean> focused();
 
     class Builder extends ImmutableApplicationCommandInteractionDataOption.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

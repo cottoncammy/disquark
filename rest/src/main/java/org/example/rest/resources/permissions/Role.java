@@ -69,11 +69,13 @@ public interface Role {
         Optional<Void> guildConnections();
 
         class Builder extends ImmutableRole.Tags.Builder {
-            protected Builder() {}
+            protected Builder() {
+            }
         }
     }
 
     class Builder extends ImmutableRole.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

@@ -39,7 +39,8 @@ public interface GetGuildPruneCount extends Requestable {
     default Request asRequest() {
         JsonObject json = JsonObject.of("guild.id", guildId().getValue(), "limit", limit());
         if (includeRoles().isPresent()) {
-            json.put("include_roles", includeRoles().get().stream().map(Snowflake::getValueAsString).collect(Collectors.joining(",")));
+            json.put("include_roles",
+                    includeRoles().get().stream().map(Snowflake::getValueAsString).collect(Collectors.joining(",")));
         }
 
         return Request.builder()
@@ -49,6 +50,7 @@ public interface GetGuildPruneCount extends Requestable {
     }
 
     class Builder extends ImmutableGetGuildPruneCount.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

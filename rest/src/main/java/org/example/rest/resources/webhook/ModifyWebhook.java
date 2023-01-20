@@ -55,6 +55,7 @@ public interface ModifyWebhook extends Auditable, Requestable {
     }
 
     class Builder extends ImmutableModifyWebhook.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

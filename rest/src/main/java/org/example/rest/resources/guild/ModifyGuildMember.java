@@ -63,6 +63,7 @@ public interface ModifyGuildMember extends Auditable, Requestable {
     }
 
     class Builder extends ImmutableModifyGuildMember.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

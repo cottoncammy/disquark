@@ -50,6 +50,7 @@ public interface StartThreadWithoutMessage extends Auditable, Requestable {
     }
 
     class Builder extends ImmutableStartThreadWithoutMessage.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

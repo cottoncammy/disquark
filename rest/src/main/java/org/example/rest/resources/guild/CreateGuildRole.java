@@ -61,6 +61,7 @@ public interface CreateGuildRole extends Auditable, Requestable {
     }
 
     class Builder extends ImmutableCreateGuildRole.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

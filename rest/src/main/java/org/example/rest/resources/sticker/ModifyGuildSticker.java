@@ -50,6 +50,7 @@ public interface ModifyGuildSticker extends Auditable, Requestable {
     }
 
     class Builder extends ImmutableModifyGuildSticker.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

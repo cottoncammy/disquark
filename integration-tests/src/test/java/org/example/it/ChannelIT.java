@@ -73,7 +73,9 @@ class ChannelIT {
     @Test
     @Tag("group-dm")
     @Order(2)
-    void testModifyDmChannel(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_CLIENT_ID") String clientId, @ConfigValue("DISCORD_CLIENT_SECRET") String clientSecret, @ConfigValue("DISCORD_USER_ID") Snowflake userId, @ConfigValue("DISCORD_USER_ID_2") Snowflake userId2) {
+    void testModifyDmChannel(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_CLIENT_ID") String clientId,
+            @ConfigValue("DISCORD_CLIENT_SECRET") String clientSecret, @ConfigValue("DISCORD_USER_ID") Snowflake userId,
+            @ConfigValue("DISCORD_USER_ID_2") Snowflake userId2) {
         Uni<String> tokenUni = BearerTokenSource.create(botClient.getVertx(), clientId, clientSecret)
                 .fromClientCredentials(EnumSet.of(Scope.GDM_JOIN))
                 .getToken()
@@ -132,7 +134,8 @@ class ChannelIT {
     @Test
     @Tag("announcement-channel")
     @Order(7)
-    void testCrosspostMessage(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_ANNOUNCEMENT_CHANNEL_ID") Snowflake announcementChannelId) {
+    void testCrosspostMessage(DiscordBotClient<?> botClient,
+            @ConfigValue("DISCORD_ANNOUNCEMENT_CHANNEL_ID") Snowflake announcementChannelId) {
         createMessage(botClient, announcementChannelId, "Hello World!")
                 .flatMap(message -> botClient.crosspostMessage(announcementChannelId, messageId))
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
@@ -265,7 +268,8 @@ class ChannelIT {
     @Test
     @Tag("announcement-channel")
     @Order(19)
-    void testFollowAnnouncementChannel(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_ANNOUNCEMENT_CHANNEL_ID") Snowflake announcementChannelId) {
+    void testFollowAnnouncementChannel(DiscordBotClient<?> botClient,
+            @ConfigValue("DISCORD_ANNOUNCEMENT_CHANNEL_ID") Snowflake announcementChannelId) {
         botClient.followAnnouncementChannel(announcementChannelId, channelId)
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .awaitItem()
@@ -352,7 +356,8 @@ class ChannelIT {
     @Test
     @Tag("forum-channel")
     @Order(27)
-    void testStartThreadInForumChannel(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_FORUM_CHANNEL_ID") Snowflake forumChannelId) {
+    void testStartThreadInForumChannel(DiscordBotClient<?> botClient,
+            @ConfigValue("DISCORD_FORUM_CHANNEL_ID") Snowflake forumChannelId) {
         StartThreadInForumChannel startThreadInForumChannel = StartThreadInForumChannel.builder()
                 .channelId(forumChannelId)
                 .message(StartThreadInForumChannel.ForumThreadMessageParams.builder().content("Hello World!").build())

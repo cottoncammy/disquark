@@ -17,7 +17,8 @@ public class ApplicationCommandAutocompleteInteraction extends CompletableIntera
         super(interaction, response, interactionsClient);
     }
 
-    public Uni<RespondedInteraction<Interaction.ApplicationCommandData>> suggestChoices(List<ApplicationCommand.Option.Choice> choices) {
+    public Uni<RespondedInteraction<Interaction.ApplicationCommandData>> suggestChoices(
+            List<ApplicationCommand.Option.Choice> choices) {
         Interaction.Response<?> interactionResponse = Interaction.Response.builder()
                 .type(Interaction.CallbackType.APPLICATION_COMMAND_AUTOCOMPLETE_RESULT)
                 .data(Interaction.CallbackData.builder().choices(choices).build())

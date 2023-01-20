@@ -53,6 +53,7 @@ public interface GetGuildBans extends Requestable {
     }
 
     class Builder extends ImmutableGetGuildBans.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

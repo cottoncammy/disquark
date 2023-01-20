@@ -38,7 +38,8 @@ public class FlagsSerializer extends StdSerializer<EnumSet<? extends FlagEnum>> 
     }
 
     @Override
-    public void serialize(EnumSet<? extends FlagEnum> values, JsonGenerator gen, SerializerProvider provider) throws IOException {
+    public void serialize(EnumSet<? extends FlagEnum> values, JsonGenerator gen, SerializerProvider provider)
+            throws IOException {
         long flags = 0;
         for (FlagEnum value : values) {
             flags |= (1L << value.getValue());

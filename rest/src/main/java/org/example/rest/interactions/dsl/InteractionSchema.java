@@ -17,7 +17,8 @@ public interface InteractionSchema<D, C extends CompletableInteraction<D>> {
             }
 
             @Override
-            public PingInteraction getCompletableInteraction(Interaction<Void> interaction, HttpServerResponse response, DiscordInteractionsClient<?> interactionsClient) {
+            public PingInteraction getCompletableInteraction(Interaction<Void> interaction, HttpServerResponse response,
+                    DiscordInteractionsClient<?> interactionsClient) {
                 return new PingInteraction(interaction, response, interactionsClient);
             }
         };
@@ -41,5 +42,6 @@ public interface InteractionSchema<D, C extends CompletableInteraction<D>> {
 
     boolean validate(Interaction<D> interaction);
 
-    C getCompletableInteraction(Interaction<D> interaction, HttpServerResponse response, DiscordInteractionsClient<?> interactionsClient);
+    C getCompletableInteraction(Interaction<D> interaction, HttpServerResponse response,
+            DiscordInteractionsClient<?> interactionsClient);
 }

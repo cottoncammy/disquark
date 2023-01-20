@@ -48,7 +48,8 @@ public interface EditOriginalInteractionResponse extends MultipartRequest, Reque
     @Override
     default Request asRequest() {
         return Request.builder()
-                .endpoint(Endpoint.create(HttpMethod.PATCH, "/webhooks/{application.id}/{interaction.token}/messages/@original", false))
+                .endpoint(Endpoint.create(HttpMethod.PATCH, "/webhooks/{application.id}/{interaction.token}/messages/@original",
+                        false))
                 .variables(variables("application.id", applicationId().getValue(), "interaction.token", interactionToken()))
                 .body(this)
                 .files(files())
@@ -56,6 +57,7 @@ public interface EditOriginalInteractionResponse extends MultipartRequest, Reque
     }
 
     class Builder extends ImmutableEditOriginalInteractionResponse.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

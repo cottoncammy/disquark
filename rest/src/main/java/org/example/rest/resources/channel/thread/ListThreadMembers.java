@@ -52,6 +52,7 @@ public interface ListThreadMembers extends Requestable {
     }
 
     class Builder extends ImmutableListThreadMembers.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

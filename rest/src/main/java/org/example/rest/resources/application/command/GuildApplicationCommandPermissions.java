@@ -27,6 +27,7 @@ public interface GuildApplicationCommandPermissions {
     List<ApplicationCommand.Permissions> permissions();
 
     class Builder extends ImmutableGuildApplicationCommandPermissions.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

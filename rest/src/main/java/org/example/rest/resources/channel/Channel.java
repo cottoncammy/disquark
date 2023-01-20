@@ -259,7 +259,8 @@ public interface Channel {
         }
 
         class Builder extends ImmutableChannel.Overwrite.Builder {
-            protected Builder() {}
+            protected Builder() {
+            }
         }
     }
 
@@ -281,11 +282,13 @@ public interface Channel {
         String name();
 
         class Builder extends ImmutableChannel.Mention.Builder {
-            protected Builder() {}
+            protected Builder() {
+            }
         }
     }
 
     class Builder extends ImmutableChannel.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

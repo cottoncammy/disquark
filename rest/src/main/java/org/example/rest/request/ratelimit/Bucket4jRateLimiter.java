@@ -81,7 +81,8 @@ public class Bucket4jRateLimiter extends GlobalRateLimiter {
                 .flatMap(retryAfterDuration -> {
                     if (!retryAfterDuration.isZero() && !retryAfterDuration.isNegative()) {
                         LOG.debug("Globally rate limited: delaying outgoing {} request {} by {}s",
-                                getLogString(app), ctx.getOrElse(REQUEST_ID, FALLBACK_REQUEST_ID), retryAfterDuration.getSeconds());
+                                getLogString(app), ctx.getOrElse(REQUEST_ID, FALLBACK_REQUEST_ID),
+                                retryAfterDuration.getSeconds());
 
                         return Uni.createFrom().voidItem().onItem().delayIt().by(retryAfterDuration);
                     }

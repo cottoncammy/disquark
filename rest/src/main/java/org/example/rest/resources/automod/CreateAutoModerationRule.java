@@ -59,6 +59,7 @@ public interface CreateAutoModerationRule extends Auditable, Requestable {
     }
 
     class Builder extends ImmutableCreateAutoModerationRule.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

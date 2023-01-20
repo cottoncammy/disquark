@@ -12,12 +12,14 @@ import org.example.nullableoptional.NullableOptional;
 
 public class NullableOptionalDeserializer extends ReferenceTypeDeserializer<NullableOptional<?>> {
 
-    public NullableOptionalDeserializer(JavaType fullType, ValueInstantiator vi, TypeDeserializer typeDeser, JsonDeserializer<?> deser) {
+    public NullableOptionalDeserializer(JavaType fullType, ValueInstantiator vi, TypeDeserializer typeDeser,
+            JsonDeserializer<?> deser) {
         super(fullType, vi, typeDeser, deser);
     }
 
     @Override
-    protected ReferenceTypeDeserializer<NullableOptional<?>> withResolved(TypeDeserializer typeDeser, JsonDeserializer<?> valueDeser) {
+    protected ReferenceTypeDeserializer<NullableOptional<?>> withResolved(TypeDeserializer typeDeser,
+            JsonDeserializer<?> valueDeser) {
         return new NullableOptionalDeserializer(_fullType, _valueInstantiator, typeDeser, valueDeser);
     }
 

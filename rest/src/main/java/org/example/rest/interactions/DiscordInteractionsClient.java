@@ -80,7 +80,10 @@ public class DiscordInteractionsClient<T extends Response> extends DiscordClient
 
     @Override
     public Uni<Message> getOriginalInteractionResponse(Snowflake applicationId, String interactionToken) {
-        return requester.request(new EmptyRequest("/webhooks/{application.id}/{interaction.token}/messages/@original", false, variables("application.id", requireNonNull(applicationId, "applicationId").getValue(), "interaction.token", requireNonNull(interactionToken, "interactionToken"))))
+        return requester
+                .request(new EmptyRequest("/webhooks/{application.id}/{interaction.token}/messages/@original", false,
+                        variables("application.id", requireNonNull(applicationId, "applicationId").getValue(),
+                                "interaction.token", requireNonNull(interactionToken, "interactionToken"))))
                 .flatMap(res -> res.as(Message.class));
     }
 
@@ -92,7 +95,11 @@ public class DiscordInteractionsClient<T extends Response> extends DiscordClient
 
     @Override
     public Uni<Void> deleteOriginalInteractionResponse(Snowflake applicationId, String interactionToken) {
-        return requester.request(new EmptyRequest(HttpMethod.DELETE, "/webhooks/{application.id}/{interaction.token}/messages/@original", false, variables("application.id", requireNonNull(applicationId, "applicationId").getValue(), "interaction.token", requireNonNull(interactionToken, "interactionToken"))))
+        return requester
+                .request(new EmptyRequest(HttpMethod.DELETE,
+                        "/webhooks/{application.id}/{interaction.token}/messages/@original", false,
+                        variables("application.id", requireNonNull(applicationId, "applicationId").getValue(),
+                                "interaction.token", requireNonNull(interactionToken, "interactionToken"))))
                 .replaceWithVoid();
     }
 
@@ -104,7 +111,11 @@ public class DiscordInteractionsClient<T extends Response> extends DiscordClient
 
     @Override
     public Uni<Message> getFollowupMessage(Snowflake applicationId, String interactionToken, Snowflake messageId) {
-        return requester.request(new EmptyRequest("/webhooks/{application.id}/{interaction.token}/messages/{message.id}", false, variables("application.id", requireNonNull(applicationId, "applicationId").getValue(), "interaction.token", requireNonNull(interactionToken, "interactionToken"), "message.id", requireNonNull(messageId, "messageId").getValue())))
+        return requester
+                .request(new EmptyRequest("/webhooks/{application.id}/{interaction.token}/messages/{message.id}", false,
+                        variables("application.id", requireNonNull(applicationId, "applicationId").getValue(),
+                                "interaction.token", requireNonNull(interactionToken, "interactionToken"), "message.id",
+                                requireNonNull(messageId, "messageId").getValue())))
                 .flatMap(res -> res.as(Message.class));
     }
 
@@ -116,7 +127,12 @@ public class DiscordInteractionsClient<T extends Response> extends DiscordClient
 
     @Override
     public Uni<Void> deleteFollowupMessage(Snowflake applicationId, String interactionToken, Snowflake messageId) {
-        return requester.request(new EmptyRequest(HttpMethod.DELETE, "/webhooks/{application.id}/{interaction.token}/messages/{message.id}", false, variables("application.id", requireNonNull(applicationId, "applicationId").getValue(), "interaction.token", requireNonNull(interactionToken, "interactionToken"), "message.id", requireNonNull(messageId, "messageId").getValue())))
+        return requester
+                .request(new EmptyRequest(HttpMethod.DELETE,
+                        "/webhooks/{application.id}/{interaction.token}/messages/{message.id}", false,
+                        variables("application.id", requireNonNull(applicationId, "applicationId").getValue(),
+                                "interaction.token", requireNonNull(interactionToken, "interactionToken"), "message.id",
+                                requireNonNull(messageId, "messageId").getValue())))
                 .replaceWithVoid();
     }
 
@@ -179,7 +195,8 @@ public class DiscordInteractionsClient<T extends Response> extends DiscordClient
                 try {
                     Class.forName("org.bouncycastle.math.ec.rfc8032.Ed25519");
                 } catch (ClassNotFoundException e) {
-                    LOG.warn("org.bouncycastle dependency not installed: incoming interaction signatures will not be validated");
+                    LOG.warn(
+                            "org.bouncycastle dependency not installed: incoming interaction signatures will not be validated");
                     noBouncyCastle = true;
                 }
 

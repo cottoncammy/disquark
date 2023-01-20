@@ -12,7 +12,8 @@ public class DiscordException extends RuntimeException {
     private final HttpClientResponse httpResponse;
 
     public static Predicate<Throwable> statusCodeIs(Integer... statusCode) {
-        return is(DiscordException.class).and(t -> Arrays.asList(statusCode).contains(((DiscordException) t).httpResponse.statusCode()));
+        return is(DiscordException.class)
+                .and(t -> Arrays.asList(statusCode).contains(((DiscordException) t).httpResponse.statusCode()));
     }
 
     public DiscordException(ErrorResponse errorResponse, HttpClientResponse httpResponse) {

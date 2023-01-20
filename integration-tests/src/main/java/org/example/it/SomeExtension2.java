@@ -19,15 +19,17 @@ public class SomeExtension2 implements ParameterResolver {
     }
 
     @Override
-    public boolean supportsParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
+    public boolean supportsParameter(ParameterContext parameterContext, ExtensionContext extensionContext)
+            throws ParameterResolutionException {
         Class<?> cl = parameterContext.getParameter().getType();
         return cl == DiscordBotClient.class || cl == DiscordOAuth2Client.class || configValue(parameterContext).isPresent();
     }
 
     @Override
-    public Object resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
+    public Object resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext)
+            throws ParameterResolutionException {
         Class<?> cl = parameterContext.getParameter().getType();
-        return cl == DiscordBotClient.class ? DiscordClients.getBotClient() :
-                cl == DiscordOAuth2Client.class ? DiscordClients.getOAuth2Client() : configValue(parameterContext).get();
+        return cl == DiscordBotClient.class ? DiscordClients.getBotClient()
+                : cl == DiscordOAuth2Client.class ? DiscordClients.getOAuth2Client() : configValue(parameterContext).get();
     }
 }

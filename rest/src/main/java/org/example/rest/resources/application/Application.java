@@ -114,11 +114,13 @@ public interface Application {
         EnumSet<PermissionFlag> permissions();
 
         class Builder extends ImmutableApplication.InstallParams.Builder {
-            protected Builder() {}
+            protected Builder() {
+            }
         }
     }
 
     class Builder extends ImmutableApplication.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

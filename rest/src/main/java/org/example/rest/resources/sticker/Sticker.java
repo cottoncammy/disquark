@@ -103,7 +103,8 @@ public interface Sticker {
         FormatType formatType();
 
         class Builder extends ImmutableSticker.Item.Builder {
-            protected Builder() {}
+            protected Builder() {
+            }
         }
     }
 
@@ -133,11 +134,13 @@ public interface Sticker {
         Optional<Snowflake> bannerAssetId();
 
         class Builder extends ImmutableSticker.Pack.Builder {
-            protected Builder() {}
+            protected Builder() {
+            }
         }
     }
 
     class Builder extends ImmutableSticker.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

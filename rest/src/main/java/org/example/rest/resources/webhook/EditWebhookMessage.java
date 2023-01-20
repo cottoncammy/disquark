@@ -53,13 +53,15 @@ public interface EditWebhookMessage extends MultipartRequest, Requestable {
 
     @Override
     default Request asRequest() {
-        JsonObject json = JsonObject.of("webhook.id", webhookId().getValue(), "webhook.token", webhookToken(), "message.id", messageId().getValue());
+        JsonObject json = JsonObject.of("webhook.id", webhookId().getValue(), "webhook.token", webhookToken(), "message.id",
+                messageId().getValue());
         if (threadId().isPresent()) {
             json.put("thread_id", threadId().get().getValue());
         }
 
         return Request.builder()
-                .endpoint(Endpoint.create(HttpMethod.PATCH, "/webhooks/{webhook.id}/{webhook.token}/messages/{message.id}{?thread_id}", false))
+                .endpoint(Endpoint.create(HttpMethod.PATCH,
+                        "/webhooks/{webhook.id}/{webhook.token}/messages/{message.id}{?thread_id}", false))
                 .variables(Variables.variables(json))
                 .body(this)
                 .files(files())
@@ -67,6 +69,7 @@ public interface EditWebhookMessage extends MultipartRequest, Requestable {
     }
 
     class Builder extends ImmutableEditWebhookMessage.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

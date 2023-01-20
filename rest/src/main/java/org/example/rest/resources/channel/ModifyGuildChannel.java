@@ -102,7 +102,8 @@ public interface ModifyGuildChannel extends Auditable, Requestable {
     }
 
     class Builder extends ImmutableModifyGuildChannel.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 
 }

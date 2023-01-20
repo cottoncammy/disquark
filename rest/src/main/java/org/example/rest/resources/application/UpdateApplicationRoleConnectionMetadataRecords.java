@@ -41,6 +41,7 @@ public interface UpdateApplicationRoleConnectionMetadataRecords extends Requesta
     }
 
     class Builder extends ImmutableUpdateApplicationRoleConnectionMetadataRecords.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

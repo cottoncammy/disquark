@@ -40,18 +40,21 @@ public interface GetInvite extends Requestable {
 
     @Override
     default Request asRequest() {
-        JsonObject json = JsonObject.of("invite.code", inviteCode(), "with_counts", withCounts(), "with_expiration", withExpiration());
+        JsonObject json = JsonObject.of("invite.code", inviteCode(), "with_counts", withCounts(), "with_expiration",
+                withExpiration());
         if (guildScheduledEventId().isPresent()) {
             json.put("guild_scheduled_event_id", guildScheduledEventId().get().getValue());
         }
 
         return Request.builder()
-                .endpoint(Endpoint.create(HttpMethod.GET, "/invites/{invite.code}{?with_counts,with_expiration,guild_scheduled_event_id}"))
+                .endpoint(Endpoint.create(HttpMethod.GET,
+                        "/invites/{invite.code}{?with_counts,with_expiration,guild_scheduled_event_id}"))
                 .variables(Variables.variables(json))
                 .build();
     }
 
     class Builder extends ImmutableGetInvite.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

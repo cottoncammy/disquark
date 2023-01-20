@@ -53,6 +53,7 @@ public interface StageInstance {
     }
 
     class Builder extends ImmutableStageInstance.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

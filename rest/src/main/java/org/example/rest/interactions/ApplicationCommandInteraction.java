@@ -28,7 +28,8 @@ public class ApplicationCommandInteraction extends CompletableInteraction<Intera
     }
 
     @Override
-    public Uni<RespondedInteraction<Interaction.ApplicationCommandData>> popUpModal(String customId, String title, List<Component> components) {
+    public Uni<RespondedInteraction<Interaction.ApplicationCommandData>> popUpModal(String customId, String title,
+            List<Component> components) {
         return super.popUpModal(customId, title, components);
     }
 }

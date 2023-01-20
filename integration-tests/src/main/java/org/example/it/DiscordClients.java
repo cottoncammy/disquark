@@ -44,5 +44,6 @@ public class DiscordClients {
 
     }
 
-    private DiscordClients() {}
+    private DiscordClients() {
+    }
 }

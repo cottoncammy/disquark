@@ -37,8 +37,10 @@ public class NullableOptional<T> {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         NullableOptional<?> that = (NullableOptional<?>) o;
         return Objects.equals(optional, that.optional);
     }

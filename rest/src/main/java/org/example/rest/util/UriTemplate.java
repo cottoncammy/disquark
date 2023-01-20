@@ -36,8 +36,12 @@ public class UriTemplate {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         UriTemplate that = (UriTemplate) o;
         return getUriWithoutQueryTemplate().equals(that.getUriWithoutQueryTemplate());
     }

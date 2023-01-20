@@ -38,6 +38,7 @@ public interface BulkDeleteMessages extends Auditable, Requestable {
     }
 
     class Builder extends ImmutableBulkDeleteMessages.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

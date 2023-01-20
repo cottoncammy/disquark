@@ -94,7 +94,8 @@ public interface AutoModerationRule {
         OptionalInt mentionTotalLimit();
 
         class Builder extends ImmutableAutoModerationRule.TriggerMetadata.Builder {
-            protected Builder() {}
+            protected Builder() {
+            }
         }
     }
 
@@ -135,6 +136,7 @@ public interface AutoModerationRule {
     }
 
     class Builder extends ImmutableAutoModerationRule.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

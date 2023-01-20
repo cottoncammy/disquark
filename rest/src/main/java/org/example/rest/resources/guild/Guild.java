@@ -335,7 +335,8 @@ public interface Guild {
         List<Sticker> stickers();
 
         class Builder extends ImmutableGuild.Preview.Builder {
-            protected Builder() {}
+            protected Builder() {
+            }
         }
     }
 
@@ -353,7 +354,8 @@ public interface Guild {
         Optional<Snowflake> channelId();
 
         class Builder extends ImmutableGuild.WidgetSettings.Builder {
-            protected Builder() {}
+            protected Builder() {
+            }
         }
     }
 
@@ -394,7 +396,8 @@ public interface Guild {
             Optional<String> name();
 
             class Builder extends ImmutableGuild.PartialChannel.Builder {
-                protected Builder() {}
+                protected Builder() {
+                }
             }
         }
 
@@ -419,12 +422,14 @@ public interface Guild {
             String avatarUrl();
 
             class Builder extends ImmutableGuild.UserPresence.Builder {
-                protected Builder() {}
+                protected Builder() {
+                }
             }
         }
 
         class Builder extends ImmutableGuild.Widget.Builder {
-            protected Builder() {}
+            protected Builder() {
+            }
         }
     }
 
@@ -462,7 +467,8 @@ public interface Guild {
         Optional<Instant> communicationDisabledUntil();
 
         class Builder extends ImmutableGuild.Member.Builder {
-            protected Builder() {}
+            protected Builder() {
+            }
         }
     }
 
@@ -543,7 +549,8 @@ public interface Guild {
             String name();
 
             class Builder extends ImmutableGuild.Account.Builder {
-                protected Builder() {}
+                protected Builder() {
+                }
             }
         }
 
@@ -566,12 +573,14 @@ public interface Guild {
             Optional<User> bot();
 
             class Builder extends ImmutableGuild.Application.Builder {
-                protected Builder() {}
+                protected Builder() {
+                }
             }
         }
 
         class Builder extends ImmutableGuild.Integration.Builder {
-            protected Builder() {}
+            protected Builder() {
+            }
         }
     }
 
@@ -588,7 +597,8 @@ public interface Guild {
         User user();
 
         class Builder extends ImmutableGuild.Ban.Builder {
-            protected Builder() {}
+            protected Builder() {
+            }
         }
     }
 
@@ -624,16 +634,19 @@ public interface Guild {
             Optional<String> emojiName();
 
             class Builder extends ImmutableGuild.Channel.Builder {
-                protected Builder() {}
+                protected Builder() {
+                }
             }
         }
 
         class Builder extends ImmutableGuild.WelcomeScreen.Builder {
-            protected Builder() {}
+            protected Builder() {
+            }
         }
     }
 
     class Builder extends ImmutableGuild.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

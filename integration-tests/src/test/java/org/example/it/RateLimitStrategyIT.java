@@ -62,15 +62,18 @@ class RateLimitStrategyIT {
     void testBucketRateLimiting() {
         AtomicInteger remaining = new AtomicInteger();
 
-        DiscordBotClient<?> botClient = DiscordBotClient.<HttpResponse>builder(VERTX, token)
+        DiscordBotClient<?> botClient = DiscordBotClient.<HttpResponse> builder(VERTX, token)
                 .requesterFactory(new RequesterFactory<>() {
                     @Override
-                    public Requester<HttpResponse> apply(DiscordClient.Builder<HttpResponse, ? extends DiscordClient<HttpResponse>> builder) {
+                    public Requester<HttpResponse> apply(
+                            DiscordClient.Builder<HttpResponse, ? extends DiscordClient<HttpResponse>> builder) {
                         return new Requester<>() {
                             @Override
                             public Uni<HttpResponse> request(Request request) {
-                                HttpClientRequester httpRequester = HttpClientRequester.create(builder.getVertx(), builder.getTokenSource(), Bucket4jRateLimiter.create());
-                                return httpRequester.request(request).invoke(res -> remaining.set(Integer.parseInt(res.getHeader("X-RateLimit-Remaining"))));
+                                HttpClientRequester httpRequester = HttpClientRequester.create(builder.getVertx(),
+                                        builder.getTokenSource(), Bucket4jRateLimiter.create());
+                                return httpRequester.request(request)
+                                        .invoke(res -> remaining.set(Integer.parseInt(res.getHeader("X-RateLimit-Remaining"))));
                             }
                         };
                     }
@@ -87,7 +90,7 @@ class RateLimitStrategyIT {
 
     @Test
     void testNoGlobalRateLimiting() {
-        DiscordBotClient<?> botClient = DiscordBotClient.<HttpResponse>builder(VERTX, token)
+        DiscordBotClient<?> botClient = DiscordBotClient.<HttpResponse> builder(VERTX, token)
                 .rateLimitStrategy(RateLimitStrategy.BUCKET)
                 .build();
 

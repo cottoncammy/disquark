@@ -176,12 +176,14 @@ public interface ApplicationCommand {
             Object value();
 
             class Builder extends ImmutableApplicationCommand.Choice.Builder {
-                protected Builder() {}
+                protected Builder() {
+                }
             }
         }
 
         class Builder extends ImmutableApplicationCommand.Option.Builder {
-            protected Builder() {}
+            protected Builder() {
+            }
         }
     }
 
@@ -219,11 +221,13 @@ public interface ApplicationCommand {
         }
 
         class Builder extends ImmutableApplicationCommand.Permissions.Builder {
-            protected Builder() {}
+            protected Builder() {
+            }
         }
     }
 
     class Builder extends ImmutableApplicationCommand.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

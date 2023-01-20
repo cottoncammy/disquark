@@ -133,7 +133,8 @@ public interface GuildScheduledEvent {
         Optional<String> location();
 
         class Builder extends ImmutableGuildScheduledEvent.EntityMetadata.Builder {
-            protected Builder() {}
+            protected Builder() {
+            }
         }
     }
 
@@ -153,11 +154,13 @@ public interface GuildScheduledEvent {
         Optional<Guild.Member> member();
 
         class Builder extends ImmutableGuildScheduledEvent.User.Builder {
-            protected Builder() {}
+            protected Builder() {
+            }
         }
     }
 
     class Builder extends ImmutableGuildScheduledEvent.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

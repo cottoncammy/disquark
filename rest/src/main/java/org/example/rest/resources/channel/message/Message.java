@@ -177,7 +177,8 @@ public interface Message {
         }
 
         class Builder extends ImmutableMessage.Activity.Builder {
-            protected Builder() {}
+            protected Builder() {
+            }
         }
     }
 
@@ -201,7 +202,8 @@ public interface Message {
         Optional<String> coverImage();
 
         class Builder extends ImmutableMessage.PartialApplication.Builder {
-            protected Builder() {}
+            protected Builder() {
+            }
         }
     }
 
@@ -249,7 +251,8 @@ public interface Message {
         Optional<Boolean> failIfNotExists();
 
         class Builder extends ImmutableMessage.Reference.Builder {
-            protected Builder() {}
+            protected Builder() {
+            }
         }
     }
 
@@ -268,7 +271,8 @@ public interface Message {
         Emoji emoji();
 
         class Builder extends ImmutableMessage.Reaction.Builder {
-            protected Builder() {}
+            protected Builder() {
+            }
         }
     }
 
@@ -324,7 +328,8 @@ public interface Message {
             OptionalInt width();
 
             class Builder extends ImmutableMessage.Thumbnail.Builder {
-                protected Builder() {}
+                protected Builder() {
+                }
             }
         }
 
@@ -346,7 +351,8 @@ public interface Message {
             OptionalInt width();
 
             class Builder extends ImmutableMessage.Video.Builder {
-                protected Builder() {}
+                protected Builder() {
+                }
             }
         }
 
@@ -368,7 +374,8 @@ public interface Message {
             OptionalInt width();
 
             class Builder extends ImmutableMessage.Image.Builder {
-                protected Builder() {}
+                protected Builder() {
+                }
             }
         }
 
@@ -385,7 +392,8 @@ public interface Message {
             Optional<String> url();
 
             class Builder extends ImmutableMessage.Provider.Builder {
-                protected Builder() {}
+                protected Builder() {
+                }
             }
         }
 
@@ -408,7 +416,8 @@ public interface Message {
             Optional<String> proxyIconUrl();
 
             class Builder extends ImmutableMessage.Author.Builder {
-                protected Builder() {}
+                protected Builder() {
+                }
             }
         }
 
@@ -429,7 +438,8 @@ public interface Message {
             Optional<String> proxyIconUrl();
 
             class Builder extends ImmutableMessage.Footer.Builder {
-                protected Builder() {}
+                protected Builder() {
+                }
             }
         }
 
@@ -448,12 +458,14 @@ public interface Message {
             Optional<Boolean> inline();
 
             class Builder extends ImmutableMessage.Field.Builder {
-                protected Builder() {}
+                protected Builder() {
+                }
             }
         }
 
         class Builder extends ImmutableMessage.Embed.Builder {
-            protected Builder() {}
+            protected Builder() {
+            }
         }
     }
 
@@ -488,11 +500,13 @@ public interface Message {
         Optional<Boolean> ephemeral();
 
         class Builder extends ImmutableMessage.Attachment.Builder {
-            protected Builder() {}
+            protected Builder() {
+            }
         }
     }
 
     class Builder extends ImmutableMessage.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

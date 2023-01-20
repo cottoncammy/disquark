@@ -46,6 +46,7 @@ public interface CreateGuildBan extends Auditable, Requestable {
     }
 
     class Builder extends ImmutableCreateGuildBan.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

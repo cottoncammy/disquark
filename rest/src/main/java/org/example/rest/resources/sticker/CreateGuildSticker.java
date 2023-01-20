@@ -42,6 +42,7 @@ public interface CreateGuildSticker extends Auditable, MultipartRequest, Request
     }
 
     class Builder extends ImmutableCreateGuildSticker.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

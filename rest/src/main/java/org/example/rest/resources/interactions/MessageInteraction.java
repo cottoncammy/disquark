@@ -28,6 +28,7 @@ public interface MessageInteraction {
     Optional<Guild.Member> member();
 
     class Builder extends ImmutableMessageInteraction.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

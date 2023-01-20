@@ -27,6 +27,7 @@ public interface Authorization {
     Optional<User> user();
 
     class Builder extends ImmutableAuthorization.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

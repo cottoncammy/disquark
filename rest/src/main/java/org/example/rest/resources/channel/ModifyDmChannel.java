@@ -46,6 +46,7 @@ public interface ModifyDmChannel extends Auditable, Requestable {
     }
 
     class Builder extends ImmutableModifyDmChannel.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

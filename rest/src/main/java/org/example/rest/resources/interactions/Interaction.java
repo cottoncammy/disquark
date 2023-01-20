@@ -125,7 +125,8 @@ public interface Interaction<T> {
         Optional<List<Component>> components();
 
         class Builder extends ImmutableInteraction.Data.Builder {
-            protected Builder() {}
+            protected Builder() {
+            }
         }
     }
 
@@ -154,7 +155,8 @@ public interface Interaction<T> {
         Optional<Snowflake> targetId();
 
         class Builder extends ImmutableInteraction.ApplicationCommandData.Builder {
-            protected Builder() {}
+            protected Builder() {
+            }
         }
     }
 
@@ -175,7 +177,8 @@ public interface Interaction<T> {
         List<String> values();
 
         class Builder extends ImmutableInteraction.MessageComponentData.Builder {
-            protected Builder() {}
+            protected Builder() {
+            }
         }
     }
 
@@ -193,7 +196,8 @@ public interface Interaction<T> {
         List<Component> components();
 
         class Builder extends ImmutableInteraction.ModalSubmitData.Builder {
-            protected Builder() {}
+            protected Builder() {
+            }
         }
     }
 
@@ -218,7 +222,8 @@ public interface Interaction<T> {
         Optional<Map<Snowflake, Message.Attachment>> attachments();
 
         class Builder extends ImmutableInteraction.ResolvedData.Builder {
-            protected Builder() {}
+            protected Builder() {
+            }
         }
 
         @ImmutableJson
@@ -249,7 +254,8 @@ public interface Interaction<T> {
             Optional<Instant> communicationDisabledUntil();
 
             class Builder extends ImmutableInteraction.PartialGuildMember.Builder {
-                protected Builder() {}
+                protected Builder() {
+                }
             }
         }
 
@@ -276,7 +282,8 @@ public interface Interaction<T> {
             Optional<EnumSet<PermissionFlag>> permissions();
 
             class Builder extends ImmutableInteraction.PartialChannel.Builder {
-                protected Builder() {}
+                protected Builder() {
+                }
             }
         }
     }
@@ -298,7 +305,8 @@ public interface Interaction<T> {
         Optional<T> data();
 
         class Builder<T> extends ImmutableInteraction.Response.Builder<T> {
-            protected Builder() {}
+            protected Builder() {
+            }
         }
     }
 
@@ -354,7 +362,8 @@ public interface Interaction<T> {
         Optional<String> title();
 
         class Builder extends ImmutableInteraction.CallbackData.Builder {
-            protected Builder() {}
+            protected Builder() {
+            }
         }
     }
 
@@ -380,11 +389,13 @@ public interface Interaction<T> {
         Optional<List<Component>> components();
 
         class Builder extends ImmutableInteraction.MessageCallbackData.Builder {
-            protected Builder() {}
+            protected Builder() {
+            }
         }
     }
 
     class Builder<T> extends ImmutableInteraction.Builder<T> {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

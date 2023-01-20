@@ -28,6 +28,7 @@ public interface SelectOption {
     Optional<Boolean> isDefault();
 
     class Builder extends ImmutableSelectOption.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

@@ -10,5 +10,6 @@ public class Tika {
         static final org.apache.tika.Tika TIKA = new org.apache.tika.Tika();
     }
 
-    private Tika() {}
+    private Tika() {
+    }
 }

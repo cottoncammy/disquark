@@ -49,6 +49,7 @@ public interface ModifyCurrentUserVoiceState extends Requestable {
     }
 
     class Builder extends ImmutableModifyCurrentUserVoiceState.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

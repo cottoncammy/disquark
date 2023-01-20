@@ -70,6 +70,7 @@ public interface ModifyGuildRole extends Auditable, Requestable {
     }
 
     class Builder extends ImmutableModifyGuildRole.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

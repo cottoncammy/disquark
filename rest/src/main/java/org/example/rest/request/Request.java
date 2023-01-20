@@ -35,6 +35,7 @@ public interface Request extends Auditable, MultipartRequest {
     }
 
     class Builder extends ImmutableRequest.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

@@ -70,7 +70,7 @@ class InteractionsVerticle extends AbstractVerticle {
                     return Uni.createFrom().voidItem();
                 })
                 .onFailure(is(NullPointerException.class, UnauthorizedException.class)).call(() -> {
-                    LOG.debug("Interaction validation failed for incoming request {}", ctx.<Object>get(REQUEST_ID));
+                    LOG.debug("Interaction validation failed for incoming request {}", ctx.<Object> get(REQUEST_ID));
                     return context.response().setStatusCode(401).end();
                 })
                 .map(body -> body.toJsonObject().mapTo(Interaction.class))
@@ -106,7 +106,8 @@ class InteractionsVerticle extends AbstractVerticle {
             public void accept(RoutingContext context) {
                 Uni.createFrom().context(ctx -> handleRequest(context, ctx))
                         .subscribe()
-                        .with(x -> {});
+                        .with(x -> {
+                        });
             }
         };
     }

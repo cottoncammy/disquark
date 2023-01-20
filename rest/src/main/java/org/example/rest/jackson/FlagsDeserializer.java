@@ -13,7 +13,8 @@ import com.fasterxml.jackson.databind.deser.ContextualDeserializer;
 
 import org.example.rest.resources.FlagEnum;
 
-public class FlagsDeserializer<E extends Enum<E> & FlagEnum> extends JsonDeserializer<EnumSet<E>> implements ContextualDeserializer {
+public class FlagsDeserializer<E extends Enum<E> & FlagEnum> extends JsonDeserializer<EnumSet<E>>
+        implements ContextualDeserializer {
     private final JavaType enumType;
 
     private FlagsDeserializer(JavaType enumType) {

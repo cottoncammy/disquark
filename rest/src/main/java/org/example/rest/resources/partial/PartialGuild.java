@@ -32,6 +32,7 @@ public interface PartialGuild {
     List<Guild.Feature> features();
 
     class Builder extends ImmutablePartialGuild.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

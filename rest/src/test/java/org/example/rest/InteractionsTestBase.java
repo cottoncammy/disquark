@@ -15,7 +15,7 @@ import org.example.rest.resources.interactions.Interaction;
 abstract class InteractionsTestBase {
 
     private <T> Interaction<T> buildInteraction(Interaction.Type type, T data) {
-        return Interaction.<T>builder()
+        return Interaction.<T> builder()
                 .id(Snowflake.create(Instant.now()))
                 .applicationId(Snowflake.create(Instant.now()))
                 .type(type)
@@ -29,7 +29,8 @@ abstract class InteractionsTestBase {
         return Json.encode(buildInteraction(Interaction.Type.PING, Optional.empty()));
     }
 
-    protected Uni<HttpClientResponse> sendInteraction(DiscordBotClient<?> botClient, String signature, String timestamp, String body) {
+    protected Uni<HttpClientResponse> sendInteraction(DiscordBotClient<?> botClient, String signature, String timestamp,
+            String body) {
         return botClient.getVertx().createHttpClient()
                 .request(HttpMethod.POST, "/")
                 .flatMap(req -> {

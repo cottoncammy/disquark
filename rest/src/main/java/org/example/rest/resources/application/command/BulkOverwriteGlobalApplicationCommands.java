@@ -55,11 +55,13 @@ public interface BulkOverwriteGlobalApplicationCommands extends Requestable {
         Optional<Boolean> dmPermission();
 
         class Builder extends ImmutableBulkOverwriteGlobalApplicationCommands.GlobalApplicationCommandOverwrite.Builder {
-            protected Builder() {}
+            protected Builder() {
+            }
         }
     }
 
     class Builder extends ImmutableBulkOverwriteGlobalApplicationCommands.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

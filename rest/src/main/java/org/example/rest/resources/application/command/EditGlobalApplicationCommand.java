@@ -73,6 +73,7 @@ public interface EditGlobalApplicationCommand extends Requestable {
     }
 
     class Builder extends ImmutableEditGlobalApplicationCommand.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

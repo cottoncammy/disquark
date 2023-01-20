@@ -61,7 +61,7 @@ public interface StartThreadInForumChannel extends Auditable, MultipartRequest, 
     }
 
     @ImmutableJson
-    
+
     interface ForumThreadMessageParams {
 
         static Builder builder() {
@@ -85,11 +85,13 @@ public interface StartThreadInForumChannel extends Auditable, MultipartRequest, 
         Optional<EnumSet<Message.Flag>> flags();
 
         class Builder extends ImmutableStartThreadInForumChannel.ForumThreadMessageParams.Builder {
-            protected Builder() {}
+            protected Builder() {
+            }
         }
     }
 
     class Builder extends ImmutableStartThreadInForumChannel.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

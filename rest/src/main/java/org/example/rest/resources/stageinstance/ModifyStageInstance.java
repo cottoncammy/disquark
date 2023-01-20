@@ -42,6 +42,7 @@ public interface ModifyStageInstance extends Auditable, Requestable {
     }
 
     class Builder extends ImmutableModifyStageInstance.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

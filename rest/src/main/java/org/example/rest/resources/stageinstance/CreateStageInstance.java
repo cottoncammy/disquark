@@ -41,6 +41,7 @@ public interface CreateStageInstance extends Auditable, Requestable {
     }
 
     class Builder extends ImmutableCreateStageInstance.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

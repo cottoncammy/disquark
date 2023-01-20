@@ -19,7 +19,8 @@ class NullableOptionalTest {
     static void init() {
         objectMapper = new ObjectMapper()
                 .registerModule(new NullableOptionalModule())
-                .setDefaultPropertyInclusion(JsonInclude.Value.construct(JsonInclude.Include.CUSTOM, JsonInclude.Include.NON_ABSENT, NullableOptionalFilter.class, null));
+                .setDefaultPropertyInclusion(JsonInclude.Value.construct(JsonInclude.Include.CUSTOM,
+                        JsonInclude.Include.NON_ABSENT, NullableOptionalFilter.class, null));
     }
 
     @Test

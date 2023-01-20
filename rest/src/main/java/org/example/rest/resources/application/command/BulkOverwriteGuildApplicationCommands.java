@@ -91,11 +91,13 @@ public interface BulkOverwriteGuildApplicationCommands extends Requestable {
         Optional<Boolean> nsfw();
 
         class Builder extends ImmutableBulkOverwriteGuildApplicationCommands.GuildApplicationCommandOverwrite.Builder {
-            protected Builder() {}
+            protected Builder() {
+            }
         }
     }
 
     class Builder extends ImmutableBulkOverwriteGuildApplicationCommands.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

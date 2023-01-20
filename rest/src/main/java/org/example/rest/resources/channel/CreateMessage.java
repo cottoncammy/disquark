@@ -66,6 +66,7 @@ public interface CreateMessage extends MultipartRequest, Requestable {
     }
 
     class Builder extends ImmutableCreateMessage.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

@@ -23,6 +23,7 @@ public interface VoiceRegion {
     boolean custom();
 
     class Builder extends ImmutableVoiceRegion.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

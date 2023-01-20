@@ -29,6 +29,7 @@ public interface ForumTag {
     Optional<String> emojiName();
 
     class Builder extends ImmutableForumTag.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

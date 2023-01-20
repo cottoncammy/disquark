@@ -31,6 +31,7 @@ public interface ThreadMember {
     Optional<Guild.Member> member();
 
     class Builder extends ImmutableThreadMember.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

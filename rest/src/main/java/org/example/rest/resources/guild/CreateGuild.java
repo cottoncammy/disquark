@@ -73,7 +73,8 @@ public interface CreateGuild extends Requestable {
     }
 
     class Builder extends ImmutableCreateGuild.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 
     @ImmutableJson
@@ -126,7 +127,8 @@ public interface CreateGuild extends Requestable {
         Optional<Channel.SortOrderType> defaultSortOrder();
 
         class Builder extends ImmutableCreateGuild.PartialChannel.Builder {
-            protected Builder() {}
+            protected Builder() {
+            }
         }
     }
 }

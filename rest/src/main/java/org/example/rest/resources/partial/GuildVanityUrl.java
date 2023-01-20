@@ -20,6 +20,7 @@ public interface GuildVanityUrl {
     OptionalInt uses();
 
     class Builder extends ImmutableGuildVanityUrl.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

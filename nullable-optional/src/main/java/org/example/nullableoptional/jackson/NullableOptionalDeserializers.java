@@ -13,7 +13,9 @@ import org.example.nullableoptional.NullableOptional;
 public class NullableOptionalDeserializers extends Deserializers.Base {
 
     @Override
-    public JsonDeserializer<?> findReferenceDeserializer(ReferenceType refType, DeserializationConfig config, BeanDescription beanDesc, TypeDeserializer contentTypeDeserializer, JsonDeserializer<?> contentDeserializer) throws JsonMappingException {
+    public JsonDeserializer<?> findReferenceDeserializer(ReferenceType refType, DeserializationConfig config,
+            BeanDescription beanDesc, TypeDeserializer contentTypeDeserializer, JsonDeserializer<?> contentDeserializer)
+            throws JsonMappingException {
         if (refType.isTypeOrSubTypeOf(NullableOptional.class)) {
             return new NullableOptionalDeserializer(refType, null, contentTypeDeserializer, contentDeserializer);
         }

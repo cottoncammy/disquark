@@ -11,22 +11,26 @@ import org.example.nullableoptional.NullableOptional;
 
 public class NullableOptionalSerializer extends ReferenceTypeSerializer<NullableOptional<?>> {
 
-    protected NullableOptionalSerializer(ReferenceTypeSerializer<?> base, BeanProperty property, TypeSerializer vts, JsonSerializer<?> valueSer, NameTransformer unwrapper, Object suppressableValue, boolean suppressNulls) {
+    protected NullableOptionalSerializer(ReferenceTypeSerializer<?> base, BeanProperty property, TypeSerializer vts,
+            JsonSerializer<?> valueSer, NameTransformer unwrapper, Object suppressableValue, boolean suppressNulls) {
         super(base, property, vts, valueSer, unwrapper, suppressableValue, suppressNulls);
     }
 
-    public NullableOptionalSerializer(ReferenceType fullType, boolean staticTyping, TypeSerializer vts, JsonSerializer<Object> ser) {
+    public NullableOptionalSerializer(ReferenceType fullType, boolean staticTyping, TypeSerializer vts,
+            JsonSerializer<Object> ser) {
         super(fullType, staticTyping, vts, ser);
     }
 
     @Override
-    protected ReferenceTypeSerializer<NullableOptional<?>> withResolved(BeanProperty prop, TypeSerializer vts, JsonSerializer<?> valueSer, NameTransformer unwrapper) {
+    protected ReferenceTypeSerializer<NullableOptional<?>> withResolved(BeanProperty prop, TypeSerializer vts,
+            JsonSerializer<?> valueSer, NameTransformer unwrapper) {
         return new NullableOptionalSerializer(this, prop, vts, valueSer, unwrapper, _suppressableValue, _suppressNulls);
     }
 
     @Override
     public ReferenceTypeSerializer<NullableOptional<?>> withContentInclusion(Object suppressableValue, boolean suppressNulls) {
-        return new NullableOptionalSerializer(this, _property, _valueTypeSerializer, _valueSerializer, _unwrapper, suppressableValue, suppressNulls);
+        return new NullableOptionalSerializer(this, _property, _valueTypeSerializer, _valueSerializer, _unwrapper,
+                suppressableValue, suppressNulls);
     }
 
     @Override

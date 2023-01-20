@@ -60,6 +60,7 @@ public interface ModifyThread extends Auditable, Requestable {
     }
 
     class Builder extends ImmutableModifyThread.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

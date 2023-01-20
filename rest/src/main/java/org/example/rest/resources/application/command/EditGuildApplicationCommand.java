@@ -66,13 +66,16 @@ public interface EditGuildApplicationCommand extends Requestable {
     @Override
     default Request asRequest() {
         return Request.builder()
-                .endpoint(Endpoint.create(HttpMethod.PATCH, "/applications/{application.id}/guilds/{guild.id}/commands/{command.id}"))
-                .variables(variables("application.id", applicationId().getValue(), "guild.id", guildId().getValue(), "command.id", commandId().getValue()))
+                .endpoint(Endpoint.create(HttpMethod.PATCH,
+                        "/applications/{application.id}/guilds/{guild.id}/commands/{command.id}"))
+                .variables(variables("application.id", applicationId().getValue(), "guild.id", guildId().getValue(),
+                        "command.id", commandId().getValue()))
                 .body(this)
                 .build();
     }
 
     class Builder extends ImmutableEditGuildApplicationCommand.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

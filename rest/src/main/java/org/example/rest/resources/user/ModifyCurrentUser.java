@@ -41,6 +41,7 @@ public interface ModifyCurrentUser extends Requestable {
     }
 
     class Builder extends ImmutableModifyCurrentUser.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

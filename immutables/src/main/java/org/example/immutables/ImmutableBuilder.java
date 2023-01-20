@@ -8,15 +8,10 @@ import org.immutables.value.Value.Immutable;
 import org.immutables.value.Value.Style;
 import org.immutables.value.Value.Style.ImplementationVisibility;
 
-@Target({ElementType.PACKAGE, ElementType.TYPE})
-@Style(
-        of = "create",
-        defaults = @Immutable(copy = false),
-        visibility = ImplementationVisibility.PACKAGE,
-        overshadowImplementation = true,
-        depluralize = true,
-        allMandatoryParameters = true
-)
+@Target({ ElementType.PACKAGE, ElementType.TYPE })
+// formatter:off
+@Style(of = "create", defaults = @Immutable(copy = false), visibility = ImplementationVisibility.PACKAGE, overshadowImplementation = true, depluralize = true, allMandatoryParameters = true)
+// formatter:on
 @Documented
 public @interface ImmutableBuilder {
 }

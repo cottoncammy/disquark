@@ -44,7 +44,8 @@ public interface GetGuildScheduledEventUsers extends Requestable {
 
     @Override
     default Request asRequest() {
-        JsonObject json = JsonObject.of("guild.id", guildId().getValue(), "guild_scheduled_event.id", guildScheduledEventId().getValue(), "limit", limit(), "with_member", withMember());
+        JsonObject json = JsonObject.of("guild.id", guildId().getValue(), "guild_scheduled_event.id",
+                guildScheduledEventId().getValue(), "limit", limit(), "with_member", withMember());
         if (before().isPresent()) {
             json.put("before", before().get().getValue());
         }
@@ -54,12 +55,14 @@ public interface GetGuildScheduledEventUsers extends Requestable {
         }
 
         return Request.builder()
-                .endpoint(Endpoint.create(HttpMethod.GET, "/guilds/{guild.id}/scheduled-events/{guild_scheduled_event.id}/users{?limit,with_member,before,after}"))
+                .endpoint(Endpoint.create(HttpMethod.GET,
+                        "/guilds/{guild.id}/scheduled-events/{guild_scheduled_event.id}/users{?limit,with_member,before,after}"))
                 .variables(Variables.variables(json))
                 .build();
     }
 
     class Builder extends ImmutableGetGuildScheduledEventUsers.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

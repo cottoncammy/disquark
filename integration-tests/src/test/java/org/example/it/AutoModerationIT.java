@@ -22,7 +22,8 @@ class AutoModerationIT {
 
     @Test
     @Order(1)
-    void testListAutoModerationRulesForGuild(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_GUILD_ID") Snowflake guildId) {
+    void testListAutoModerationRulesForGuild(DiscordBotClient<?> botClient,
+            @ConfigValue("DISCORD_GUILD_ID") Snowflake guildId) {
         botClient.listAutoModerationRulesForGuild(guildId)
                 .collect().asList()
                 .subscribe().withSubscriber(UniAssertSubscriber.create())

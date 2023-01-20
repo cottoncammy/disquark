@@ -70,7 +70,8 @@ public interface ExecuteWebhook extends MultipartRequest, Requestable {
 
     @Override
     default Request asRequest() {
-        JsonObject json = JsonObject.of("webhook.id", webhookId().getValue(), "webhook.token", webhookToken(), "wait", waitForServer());
+        JsonObject json = JsonObject.of("webhook.id", webhookId().getValue(), "webhook.token", webhookToken(), "wait",
+                waitForServer());
         if (threadId().isPresent()) {
             json.put("thread_id", threadId().get().getValue());
         }
@@ -84,6 +85,7 @@ public interface ExecuteWebhook extends MultipartRequest, Requestable {
     }
 
     class Builder extends ImmutableExecuteWebhook.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

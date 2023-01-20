@@ -84,6 +84,7 @@ public interface CreateGuildChannel extends Auditable, Requestable {
     }
 
     class Builder extends ImmutableCreateGuildChannel.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

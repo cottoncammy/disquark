@@ -49,6 +49,7 @@ public interface ModifyGuildEmoji extends Auditable, Requestable {
     }
 
     class Builder extends ImmutableModifyGuildEmoji.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

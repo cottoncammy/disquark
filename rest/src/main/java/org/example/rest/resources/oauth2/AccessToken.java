@@ -42,6 +42,7 @@ public interface AccessToken {
     Optional<Webhook> webhook();
 
     class Builder extends ImmutableAccessToken.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

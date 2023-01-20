@@ -35,8 +35,12 @@ class BucketCacheKey {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         BucketCacheKey that = (BucketCacheKey) o;
         return httpMethod.equals(that.httpMethod) &&
                 uriTemplate.equals(that.uriTemplate) &&

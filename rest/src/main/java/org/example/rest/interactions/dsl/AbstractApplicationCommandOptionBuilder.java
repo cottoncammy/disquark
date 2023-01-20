@@ -12,7 +12,8 @@ import javax.annotation.Nullable;
 import org.example.rest.resources.application.command.ApplicationCommand;
 import org.example.rest.resources.interactions.ApplicationCommandInteractionDataOption;
 
-public abstract class AbstractApplicationCommandOptionBuilder<O extends AbstractApplicationCommandOptionBuilder<O>> implements Predicate<ApplicationCommandInteractionDataOption> {
+public abstract class AbstractApplicationCommandOptionBuilder<O extends AbstractApplicationCommandOptionBuilder<O>>
+        implements Predicate<ApplicationCommandInteractionDataOption> {
     protected final List<O> options = new ArrayList<>();
 
     @Nullable
@@ -20,7 +21,8 @@ public abstract class AbstractApplicationCommandOptionBuilder<O extends Abstract
     @Nullable
     protected ApplicationCommand.Option.Type type;
 
-    protected AbstractApplicationCommandOptionBuilder() {}
+    protected AbstractApplicationCommandOptionBuilder() {
+    }
 
     public AbstractApplicationCommandOptionBuilder<O> name(String name) {
         this.name = requireNonNull(name, "name");
@@ -45,6 +47,7 @@ public abstract class AbstractApplicationCommandOptionBuilder<O extends Abstract
             }
         }
 
-        return (name == null || name.equals(interactionOption.name())) && (type == null || type.equals(interactionOption.type()));
+        return (name == null || name.equals(interactionOption.name()))
+                && (type == null || type.equals(interactionOption.type()));
     }
 }

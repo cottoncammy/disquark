@@ -193,7 +193,8 @@ public interface User {
         }
 
         class Builder extends ImmutableUser.Connection.Builder {
-            protected Builder() {}
+            protected Builder() {
+            }
         }
     }
 
@@ -214,11 +215,13 @@ public interface User {
         Map<String, String> metadata();
 
         class Builder extends ImmutableUser.ApplicationRoleConnection.Builder {
-            protected Builder() {}
+            protected Builder() {
+            }
         }
     }
 
     class Builder extends ImmutableUser.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

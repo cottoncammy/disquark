@@ -54,6 +54,7 @@ interface VoiceState {
     Optional<Instant> requestToSpeakTimestamp();
 
     class Builder extends ImmutableVoiceState.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }

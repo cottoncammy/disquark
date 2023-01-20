@@ -32,8 +32,10 @@ class ApplicationFlagsTest {
     @Test
     void testDeserialization() throws JsonProcessingException {
         ObjectMapper objectMapper = DatabindCodec.mapper();
-        TypeReference<Optional<EnumSet<Application.Flag>>> optionalTypeRef = new TypeReference<>() {};
-        TypeReference<EnumSet<Application.Flag>> typeRef = new TypeReference<>() {};
+        TypeReference<Optional<EnumSet<Application.Flag>>> optionalTypeRef = new TypeReference<>() {
+        };
+        TypeReference<EnumSet<Application.Flag>> typeRef = new TypeReference<>() {
+        };
 
         assertEquals(EnumSet.noneOf(Application.Flag.class), objectMapper.readValue("0", typeRef));
         assertEquals(EnumSet.allOf(Application.Flag.class), objectMapper.readValue(ALL_FLAGS, typeRef));

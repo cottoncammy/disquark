@@ -15,7 +15,8 @@ public class RateLimitException extends RuntimeException {
     private final HttpClientResponse httpResponse;
 
     public RateLimitException(RateLimitResponse response, HttpClientResponse httpResponse) {
-        super(String.format("%s %s returned %s", httpResponse.request().getMethod(), httpResponse.request().getURI(), response));
+        super(String.format("%s %s returned %s", httpResponse.request().getMethod(), httpResponse.request().getURI(),
+                response));
         this.scope = getScope(httpResponse.getHeader("X-RateLimit-Scope"));
         this.bucket = httpResponse.getHeader("X-RateLimit-Bucket");
         this.response = response;

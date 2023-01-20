@@ -38,6 +38,7 @@ public interface PartialAttachment {
     Optional<Boolean> ephemeral();
 
     class Builder extends ImmutablePartialAttachment.Builder {
-        protected Builder() {}
+        protected Builder() {
+        }
     }
 }
