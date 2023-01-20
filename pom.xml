@@ -56,6 +56,9 @@
         <jsr305.version>3.0.2</jsr305.version>
         <junit.version>5.9.0</junit.version>
         <log4j.version>2.19.0</log4j.version>
+        <quarkus-ide-config.version>2.15.3.Final</quarkus-ide-config.version>
+        <revapi-java.version>0.28.0</revapi-java.version>
+        <revapi-json-reporter.version>0.5.0</revapi-json-reporter.version>
         <slf4j.version>2.0.6</slf4j.version>
         <smallrye-config.version>3.0.0</smallrye-config.version>
         <smallrye-mutiny-vertx-binding.version>2.28.0</smallrye-mutiny-vertx-binding.version>
@@ -65,18 +68,17 @@
         <deploy-plugin.version>3.0.0</deploy-plugin.version>
         <enforcer-plugin.version>3.1.0</enforcer-plugin.version>
         <failsafe-plugin.version>3.0.0-M7</failsafe-plugin.version>
+        <formatter-plugin.version>2.21.0</formatter-plugin.version>
         <gpg-plugin.version>3.0.1</gpg-plugin.version>
+        <impsort-plugin.version>1.8.0</impsort-plugin.version>
         <install-plugin.version>3.1.0</install-plugin.version>
         <jar-plugin.version>3.3.0</jar-plugin.version>
         <javadoc-plugin.version>3.4.1</javadoc-plugin.version>
         <nexus-staging-plugin.version>1.6.13</nexus-staging-plugin.version>
         <release-plugin.version>3.0.0-M7</release-plugin.version>
         <resources-plugin.version>3.3.0</resources-plugin.version>
-        <revapi-java.version>0.28.0</revapi-java.version>
-        <revapi-json-reporter.version>0.5.0</revapi-json-reporter.version>
         <revapi-plugin.version>0.15.0</revapi-plugin.version>
         <source-plugin.version>3.2.1</source-plugin.version>
-        <spotless-plugin.version>2.25.0</spotless-plugin.version>
         <surefire-plugin.version>${failsafe-plugin.version}</surefire-plugin.version>
     </properties>
 
@@ -214,8 +216,32 @@
                     <version>${enforcer-plugin.version}</version>
                 </plugin>
                 <plugin>
+                    <groupId>net.revelc.code.formatter</groupId>
+                    <artifactId>formatter-maven-plugin</artifactId>
+                    <version>${formatter-plugin.version}</version>
+                    <dependencies>
+                        <dependency>
+                            <groupId>io.quarkus</groupId>
+                            <artifactId>quarkus-ide-config</artifactId>
+                            <version>${quarkus-ide-config.version}</version>
+                        </dependency>
+                    </dependencies>
+                    <configuration>
+                        <configFile>eclipse-format.xml</configFile>
+                    </configuration>
+                </plugin>
+                <plugin>
                     <artifactId>maven-gpg-plugin</artifactId>
                     <version>${gpg-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>net.revelc.code</groupId>
+                    <artifactId>impsort-maven-plugin</artifactId>
+                    <version>${impsort-plugin.version}</version>
+                    <configuration>
+                        <groups>java.,javax.,com.,io.,org.</groups>
+                        <removeUnused>true</removeUnused>
+                    </configuration>
                 </plugin>
                 <plugin>
                     <artifactId>maven-install-plugin</artifactId>
@@ -264,20 +290,6 @@
                     <version>${source-plugin.version}</version>
                 </plugin>
                 <plugin>
-                    <groupId>com.diffplug.spotless</groupId>
-                    <artifactId>spotless-maven-plugin</artifactId>
-                    <version>${spotless-plugin.version}</version>
-                    <configuration>
-                        <java>
-                            <palantirJavaFormat />
-                            <toggleOffOn />
-
-                            <importOrder />
-                            <removeUnusedImports />
-                        </java>
-                    </configuration>
-                </plugin>
-                <plugin>
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>${surefire-plugin.version}</version>
                 </plugin>
@@ -307,7 +319,7 @@
                         </goals>
                         <configuration>
                             <rules>
-                                <dependencyConvergence />
+                                <!--<dependencyConvergence />-->
 
                                 <requireJavaVersion>
                                     <version>[11,)</version>
@@ -321,11 +333,25 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>com.diffplug.spotless</groupId>
-                <artifactId>spotless-maven-plugin</artifactId>
+                <groupId>net.revelc.code.formatter</groupId>
+                <artifactId>formatter-maven-plugin</artifactId>
                 <executions>
                     <execution>
                         <id>check-formatting</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>validate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>net.revelc.code</groupId>
+                <artifactId>impsort-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>check-imports</id>
+                        <phase>verify</phase>
                         <goals>
                             <goal>check</goal>
                         </goals>
@@ -347,14 +373,25 @@
             <build>
                 <plugins>
                     <plugin>
-                        <groupId>com.diffplug.spotless</groupId>
-                        <artifactId>spotless-maven-plugin</artifactId>
+                        <groupId>net.revelc.code.formatter</groupId>
+                        <artifactId>formatter-maven-plugin</artifactId>
                         <executions>
                             <execution>
                                 <id>apply-formatting</id>
-                                <phase>process-sources</phase>
                                 <goals>
-                                    <goal>apply</goal>
+                                    <goal>format</goal>
+                                </goals>
+                        </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>net.revelc.code</groupId>
+                        <artifactId>impsort-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>sort-imports</id>
+                                <goals>
+                                    <goal>sort</goal>
                                 </goals>
                             </execution>
                         </executions>
@@ -368,7 +405,6 @@
             <properties>
                 <skipFormatting />
                 <skipTests />
-                <skipITs />
             </properties>
             <build>
                 <plugins>

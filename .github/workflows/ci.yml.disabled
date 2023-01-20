@@ -54,7 +54,7 @@ jobs:
           DISCORD_GUILD_ID: ${{ secrets.DISCORD_GUILD_ID }}
           DISCORD_CHANNEL_ID: ${{ secrets.DISCORD_CHANNEL_ID }}
           DISCORD_USER_ID: ${{ secrets.DISCORD_USER_ID }}
-        run: ./mvnw -B -e verify
+        run: ./mvnw -B -e -DskipITs=false verify
       - name: Remove local artifacts
         shell: bash
         run: rm -r ~/.m2/repository/org.example
