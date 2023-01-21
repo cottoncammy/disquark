@@ -9,11 +9,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import io.vertx.core.http.HttpMethod;
 
+import io.vertx.core.http.HttpMethod;
 import io.vertx.mutiny.core.buffer.Buffer;
+
 import org.example.immutables.ImmutableJson;
 import org.example.nullableoptional.NullableOptional;
 import org.example.nullableoptional.jackson.NullableOptionalFilter;

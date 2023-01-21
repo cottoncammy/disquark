@@ -1,6 +1,7 @@
 package org.example.rest.request;
 
 import static java.util.Objects.requireNonNull;
+import static org.example.rest.util.Logger.log;
 
 import java.net.URI;
 import java.util.HashMap;
@@ -23,6 +24,7 @@ import org.example.rest.response.RateLimitException;
 import org.example.rest.response.RateLimitResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.event.Level;
 
 public class HttpClientRequester implements Requester<HttpResponse> {
     private static final Logger LOG = LoggerFactory.getLogger(HttpClientRequester.class);
@@ -64,10 +66,11 @@ public class HttpClientRequester implements Requester<HttpResponse> {
         }
 
         boolean authentication = request.endpoint().isAuthenticationRequired();
-
         return tokenSource.getToken()
                 .flatMap(token -> {
-                    LOG.debug("Preparing to send outgoing request {} as {}", request, ctx.get(REQUEST_ID));
+                    log(LOG, Level.DEBUG, log -> log.debug("Preparing to send outgoing request {} as {}",
+                            request, ctx.get(REQUEST_ID)));
+
                     RequestOptions options = new RequestOptions()
                             .setAbsoluteURI(baseUrl + request.endpoint().getUriTemplate().expandToString(request.variables()))
                             .setFollowRedirects(true)
@@ -87,19 +90,21 @@ public class HttpClientRequester implements Requester<HttpResponse> {
                     return rateLimiter.rateLimit(httpClient.request(options), authentication).flatMap(req -> {
                         if (request.contentType().isEmpty()) {
                             req.putHeader(HttpHeaders.CONTENT_LENGTH, "0");
+                            log(LOG, Level.DEBUG, log -> log.debug("Sending outgoing request {}",
+                                    ctx.<Object> get(REQUEST_ID)));
 
-                            LOG.debug("Sending outgoing request {}", ctx.<Object> get(REQUEST_ID));
                             return req.send();
                         }
 
                         String contentType = request.contentType().get();
                         Codec codec = requireNonNull(codecs.get(contentType), String.format("%s codec", contentType));
-                        LOG.debug("Serializing {} body for outgoing request {}", contentType, ctx.get(REQUEST_ID));
+                        log(LOG, Level.DEBUG, log -> log.debug("Serializing {} body for outgoing request {}",
+                                contentType, ctx.get(REQUEST_ID)));
 
                         return Uni.createFrom().item(codec.serialize(request, req.headers()))
                                 .flatMap(body -> {
-                                    LOG.debug("Sending outgoing request {} with body {}",
-                                            ctx.get(REQUEST_ID), body.getAsString());
+                                    log(LOG, Level.DEBUG, log -> log.debug("Sending outgoing request {} with body {}",
+                                            ctx.get(REQUEST_ID), body.getAsString()));
 
                                     if (body.asString().isPresent()) {
                                         return req.send(body.asString().get());
@@ -130,10 +135,10 @@ public class HttpClientRequester implements Requester<HttpResponse> {
                 .map(res -> new HttpResponse(ctx.getOrElse(REQUEST_ID, FALLBACK_REQUEST_ID), codecs, res))
                 .call(response -> {
                     HttpClientResponse httpResponse = response.getRaw();
-                    LOG.debug("Received {} - {} for outgoing request {}",
-                            httpResponse.statusCode(), httpResponse.statusMessage(), ctx.get(REQUEST_ID));
-                    LOG.trace("Response headers for outgoing request {}: {}",
-                            ctx.get(REQUEST_ID), httpResponse.headers().entries());
+                    log(LOG, Level.DEBUG, log -> log.debug("Received {} - {} for outgoing request {}",
+                            httpResponse.statusCode(), httpResponse.statusMessage(), ctx.get(REQUEST_ID)));
+                    log(LOG, Level.TRACE, log -> log.trace("Response headers for outgoing request {}: {}",
+                            ctx.get(REQUEST_ID), httpResponse.headers().entries()));
 
                     if (httpResponse.statusCode() == 429) {
                         return response.as(RateLimitResponse.class).onItem()
