@@ -87,6 +87,7 @@
         <module>immutables</module>
         <module>rest</module>
         <module>integration-tests</module>
+        <module>docs-site</module>
     </modules>
 
     <dependencyManagement>
