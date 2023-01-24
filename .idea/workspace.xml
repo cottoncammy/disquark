@@ -5,10 +5,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a5029c32-3a5b-4a65-b173-2d497ddb2a2d" name="Changes" comment="skeleton commit">
-      <change afterPath="$PROJECT_DIR$/docs-site/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs-site/docs/tutorials/role-selector-bot.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs-site/docs/explanations/reactive-programming.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs-site/docs/guides/quarkus-bot.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs-site/docs/guides/distributed-architectures.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs-site/docs/guides/distributed-architectures.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs-site/docs/guides/interactions.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs-site/docs/guides/interactions.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs-site/docs/guides/logging.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs-site/docs/guides/logging.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs-site/docs/guides/oauth2.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs-site/docs/guides/oauth2.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs-site/docs/guides/quarkus-extension.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs-site/docs/guides/role-connections.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs-site/docs/guides/role-connections.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs-site/docs/guides/webhooks.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs-site/docs/guides/webhooks.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs-site/docs/tutorials/getting-started.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs-site/docs/tutorials/getting-started.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs-site/docs/tutorials/role-chooser-bot.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs-site/docs/tutorials/role-connections-oauth2-bot.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs-site/docs/tutorials/smallrye-mutiny.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs-site/docs/tutorials/smallrye-mutiny.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs-site/docs/tutorials/youtube-webhook-bot.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs-site/docs/tutorials/youtube-webhook-bot.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs-site/mkdocs.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docs-site/mkdocs.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -66,7 +78,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "jdk.selected.JAVA_MODULE": "11",
-    "last_opened_file_path": "C:/Users/Cameron/IdeaProjects/some-bot",
+    "last_opened_file_path": "C:/Users/Cameron/IdeaProjects/discord",
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.21954022",
