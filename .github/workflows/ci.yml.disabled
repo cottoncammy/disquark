@@ -12,7 +12,7 @@ on:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.user.id || github.event.ref }}
-  cancel-in-progress: ${{ github.event_name == 'pull_request' || github.repository != 'TODO/TODO' }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' || github.repository != 'disquark/disquark' }}
 
 jobs:
   build-test:
@@ -46,7 +46,7 @@ jobs:
           ./mvnw -B -e -s .github/mvn-ci-settings.xml \
             -DskipFormatting clean test
       - name: Maven verify
-        if: github.repository == 'TODO/TODO'
+        if: github.repository == 'disquark/disquark'
         env:
           DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
           DISCORD_CLIENT_ID: ${{ secrets.DISCORD_CLIENT_ID }}
@@ -57,7 +57,7 @@ jobs:
         run: ./mvnw -B -e -DskipITs=false verify
       - name: Remove local artifacts
         shell: bash
-        run: rm -r ~/.m2/repository/org.example
+        run: rm -r ~/.m2/repository/io.disquark
       - name: Upload test reports (if run failed)
         if: failure()
         uses: actions/upload-artifact@v3

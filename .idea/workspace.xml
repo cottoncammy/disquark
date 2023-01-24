@@ -4,14 +4,264 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a5029c32-3a5b-4a65-b173-2d497ddb2a2d" name="Changes" comment="skeleton commit">
-      <change afterPath="$PROJECT_DIR$/CONTRIBUTING.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/nullable-optional/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rest/README.md" afterDir="false" />
+    <list default="true" id="a5029c32-3a5b-4a65-b173-2d497ddb2a2d" name="Changes" comment="docs">
+      <change beforePath="$PROJECT_DIR$/.github/ISSUE_TEMPLATE/config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/ISSUE_TEMPLATE/config.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.github/workflows/ci.yml.disabled" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/ci.yml.disabled" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.github/workflows/release.yml.disabled" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/release.yml.disabled" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.github/workflows/snapshot.yml.disabled" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/snapshot.yml.disabled" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/request/HttpClientRequester.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/request/HttpClientRequester.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/guild/scheduledevent/CreateGuildScheduledEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/guild/scheduledevent/CreateGuildScheduledEvent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/guild/scheduledevent/ModifyGuildScheduledEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/guild/scheduledevent/ModifyGuildScheduledEvent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/immutables/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/immutables/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/immutables/src/main/java/org/example/immutables/ImmutableBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/immutables/src/main/java/io/disquark/immutables/ImmutableBuilder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/immutables/src/main/java/org/example/immutables/ImmutableJson.java" beforeDir="false" afterPath="$PROJECT_DIR$/immutables/src/main/java/io/disquark/immutables/ImmutableJson.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/immutables/src/main/java/org/example/immutables/NullableOptionalEncoding.java" beforeDir="false" afterPath="$PROJECT_DIR$/immutables/src/main/java/io/disquark/immutables/NullableOptionalEncoding.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/immutables/src/main/resources/META-INF/annotations/org.immutables.value.immutable" beforeDir="false" afterPath="$PROJECT_DIR$/immutables/src/main/resources/META-INF/annotations/org.immutables.value.immutable" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/integration-tests/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/integration-tests/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/integration-tests/src/main/java/org/example/it/DiscordClients.java" beforeDir="false" afterPath="$PROJECT_DIR$/integration-tests/src/main/java/io/disquark/it/DiscordClients.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/integration-tests/src/main/java/org/example/it/SomeExtension.java" beforeDir="false" afterPath="$PROJECT_DIR$/integration-tests/src/main/java/io/disquark/it/DisQuarkTestTemplateProvider.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/integration-tests/src/main/java/org/example/it/SomeExtension2.java" beforeDir="false" afterPath="$PROJECT_DIR$/integration-tests/src/main/java/io/disquark/it/DisQuarkParameterResolver.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/integration-tests/src/main/java/org/example/it/config/ConfigHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/integration-tests/src/main/java/io/disquark/it/config/ConfigHelper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/integration-tests/src/main/java/org/example/it/config/ConfigValue.java" beforeDir="false" afterPath="$PROJECT_DIR$/integration-tests/src/main/java/io/disquark/it/config/ConfigValue.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/integration-tests/src/main/java/org/example/it/config/SnowflakeConverter.java" beforeDir="false" afterPath="$PROJECT_DIR$/integration-tests/src/main/java/io/disquark/it/config/SnowflakeConverter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/integration-tests/src/main/resources/META-INF/services/org.eclipse.microprofile.config.spi.Converter" beforeDir="false" afterPath="$PROJECT_DIR$/integration-tests/src/main/resources/META-INF/services/org.eclipse.microprofile.config.spi.Converter" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/integration-tests/src/test/java/org/example/it/ApplicationIT.java" beforeDir="false" afterPath="$PROJECT_DIR$/integration-tests/src/test/java/io/disquark/it/ApplicationIT.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/integration-tests/src/test/java/org/example/it/AuditLogIT.java" beforeDir="false" afterPath="$PROJECT_DIR$/integration-tests/src/test/java/io/disquark/it/AuditLogIT.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/integration-tests/src/test/java/org/example/it/AuthenticatedDiscordClientIT.java" beforeDir="false" afterPath="$PROJECT_DIR$/integration-tests/src/test/java/io/disquark/it/AuthenticatedDiscordClientIT.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/integration-tests/src/test/java/org/example/it/AutoModerationIT.java" beforeDir="false" afterPath="$PROJECT_DIR$/integration-tests/src/test/java/io/disquark/it/AutoModerationIT.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/integration-tests/src/test/java/org/example/it/ChannelIT.java" beforeDir="false" afterPath="$PROJECT_DIR$/integration-tests/src/test/java/io/disquark/it/ChannelIT.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/integration-tests/src/test/java/org/example/it/DiscordOAuth2ClientIT.java" beforeDir="false" afterPath="$PROJECT_DIR$/integration-tests/src/test/java/io/disquark/it/DiscordOAuth2ClientIT.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/integration-tests/src/test/java/org/example/it/EmojiIT.java" beforeDir="false" afterPath="$PROJECT_DIR$/integration-tests/src/test/java/io/disquark/it/EmojiIT.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/integration-tests/src/test/java/org/example/it/GuildIT.java" beforeDir="false" afterPath="$PROJECT_DIR$/integration-tests/src/test/java/io/disquark/it/GuildIT.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/integration-tests/src/test/java/org/example/it/GuildScheduledEventIT.java" beforeDir="false" afterPath="$PROJECT_DIR$/integration-tests/src/test/java/io/disquark/it/GuildScheduledEventIT.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/integration-tests/src/test/java/org/example/it/GuildTemplateIT.java" beforeDir="false" afterPath="$PROJECT_DIR$/integration-tests/src/test/java/io/disquark/it/GuildTemplateIT.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/integration-tests/src/test/java/org/example/it/InviteIT.java" beforeDir="false" afterPath="$PROJECT_DIR$/integration-tests/src/test/java/io/disquark/it/InviteIT.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/integration-tests/src/test/java/org/example/it/RateLimitStrategyIT.java" beforeDir="false" afterPath="$PROJECT_DIR$/integration-tests/src/test/java/io/disquark/it/RateLimitStrategyIT.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/integration-tests/src/test/java/org/example/it/StageInstanceIT.java" beforeDir="false" afterPath="$PROJECT_DIR$/integration-tests/src/test/java/io/disquark/it/StageInstanceIT.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/integration-tests/src/test/java/org/example/it/StickerIT.java" beforeDir="false" afterPath="$PROJECT_DIR$/integration-tests/src/test/java/io/disquark/it/StickerIT.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/integration-tests/src/test/java/org/example/it/UserIT.java" beforeDir="false" afterPath="$PROJECT_DIR$/integration-tests/src/test/java/io/disquark/it/UserIT.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/integration-tests/src/test/java/org/example/it/VoiceIT.java" beforeDir="false" afterPath="$PROJECT_DIR$/integration-tests/src/test/java/io/disquark/it/VoiceIT.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/integration-tests/src/test/java/org/example/it/WebhookIT.java" beforeDir="false" afterPath="$PROJECT_DIR$/integration-tests/src/test/java/io/disquark/it/WebhookIT.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/integration-tests/src/test/resources/log4j2.yml" beforeDir="false" afterPath="$PROJECT_DIR$/integration-tests/src/test/resources/log4j2.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nullable-optional/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/nullable-optional/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nullable-optional/src/main/java/org/example/nullableoptional/NullableOptional.java" beforeDir="false" afterPath="$PROJECT_DIR$/nullable-optional/src/main/java/io/disquark/nullableoptional/NullableOptional.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nullable-optional/src/main/java/org/example/nullableoptional/jackson/NullableOptionalDeserializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/nullable-optional/src/main/java/io/disquark/nullableoptional/jackson/NullableOptionalDeserializer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nullable-optional/src/main/java/org/example/nullableoptional/jackson/NullableOptionalDeserializers.java" beforeDir="false" afterPath="$PROJECT_DIR$/nullable-optional/src/main/java/io/disquark/nullableoptional/jackson/NullableOptionalDeserializers.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nullable-optional/src/main/java/org/example/nullableoptional/jackson/NullableOptionalFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/nullable-optional/src/main/java/io/disquark/nullableoptional/jackson/NullableOptionalFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nullable-optional/src/main/java/org/example/nullableoptional/jackson/NullableOptionalModule.java" beforeDir="false" afterPath="$PROJECT_DIR$/nullable-optional/src/main/java/io/disquark/nullableoptional/jackson/NullableOptionalModule.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nullable-optional/src/main/java/org/example/nullableoptional/jackson/NullableOptionalSerializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/nullable-optional/src/main/java/io/disquark/nullableoptional/jackson/NullableOptionalSerializer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nullable-optional/src/main/java/org/example/nullableoptional/jackson/NullableOptionalSerializers.java" beforeDir="false" afterPath="$PROJECT_DIR$/nullable-optional/src/main/java/io/disquark/nullableoptional/jackson/NullableOptionalSerializers.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nullable-optional/src/main/java/org/example/nullableoptional/jackson/NullableOptionalTypeModifier.java" beforeDir="false" afterPath="$PROJECT_DIR$/nullable-optional/src/main/java/io/disquark/nullableoptional/jackson/NullableOptionalTypeModifier.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nullable-optional/src/test/java/org/example/nullableoptional/NullableOptionalTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/nullable-optional/src/test/java/io/disquark/nullableoptional/NullableOptionalTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/rest/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/AuthenticatedDiscordClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/AuthenticatedDiscordClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/DiscordBotClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/DiscordBotClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/DiscordClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/DiscordClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/emoji/CustomReactionEmoji.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/emoji/CustomReactionEmoji.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/emoji/ReactionEmoji.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/emoji/ReactionEmoji.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/emoji/UnicodeReactionEmoji.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/emoji/UnicodeReactionEmoji.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/interactions/ApplicationCommandAutocompleteInteraction.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/interactions/ApplicationCommandAutocompleteInteraction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/interactions/ApplicationCommandInteraction.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/interactions/ApplicationCommandInteraction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/interactions/BouncyCastleInteractionValidator.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/interactions/BouncyCastleInteractionValidator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/interactions/CompletableInteraction.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/interactions/CompletableInteraction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/interactions/DiscordInteractionsClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/interactions/DiscordInteractionsClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/interactions/InteractionValidator.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/interactions/InteractionValidator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/interactions/InteractionValidatorFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/interactions/InteractionValidatorFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/interactions/InteractionsCapable.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/interactions/InteractionsCapable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/interactions/InteractionsVerticle.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/interactions/InteractionsVerticle.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/interactions/MessageComponentInteraction.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/interactions/MessageComponentInteraction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/interactions/ModalSubmitInteraction.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/interactions/ModalSubmitInteraction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/interactions/PingInteraction.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/interactions/PingInteraction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/interactions/RespondedInteraction.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/interactions/RespondedInteraction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/interactions/dsl/AbstractApplicationCommandBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/interactions/dsl/AbstractApplicationCommandBuilder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/interactions/dsl/AbstractApplicationCommandOptionBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/interactions/dsl/AbstractApplicationCommandOptionBuilder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/interactions/dsl/ApplicationCommandAutocompleteBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/interactions/dsl/ApplicationCommandAutocompleteBuilder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/interactions/dsl/ApplicationCommandAutocompleteOptionBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/interactions/dsl/ApplicationCommandAutocompleteOptionBuilder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/interactions/dsl/ApplicationCommandBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/interactions/dsl/ApplicationCommandBuilder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/interactions/dsl/ApplicationCommandOptionBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/interactions/dsl/ApplicationCommandOptionBuilder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/interactions/dsl/GuildIdStage.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/interactions/dsl/GuildIdStage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/interactions/dsl/InteractionSchema.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/interactions/dsl/InteractionSchema.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/interactions/dsl/MessageComponentBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/interactions/dsl/MessageComponentBuilder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/interactions/dsl/ModalSubmitBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/interactions/dsl/ModalSubmitBuilder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/interactions/dsl/OptionalValueStage.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/interactions/dsl/OptionalValueStage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/jackson/FlagsDeserializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/jackson/FlagsDeserializer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/jackson/FlagsSerializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/jackson/FlagsSerializer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/jackson/ImageDataSerializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/jackson/ImageDataSerializer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/jackson/InstantDeserializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/jackson/InstantDeserializer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/jackson/PermissionFlagsSerializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/jackson/PermissionFlagsSerializer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/jackson/ScopesDeserializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/jackson/ScopesDeserializer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/jackson/SomeFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/jackson/DisQuarkFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/jackson/SomeModule.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/jackson/DisQuarkModule.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/jackson/UnknownPropertyHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/jackson/UnknownPropertyHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/oauth2/BearerTokenSource.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/oauth2/BearerTokenSource.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/oauth2/DiscordOAuth2Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/oauth2/DiscordOAuth2Client.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/request/AccessTokenSource.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/request/AccessTokenSource.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/request/Auditable.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/request/Auditable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/request/Codec.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/request/Codec.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/request/EmptyRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/request/EmptyRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/request/Endpoint.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/request/Endpoint.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/request/HttpClientRequester.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/request/HttpClientRequester.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/request/JsonCodec.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/request/JsonCodec.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/request/MultipartCodec.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/request/MultipartCodec.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/request/MultipartFormUpload.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/request/MultipartFormUpload.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/request/MultipartRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/request/MultipartRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/request/Request.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/request/Request.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/request/Requestable.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/request/Requestable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/request/Requester.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/request/Requester.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/request/RequesterFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/request/RequesterFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/request/ratelimit/Bucket4jRateLimiter.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/request/ratelimit/Bucket4jRateLimiter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/request/ratelimit/BucketCacheKey.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/request/ratelimit/BucketCacheKey.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/request/ratelimit/BucketRateLimitingRequestStream.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/request/ratelimit/BucketRateLimitingRequestStream.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/request/ratelimit/BucketRateLimitingRequestSubscriber.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/request/ratelimit/BucketRateLimitingRequestSubscriber.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/request/ratelimit/BucketRateLimitingRequester.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/request/ratelimit/BucketRateLimitingRequester.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/request/ratelimit/CompletableRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/request/ratelimit/CompletableRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/request/ratelimit/GlobalRateLimiter.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/request/ratelimit/GlobalRateLimiter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/request/ratelimit/NoOpRateLimiter.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/request/ratelimit/NoOpRateLimiter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/request/ratelimit/RateLimitStrategy.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/request/ratelimit/RateLimitStrategy.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/FlagEnum.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/FlagEnum.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/Locale.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/Locale.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/Snowflake.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/Snowflake.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/application/Application.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/application/Application.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/application/ApplicationRoleConnectionMetadata.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/application/ApplicationRoleConnectionMetadata.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/application/Team.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/application/Team.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/application/UpdateApplicationRoleConnectionMetadataRecords.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/application/UpdateApplicationRoleConnectionMetadataRecords.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/application/command/ApplicationCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/application/command/ApplicationCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/application/command/BulkOverwriteGlobalApplicationCommands.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/application/command/BulkOverwriteGlobalApplicationCommands.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/application/command/BulkOverwriteGuildApplicationCommands.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/application/command/BulkOverwriteGuildApplicationCommands.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/application/command/CreateGlobalApplicationCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/application/command/CreateGlobalApplicationCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/application/command/CreateGuildApplicationCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/application/command/CreateGuildApplicationCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/application/command/EditApplicationCommandPermissions.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/application/command/EditApplicationCommandPermissions.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/application/command/EditGlobalApplicationCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/application/command/EditGlobalApplicationCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/application/command/EditGuildApplicationCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/application/command/EditGuildApplicationCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/application/command/GuildApplicationCommandPermissions.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/application/command/GuildApplicationCommandPermissions.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/auditlog/AuditEntryInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/auditlog/AuditEntryInfo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/auditlog/AuditLog.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/auditlog/AuditLog.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/auditlog/GetGuildAuditLog.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/auditlog/GetGuildAuditLog.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/automod/AutoModerationAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/automod/AutoModerationAction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/automod/AutoModerationRule.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/automod/AutoModerationRule.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/automod/CreateAutoModerationRule.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/automod/CreateAutoModerationRule.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/automod/ModifyAutoModerationRule.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/automod/ModifyAutoModerationRule.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/channel/BulkDeleteMessages.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/channel/BulkDeleteMessages.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/channel/Channel.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/channel/Channel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/channel/CreateChannelInvite.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/channel/CreateChannelInvite.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/channel/CreateMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/channel/CreateMessage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/channel/EditChannelPermissions.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/channel/EditChannelPermissions.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/channel/FollowAnnouncementChannel.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/channel/FollowAnnouncementChannel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/channel/FollowedChannel.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/channel/FollowedChannel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/channel/GetChannelMessages.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/channel/GetChannelMessages.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/channel/GroupDmAddRecipient.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/channel/GroupDmAddRecipient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/channel/ListThreads.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/channel/ListThreads.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/channel/ListThreadsResult.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/channel/ListThreadsResult.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/channel/ModifyDmChannel.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/channel/ModifyDmChannel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/channel/ModifyGuildChannel.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/channel/ModifyGuildChannel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/channel/StartThreadWithoutMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/channel/StartThreadWithoutMessage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/channel/forum/DefaultReaction.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/channel/forum/DefaultReaction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/channel/forum/ForumTag.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/channel/forum/ForumTag.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/channel/forum/StartThreadInForumChannel.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/channel/forum/StartThreadInForumChannel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/channel/message/AllowedMentions.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/channel/message/AllowedMentions.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/channel/message/EditMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/channel/message/EditMessage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/channel/message/GetReactions.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/channel/message/GetReactions.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/channel/message/Message.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/channel/message/Message.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/channel/message/StartThreadFromMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/channel/message/StartThreadFromMessage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/channel/thread/ListThreadMembers.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/channel/thread/ListThreadMembers.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/channel/thread/ModifyThread.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/channel/thread/ModifyThread.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/channel/thread/ThreadMember.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/channel/thread/ThreadMember.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/channel/thread/ThreadMetadata.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/channel/thread/ThreadMetadata.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/emoji/CreateGuildEmoji.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/emoji/CreateGuildEmoji.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/emoji/Emoji.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/emoji/Emoji.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/emoji/ModifyGuildEmoji.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/emoji/ModifyGuildEmoji.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/guild/AddGuildMember.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/guild/AddGuildMember.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/guild/CreateGuild.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/guild/CreateGuild.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/guild/CreateGuildBan.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/guild/CreateGuildBan.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/guild/CreateGuildChannel.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/guild/CreateGuildChannel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/guild/CreateGuildRole.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/guild/CreateGuildRole.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/guild/GetGuildBans.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/guild/GetGuildBans.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/guild/Guild.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/guild/Guild.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/guild/ListGuildMembers.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/guild/ListGuildMembers.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/guild/ModifyCurrentMember.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/guild/ModifyCurrentMember.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/guild/ModifyCurrentUserVoiceState.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/guild/ModifyCurrentUserVoiceState.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/guild/ModifyGuild.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/guild/ModifyGuild.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/guild/ModifyGuildChannelPositions.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/guild/ModifyGuildChannelPositions.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/guild/ModifyGuildMember.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/guild/ModifyGuildMember.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/guild/ModifyGuildMfaLevel.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/guild/ModifyGuildMfaLevel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/guild/ModifyGuildRole.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/guild/ModifyGuildRole.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/guild/ModifyGuildRolePositions.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/guild/ModifyGuildRolePositions.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/guild/ModifyGuildWelcomeScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/guild/ModifyGuildWelcomeScreen.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/guild/ModifyGuildWidget.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/guild/ModifyGuildWidget.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/guild/ModifyUserVoiceState.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/guild/ModifyUserVoiceState.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/guild/SearchGuildMembers.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/guild/SearchGuildMembers.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/guild/prune/BeginGuildPrune.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/guild/prune/BeginGuildPrune.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/guild/prune/GetGuildPruneCount.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/guild/prune/GetGuildPruneCount.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/guild/prune/GuildPruneResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/guild/prune/GuildPruneResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/guild/scheduledevent/CreateGuildScheduledEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/guild/scheduledevent/CreateGuildScheduledEvent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/guild/scheduledevent/GetGuildScheduledEventUsers.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/guild/scheduledevent/GetGuildScheduledEventUsers.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/guild/scheduledevent/GuildScheduledEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/guild/scheduledevent/GuildScheduledEvent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/guild/scheduledevent/ModifyGuildScheduledEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/guild/scheduledevent/ModifyGuildScheduledEvent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/guild/template/CreateGuildFromGuildTemplate.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/guild/template/CreateGuildFromGuildTemplate.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/guild/template/CreateGuildTemplate.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/guild/template/CreateGuildTemplate.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/guild/template/GuildTemplate.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/guild/template/GuildTemplate.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/guild/template/ModifyGuildTemplate.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/guild/template/ModifyGuildTemplate.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/interactions/ApplicationCommandInteractionDataOption.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/interactions/ApplicationCommandInteractionDataOption.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/interactions/CreateFollowupMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/interactions/CreateFollowupMessage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/interactions/EditFollowupMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/interactions/EditFollowupMessage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/interactions/EditOriginalInteractionResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/interactions/EditOriginalInteractionResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/interactions/Interaction.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/interactions/Interaction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/interactions/MessageInteraction.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/interactions/MessageInteraction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/interactions/components/Component.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/interactions/components/Component.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/interactions/components/SelectOption.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/interactions/components/SelectOption.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/invite/GetInvite.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/invite/GetInvite.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/invite/Invite.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/invite/Invite.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/oauth2/AccessToken.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/oauth2/AccessToken.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/oauth2/Authorization.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/oauth2/Authorization.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/oauth2/Scope.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/oauth2/Scope.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/oauth2/TokenType.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/oauth2/TokenType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/partial/GuildVanityUrl.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/partial/GuildVanityUrl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/partial/PartialAttachment.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/partial/PartialAttachment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/partial/PartialGuild.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/partial/PartialGuild.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/permissions/PermissionFlag.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/permissions/PermissionFlag.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/permissions/Role.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/permissions/Role.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/stageinstance/CreateStageInstance.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/stageinstance/CreateStageInstance.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/stageinstance/ModifyStageInstance.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/stageinstance/ModifyStageInstance.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/stageinstance/StageInstance.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/stageinstance/StageInstance.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/sticker/CreateGuildSticker.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/sticker/CreateGuildSticker.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/sticker/ListNitroStickerPacksResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/sticker/ListNitroStickerPacksResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/sticker/ModifyGuildSticker.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/sticker/ModifyGuildSticker.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/sticker/Sticker.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/sticker/Sticker.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/user/CreateDm.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/user/CreateDm.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/user/GetCurrentUserGuilds.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/user/GetCurrentUserGuilds.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/user/ModifyCurrentUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/user/ModifyCurrentUser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/user/UpdateUserApplicationRoleConnections.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/user/UpdateUserApplicationRoleConnections.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/user/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/user/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/voice/VoiceRegion.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/voice/VoiceRegion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/voice/VoiceState.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/voice/VoiceState.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/webhook/CreateWebhook.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/webhook/CreateWebhook.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/webhook/EditWebhookMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/webhook/EditWebhookMessage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/webhook/ExecuteWebhook.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/webhook/ExecuteWebhook.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/webhook/ExecuteWebhookOptions.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/webhook/ExecuteWebhookOptions.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/webhook/ModifyWebhook.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/webhook/ModifyWebhook.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/webhook/ModifyWebhookWithToken.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/webhook/ModifyWebhookWithToken.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/webhook/Webhook.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/webhook/Webhook.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/resources/webhook/WebhookMessageOptions.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/resources/webhook/WebhookMessageOptions.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/response/DiscordException.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/response/DiscordException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/response/ErrorResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/response/ErrorResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/response/HttpResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/response/HttpResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/response/RateLimitException.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/response/RateLimitException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/response/RateLimitResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/response/RateLimitResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/response/Response.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/response/Response.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/util/ExceptionPredicate.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/util/ExceptionPredicate.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/util/Hex.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/util/Hex.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/util/Logger.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/util/Logger.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/util/Tika.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/util/Tika.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/util/UriTemplate.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/util/UriTemplate.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/util/Variables.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/util/Variables.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/webhook/DiscordWebhookClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/webhook/DiscordWebhookClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/java/org/example/rest/webhook/WebhooksCapable.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/java/io/disquark/rest/webhook/WebhooksCapable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/main/resources/META-INF/services/io.vertx.core.spi.JsonFactory" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/main/resources/META-INF/services/io.vertx.core.spi.JsonFactory" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/test/java/org/example/rest/ApplicationFlagsTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/test/java/io/disquark/rest/ApplicationFlagsTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/test/java/org/example/rest/InteractionsBouncyCastleValidatorTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/test/java/io/disquark/rest/InteractionsBouncyCastleValidatorTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/test/java/org/example/rest/InteractionsTestBase.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/test/java/io/disquark/rest/InteractionsTestBase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/test/java/org/example/rest/InteractionsVerticleTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/test/java/io/disquark/rest/InteractionsVerticleTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/test/java/org/example/rest/PermissionFlagsTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/test/java/io/disquark/rest/PermissionFlagsTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rest/src/test/resources/log4j2.yml" beforeDir="false" afterPath="$PROJECT_DIR$/rest/src/test/resources/log4j2.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -69,7 +319,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "jdk.selected.JAVA_MODULE": "11",
-    "last_opened_file_path": "C:/Users/Cameron/IdeaProjects/some-bot",
+    "last_opened_file_path": "C:/Users/Cameron/IdeaProjects/disquark",
     "project.structure.last.edited": "Problems",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.21954022",
@@ -83,11 +333,11 @@
       <recent name="C:\Users\Cameron\IdeaProjects\discord\integration-tests\src\main\resources\META-INF\services" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Cameron\IdeaProjects\discord" />
       <recent name="C:\Users\Cameron\IdeaProjects\discord\rest\src\test\resources\images" />
       <recent name="C:\Users\Cameron\IdeaProjects\discord\immutables" />
       <recent name="C:\Users\Cameron\IdeaProjects\discord\immutables\annotations" />
       <recent name="C:\Users\Cameron\IdeaProjects\discord\integration-tests\src\test\resources\images" />
-      <recent name="C:\Users\Cameron\IdeaProjects\discord\integration-tests\src\test\resources" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="org.example.nullableoptional" />
@@ -100,7 +350,20 @@
       <recent name="org.example.it" />
     </key>
   </component>
-  <component name="RunManager" selected="Maven.discord-parent">
+  <component name="RunManager" selected="Maven.disquark-parent">
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="disquark-parent" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <module name="disquark-parent" />
+      <option name="filePath" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="debug" type="MavenRunConfiguration" factoryName="Maven">
       <MavenSettings>
         <option name="myGeneralSettings" />
@@ -151,7 +414,7 @@
       </MavenSettings>
       <method v="2" />
     </configuration>
-    <configuration name="discord-parent" type="MavenRunConfiguration" factoryName="Maven">
+    <configuration name="disquark-parent" type="MavenRunConfiguration" factoryName="Maven">
       <MavenSettings>
         <option name="myGeneralSettings" />
         <option name="myRunnerSettings">
@@ -186,7 +449,7 @@
               <list>
                 <option value="clean" />
                 <option value="install" />
-                <option value="-DskipITs" />
+                <option value="-DskipITs=false" />
               </list>
             </option>
             <option name="pomFileName" />
@@ -202,7 +465,7 @@
     </configuration>
     <list>
       <item itemvalue="Maven.debug" />
-      <item itemvalue="Maven.discord-parent" />
+      <item itemvalue="Maven.disquark-parent" />
     </list>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -213,13 +476,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1661720293566</updated>
-    </task>
-    <task id="LOCAL-00036" summary="Starting really bad dsl">
-      <created>1672698583906</created>
-      <option name="number" value="00036" />
-      <option name="presentableId" value="LOCAL-00036" />
-      <option name="project" value="LOCAL" />
-      <updated>1672698583906</updated>
     </task>
     <task id="LOCAL-00037" summary="Mostly finished with interactions">
       <created>1672701994796</created>
@@ -557,7 +813,14 @@
       <option name="project" value="LOCAL" />
       <updated>1674197545376</updated>
     </task>
-    <option name="localTasksCounter" value="85" />
+    <task id="LOCAL-00085" summary="docs">
+      <created>1674548913766</created>
+      <option name="number" value="00085" />
+      <option name="presentableId" value="LOCAL-00085" />
+      <option name="project" value="LOCAL" />
+      <updated>1674548913767</updated>
+    </task>
+    <option name="localTasksCounter" value="86" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -572,7 +835,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Test fix round three" />
     <MESSAGE value="Test fix round four" />
     <MESSAGE value="Test fix round five" />
     <MESSAGE value="requireNonNull use fixed" />
@@ -597,7 +859,8 @@
     <MESSAGE value="update ci env, tests, issue templates" />
     <MESSAGE value="sort imports" />
     <MESSAGE value="code fmt" />
-    <option name="LAST_COMMIT_MESSAGE" value="code fmt" />
+    <MESSAGE value="docs" />
+    <option name="LAST_COMMIT_MESSAGE" value="docs" />
   </component>
   <component name="XDebuggerManager">
     <pin-to-top-manager>

@@ -10,7 +10,7 @@ Configuration:
 
   Loggers:
     logger:
-      - name: org.example
+      - name: io.disquark
         level: trace
     Root:
       level: debug

@@ -4,14 +4,14 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.example</groupId>
-    <artifactId>discord-parent</artifactId>
+    <groupId>io.disquark</groupId>
+    <artifactId>disquark-parent</artifactId>
     <version>999-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <name>TODO</name>
-    <description>TODO</description>
-    <url>TODO</url>
+    <name>DisQuark - Parent</name>
+    <description>Reactive library for the Discord API</description>
+    <url>https://github.com/disquark/disquark</url>
 
     <developers>
         <developer>
@@ -29,15 +29,15 @@
     </licenses>
 
     <scm>
-        <url>TODO</url>
-        <connection>TODO</connection>
-        <developerConnection>TODO</developerConnection>
+        <url>https://github.com/disquark/disquark</url>
+        <connection>scm:git:git@github.com:disquark/disquark.git</connection>
+        <developerConnection>scm:git:git@github.com:disquark/disquark.git</developerConnection>
         <tag>HEAD</tag>
     </scm>
 
     <issueManagement>
         <system>GitHub</system>
-        <url>TODO</url>
+        <url>https://github.com/disquark/disquark/issues</url>
     </issueManagement>
 
     <properties>
