@@ -54,20 +54,20 @@
         <jackson.version>2.13.3</jackson.version>
         <jakarta-annotations.version>2.1.1</jakarta-annotations.version>
         <jsr305.version>3.0.2</jsr305.version>
-        <junit.version>5.9.0</junit.version>
+        <junit.version>5.9.2</junit.version>
         <log4j.version>2.19.0</log4j.version>
         <quarkus-ide-config.version>2.15.3.Final</quarkus-ide-config.version>
         <revapi-java.version>0.28.0</revapi-java.version>
         <revapi-json-reporter.version>0.5.0</revapi-json-reporter.version>
         <slf4j.version>2.0.6</slf4j.version>
-        <smallrye-config.version>3.0.0</smallrye-config.version>
-        <smallrye-mutiny-vertx-binding.version>2.28.0</smallrye-mutiny-vertx-binding.version>
+        <smallrye-config.version>3.1.1</smallrye-config.version>
+        <smallrye-mutiny-vertx-binding.version>3.2.0</smallrye-mutiny-vertx-binding.version>
 
         <build-helper-plugin.version>3.3.0</build-helper-plugin.version>
         <compiler-plugin.version>3.10.1</compiler-plugin.version>
         <deploy-plugin.version>3.0.0</deploy-plugin.version>
         <enforcer-plugin.version>3.1.0</enforcer-plugin.version>
-        <failsafe-plugin.version>3.0.0-M7</failsafe-plugin.version>
+        <failsafe-plugin.version>3.0.0-M8</failsafe-plugin.version>
         <formatter-plugin.version>2.21.0</formatter-plugin.version>
         <gpg-plugin.version>3.0.1</gpg-plugin.version>
         <impsort-plugin.version>1.8.0</impsort-plugin.version>

@@ -3,13 +3,12 @@ package io.disquark.rest.request;
 import static java.util.Objects.requireNonNull;
 
 import java.util.Optional;
+import java.util.concurrent.Flow;
 
 import javax.annotation.Nullable;
 
 import io.vertx.mutiny.core.MultiMap;
 import io.vertx.mutiny.core.buffer.Buffer;
-
-import org.reactivestreams.Publisher;
 
 public interface Codec {
 
@@ -23,7 +22,7 @@ public interface Codec {
         @Nullable
         private final Buffer buffer;
         @Nullable
-        private final Publisher<Buffer> publisher;
+        private final Flow.Publisher<Buffer> publisher;
 
         public static Body from(String body) {
             return new Body(requireNonNull(body, "body"), null, null);
@@ -33,11 +32,11 @@ public interface Codec {
             return new Body(null, requireNonNull(body, "body"), null);
         }
 
-        public static Body from(Publisher<Buffer> body) {
+        public static Body from(Flow.Publisher<Buffer> body) {
             return new Body(null, null, requireNonNull(body, "body"));
         }
 
-        private Body(String string, Buffer buffer, Publisher<Buffer> publisher) {
+        private Body(String string, Buffer buffer, Flow.Publisher<Buffer> publisher) {
             this.string = string;
             this.buffer = buffer;
             this.publisher = publisher;
@@ -51,7 +50,7 @@ public interface Codec {
             return Optional.ofNullable(buffer);
         }
 
-        public Optional<Publisher<Buffer>> asPublisher() {
+        public Optional<Flow.Publisher<Buffer>> asPublisher() {
             return Optional.ofNullable(publisher);
         }
 

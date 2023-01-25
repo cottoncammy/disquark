@@ -6,6 +6,7 @@ import static io.disquark.rest.util.ExceptionPredicate.is;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.concurrent.Flow;
 
 import io.disquark.rest.request.Request;
 import io.disquark.rest.request.Requester;
@@ -16,7 +17,6 @@ import io.smallrye.mutiny.Uni;
 import io.smallrye.mutiny.subscription.MultiSubscriber;
 import io.vertx.mutiny.core.Promise;
 
-import org.reactivestreams.Subscription;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,7 +28,7 @@ class BucketRateLimitingRequestSubscriber implements MultiSubscriber<Completable
 
     private volatile long resetAfter;
 
-    private Subscription subscription;
+    private Flow.Subscription subscription;
 
     public BucketRateLimitingRequestSubscriber(BucketCacheKey bucketKey, Requester<HttpResponse> requester) {
         this.bucketKey = bucketKey;
@@ -129,7 +129,7 @@ class BucketRateLimitingRequestSubscriber implements MultiSubscriber<Completable
     }
 
     @Override
-    public void onSubscribe(Subscription s) {
+    public void onSubscribe(Flow.Subscription s) {
         this.subscription = s;
         s.request(1);
     }

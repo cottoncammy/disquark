@@ -3,6 +3,7 @@ package io.disquark.rest.request;
 import static io.smallrye.mutiny.helpers.ParameterValidation.nonNull;
 import static io.smallrye.mutiny.unchecked.Unchecked.supplier;
 
+import java.util.concurrent.Flow;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
 import io.netty.buffer.UnpooledByteBufAllocator;
@@ -21,17 +22,15 @@ import io.vertx.mutiny.core.buffer.Buffer;
 import io.vertx.mutiny.ext.web.multipart.FormDataPart;
 import io.vertx.mutiny.ext.web.multipart.MultipartForm;
 
-import org.reactivestreams.Subscriber;
-
 class MultipartFormUpload extends AbstractMulti<Buffer> {
-    private static final AtomicReferenceFieldUpdater<MultipartFormUpload, Subscriber> DOWNSTREAM_UPDATER = AtomicReferenceFieldUpdater
-            .newUpdater(MultipartFormUpload.class, Subscriber.class, "downstream");
+    private static final AtomicReferenceFieldUpdater<MultipartFormUpload, Flow.Subscriber> DOWNSTREAM_UPDATER = AtomicReferenceFieldUpdater
+            .newUpdater(MultipartFormUpload.class, Flow.Subscriber.class, "downstream");
     private static final UnpooledByteBufAllocator ALLOC = new UnpooledByteBufAllocator(false);
 
     private final DefaultFullHttpRequest request;
     private final HttpPostRequestEncoder encoder;
 
-    private volatile Subscriber<? super Buffer> downstream;
+    private volatile Flow.Subscriber<? super Buffer> downstream;
 
     public MultipartFormUpload(MultipartForm form) throws Exception {
         this.request = new DefaultFullHttpRequest(HttpVersion.HTTP_1_1, HttpMethod.POST, "/");
@@ -57,7 +56,7 @@ class MultipartFormUpload extends AbstractMulti<Buffer> {
     }
 
     @Override
-    public void subscribe(Subscriber<? super Buffer> downstream) {
+    public void subscribe(Flow.Subscriber<? super Buffer> downstream) {
         if (DOWNSTREAM_UPDATER.compareAndSet(this, null, nonNull(downstream, "downstream"))) {
             encodeBody().subscribe(downstream);
         } else {
