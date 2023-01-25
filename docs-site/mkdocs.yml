@@ -10,7 +10,6 @@ nav:
   - Beginner Tutorials
   - How-to Guides
   - Reference
-  - Explanations
 
 theme:
   name: material
@@ -47,7 +46,7 @@ extra:
     provider: mike
   social:
     - icon: fontawesome/brands/github
-      link:
+      link: https://github.com/disquark
       name:
     - icon: fontawesome/brands/discord
       link:
