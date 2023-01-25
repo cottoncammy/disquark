@@ -7,7 +7,7 @@
 
 DisQuark is a reactive library that enables developers to write fast and performant Java applications that leverage Discord's REST API without having to worry about its underlying complexities. Includes support for REST interactions and OAuth2.
 
-Powered by [Vert.x](https://vertx.io) and [SmallRye Mutiny](https://smallrye.io/smallrye-mutiny). 
+Powered by [Vert.x](https://vertx.io), [SmallRye Mutiny](https://smallrye.io/smallrye-mutiny), and [Immutables](https://immutables.github.io). 
 
 Read our [documentation](https://github.com/disquark/disquark) to learn how to get started and more.
 

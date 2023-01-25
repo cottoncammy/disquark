@@ -9,7 +9,7 @@ Let's learn the fundamentals of DisQuark and SmallRye Mutiny by looking at a mor
 Assume we're part of a Discord community and we've been tasked with creating an application that allows new users to select their own roles to identify themselves and grant them access to role-locked channels. The server admin has seen other bots and has decided that they want this bot to render message components that the user can interact with to choose their roles.
 
 There's two possible approaches we have to create this solution (both using interactions):
-1. Application command that the new user can invoke to create a message with attached components they can use to select their roles
+1. Application command that the new user can invoke to send an ephemeral message to them with attached components they can use to select their roles
 2. Channel we use to send messages with rendered message components that new users can interact with to select their roles
 
 Let's go with option two to create a better new-user experience for the server.
@@ -20,16 +20,16 @@ Let's go with option two to create a better new-user experience for the server.
 
 ## Requirements analysis
 
-Before continuing, let's think a bit more about the requirements of our application. Our application needs to do three things:
+Let's think a bit more about the requirements of our application before we start coding. Our application needs to do three things:
 1. Create messages in a channel with our message components
 2. Receive and respond to message component interactions from Discord
 3. Toggle user roles based on message component interaction input
 
 The first thing our application does only needs to be done once. We don't want our application to send those messages each time the application is run, because our application might be run more than once. Therefore, in a production environment, it might be a good idea to separate the message creation logic into an application command, or separate it into a separate application like a webhook that is executed when a message creation web dashboard submits a request. However, for the purpose of this simple tutorial, we'll assume that this application will start once and will run forever without needing to be restarted.
 
-In terms of the message components available to us, we have some options. We could separate the server roles into separate "categories" and attach a different `SELECT_MENU` component for each, where each of its option's label and value consist of role name and ID pairs. We could even attach an emoji to each option that represents the role, and impose limits on how many values the user can select for each category. For this tutorial, let's stay simple and just attach one `ROLE_SELECT_MENU` component.
+In terms of the message component we will be attaching, let's just stay simple and attach a single `ROLE_SELECT_MENU` component.
 
-Finally, notice that we need to send messages without an existing webhook and toggle user roles. Both of these require access to a bot user, so we'll need a `DiscordBotClient`.
+Finally, notice that we need to send messages without an existing webhook and we need to toggle user roles. Both of these require access to a bot user, so we'll need a `DiscordBotClient`.
 
 ## Implementation
 
@@ -71,6 +71,6 @@ Okay, finally for real this time, there's one last thing we need to do before we
 
 Let's respond to that interaction with a message indicating which roles we've added or removed:
 
-It's time to subscribe to our streams so our application won't just do nothing when it is run. When writing a reactive application with an unbounded `Multi`, you need to `await()` the completion of the `Multi`, which will never occur, to keep the JVM alive forever and stop it from exiting immediately after running your program. However, if you want your program to truly be reactive, you should only be awaiting one stream, so we'll have to chain our `Multi` and our `Uni` together in a single *pipeline*:
+It's time to subscribe to our streams so our application won't just do nothing when it is run. When writing a reactive application with an unbounded `Multi`, you need to `await()` the completion of the `Multi`, which will never occur, to keep the JVM alive forever and stop it from exiting immediately after starting your program. However, if you want your program to truly be reactive, you should only be awaiting one stream in your application (again, to prevent your JVM from exiting), so we'll have to chain our `Multi` and our `Uni` together in a single *pipeline*:
 
 Phew, finally done! Deploy your application, ingress traffic from your interactions URL, and test it out. 

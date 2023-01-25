@@ -81,8 +81,8 @@
         <module>nullable-optional</module>
         <module>immutables</module>
         <module>rest</module>
-        <module>integration-tests</module>
         <module>docs-site</module>
+        <module>integration-tests</module>
     </modules>
 
     <dependencyManagement>

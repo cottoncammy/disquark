@@ -12,7 +12,7 @@ DisQuark requires Java 11 or later. Use DisQuark by including it as a dependency
 
 ## Introduction
 
-DisQuark is a reactive library that enables developers to interface with Discord's REST API without having to worry about its underlying complexities, including global and bucket rate limiting. DisQuark currently does not support Discord's Gateway API. The typical DisQuark application will be written in one of three flavors:
+DisQuark is a reactive library that enables developers to interface with Discord's REST API without having to worry about its underlying complexities. DisQuark currently does not support Discord's Gateway API. The typical DisQuark application will be written in one of three flavors:
 
 * An application that handles incoming REST interactions from Discord (requires a URL)
 * An application that executes existing webhooks in response to something
@@ -26,7 +26,7 @@ To support the use cases described above, we provide several entrypoints to star
 
 `DiscordOAuth2Client`
 
-: a client tied to a user account's OAuth2 token capable of doing anything a bearer token allows you to do, can also receive and respond to interactions and execute webhooks  using interaction and webhook tokens
+: a client tied to a user account's OAuth2 token capable of doing anything a bearer token allows you to do, can also receive and respond to interactions and execute webhooks using interaction and webhook tokens
 
 `DiscordInteractionsClient`
 
