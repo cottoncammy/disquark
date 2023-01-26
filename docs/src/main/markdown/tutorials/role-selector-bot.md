@@ -46,7 +46,7 @@ With those decisions and caveats out of the way, let's start coding. First, let'
 ```java linenums="1"
 class MyRoleSelectorBot {
     public static void main(String[] args) {
-        DiscordBotClient<?> botClient = DiscordBotClient.create("BOT_TOKEN");
+        DiscordBotClient<?> botClient = DiscordBotClient.create(Vertx.vertx(), "BOT_TOKEN");
         Snowflake channelId = ...
 
         Uni<Message> uni = botClient.createMessage(channelId)

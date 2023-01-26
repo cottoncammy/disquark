@@ -22,7 +22,7 @@ Let's take a look at both approaches by creating a message in a channel:
 
 === "Reactive"
     ```java linenums="1"
-    DiscordBotClient.create("BOT_TOKEN")
+    DiscordBotClient.create(Vertx.vertx(), "BOT_TOKEN")
         .createMessage(channelId)
         .withContent("Hello World!")
         .subscribe()
@@ -31,7 +31,7 @@ Let's take a look at both approaches by creating a message in a channel:
 
 === "Blocking"
     ```java linenums="1"
-    DiscordBotClient.create("BOT_TOKEN")
+    DiscordBotClient.create(Vertx.vertx(), "BOT_TOKEN")
         .createMessage(channelId)
         .withContent("Hello World!")
         .await().indefinitely();
@@ -43,7 +43,7 @@ If you're subscribing to a `Uni` or `Multi`, you handle the emitted events by ch
 
 Let's look at a few of the most common event processing methods at our disposal by expanding our reactive example from earlier:
 ```java linenums="1"
-DiscordBotClient.create("BOT_TOKEN")
+DiscordBotClient.create(Vertx.vertx(), "BOT_TOKEN")
         .createMessage(channelId)
         .withContent("Hello World!")
         .map(message -> message.id()) // (1)

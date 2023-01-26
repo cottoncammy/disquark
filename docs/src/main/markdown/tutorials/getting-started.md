@@ -64,7 +64,7 @@ Let's look at an example by assuming we want to write a message in a channel usi
 ```java linenums="1"
 class MyDisQuarkApp {
     public static void main(String[] args) {
-        Uni<Message> uni = DiscordBotClient.create("BOT_TOKEN")
+        Uni<Message> uni = DiscordBotClient.create(Vertx.vertx(), "BOT_TOKEN")
                 .createMessage(channelId)
                 .withContent("Hello World!");
     }
@@ -75,7 +75,7 @@ This example is slightly misleading, as at this point our code will actually do 
 ```java linenums="1"
 class MyDisQuarkApp {
     public static void main(String[] args) {
-        DiscordBotClient.create("BOT_TOKEN")
+        DiscordBotClient.create(Vertx.vertx(), "BOT_TOKEN")
                 .createMessage(channelId)
                 .withContent("Hello World!")
                 .await().indefinitely();
