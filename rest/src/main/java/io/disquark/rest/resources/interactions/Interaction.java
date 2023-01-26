@@ -175,6 +175,8 @@ public interface Interaction<T> {
         @JsonProperty("component_type")
         Component.Type componentType();
 
+        Optional<ResolvedData> resolved();
+
         List<String> values();
 
         class Builder extends ImmutableInteraction.MessageComponentData.Builder {
