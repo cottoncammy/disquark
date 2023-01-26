@@ -9,7 +9,6 @@ python_version = "3"
 [packages]
 mkdocs = "*"
 mkdocs-material = "*"
-mkdocs-macros-plugin = "*"
 mike = "*"
 
 [dev-packages]

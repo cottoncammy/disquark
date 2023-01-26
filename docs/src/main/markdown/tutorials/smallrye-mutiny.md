@@ -1,4 +1,4 @@
-# Getting Started with SmallRye Mutiny
+# SmallRye Mutiny
 
 DisQuark is powered by [SmallRye Mutiny](https://smallrye.io/smallrye-mutiny), an event-driven reactive programming library that allows developers to write fully asynchronous code. In a nutshell, Mutiny enables Discord applications written with DisQuark to be completely asynchronous by wrapping all blocking code in asynchronous event sources called `Uni` and `Multi`.
 
@@ -21,23 +21,45 @@ All asynchronous actions in DisQuark are wrapped in Mutiny types, so if you want
 Let's take a look at both approaches by creating a message in a channel:
 
 === "Reactive"
-```java
-{{  snippet('tutorials/SmallRyeMutiny.java', 'create-message-subscribe') }}
-```
+    ```java linenums="1"
+    DiscordBotClient.create("BOT_TOKEN")
+        .createMessage(channelId)
+        .withContent("Hello World!")
+        .subscribe()
+        .with(x -> System.out.println("Sent a message!"));
+    ```
 
 === "Blocking"
-```java
-{{ snippet('tutorials/GettingStarted.java', 'create-message-await') }}
-```
+    ```java linenums="1"
+    DiscordBotClient.create("BOT_TOKEN")
+        .createMessage(channelId)
+        .withContent("Hello World!")
+        .await().indefinitely();
+    ```
 
 ### Subscribing
 
 If you're subscribing to a `Uni` or `Multi`, you handle the emitted events by chaining methods together that allow you to process the event in some way. `Uni`s and `Multi`s can fire many events, but in most cases, you will only want to handle `item` and `failure` events using `onItem()` and `onFailure()` method chains. Which methods to chain together depends entirely on your use case. 
 
 Let's look at a few of the most common event processing methods at our disposal by expanding our reactive example from earlier:
-```java
-{{ snippet('guides/SmallRyeMutiny.java', 'create-message-events') }}
+```java linenums="1"
+DiscordBotClient.create("BOT_TOKEN")
+        .createMessage(channelId)
+        .withContent("Hello World!")
+        .map(message -> message.id()) // (1)
+        .flatMap(messageId -> botClient.deleteMessage(channelId, messageId, null)) // (2)
+        .onFailure().invoke(failure -> log(failure)) // (3)
+        .onItem().call(() -> Uni.createFrom().voidItem()) // (4)
+        .onFailure().recoverWithNull() // (5)
+        .subscribe()
+        .with(x -> System.out.println("Sent a message!"));
 ```
+
+1. Use `map` to synchronously transform an item event
+2. Use `flatMap` to asynchronously transform an item event
+3. Use `invoke` on any kind of event when you want to synchronously perform a side effect
+4. Use `call` on kind of event when you want to asynchronously perform a side effect
+5. Discard failures by recovering with an item event when you don't want the failure to propagate down the stream
 
 !!! tip 
 

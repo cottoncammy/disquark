@@ -1,4 +1,4 @@
-site_name: DisQuark Docs
+site_name: DisQuark
 site_url: https://docs.disquark.io
 
 repo_url: https://github.com/disquark/disquark
@@ -10,10 +10,15 @@ edit_uri: edit/main/docs/src/main/markdown
 copyright:
 
 nav:
-  - 'index.md'
-  - Beginner Tutorials: '/tutorials'
-  - How-to Guides: '/guides'
-  - Reference: 'https://javadoc.io/doc/io.disquark/disquark-rest/latest/index.html'
+  - Home: index.md
+  - Beginner Tutorials:
+      - tutorials/getting-started.md
+      - tutorials/smallrye-mutiny.md
+      - tutorials/role-selector-bot.md
+  - How-to Guides:
+      - guides/logging.md
+      - guides/interactions.md
+  - Reference: https://javadoc.io/doc/io.disquark/disquark-rest/latest/index.html
 
 theme:
   name: material
@@ -30,12 +35,7 @@ theme:
     - content.code.copy
     - content.code.annotate
 
-plugins:
-  - search
-  - macros:
-      include_dir: macros
-      include_yaml: mkdocs-macros.yml
-      on_error_fail: true
+plugins: [ search ]
 
 markdown_extensions:
   - admonition
@@ -54,6 +54,9 @@ markdown_extensions:
 extra:
   version:
     provider: mike
+  versions:
+    disquark: 999-SNAPSHOT
+    bouncycastle: 1.70
   social:
     - icon: fontawesome/brands/github
       link: https://github.com/disquark
