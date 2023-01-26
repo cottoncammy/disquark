@@ -155,7 +155,7 @@ class MyRoleSelectorBot {
 
 !!! note
 
-    A considerable amount of responses from Discord are optional or nullable, as certain API fields are only sent in certain circumstances. Therefore, you should consult Discord's API docs to determine in which situations it is safe to call `get()` on returned `Optional`s without an `isPresent()` check. You can also make your `Optional` chains look nicer by chaining them together with `map`s and `flatMap`s.
+    A considerable amount of response fields from Discord are optional, as certain API fields are only sent in certain circumstances or are null in others. Therefore, you should consult Discord's API docs to determine in which situations it is safe to call `get()` on returned `Optional`s without an `isPresent()` check. You can also make your `Optional` chains look nicer by chaining them together with `map`s and `flatMap`s.
 
 Notice that with this code, we're only assigning the role to the user. What we actually need to do is assign the role to *or* remove the role from the user based on whether the user has that role, like a toggle:
 
