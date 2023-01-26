@@ -5,10 +5,27 @@
 DisQuark requires Java 11 or later. Use DisQuark by including it as a dependency in your preferred build tool:
 
 === "Apache Maven"
+```xml
+<dependency>
+    <groupId>io.disquark</groupId>
+    <artifactId>disquark-rest</artifactId>
+    <version>{{ versions.disquark }}</version>
+</dependency>
+```
 
-=== Gradle
+=== "Gradle"
+```groovy
+dependencies {
+    implementation 'io.disquark:disquark-rest:{{ versions.disquark }}'
+}
+```
 
-=== Gradle (Kotlin DSL)
+=== "Gradle (Kotlin DSL)"
+```kotlin
+dependencies {
+    implementation("io.disquark:disquark-rest:{{ versions.disquark }}")
+}
+```
 
 ## Introduction
 
@@ -40,10 +57,14 @@ You don't necessarily need a bot or user account to use DisQuark. If you're just
 
 ## Usage
 
-Let's look at an example by assuming we want to write a message in a channel using a bot account. For this use case, we will need a `DiscordBotClient` instance:
-
-Now that we have our instance, we can create a message:
+Let's look at an example by assuming we want to write a message in a channel using a bot account:
+```java
+{{ snippet('tutorials/GettingStarted.java', 'create-message') }}
+```
 
 This example is slightly misleading, as at this point our code will actually do *nothing*. Notice that our local variable returns a `Uni<Message>`. This type, `Uni`, is a fundamental type in *SmallRye Mutiny*, the library that powers DisQuark's reactive approach to interfacing with the Discord API. You should check out our SmallRye Mutiny tutorial up next to learn what a `Uni` is and how to use it, but for now, if you want to actually send that message, just modify your code snippet: 
+```java
+{{ snippet('tutorials/GettingStarted.java', 'create-message-await') }}
+```
 
 Discovering more Discord API methods is relatively straightforward: client method names map 1:1 to endpoint names documented in Discord's API docs. Otherwise, start typing and use your IDE's autocompletion. You can also look at the Javadocs for each client.
