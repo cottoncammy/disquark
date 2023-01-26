@@ -9,6 +9,15 @@
         <version>999-SNAPSHOT</version>
     </parent>
 
-    <artifactId>disquark-docs-site</artifactId>
+    <artifactId>disquark-docs</artifactId>
+    <name>DisQuark - Documentation</name>
+
+    <dependencies>
+        <dependency>
+            <groupId>io.disquark</groupId>
+            <artifactId>disquark-rest</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
 
 </project>

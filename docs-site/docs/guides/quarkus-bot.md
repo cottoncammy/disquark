@@ -1,1 +1,0 @@
-# Writing a Bot for Production Environment Using Quarkus

@@ -1,0 +1,5 @@
+versions:
+  disquark: 999-SNAPSHOT
+  # tutorials/role-selector-bot.md
+  bouncycastle: 1.70
+snippets_dir: src/test/java/io/disquark

@@ -1,6 +1,6 @@
 # Getting Started with SmallRye Mutiny
 
-DisQuark is powered by SmallRye Mutiny, an event-driven reactive programming library that allows developers to write fully asynchronous code. In a nutshell, Mutiny enables Discord applications written with DisQuark to be completely asynchronous by wrapping all blocking code in asynchronous event sources called `Uni` and `Multi`.
+DisQuark is powered by [SmallRye Mutiny](https://smallrye.io/smallrye-mutiny), an event-driven reactive programming library that allows developers to write fully asynchronous code. In a nutshell, Mutiny enables Discord applications written with DisQuark to be completely asynchronous by wrapping all blocking code in asynchronous event sources called `Uni` and `Multi`.
 
 ## What?
 
@@ -21,20 +21,27 @@ All asynchronous actions in DisQuark are wrapped in Mutiny types, so if you want
 Let's take a look at both approaches by creating a message in a channel:
 
 === "Reactive"
+```java
+{{  snippet('tutorials/SmallRyeMutiny.java', 'create-message-subscribe') }}
+```
 
 === "Blocking"
+```java
+{{ snippet('tutorials/GettingStarted.java', 'create-message-await') }}
+```
 
 ### Subscribing
 
 If you're subscribing to a `Uni` or `Multi`, you handle the emitted events by chaining methods together that allow you to process the event in some way. `Uni`s and `Multi`s can fire many events, but in most cases, you will only want to handle `item` and `failure` events using `onItem()` and `onFailure()` method chains. Which methods to chain together depends entirely on your use case. 
 
-Let's look at a few of the most common event processing methods at our disposal by expanding our preivous reactive example :
+Let's look at a few of the most common event processing methods at our disposal by expanding our reactive example from earlier:
+```java
+{{ snippet('guides/SmallRyeMutiny.java', 'create-message-events') }}
+```
 
 !!! tip 
 
-    For a look into how to structure your reactive DisQuark application's code , check out the _ or _ tutorial. 
-
-    We strongly recommend checking out our Quarkus extension if your application needs to access a database, a web server for interactions or webhooks, or if it will be deployed to the cloud.
+    For a look into how to structure your reactive DisQuark application's code, check out the [Role Selector Bot tutorial](role-selector-bot.md).
 
 ### Awaiting
 

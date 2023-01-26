@@ -81,7 +81,7 @@
         <module>nullable-optional</module>
         <module>immutables</module>
         <module>rest</module>
-        <module>docs-site</module>
+        <module>docs</module>
         <module>integration-tests</module>
     </modules>
 

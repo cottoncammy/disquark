@@ -1,15 +1,19 @@
-site_name: My Docs
-site_url: !ENV
-repo_url: https://github.com/TODO/TODO
-repo_name: TODO/TODO
-edit_uri:
+site_name: DisQuark Docs
+site_url: https://docs.disquark.io
+
+repo_url: https://github.com/disquark/disquark
+repo_name: disquark/disquark
+
+docs_dir: src/main/markdown
+edit_uri: edit/main/docs/src/main/markdown
+
 copyright:
 
 nav:
-  - ''
-  - Beginner Tutorials
-  - How-to Guides
-  - Reference
+  - 'index.md'
+  - Beginner Tutorials: '/tutorials'
+  - How-to Guides: '/guides'
+  - Reference: 'https://javadoc.io/doc/io.disquark/disquark-rest/latest/index.html'
 
 theme:
   name: material
@@ -19,7 +23,6 @@ theme:
   features:
     - navigation.instant
     - navigation.tabs
-    - navigation.indexes
     - toc.follow
     - navigation.top
     - navigation.footer
@@ -27,19 +30,26 @@ theme:
     - content.code.copy
     - content.code.annotate
 
-plugins: [ search ]
+plugins:
+  - search
+  - macros:
+      include_dir: macros
+      include_yaml: mkdocs-macros.yml
+      on_error_fail: true
 
 markdown_extensions:
   - admonition
+  - footnotes
+  - def_list
+  - toc:
+      permalink: "#"
+  - pymdownx.superfences
   - pymdownx.highlight:
       anchor_linenums: true
   - pymdownx.inlinehilite
   - pymdownx.snippets
-  - pymdownx.superfences
   - pymdownx.tabbed:
       alternate_style: true
-  - def_list
-  - footnotes
 
 extra:
   version:
@@ -47,7 +57,5 @@ extra:
   social:
     - icon: fontawesome/brands/github
       link: https://github.com/disquark
-      name:
     - icon: fontawesome/brands/discord
-      link:
-      name:
+      link: https://github.com/disquark
