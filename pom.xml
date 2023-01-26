@@ -51,7 +51,7 @@
         <bucket4j-version>8.1.0</bucket4j-version>
         <caffeine.version>3.1.2</caffeine.version>
         <immutables.version>2.9.3</immutables.version>
-        <jackson.version>2.13.3</jackson.version>
+        <jackson.version>2.14.1</jackson.version>
         <jakarta-annotations.version>2.1.1</jakarta-annotations.version>
         <jsr305.version>3.0.2</jsr305.version>
         <junit.version>5.9.2</junit.version>
