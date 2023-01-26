@@ -48,15 +48,15 @@
 
         <apache-tika.version>2.6.0</apache-tika.version>
         <bouncycastle.version>1.70</bouncycastle.version>
-        <bucket4j-version>8.1.0</bucket4j-version>
+        <bucket4j-version>8.1.1</bucket4j-version>
         <caffeine.version>3.1.2</caffeine.version>
         <immutables.version>2.9.3</immutables.version>
-        <jackson.version>2.13.3</jackson.version>
+        <jackson.version>2.14.1</jackson.version>
         <jakarta-annotations.version>2.1.1</jakarta-annotations.version>
         <jsr305.version>3.0.2</jsr305.version>
         <junit.version>5.9.2</junit.version>
         <log4j.version>2.19.0</log4j.version>
-        <quarkus-ide-config.version>2.15.3.Final</quarkus-ide-config.version>
+        <quarkus-ide-config.version>2.16.0.Final</quarkus-ide-config.version>
         <revapi-java.version>0.28.0</revapi-java.version>
         <revapi-json-reporter.version>0.5.0</revapi-json-reporter.version>
         <slf4j.version>2.0.6</slf4j.version>
