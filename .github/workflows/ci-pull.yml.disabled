@@ -1,0 +1,45 @@
+name: PR build
+
+on:
+  pull_request:
+    types: [opened, ready_for_review, reopened, synchronize]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.user.id }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build and test
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        jdk-version: [ 11, 17 ]
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+      - name: Setup JDK ${{ matrix.jdk-version }}
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: ${{ matrix.jdk-version }}
+          cache: maven
+      - name: Maven test
+        run: ./mvnw -B -s .github/mvn-ci-settings.xml test
+      - name: Maven verify
+        if: github.repository == 'disquark/disquark'
+        env:
+          DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
+          DISCORD_CLIENT_ID: ${{ secrets.DISCORD_CLIENT_ID }}
+          DISCORD_CLIENT_SECRET: ${{ secrets.DISCORD_CLIENT_SECRET }}
+          DISCORD_GUILD_ID: ${{ secrets.DISCORD_GUILD_ID }}
+          DISCORD_CHANNEL_ID: ${{ secrets.DISCORD_CHANNEL_ID }}
+          DISCORD_USER_ID: ${{ secrets.DISCORD_USER_ID }}
+        run: ./mvnw -B -DskipITs=false verify
+      - name: Upload test reports (if run failed)
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: "test-reports-JDK-${{ matrix.jdk-version }}"
+          path: "**/target/*-reports/TEST-*.xml"

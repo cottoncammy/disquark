@@ -1,6 +1,10 @@
-name: Release
-
-on: workflow_dispatch
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "The version to release"
+        required: true
+        type: string
 
 jobs:
   release:
@@ -8,8 +12,6 @@ jobs:
     runs-on: ubuntu-latest
     if: github.repository == 'disquark/disquark'
     steps:
-      - name: Call CI workflow
-        uses: ./.github/workflows/ci.yml@main
       - name: Checkout repo
         uses: actions/checkout@v3
       - name: Setup JDK 11
@@ -17,28 +19,28 @@ jobs:
         with:
           distribution: temurin
           java-version: 11
-      - name: Cache dependencies
-        uses: actions/cache@v3
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
+          cache: maven
       - name: Maven release
         env:
-          JIRA_ID: ${{ secrets.JIRA_ID }}
-          JIRA_TOKEN: ${{ secrets.JIRA_TOKEN }}
+          VERSION: ${{ inputs.version }}
+          OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
         run: |
+            git switch -d HEAD
+            ./mvnw -B -s .github/mvn-ci-settings.xml -DnewVersion="${VERSION}" \
+              versions:set
+            ./mvnw -B -s .github/mvn-ci-settings.xml -Prelease verify
+
             git config user.name "GitHub Actions"
             git config user.email "actions@github.com"
 
-            gpg --batch --decrypt --passphrase="${{ secrets.GPG_PASSPHRASE }}" \
-              .github/secret-key.asc.gpg | gpg --batch --no-tty --import
+            gpg2 --batch --decrypt --passphrase="${{ secrets.GPG_PASSPHRASE }}" \
+              .github/secret-key.asc.gpg | gpg2 --batch --no-tty --import
 
-            ./mvnw -B revapi:update-release-properties
-            ./mvnw -B -Prelease release:prepare
-            ./mvnw -B -ntp -Prelease -Dgpg.passphrase=${{ secrets.GPG_PASSPHRASE }} \
-                -s .github/mvn-ci-settings.xml -pl !integration-tests release:perform
-      - name: Remove local artifacts
-        shell: bash
-        run: rm -r ~/.m2/repository/io.disquark
+            git commit -am "[${{ github.workflow }}] - prepare release ${VERSION}" -s
+            git tag -s -m "Release ${VERSION}" "${VERSION}"
+            git push "${VERSION}"
+            git switch -d "${VERSION}"
+
+            ./mvnw -B -s .github/mvn-ci-settings.xml -Prelease -ntp \
+              -Dgpg.passphrase=${{ secrets.GPG_PASSPHRASE }}
