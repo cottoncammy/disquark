@@ -26,7 +26,6 @@ jobs:
           OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
         run: |
-            git switch -d HEAD
             ./mvnw -B -s .github/mvn-ci-settings.xml -DnewVersion="${VERSION}" \
               versions:set
             ./mvnw -B -s .github/mvn-ci-settings.xml -Prelease verify
