@@ -29,6 +29,9 @@ jobs:
           git config commit.gpgSign true
           git config gpg.program "/usr/bin/gpg2"
 
+          gpg2 --batch --decrypt --passphrase="${{ secrets.GPG_PASSPHRASE }}" \
+            .github/secret-key.asc.gpg | gpg2 --batch --no-tty --import
+
           VERSION=$(echo ${GITHUB_REF} | cut -d'/' -f3 | cut -d'.' -f1,2)
           pipenv run mike deploy -u \
             -m "[${{ github.workflow }}] - deploy ${VERSION}" "${VERSION}" latest
