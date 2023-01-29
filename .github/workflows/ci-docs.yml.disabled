@@ -10,6 +10,9 @@ jobs:
   docs:
     name: Deploy docs
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: docs
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
@@ -24,7 +27,6 @@ jobs:
       - name: Pipenv install
         run: |
           pip install pipenv
-          cd docs
           pipenv install
       - name: Mike deploy
         run: |
