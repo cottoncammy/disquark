@@ -34,7 +34,7 @@ jobs:
             git config user.name "GitHub Actions"
             git config user.email "actions@github.com"
 
-            gpg2 --batch --decrypt --passphrase="${{ secrets.GPG_PASSPHRASE }}" \
+            gpg2 --batch --decrypt --passphrase=${{ secrets.GPG_PASSPHRASE }} \
               .github/secret-key.asc.gpg | gpg2 --batch --no-tty --import
 
             git commit -am "[${{ github.workflow }}] - prepare release ${VERSION}" -s

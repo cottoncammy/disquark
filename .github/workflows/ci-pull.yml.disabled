@@ -41,5 +41,5 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@v3
         with:
-          name: "test-reports-JDK-${{ matrix.jdk-version }}"
-          path: "**/target/*-reports/TEST-*.xml"
+          name: test-reports-JDK-${{ matrix.jdk-version }}
+          path: '**/target/*-reports/TEST-*.xml'

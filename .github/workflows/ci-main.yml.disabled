@@ -41,8 +41,8 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@v3
         with:
-          name: "test-reports-JDK-${{ matrix.jdk-version }}"
-          path: "**/target/*-reports/TEST-*.xml"
+          name: test-reports-JDK-${{ matrix.jdk-version }}
+          path: '**/target/*-reports/TEST-*.xml'
 
   snapshots:
     name: Release snapshots
@@ -63,7 +63,7 @@ jobs:
           OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
         run: |
-            gpg2 --batch --decrypt --passphrase="${{ secrets.GPG_PASSPHRASE }}" \
+            gpg2 --batch --decrypt --passphrase=${{ secrets.GPG_PASSPHRASE }} \
               .github/secret-key.asc.gpg | gpg2 --batch --no-tty --import
 
             ./mvnw -B -s .github/mvn-ci-settings.xml -Prelease -ntp \
