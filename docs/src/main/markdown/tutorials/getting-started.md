@@ -11,21 +11,21 @@ Use DisQuark by including it as a dependency in your preferred build tool:
     <dependency>
         <groupId>io.disquark</groupId>
         <artifactId>disquark-rest</artifactId>
-        <version>{{ versions.disquark }}</version>
+        <version>{{ version.artifact }}</version>
     </dependency>
     ```
 
 === "Gradle"
     ```groovy
     dependencies {
-        implementation 'io.disquark:disquark-rest:{{ versions.disquark }}'
+        implementation 'io.disquark:disquark-rest:{{ version.artifact }}'
     }
     ```
 
 === "Gradle (Kotlin DSL)"
     ```kotlin
     dependencies {
-        implementation("io.disquark:disquark-rest:{{ versions.disquark }}")
+        implementation("io.disquark:disquark-rest:{{ version.artifact }}")
     }
     ```
 

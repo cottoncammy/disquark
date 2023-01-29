@@ -1,4 +1,4 @@
-site_name: DisQuark
+site_name: DisQuark Docs
 site_url: https://docs.disquark.io
 
 repo_url: https://github.com/disquark/disquark
@@ -7,7 +7,8 @@ repo_name: disquark/disquark
 docs_dir: src/main/markdown
 edit_uri: edit/main/docs/src/main/markdown
 
-copyright:
+copyright: >-
+  Site content licensed under the <a href="https://creativecommons.org/licenses/by/4.0/">CC Attribution 4.0 International License</a>.
 
 nav:
   - Home: index.md
@@ -50,13 +51,13 @@ markdown_extensions:
   - pymdownx.snippets
   - pymdownx.tabbed:
       alternate_style: true
+  - attr_list
+  - md_in_html
 
 extra:
   version:
+    artifact: 999-SNAPSHOT
     provider: mike
-  versions:
-    disquark: 999-SNAPSHOT
-    bouncycastle: 1.70
   social:
     - icon: fontawesome/brands/github
       link: https://github.com/disquark

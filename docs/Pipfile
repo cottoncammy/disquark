@@ -1,14 +1,14 @@
 [[source]]
-url = "https://pypi.org/simple"
+url = 'https://pypi.org/simple'
 verify_ssl = true
-name = "pypi"
+name = 'pypi'
 
 [requires]
-python_version = "3"
+python_version = '3.11'
 
 [packages]
-mkdocs = "*"
-mkdocs-material = "*"
-mike = "*"
+mkdocs = '1.4.2'
+mkdocs-material = '9.0.7'
+mike = '1.1.2'
 
 [dev-packages]

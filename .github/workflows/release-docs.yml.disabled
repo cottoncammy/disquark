@@ -34,8 +34,11 @@ jobs:
           gpg2 --batch --decrypt --passphrase="${{ secrets.GPG_PASSPHRASE }}" \
             .github/secret-key.asc.gpg | gpg2 --batch --no-tty --import
 
-          VERSION=$(echo ${GITHUB_REF} | cut -d'/' -f3 | cut -d'.' -f1,2)
+          VERSION=$(echo ${GITHUB_REF} | cut -d'/' -f3)
+          sed -i "s/artifact:.*/artifact: ${VERSION}" mkdocs.yaml
+
+          DOCS_VERSION=$(echo ${VERSION} | cut -d'.' -f1,2)
           pipenv run mike deploy -u \
-            -m "[${{ github.workflow }}] - deploy ${VERSION}" "${VERSION}" latest
+            -m "[${{ github.workflow }}] - deploy ${DOCS_VERSION}" "${DOCS_VERSION}" latest
           pipenv run mike -m "[${{ github.workflow }}] - set default version to latest" \
             -p set-default latest

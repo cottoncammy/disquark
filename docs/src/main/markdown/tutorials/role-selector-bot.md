@@ -4,7 +4,7 @@ Let's learn the fundamentals of DisQuark and SmallRye Mutiny by looking at a mor
 
 ## Prerequisites
 * JDK 11+
-* Maven or Gradle project with `io.disquark:disquark-rest:{{ versions.disquark }}` imported as a dependency
+* Maven or Gradle project with `io.disquark:disquark-rest:{{ version.artifact }}` imported as a dependency
 * [Discord application with a bot user](https://discord.com/developers/docs/getting-started#creating-an-app)
 * URL to receive incoming interactions from Discord
 * Deployment target for your application to ingress traffic from your URL
@@ -57,7 +57,7 @@ class MyRoleSelectorBot {
 }
 ```
 
-1. Select menu components must be placed inside action row components. There are many quirks of the Discord API like this that you will learn with experience.
+1. Select menu components must be placed inside action row components.
 
 Next, we need to configure our `DiscordBotClient` to receive interactions from Discord. Discord requires that interactions sent via HTTP be validated. By default, DisQuark requires the [*BouncyCastle*](https://bouncycastle.org/java.html) library to validate incoming interactions. If BouncyCastle isn't imported by your application and you haven't modified your client's `InteractionsValidator`, DisQuark won't validate any incoming interactions, and you'll be unable to configure your interactions URL unless you verify the interactions before the request reaches DisQuark's web server (which is the recommended approach in a production environment). For simplicity, let's add the BouncyCastle library to our application's build tool:
 
@@ -65,22 +65,22 @@ Next, we need to configure our `DiscordBotClient` to receive interactions from D
     ```xml
     <dependency>
         <groupId>org.bouncycastle</groupId>
-        <artifactId>bcprov-jdk15on</artifactId>
-        <version>{{ versions.bouncycastle }}</version>
+        <artifactId>bcprov-jdk18on</artifactId>
+        <version>${bouncycastle.version}</version>
     </dependency>
     ```
 
 === "build.gradle"
     ```groovy
     dependencies {
-        implementation 'org.bouncycastle:bcprov-jdk15on:{{ versions.bouncycastle }}'
+        implementation 'org.bouncycastle:bcprov-jdk18on:${bouncycastle.version}'
     }
     ```
 
 === "build.gradle.kts"
     ```kotlin
     dependencies {
-        implementation("org.bouncycastle:bcprov-jdk15on:{{ versions.bouncycastle }}")
+        implementation("org.bouncycastle:bcprov-jdk18on:${bouncycastle.version}")
     }
     ```
 
@@ -155,7 +155,7 @@ class MyRoleSelectorBot {
 
 !!! note
 
-    A considerable amount of response fields from Discord are optional, as certain API fields are only sent in certain circumstances or are null in others. Therefore, you should consult Discord's API docs to determine in which situations it is safe to call `get()` on returned `Optional`s without an `isPresent()` check. You can also make your `Optional` chains look nicer by chaining them together with `map`s and `flatMap`s.
+    You should consult Discord's API docs to determine in which situations it is safe to call `get()` on returned `Optional`s without an `isPresent()` check. You can also make your `Optional` chains look nicer by chaining them together with `map`s and `flatMap`s.
 
 Notice that with this code, we're only assigning the role to the user. What we actually need to do is assign the role to *or* remove the role from the user based on whether the user has that role, like a toggle:
 
