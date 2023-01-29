@@ -11,13 +11,6 @@
 
     <artifactId>disquark-docs</artifactId>
     <name>DisQuark - Documentation</name>
-
-    <dependencies>
-        <dependency>
-            <groupId>io.disquark</groupId>
-            <artifactId>disquark-rest</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-    </dependencies>
+    <packaging>pom</packaging>
 
 </project>
