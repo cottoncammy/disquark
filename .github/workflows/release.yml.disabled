@@ -39,7 +39,7 @@ jobs:
 
             git commit -am "[${{ github.workflow }}] - prepare release ${VERSION}" -s
             git tag -s -m "Release ${VERSION}" "${VERSION}"
-            git push "${VERSION}"
+            git push origin "${VERSION}"
             git switch -d "${VERSION}"
 
             ./mvnw -B -s .github/mvn-ci-settings.xml -Prelease -ntp \
