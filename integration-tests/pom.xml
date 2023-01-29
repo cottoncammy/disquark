@@ -12,10 +12,6 @@
     <artifactId>disquark-integration-tests</artifactId>
     <name>DisQuark - Integration Tests</name>
 
-    <properties>
-        <skipStaging>true</skipStaging>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>io.smallrye.config</groupId>
