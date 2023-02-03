@@ -71,6 +71,7 @@
         <jar-plugin.version>3.3.0</jar-plugin.version>
         <javadoc-plugin.version>3.4.1</javadoc-plugin.version>
         <nexus-staging-plugin.version>1.6.13</nexus-staging-plugin.version>
+        <properties-plugin.version>1.1.0</properties-plugin.version>
         <resources-plugin.version>3.3.0</resources-plugin.version>
         <source-plugin.version>3.2.1</source-plugin.version>
         <surefire-plugin.version>${failsafe-plugin.version}</surefire-plugin.version>
@@ -81,6 +82,7 @@
         <module>nullable-optional</module>
         <module>immutables</module>
         <module>rest</module>
+        <module>docs</module>
         <module>integration-tests</module>
     </modules>
 
@@ -250,6 +252,11 @@
                     <version>${javadoc-plugin.version}</version>
                 </plugin>
                 <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>properties-maven-plugin</artifactId>
+                    <version>${properties-plugin.version}</version>
+                </plugin>
+                <plugin>
                     <groupId>org.sonatype.plugins</groupId>
                     <artifactId>nexus-staging-maven-plugin</artifactId>
                     <version>${nexus-staging-plugin.version}</version>
@@ -388,7 +395,7 @@
                 <skipTests />
             </properties>
             <build>
-                <defaultGoal>deploy</defaultGoal>
+                <defaultGoal>clean deploy</defaultGoal>
                 <plugins>
                     <plugin>
                         <artifactId>maven-source-plugin</artifactId>

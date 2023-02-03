@@ -19,3 +19,6 @@ nb-configuration.xml
 
 ### Maven ###
 target
+
+### Pipenv ###
+Pipfile.lock
