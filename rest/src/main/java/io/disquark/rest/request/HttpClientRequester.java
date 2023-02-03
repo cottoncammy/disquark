@@ -1,11 +1,13 @@
 package io.disquark.rest.request;
 
 import static io.disquark.rest.util.Logger.log;
+import static io.smallrye.mutiny.unchecked.Unchecked.consumer;
 import static java.util.Objects.requireNonNull;
 
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 import java.util.function.Supplier;
 
 import io.disquark.rest.request.ratelimit.GlobalRateLimiter;
@@ -60,14 +62,20 @@ public class HttpClientRequester implements Requester<HttpResponse> {
         this.rateLimiter = rateLimiter;
     }
 
+    private Uni<String> getVersion() {
+        return Uni.createFrom().item(new Properties())
+                .invoke(consumer(props -> props.load(getClass().getClassLoader().getResourceAsStream("maven.properties"))))
+                .map(props -> props.getProperty("project.version"));
+    }
+
     private Uni<HttpResponse> request(Request request, Context ctx) {
         if (LOG.isDebugEnabled()) {
             ctx.put(REQUEST_ID, Integer.toHexString(request.hashCode()));
         }
 
         boolean authentication = request.endpoint().isAuthenticationRequired();
-        return tokenSource.getToken()
-                .flatMap(token -> {
+        return Uni.combine().all().unis(tokenSource.getToken(), getVersion()).asTuple()
+                .flatMap(tuple -> {
                     log(LOG, Level.DEBUG, log -> log.debug("Preparing to send outgoing request {} as {}",
                             request, ctx.get(REQUEST_ID)));
 
@@ -76,11 +84,11 @@ public class HttpClientRequester implements Requester<HttpResponse> {
                             .setFollowRedirects(true)
                             .setMethod(request.endpoint().getHttpMethod())
                             .putHeader(HttpHeaders.USER_AGENT, String.format("DiscordBot (%s, %s)",
-                                    "https://github.com/disquark/disquark", "0.1.0"));
+                                    "https://github.com/disquark/disquark", tuple.getItem2()));
 
                     if (authentication) {
-                        options.putHeader(HttpHeaders.AUTHORIZATION,
-                                String.format("%s %s", token.tokenType().getValue(), token.accessToken()));
+                        options.putHeader(HttpHeaders.AUTHORIZATION, String.format("%s %s",
+                                tuple.getItem1().tokenType().getValue(), tuple.getItem1().accessToken()));
                     }
 
                     if (request.auditLogReason().isPresent()) {
@@ -141,11 +149,11 @@ public class HttpClientRequester implements Requester<HttpResponse> {
                             ctx.get(REQUEST_ID), httpResponse.headers().entries()));
 
                     if (httpResponse.statusCode() == 429) {
-                        return response.as(RateLimitResponse.class).onItem()
-                                .failWith(res -> new RateLimitException(res, httpResponse));
+                        return response.as(RateLimitResponse.class)
+                                .onItem().failWith(res -> new RateLimitException(res, httpResponse));
                     } else if (httpResponse.statusCode() >= 400) {
-                        return response.as(ErrorResponse.class).onItem()
-                                .failWith(res -> new DiscordException(res, httpResponse));
+                        return response.as(ErrorResponse.class)
+                                .onItem().failWith(res -> new DiscordException(res, httpResponse));
                     }
                     return Uni.createFrom().voidItem();
                 });

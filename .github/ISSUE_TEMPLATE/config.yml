@@ -1,4 +1,4 @@
 contact_links:
   - name: Question
-    url: https://github.com/disquark/disquark
-    about: Ask a question in our Discord server
+    url: https://github.com/disquark/disquark/discussions
+    about: Ask a question using GitHub Discussions

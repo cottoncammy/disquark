@@ -6,7 +6,7 @@ body:
     attributes:
       label: Description
       description: |
-        Describe the proposed feature and justify why it should be added. The effort it would take to implement the feature should be equivalent to the effort put into the provided description.
+        Describe the proposed feature and justify why it should be added.
     validations:
       required: true
   - type: input

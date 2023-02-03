@@ -46,11 +46,11 @@ Let's look at a few of the most common event processing methods at our disposal 
 DiscordBotClient.create(Vertx.vertx(), "BOT_TOKEN")
         .createMessage(channelId)
         .withContent("Hello World!")
-        .map(message -> message.id()) // (1)
-        .flatMap(messageId -> botClient.deleteMessage(channelId, messageId, null)) // (2)
-        .onFailure().invoke(failure -> log(failure)) // (3)
-        .onItem().call(() -> Uni.createFrom().voidItem()) // (4)
-        .onFailure().recoverWithNull() // (5)
+        .map(message -> message.id()) // (1)!
+        .flatMap(messageId -> botClient.deleteMessage(channelId, messageId, null)) // (2)!
+        .onFailure().invoke(failure -> log(failure)) // (3)!
+        .onItem().call(() -> Uni.createFrom().voidItem()) // (4)!
+        .onFailure().recoverWithNull() // (5)!
         .subscribe()
         .with(x -> System.out.println("Sent a message!"));
 ```

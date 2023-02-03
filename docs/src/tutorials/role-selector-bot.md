@@ -4,7 +4,7 @@ Let's learn the fundamentals of DisQuark and SmallRye Mutiny by looking at a mor
 
 ## Prerequisites
 * JDK 11+
-* Maven or Gradle project with `io.disquark:disquark-rest:{{ version.artifact }}` imported as a dependency
+* Maven or Gradle project with `io.disquark:disquark-rest:{{ versions.disquark }}` imported as a dependency
 * [Discord application with a bot user](https://discord.com/developers/docs/getting-started#creating-an-app)
 * URL to receive incoming interactions from Discord
 * Deployment target for your application to ingress traffic from your URL
@@ -23,7 +23,7 @@ Let's go with option two to create a better new-user experience for the server.
 
 !!! warning
     
-    Before continuing, remember that DisQuark can only interact with Discord's REST API. This means that our application can't receive incoming interactions from Discord's Gateway API, and can only receive incoming interactions via HTTP. Therefore, you must have an interactions URL that you can configure in your Discord application to receive incoming interactions.
+    Before continuing, remember that DisQuark can only interact with Discord's REST API. This means that our application can't receive incoming interactions from Discord's Gateway API, and can only receive incoming interactions via HTTP. Therefore, you must have an interactions URL that you can use to point to a DisQuark application and configure in your Discord application settings to receive incoming interactions.
 
 ## Requirements analysis
 
@@ -51,7 +51,7 @@ class MyRoleSelectorBot {
 
         Uni<Message> uni = botClient.createMessage(channelId)
                 .withContent("Select your roles")
-                .withComponents(Component.create(Component.Type.ACTION_ROW) // (1)
+                .withComponents(Component.create(Component.Type.ACTION_ROW) // (1)!
                         .withComponents(Component.create(Component.Type.ROLE_SELECT).withCustomId("roles")));
     }
 }
@@ -59,28 +59,28 @@ class MyRoleSelectorBot {
 
 1. Select menu components must be placed inside action row components.
 
-Next, we need to configure our `DiscordBotClient` to receive interactions from Discord. Discord requires that interactions sent via HTTP be validated. By default, DisQuark requires the [*BouncyCastle*](https://bouncycastle.org/java.html) library to validate incoming interactions. If BouncyCastle isn't imported by your application and you haven't modified your client's `InteractionsValidator`, DisQuark won't validate any incoming interactions, and you'll be unable to configure your interactions URL unless you verify the interactions before the request reaches DisQuark's web server (which is the recommended approach in a production environment). For simplicity, let's add the BouncyCastle library to our application's build tool:
+Next, we need to configure our `DiscordBotClient` to receive interactions from Discord. Discord requires that interactions sent via HTTP be validated. By default, DisQuark requires the [*BouncyCastle*](https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk18on) library to validate incoming interactions. If BouncyCastle isn't imported by your application and you haven't modified your client's `InteractionsValidator`, DisQuark won't validate any incoming interactions, and you'll be unable to configure your interactions URL unless you verify the interactions before the request reaches DisQuark's web server (which is the recommended approach in a production environment). For simplicity, let's add the BouncyCastle library to our application's build tool.
 
 === "pom.xml"
     ```xml
     <dependency>
         <groupId>org.bouncycastle</groupId>
         <artifactId>bcprov-jdk18on</artifactId>
-        <version>${bouncycastle.version}</version>
+        <version>{{ versions.bouncycastle }}</version>
     </dependency>
     ```
 
 === "build.gradle"
     ```groovy
     dependencies {
-        implementation 'org.bouncycastle:bcprov-jdk18on:${bouncycastle.version}'
+        implementation 'org.bouncycastle:bcprov-jdk18on:{{ versions.bouncycastle }}'
     }
     ```
 
 === "build.gradle.kts"
     ```kotlin
     dependencies {
-        implementation("org.bouncycastle:bcprov-jdk18on:${bouncycastle.version}")
+        implementation("org.bouncycastle:bcprov-jdk18on:{{ versions.bouncycastle }}")
     }
     ```
 
@@ -112,7 +112,7 @@ class MyRoleSelectorBot {
         ...
 
         Multi<MessageComponentInteraction> interactions = botClient.on(
-                messageComponent().type(Component.Type.ROLE_SELECT).customId("roles")); // (1)
+                messageComponent().type(Component.Type.ROLE_SELECT).customId("roles")); // (1)!
     }
 }
 ```
@@ -193,7 +193,7 @@ class MyRoleSelectorBot {
                         .filter(roleId -> {
                             Role role = responded.getInteraction().data().get().resolved().roles().get().get(roleId);
                             return !role.managed() && 
-                                        Collections.disjoint(role.permissions(), EnumSet.of(PermissionFlag.ADMINISTRATOR)); // (1)
+                                        Collections.disjoint(role.permissions(), EnumSet.of(PermissionFlag.ADMINISTRATOR)); // (1)!
                         })
                         .call(s -> ...)
                         .onItem().ignoreAsUni();
@@ -217,7 +217,7 @@ class MyRoleSelectorBot {
         Multi<RespondedInteraction<Interaction.MessageCallbackData>> interactions = botClient.on(...)
                 .flatMap(interaction -> ...)
                 .call(responded -> ...)
-                .onFailure().recoverWithNull(); // (1)
+                .onFailure().recoverWithNull(); // (1)!
     }
 }
 ```
@@ -235,7 +235,7 @@ class MyRoleSelectorBot {
                 .call(responded -> ...)
                 .flatMap(responded -> responded.editOriginalInteractionResponse()
                     .withContent("Roles updated")
-                    .withFlags(EnumSet.of(Message.Flag.EPHEMERAL))) // (1)
+                    .withFlags(EnumSet.of(Message.Flag.EPHEMERAL))) // (1)!
                 .onFailure().recoverWithNull();
     }
 }
@@ -256,8 +256,8 @@ class MyRoleSelectorBot {
             .call(responded -> ...)
             .flatMap(responded -> ...)
             .onFailure().recoverWithNull()
-            .onItem().ignoreAsUni() // (1)
-            .await().indefinitely(); // (2)
+            .onItem().ignoreAsUni() // (1)!
+            .await().indefinitely(); // (2)!
         }
 }
 ```

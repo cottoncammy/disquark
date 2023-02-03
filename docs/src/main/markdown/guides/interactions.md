@@ -1,3 +1,0 @@
-# Interactions
-
-## Production checklist
