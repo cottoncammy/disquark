@@ -46,9 +46,10 @@ theme:
     - content.code.copy
     - content.code.annotate
 
-plugins: [ search ]
+plugins: [ search, macros ]
 
 markdown_extensions:
+  - smarty
   - admonition
   - footnotes
   - def_list
@@ -61,15 +62,15 @@ markdown_extensions:
   - pymdownx.snippets
   - pymdownx.tabbed:
       alternate_style: true
-  - attr_list
-  - md_in_html
+  - pymdownx.tilde
+  - pymdownx.smartsymbols
 
 extra:
   version:
     provider: mike
   versions:
     disquark: 999-SNAPSHOT
-    bouncycastle: 1.70
+    bouncycastle: 1.72
   social:
     - icon: fontawesome/brands/github
       link: https://github.com/disquark

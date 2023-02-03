@@ -46,9 +46,10 @@ theme:
     - content.code.copy
     - content.code.annotate
 
-plugins: [ search ]
+plugins: [ search, macros ]
 
 markdown_extensions:
+  - smarty
   - admonition
   - footnotes
   - def_list
@@ -61,8 +62,8 @@ markdown_extensions:
   - pymdownx.snippets
   - pymdownx.tabbed:
       alternate_style: true
-  - attr_list
-  - md_in_html
+  - pymdownx.tilde
+  - pymdownx.smartsymbols
 
 extra:
   version:
