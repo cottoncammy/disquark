@@ -12,7 +12,7 @@ import io.vertx.core.json.jackson.JacksonFactory;
 import io.vertx.core.spi.JsonFactory;
 import io.vertx.core.spi.json.JsonCodec;
 
-public class DisQuarkFactory implements JsonFactory {
+public class DisQuarkJacksonFactory implements JsonFactory {
 
     private static void customizeObjectMapper(ObjectMapper objectMapper) {
         objectMapper.registerModule(new Jdk8Module())

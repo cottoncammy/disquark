@@ -39,7 +39,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-@ExtendWith(DisQuarkParameterResolver.class)
+@ExtendWith(DisQuarkJUnit5ParameterResolver.class)
 class ChannelIT {
     private static final String ROBOT_EMOJI = "\uD83E\uDD16";
 

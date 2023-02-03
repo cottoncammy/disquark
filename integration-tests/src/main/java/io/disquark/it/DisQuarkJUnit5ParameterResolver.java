@@ -12,7 +12,7 @@ import org.junit.jupiter.api.extension.ParameterContext;
 import org.junit.jupiter.api.extension.ParameterResolutionException;
 import org.junit.jupiter.api.extension.ParameterResolver;
 
-public class DisQuarkParameterResolver implements ParameterResolver {
+public class DisQuarkJUnit5ParameterResolver implements ParameterResolver {
 
     private Optional<?> configValue(ParameterContext context) {
         return context.findAnnotation(ConfigValue.class)

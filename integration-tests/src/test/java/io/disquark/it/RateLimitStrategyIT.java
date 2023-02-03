@@ -30,7 +30,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 @Disabled
-@ExtendWith(DisQuarkParameterResolver.class)
+@ExtendWith(DisQuarkJUnit5ParameterResolver.class)
 class RateLimitStrategyIT {
     private static final Vertx VERTX = DiscordClients.getVertx();
     private static final int MAX_REQUESTS = 50;

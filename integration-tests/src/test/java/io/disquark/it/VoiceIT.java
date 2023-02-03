@@ -6,7 +6,7 @@ import io.smallrye.mutiny.helpers.test.UniAssertSubscriber;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-@ExtendWith(DisQuarkParameterResolver.class)
+@ExtendWith(DisQuarkJUnit5ParameterResolver.class)
 class VoiceIT {
 
     @Test

@@ -21,7 +21,7 @@ import org.junit.jupiter.api.TestTemplate;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-@ExtendWith(DisQuarkParameterResolver.class)
+@ExtendWith(DisQuarkJUnit5ParameterResolver.class)
 class AuthenticatedDiscordClientIT {
     private Snowflake applicationId;
     private Snowflake guildId;
@@ -57,7 +57,7 @@ class AuthenticatedDiscordClientIT {
     }
 
     @TestTemplate
-    @ExtendWith(DisQuarkTestTemplateProvider.class)
+    @ExtendWith(DisQuarkJUnit5TestTemplateProvider.class)
     @Order(1)
     void testGetGlobalApplicationCommands(AuthenticatedDiscordClient<?> discordClient) {
         discordClient.getGlobalApplicationCommands(applicationId, false)
@@ -68,7 +68,7 @@ class AuthenticatedDiscordClientIT {
     }
 
     @TestTemplate
-    @ExtendWith(DisQuarkTestTemplateProvider.class)
+    @ExtendWith(DisQuarkJUnit5TestTemplateProvider.class)
     @Order(2)
     void testCreateGlobalApplicationCommand(AuthenticatedDiscordClient<?> discordClient) {
         CreateGlobalApplicationCommand createGlobalApplicationCommand = CreateGlobalApplicationCommand.builder()
@@ -85,7 +85,7 @@ class AuthenticatedDiscordClientIT {
     }
 
     @TestTemplate
-    @ExtendWith(DisQuarkTestTemplateProvider.class)
+    @ExtendWith(DisQuarkJUnit5TestTemplateProvider.class)
     @Order(3)
     void testGetGlobalApplicationCommand(AuthenticatedDiscordClient<?> discordClient) {
         discordClient.getGlobalApplicationCommand(applicationId, globalCommandId)
@@ -95,7 +95,7 @@ class AuthenticatedDiscordClientIT {
     }
 
     @TestTemplate
-    @ExtendWith(DisQuarkTestTemplateProvider.class)
+    @ExtendWith(DisQuarkJUnit5TestTemplateProvider.class)
     @Order(4)
     void testEditGlobalApplicationCommand(AuthenticatedDiscordClient<?> discordClient) {
         EditGlobalApplicationCommand editGlobalApplicationCommand = EditGlobalApplicationCommand.builder()
@@ -111,7 +111,7 @@ class AuthenticatedDiscordClientIT {
     }
 
     @TestTemplate
-    @ExtendWith(DisQuarkTestTemplateProvider.class)
+    @ExtendWith(DisQuarkJUnit5TestTemplateProvider.class)
     @Order(5)
     void testBulkOverwriteGlobalApplicationCommands(AuthenticatedDiscordClient<?> discordClient) {
         BulkOverwriteGlobalApplicationCommands bulkOverwriteGlobalApplicationCommands = BulkOverwriteGlobalApplicationCommands
@@ -132,7 +132,7 @@ class AuthenticatedDiscordClientIT {
     }
 
     @TestTemplate
-    @ExtendWith(DisQuarkTestTemplateProvider.class)
+    @ExtendWith(DisQuarkJUnit5TestTemplateProvider.class)
     @Order(6)
     void testGetGuildApplicationCommands(AuthenticatedDiscordClient<?> discordClient) {
         discordClient.getGuildApplicationCommands(applicationId, guildId, false)
@@ -143,7 +143,7 @@ class AuthenticatedDiscordClientIT {
     }
 
     @TestTemplate
-    @ExtendWith(DisQuarkTestTemplateProvider.class)
+    @ExtendWith(DisQuarkJUnit5TestTemplateProvider.class)
     @Order(7)
     void testCreateGuildApplicationCommand(AuthenticatedDiscordClient<?> discordClient) {
         CreateGuildApplicationCommand createGuildApplicationCommand = CreateGuildApplicationCommand.builder()
@@ -161,7 +161,7 @@ class AuthenticatedDiscordClientIT {
     }
 
     @TestTemplate
-    @ExtendWith(DisQuarkTestTemplateProvider.class)
+    @ExtendWith(DisQuarkJUnit5TestTemplateProvider.class)
     @Order(8)
     void testGetGuildApplicationCommand(AuthenticatedDiscordClient<?> discordClient) {
         discordClient.getGuildApplicationCommand(applicationId, guildId, guildCommandId)
@@ -171,7 +171,7 @@ class AuthenticatedDiscordClientIT {
     }
 
     @TestTemplate
-    @ExtendWith(DisQuarkTestTemplateProvider.class)
+    @ExtendWith(DisQuarkJUnit5TestTemplateProvider.class)
     @Order(9)
     void testEditGuildApplicationCommand(AuthenticatedDiscordClient<?> discordClient) {
         EditGuildApplicationCommand editGuildApplicationCommand = EditGuildApplicationCommand.builder()
@@ -188,7 +188,7 @@ class AuthenticatedDiscordClientIT {
     }
 
     @TestTemplate
-    @ExtendWith(DisQuarkTestTemplateProvider.class)
+    @ExtendWith(DisQuarkJUnit5TestTemplateProvider.class)
     @Order(10)
     void testBulkOverwriteGuildApplicationCommands(AuthenticatedDiscordClient<?> discordClient) {
         BulkOverwriteGuildApplicationCommands bulkOverwriteGuildApplicationCommands = BulkOverwriteGuildApplicationCommands
@@ -210,7 +210,7 @@ class AuthenticatedDiscordClientIT {
     }
 
     @TestTemplate
-    @ExtendWith(DisQuarkTestTemplateProvider.class)
+    @ExtendWith(DisQuarkJUnit5TestTemplateProvider.class)
     @Order(11)
     void testGetGuildApplicationCommandPermissions(AuthenticatedDiscordClient<?> discordClient) {
         discordClient.getGuildApplicationCommandPermissions(applicationId, guildId)
@@ -221,7 +221,7 @@ class AuthenticatedDiscordClientIT {
     }
 
     @TestTemplate
-    @ExtendWith(DisQuarkTestTemplateProvider.class)
+    @ExtendWith(DisQuarkJUnit5TestTemplateProvider.class)
     @Order(12)
     void testGetApplicationCommandPermissions(AuthenticatedDiscordClient<?> discordClient) {
         discordClient.getApplicationCommandPermissions(applicationId, guildId, guildCommandId)
@@ -231,7 +231,7 @@ class AuthenticatedDiscordClientIT {
     }
 
     @TestTemplate
-    @ExtendWith(DisQuarkTestTemplateProvider.class)
+    @ExtendWith(DisQuarkJUnit5TestTemplateProvider.class)
     @Order(13)
     void testDeleteGlobalApplicationCommand(AuthenticatedDiscordClient<?> discordClient) {
         discordClient.deleteGlobalApplicationCommand(applicationId, globalCommandId)
@@ -241,7 +241,7 @@ class AuthenticatedDiscordClientIT {
     }
 
     @TestTemplate
-    @ExtendWith(DisQuarkTestTemplateProvider.class)
+    @ExtendWith(DisQuarkJUnit5TestTemplateProvider.class)
     @Order(14)
     void testDeleteGuildApplicationCommand(AuthenticatedDiscordClient<?> discordClient) {
         discordClient.deleteGuildApplicationCommand(applicationId, guildId, guildCommandId)
@@ -251,7 +251,7 @@ class AuthenticatedDiscordClientIT {
     }
 
     @TestTemplate
-    @ExtendWith(DisQuarkTestTemplateProvider.class)
+    @ExtendWith(DisQuarkJUnit5TestTemplateProvider.class)
     void testGetCurrentUser(AuthenticatedDiscordClient<?> discordClient) {
         discordClient.getCurrentUser()
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
@@ -260,7 +260,7 @@ class AuthenticatedDiscordClientIT {
     }
 
     @TestTemplate
-    @ExtendWith(DisQuarkTestTemplateProvider.class)
+    @ExtendWith(DisQuarkJUnit5TestTemplateProvider.class)
     void testGetCurrentUserGuilds(AuthenticatedDiscordClient<?> discordClient) {
         discordClient.getCurrentUserGuilds(GetCurrentUserGuilds.create())
                 .collect().asList()

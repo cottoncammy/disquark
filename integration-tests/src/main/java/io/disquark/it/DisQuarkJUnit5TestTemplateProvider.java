@@ -15,7 +15,7 @@ import org.junit.jupiter.api.extension.ParameterResolver;
 import org.junit.jupiter.api.extension.TestTemplateInvocationContext;
 import org.junit.jupiter.api.extension.TestTemplateInvocationContextProvider;
 
-public class DisQuarkTestTemplateProvider implements TestTemplateInvocationContextProvider {
+public class DisQuarkJUnit5TestTemplateProvider implements TestTemplateInvocationContextProvider {
 
     @Override
     public boolean supportsTestTemplate(ExtensionContext context) {

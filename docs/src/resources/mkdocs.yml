@@ -32,7 +32,7 @@ theme:
       scheme: slate
       toggle:
         icon: material/weather-sunny
-        name: Switch to light theme!
+        name: Switch to light theme
   icon:
     repo: fontawesome/brands/github
     edit: material/file-edit-outline

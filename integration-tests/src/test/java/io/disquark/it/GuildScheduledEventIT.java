@@ -17,7 +17,7 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-@ExtendWith(DisQuarkParameterResolver.class)
+@ExtendWith(DisQuarkJUnit5ParameterResolver.class)
 class GuildScheduledEventIT {
     private Snowflake guildScheduledEventId;
 

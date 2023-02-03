@@ -15,7 +15,7 @@ import io.vertx.mutiny.core.http.HttpClientResponse;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-@ExtendWith(DisQuarkParameterResolver.class)
+@ExtendWith(DisQuarkJUnit5ParameterResolver.class)
 class UserIT {
 
     @Test
