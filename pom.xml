@@ -84,6 +84,7 @@
         <module>rest</module>
         <module>docs</module>
         <module>integration-tests</module>
+        <module>docs-site</module>
     </modules>
 
     <dependencyManagement>
