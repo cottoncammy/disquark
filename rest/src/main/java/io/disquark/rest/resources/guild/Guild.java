@@ -460,12 +460,32 @@ public interface Guild {
 
         boolean mute();
 
+        EnumSet<Flag> flags();
+
         Optional<Boolean> pending();
 
         Optional<EnumSet<PermissionFlag>> permissions();
 
         @JsonProperty("communication_disabled_until")
         Optional<Instant> communicationDisabledUntil();
+
+        enum Flag implements FlagEnum {
+            DID_REJOIN(0),
+            COMPLETED_ONBOARDING(1),
+            BYPASSES_VERIFICATION(2),
+            STARTED_ONBOARDING(3);
+
+            private final int value;
+
+            Flag(int value) {
+                this.value = value;
+            }
+
+            @Override
+            public int getValue() {
+                return value;
+            }
+        }
 
         class Builder extends ImmutableGuild.Member.Builder {
             protected Builder() {

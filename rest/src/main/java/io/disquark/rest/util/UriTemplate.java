@@ -2,6 +2,8 @@ package io.disquark.rest.util;
 
 import java.util.Objects;
 
+import javax.annotation.Nullable;
+
 import io.vertx.mutiny.uritemplate.Variables;
 
 public class UriTemplate {
@@ -35,7 +37,7 @@ public class UriTemplate {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(@Nullable Object o) {
         if (this == o) {
             return true;
         }

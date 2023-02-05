@@ -119,6 +119,16 @@
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
             </plugin>
+            <plugin>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifestEntries>
+                            <Automatic-Module-Name>io.disquark.rest</Automatic-Module-Name>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 

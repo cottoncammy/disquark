@@ -246,6 +246,15 @@
                 <plugin>
                     <artifactId>maven-jar-plugin</artifactId>
                     <version>${jar-plugin.version}</version>
+                    <configuration>
+                        <archive>
+                            <index>true</index>
+                            <manifest>
+                                <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                                <addBuildEnvironmentEntries>true</addBuildEnvironmentEntries>
+                            </manifest>
+                        </archive>
+                    </configuration>
                 </plugin>
                 <plugin>
                     <artifactId>maven-javadoc-plugin</artifactId>

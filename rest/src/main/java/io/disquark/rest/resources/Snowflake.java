@@ -5,6 +5,8 @@ import static java.util.Objects.requireNonNull;
 import java.time.Instant;
 import java.util.Objects;
 
+import javax.annotation.Nullable;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
@@ -44,7 +46,7 @@ public class Snowflake {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(@Nullable Object o) {
         if (this == o) {
             return true;
         }
