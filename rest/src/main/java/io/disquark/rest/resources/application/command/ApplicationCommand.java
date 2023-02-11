@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import io.disquark.immutables.ImmutableJson;
@@ -159,7 +160,6 @@ public interface ApplicationCommand {
             }
         }
 
-        // TODO
         @ImmutableJson
         @JsonDeserialize(as = ImmutableApplicationCommand.Choice.class)
         interface Choice {
@@ -174,7 +174,7 @@ public interface ApplicationCommand {
             @JsonInclude(value = Include.CUSTOM, valueFilter = NullableOptionalFilter.class)
             NullableOptional<Map<Locale, String>> nameLocalizations();
 
-            Object value();
+            JsonNode value();
 
             class Builder extends ImmutableApplicationCommand.Choice.Builder {
                 protected Builder() {

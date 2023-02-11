@@ -217,7 +217,8 @@ public interface Message {
         HAS_THREAD(5),
         EPHEMERAL(6),
         LOADING(7),
-        FAILED_TO_MENTION_SOME_ROLES_IN_THREAD(8);
+        FAILED_TO_MENTION_SOME_ROLES_IN_THREAD(8),
+        SUPPRESS_NOTIFICATIONS(12);
 
         private final int value;
 

@@ -24,13 +24,12 @@ public abstract class AbstractApplicationCommandBuilder<C extends CompletableInt
         implements InteractionSchema<Interaction.ApplicationCommandData, C> {
     private final Interaction.Type interactionType;
     private final Functions.Function3<Interaction<Interaction.ApplicationCommandData>, HttpServerResponse, DiscordInteractionsClient<?>, C> completableInteractionFunction;
-
-    protected final List<O> options = new ArrayList<>();
+    private final List<O> options = new ArrayList<>();
 
     @Nullable
-    protected Snowflake id;
+    private Snowflake id;
     @Nullable
-    protected String name;
+    private String name;
     @Nullable
     protected ApplicationCommand.Type type;
     protected Predicate<Optional<Snowflake>> guildIdPredicate = guildId -> true;
@@ -52,7 +51,7 @@ public abstract class AbstractApplicationCommandBuilder<C extends CompletableInt
         return this;
     }
 
-    public AbstractApplicationCommandBuilder<C, O> type(ApplicationCommand.Type type) {
+    protected AbstractApplicationCommandBuilder<C, O> type(ApplicationCommand.Type type) {
         this.type = requireNonNull(type, "type");
         return this;
     }

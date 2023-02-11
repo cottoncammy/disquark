@@ -3,6 +3,7 @@ package io.disquark.rest.resources.interactions;
 import java.util.List;
 import java.util.Optional;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import io.disquark.immutables.ImmutableJson;
@@ -20,8 +21,7 @@ public interface ApplicationCommandInteractionDataOption {
 
     ApplicationCommand.Option.Type type();
 
-    // TODO
-    Optional<Object> value();
+    Optional<JsonNode> value();
 
     Optional<List<ApplicationCommandInteractionDataOption>> options();
 
