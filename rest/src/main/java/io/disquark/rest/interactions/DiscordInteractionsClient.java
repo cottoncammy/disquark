@@ -4,6 +4,7 @@ import static io.disquark.rest.util.Variables.variables;
 import static java.util.Objects.requireNonNull;
 
 import java.security.Security;
+import java.util.function.Supplier;
 
 import io.disquark.rest.DiscordClient;
 import io.disquark.rest.interactions.dsl.InteractionSchema;
@@ -32,9 +33,11 @@ import org.slf4j.LoggerFactory;
 public class DiscordInteractionsClient<T extends Response> extends DiscordClient<T> implements InteractionsCapable {
     private static final Logger LOG = LoggerFactory.getLogger(DiscordInteractionsClient.class);
     private final Router router;
-    private final HttpServer httpServer;
+    private final boolean handleCors;
     private final String interactionsUrl;
+    private final boolean startHttpServer;
     private final InteractionValidator validator;
+    private final Supplier<HttpServer> httpServerSupplier;
 
     private volatile InteractionsVerticle verticle;
 
@@ -51,21 +54,27 @@ public class DiscordInteractionsClient<T extends Response> extends DiscordClient
             Vertx vertx,
             Requester<T> requester,
             Router router,
-            HttpServer httpServer,
+            boolean handleCors,
             String interactionsUrl,
-            InteractionValidator validator) {
+            boolean startHttpServer,
+            InteractionValidator validator,
+            Supplier<HttpServer> httpServerSupplier) {
         super(vertx, requester);
         this.router = router;
-        this.httpServer = httpServer;
+        this.handleCors = handleCors;
         this.interactionsUrl = interactionsUrl;
+        this.startHttpServer = startHttpServer;
         this.validator = validator;
+        this.httpServerSupplier = httpServerSupplier;
     }
 
     private InteractionsVerticle getVerticle() {
         if (verticle == null) {
             synchronized (this) {
                 if (verticle == null) {
-                    verticle = new InteractionsVerticle(router, httpServer, interactionsUrl, validator, this);
+                    verticle = new InteractionsVerticle(router, handleCors, interactionsUrl, startHttpServer,
+                            httpServerSupplier, validator, this);
+
                     vertx.deployVerticleAndAwait(verticle);
                 }
             }
@@ -139,8 +148,10 @@ public class DiscordInteractionsClient<T extends Response> extends DiscordClient
     public static class Builder<T extends Response> extends DiscordClient.Builder<T, DiscordInteractionsClient<T>> {
         protected final String verifyKey;
         protected Router router;
-        protected HttpServer httpServer;
+        protected boolean handleCors = true;
         protected String interactionsUrl;
+        protected boolean startHttpServer = true;
+        protected Supplier<HttpServer> httpServerSupplier;
         protected InteractionValidatorFactory validatorFactory;
 
         protected Builder(Vertx vertx, String verifyKey) {
@@ -153,13 +164,18 @@ public class DiscordInteractionsClient<T extends Response> extends DiscordClient
             return this;
         }
 
-        public Builder<T> httpServer(HttpServer httpServer) {
-            this.httpServer = requireNonNull(httpServer, "httpServer");
+        public Builder<T> handleCors(boolean handleCors) {
+            this.handleCors = handleCors;
             return this;
         }
 
         public Builder<T> interactionsUrl(String interactionsUrl) {
             this.interactionsUrl = requireNonNull(interactionsUrl, "interactionsUrl");
+            return this;
+        }
+
+        public Builder<T> startHttpServer(boolean startHttpServer) {
+            this.startHttpServer = startHttpServer;
             return this;
         }
 
@@ -178,6 +194,11 @@ public class DiscordInteractionsClient<T extends Response> extends DiscordClient
         @Override
         public Builder<T> rateLimitStrategy(RateLimitStrategy<T> rateLimitStrategy) {
             super.rateLimitStrategy(rateLimitStrategy);
+            return this;
+        }
+
+        public Builder<T> httpServerSupplier(Supplier<HttpServer> httpServerSupplier) {
+            this.httpServerSupplier = requireNonNull(httpServerSupplier, "httpServerSupplier");
             return this;
         }
 
@@ -211,17 +232,21 @@ public class DiscordInteractionsClient<T extends Response> extends DiscordClient
                     vertx,
                     getRequesterFactory().apply(this),
                     router == null ? Router.router(vertx) : router,
-                    httpServer == null ? vertx.createHttpServer() : httpServer,
+                    handleCors,
                     interactionsUrl == null ? "/" : interactionsUrl,
-                    validatorFactory.apply(verifyKey));
+                    startHttpServer,
+                    validatorFactory.apply(verifyKey),
+                    httpServerSupplier == null ? vertx::createHttpServer : httpServerSupplier);
         }
     }
 
     public static class Options {
         protected Router router;
         protected String verifyKey;
-        protected HttpServer httpServer;
+        protected boolean handleCors = true;
         protected String interactionsUrl;
+        protected boolean startHttpServer = true;
+        protected Supplier<HttpServer> httpServerSupplier;
         protected InteractionValidatorFactory validatorFactory;
 
         public Options setRouter(Router router) {
@@ -242,13 +267,13 @@ public class DiscordInteractionsClient<T extends Response> extends DiscordClient
             return verifyKey;
         }
 
-        public Options setHttpServer(HttpServer httpServer) {
-            this.httpServer = requireNonNull(httpServer, "httpServer");
+        public Options setHandleCors(boolean handleCors) {
+            this.handleCors = handleCors;
             return this;
         }
 
-        public HttpServer getHttpServer() {
-            return httpServer;
+        public boolean handleCors() {
+            return handleCors;
         }
 
         public Options setInteractionsUrl(String interactionsUrl) {
@@ -258,6 +283,24 @@ public class DiscordInteractionsClient<T extends Response> extends DiscordClient
 
         public String getInteractionsUrl() {
             return interactionsUrl;
+        }
+
+        public Options setStartHttpServer(boolean startHttpServer) {
+            this.startHttpServer = startHttpServer;
+            return this;
+        }
+
+        public boolean startHttpServer() {
+            return startHttpServer;
+        }
+
+        public Options setHttpServerSupplier(Supplier<HttpServer> httpServerSupplier) {
+            this.httpServerSupplier = requireNonNull(httpServerSupplier, "httpServerSupplier");
+            return this;
+        }
+
+        public Supplier<HttpServer> getHttpServerSupplier() {
+            return httpServerSupplier;
         }
 
         public Options setValidatorFactory(InteractionValidatorFactory validatorFactory) {

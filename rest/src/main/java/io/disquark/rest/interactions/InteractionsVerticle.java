@@ -4,7 +4,10 @@ import static io.disquark.rest.util.ExceptionPredicate.is;
 import static io.disquark.rest.util.ExceptionPredicate.isNot;
 import static java.util.Objects.requireNonNull;
 
+import java.time.Duration;
+import java.util.Set;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import io.disquark.rest.interactions.dsl.InteractionSchema;
 import io.disquark.rest.resources.interactions.Interaction;
@@ -31,21 +34,27 @@ class InteractionsVerticle extends AbstractVerticle {
     private static final Logger LOG = LoggerFactory.getLogger(InteractionsVerticle.class);
 
     private final Router router;
-    private final HttpServer httpServer;
+    private final boolean handleCors;
     private final String interactionsUrl;
+    private final boolean startHttpServer;
+    private final Supplier<HttpServer> httpServerSupplier;
     private final InteractionValidator interactionValidator;
     private final DiscordInteractionsClient<?> interactionsClient;
     private final UnicastProcessor<RoutingContext> processor = UnicastProcessor.create();
 
     public InteractionsVerticle(
             Router router,
-            HttpServer httpServer,
+            boolean handleCors,
             String interactionsUrl,
+            boolean startHttpServer,
+            Supplier<HttpServer> httpServerSupplier,
             InteractionValidator interactionValidator,
             DiscordInteractionsClient<?> interactionsClient) {
         this.router = router;
-        this.httpServer = httpServer;
+        this.handleCors = handleCors;
         this.interactionsUrl = interactionsUrl;
+        this.startHttpServer = startHttpServer;
+        this.httpServerSupplier = httpServerSupplier;
         this.interactionValidator = interactionValidator;
         this.interactionsClient = interactionsClient;
     }
@@ -58,6 +67,8 @@ class InteractionsVerticle extends AbstractVerticle {
         }
 
         return request.body()
+                .ifNoItem().after(Duration.ofSeconds(5)).failWith(
+                        new IllegalArgumentException("No request body received after timeout"))
                 .call(body -> {
                     LOG.debug("Received incoming request {} from {}:{} with body {}",
                             ctx.get(REQUEST_ID), request.remoteAddress().host(), request.remoteAddress().port(), body);
@@ -95,8 +106,12 @@ class InteractionsVerticle extends AbstractVerticle {
                 })
                 .onFailure(isNot(NullPointerException.class, UnauthorizedException.class,
                         IllegalArgumentException.class, DecodeException.class))
-                .invoke(e -> LOG.warn("Encountered exception while handling incoming request {}: {}",
-                        ctx.get(REQUEST_ID), e.getMessage()))
+                .call(e -> {
+                    LOG.warn("Encountered exception while handling incoming request {}: {}",
+                            ctx.get(REQUEST_ID), e.getMessage());
+
+                    return context.response().setStatusCode(500).end();
+                })
                 .onFailure().recoverWithNull();
     }
 
@@ -117,22 +132,34 @@ class InteractionsVerticle extends AbstractVerticle {
         Route route = router.route(HttpMethod.POST, interactionsUrl)
                 .consumes("application/json")
                 .produces("application/json")
-                .handler(CorsHandler.create("discord\\.com"))
                 .handler(requestHandler())
                 .handler(ResponseContentTypeHandler.create());
 
-        return Uni.createFrom().item(route)
-                .replaceWith(httpServer.requestHandler(router))
-                .invoke(() -> LOG.debug("Starting HTTP server on port {}", httpServer.actualPort()))
-                .call(() -> httpServer.listen())
+        if (handleCors) {
+            route.handler(CorsHandler.create()
+                    .addOrigin("https://discord.com")
+                    .allowedMethods(Set.of(HttpMethod.OPTIONS, HttpMethod.POST)));
+        }
+
+        if (!startHttpServer) {
+            return Uni.createFrom().voidItem();
+        }
+
+        return Uni.createFrom().item(() -> requireNonNull(httpServerSupplier.get(), "httpServer").requestHandler(router))
+                .invoke(httpServer -> LOG.debug("Starting HTTP server on port {}", httpServer.actualPort()))
+                .call(HttpServer::listen)
                 .replaceWithVoid();
     }
 
     @Override
     public Uni<Void> asyncStop() {
-        return Uni.createFrom().voidItem()
+        if (!startHttpServer) {
+            return Uni.createFrom().voidItem();
+        }
+
+        return Uni.createFrom().item(httpServerSupplier.get())
                 .invoke(() -> LOG.debug("Shutting down HTTP server"))
-                .replaceWith(httpServer.close());
+                .flatMap(HttpServer::close);
     }
 
     public <D, C extends CompletableInteraction<D>> Multi<C> on(InteractionSchema<D, C> schema) {

@@ -46,30 +46,17 @@ import io.vertx.mutiny.core.Vertx;
 
 public abstract class AuthenticatedDiscordClient<T extends Response> extends DiscordClient<T>
         implements InteractionsCapable, WebhooksCapable {
-    private final DiscordWebhookClient<T> webhookClient;
-
     protected final DiscordInteractionsClient.Options interactionsClientOptions;
 
-    protected volatile DiscordInteractionsClient<T> interactionsClient;
+    private volatile DiscordWebhookClient<T> webhookClient;
+    private volatile DiscordInteractionsClient<T> interactionsClient;
 
-    @SuppressWarnings("unchecked")
     protected AuthenticatedDiscordClient(
             Vertx vertx,
             Requester<T> requester,
             DiscordInteractionsClient.Options interactionsClientOptions) {
         super(vertx, requester);
-        this.webhookClient = ((DiscordWebhookClient.Builder<T>) DiscordWebhookClient.builder(vertx))
-                .requesterFactory(x -> wrapRequester())
-                .build();
         this.interactionsClientOptions = interactionsClientOptions;
-    }
-
-    @SuppressWarnings("unchecked")
-    private Requester<T> wrapRequester() {
-        if (requester instanceof BucketRateLimitingRequester) {
-            return (Requester<T>) new BucketRateLimitingRequester(((BucketRateLimitingRequester) requester).getRequester());
-        }
-        return requester;
     }
 
     public Multi<ApplicationCommand> getGlobalApplicationCommands(Snowflake applicationId, boolean withLocalizations) {
@@ -183,19 +170,22 @@ public abstract class AuthenticatedDiscordClient<T extends Response> extends Dis
             builder.router(interactionsClientOptions.getRouter());
         }
 
-        if (interactionsClientOptions.getHttpServer() != null) {
-            builder.httpServer(interactionsClientOptions.getHttpServer());
-        }
-
         if (interactionsClientOptions.getInteractionsUrl() != null) {
             builder.interactionsUrl(interactionsClientOptions.getInteractionsUrl());
+        }
+
+        if (interactionsClientOptions.getHttpServerSupplier() != null) {
+            builder.httpServerSupplier(interactionsClientOptions.getHttpServerSupplier());
         }
 
         if (interactionsClientOptions.getValidatorFactory() != null) {
             builder.validatorFactory(interactionsClientOptions.getValidatorFactory());
         }
 
-        return builder.requesterFactory(x -> webhookClient.requester).build();
+        return builder.handleCors(interactionsClientOptions.handleCors())
+                .startHttpServer(interactionsClientOptions.startHttpServer())
+                .requesterFactory(x -> getWebhookClient().requester)
+                .build();
     }
 
     protected abstract DiscordInteractionsClient<T> buildInteractionsClient();
@@ -260,49 +250,70 @@ public abstract class AuthenticatedDiscordClient<T extends Response> extends Dis
                 .flatMap(res -> res.as(PartialGuild[].class)).onItem().disjoint();
     }
 
+    @SuppressWarnings("unchecked")
+    private Requester<T> wrapRequester() {
+        if (requester instanceof BucketRateLimitingRequester) {
+            return (Requester<T>) new BucketRateLimitingRequester(((BucketRateLimitingRequester) requester).getRequester());
+        }
+        return requester;
+    }
+
+    private DiscordWebhookClient<T> getWebhookClient() {
+        if (webhookClient == null) {
+            synchronized (this) {
+                if (webhookClient == null) {
+                    webhookClient = DiscordWebhookClient.<T> builder(vertx)
+                            .requesterFactory(x -> wrapRequester())
+                            .build();
+                }
+            }
+        }
+        return webhookClient;
+    }
+
     @Override
     public Uni<Webhook> getWebhookWithToken(Snowflake webhookId, String webhookToken) {
-        return webhookClient.getWebhookWithToken(webhookId, webhookToken);
+        return getWebhookClient().getWebhookWithToken(webhookId, webhookToken);
     }
 
     @Override
     public Uni<Webhook> modifyWebhookWithToken(ModifyWebhookWithToken modifyWebhookWithToken) {
-        return webhookClient.modifyWebhookWithToken(modifyWebhookWithToken);
+        return getWebhookClient().modifyWebhookWithToken(modifyWebhookWithToken);
     }
 
     @Override
     public Uni<Void> deleteWebhookWithToken(Snowflake webhookId, String webhookToken) {
-        return webhookClient.deleteWebhookWithToken(webhookId, webhookToken);
+        return getWebhookClient().deleteWebhookWithToken(webhookId, webhookToken);
     }
 
     @Override
     public Uni<Message> executeWebhook(ExecuteWebhook executeWebhook) {
-        return webhookClient.executeWebhook(executeWebhook);
+        return getWebhookClient().executeWebhook(executeWebhook);
     }
 
     @Override
     public Uni<Message> executeSlackCompatibleWebhook(ExecuteWebhookOptions options) {
-        return webhookClient.executeSlackCompatibleWebhook(options);
+        return getWebhookClient().executeSlackCompatibleWebhook(options);
     }
 
     @Override
     public Uni<Message> executeGitHubCompatibleWebhook(ExecuteWebhookOptions options) {
-        return webhookClient.executeGitHubCompatibleWebhook(options);
+        return getWebhookClient().executeGitHubCompatibleWebhook(options);
     }
 
     @Override
     public Uni<Message> getWebhookMessage(WebhookMessageOptions options) {
-        return webhookClient.getWebhookMessage(options);
+        return getWebhookClient().getWebhookMessage(options);
     }
 
     @Override
     public Uni<Message> editWebhookMessage(EditWebhookMessage editWebhookMessage) {
-        return webhookClient.editWebhookMessage(editWebhookMessage);
+        return getWebhookClient().editWebhookMessage(editWebhookMessage);
     }
 
     @Override
     public Uni<Void> deleteWebhookMessage(WebhookMessageOptions options) {
-        return webhookClient.deleteWebhookMessage(options);
+        return getWebhookClient().deleteWebhookMessage(options);
     }
 
     public static abstract class Builder<R extends Response, T extends AuthenticatedDiscordClient<R>>
