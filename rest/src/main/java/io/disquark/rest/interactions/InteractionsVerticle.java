@@ -66,7 +66,7 @@ class InteractionsVerticle extends AbstractVerticle {
             ctx.put(REQUEST_ID, Integer.toHexString(request.hashCode()));
         }
 
-        return request.body()
+        return request.resume().body()
                 .ifNoItem().after(Duration.ofSeconds(5)).failWith(
                         new IllegalArgumentException("No request body received after timeout"))
                 .call(body -> {

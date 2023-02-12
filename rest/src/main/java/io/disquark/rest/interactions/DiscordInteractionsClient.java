@@ -212,18 +212,18 @@ public class DiscordInteractionsClient<T extends Response> extends DiscordClient
             if (validatorFactory == null) {
                 validatorFactory = InteractionValidatorFactory.NO_OP;
 
-                boolean noBouncyCastle = false;
+                boolean bouncyCastle = false;
                 try {
                     Class.forName("org.bouncycastle.math.ec.rfc8032.Ed25519");
+                    bouncyCastle = true;
                 } catch (ClassNotFoundException e) {
                     LOG.warn(
                             "org.bouncycastle dependency not installed: incoming interaction signatures will not be validated");
-                    noBouncyCastle = true;
                 }
 
-                if (!noBouncyCastle && Security.getProvider("BC") == null) {
+                if (bouncyCastle && Security.getProvider("BC") == null) {
                     LOG.warn("BouncyCastle JCE provider not installed: incoming interaction signatures will not be validated");
-                } else {
+                } else if (bouncyCastle) {
                     validatorFactory = BouncyCastleInteractionValidator::new;
                 }
             }
