@@ -27,7 +27,7 @@ public class MessageComponentInteraction extends CompletableInteraction<Interact
     }
 
     public Uni<RespondedInteraction<Interaction.MessageComponentData>> deferEdit() {
-        return serialize(serialize(Interaction.Response.create(Interaction.CallbackType.DEFERRED_UPDATE_MESSAGE)))
+        return serialize(Interaction.Response.create(Interaction.CallbackType.DEFERRED_UPDATE_MESSAGE))
                 .invoke(() -> LOG.debug("Responding to interaction {} with deferred message edit",
                         interaction.id().getValueAsString()))
                 .replaceWith(new RespondedInteraction<>(interaction, interactionsClient));
