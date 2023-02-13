@@ -3,6 +3,7 @@ package io.disquark.rest.interactions.dsl;
 import static java.util.Objects.requireNonNull;
 
 import io.disquark.rest.interactions.ApplicationCommandInteraction;
+import io.disquark.rest.resources.Snowflake;
 import io.disquark.rest.resources.application.command.ApplicationCommand;
 import io.disquark.rest.resources.interactions.Interaction;
 
@@ -14,8 +15,32 @@ public class ApplicationCommandBuilder
     }
 
     @Override
+    public ApplicationCommandBuilder id(Snowflake id) {
+        super.id(id);
+        return this;
+    }
+
+    @Override
+    public ApplicationCommandBuilder name(String name) {
+        super.name(name);
+        return this;
+    }
+
+    @Override
     public ApplicationCommandBuilder type(ApplicationCommand.Type type) {
         this.type = requireNonNull(type, "type");
         return this;
+    }
+
+    @Override
+    public ApplicationCommandBuilder with(ApplicationCommandOptionBuilder option) {
+        super.with(option);
+        return this;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public GuildIdStage<ApplicationCommandInteraction, ApplicationCommandOptionBuilder, ApplicationCommandBuilder> guildId() {
+        return new GuildIdStage<>(this);
     }
 }

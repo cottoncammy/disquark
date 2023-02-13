@@ -41,12 +41,12 @@ public abstract class AbstractApplicationCommandBuilder<C extends CompletableInt
         this.completableInteractionFunction = completableInteractionFunction;
     }
 
-    public AbstractApplicationCommandBuilder<C, O> id(Snowflake id) {
+    protected AbstractApplicationCommandBuilder<C, O> id(Snowflake id) {
         this.id = requireNonNull(id, "id");
         return this;
     }
 
-    public AbstractApplicationCommandBuilder<C, O> name(String name) {
+    protected AbstractApplicationCommandBuilder<C, O> name(String name) {
         this.name = requireNonNull(name, "name");
         return this;
     }
@@ -56,13 +56,14 @@ public abstract class AbstractApplicationCommandBuilder<C extends CompletableInt
         return this;
     }
 
-    public AbstractApplicationCommandBuilder<C, O> with(O option) {
+    protected AbstractApplicationCommandBuilder<C, O> with(O option) {
         options.add(requireNonNull(option, "option"));
         return this;
     }
 
-    public GuildIdStage<C, O, AbstractApplicationCommandBuilder<C, O>> guildId() {
-        return new GuildIdStage<>(this);
+    @SuppressWarnings("unchecked")
+    protected <T extends AbstractApplicationCommandBuilder<C, O>> GuildIdStage<C, O, T> guildId() {
+        return new GuildIdStage<>((T) this);
     }
 
     @Override

@@ -24,17 +24,17 @@ public abstract class AbstractApplicationCommandOptionBuilder<O extends Abstract
     protected AbstractApplicationCommandOptionBuilder() {
     }
 
-    public AbstractApplicationCommandOptionBuilder<O> name(String name) {
+    protected AbstractApplicationCommandOptionBuilder<O> name(String name) {
         this.name = requireNonNull(name, "name");
         return this;
     }
 
-    public AbstractApplicationCommandOptionBuilder<O> type(ApplicationCommand.Option.Type type) {
+    protected AbstractApplicationCommandOptionBuilder<O> type(ApplicationCommand.Option.Type type) {
         this.type = requireNonNull(type, "type");
         return this;
     }
 
-    public AbstractApplicationCommandOptionBuilder<O> with(O option) {
+    protected AbstractApplicationCommandOptionBuilder<O> with(O option) {
         options.add(requireNonNull(option, "option"));
         return this;
     }
