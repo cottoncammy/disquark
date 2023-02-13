@@ -9,7 +9,7 @@ import javax.annotation.Nullable;
 import io.disquark.rest.interactions.DiscordInteractionsClient;
 import io.disquark.rest.interactions.ModalSubmitInteraction;
 import io.disquark.rest.resources.interactions.Interaction;
-import io.vertx.mutiny.core.http.HttpServerResponse;
+import io.vertx.mutiny.ext.web.RoutingContext;
 
 public class ModalSubmitBuilder implements InteractionSchema<Interaction.ModalSubmitData, ModalSubmitInteraction> {
     @Nullable
@@ -31,8 +31,9 @@ public class ModalSubmitBuilder implements InteractionSchema<Interaction.ModalSu
     }
 
     @Override
-    public ModalSubmitInteraction getCompletableInteraction(Interaction<Interaction.ModalSubmitData> interaction,
-            HttpServerResponse response, DiscordInteractionsClient<?> interactionsClient) {
-        return new ModalSubmitInteraction(interaction, response, interactionsClient);
+    public ModalSubmitInteraction getCompletableInteraction(RoutingContext context,
+            Interaction<Interaction.ModalSubmitData> interaction,
+            DiscordInteractionsClient<?> interactionsClient) {
+        return new ModalSubmitInteraction(context, interaction, interactionsClient);
     }
 }

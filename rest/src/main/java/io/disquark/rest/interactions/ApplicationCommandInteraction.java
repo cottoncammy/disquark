@@ -5,15 +5,15 @@ import java.util.List;
 import io.disquark.rest.resources.interactions.Interaction;
 import io.disquark.rest.resources.interactions.components.Component;
 import io.smallrye.mutiny.Uni;
-import io.vertx.mutiny.core.http.HttpServerResponse;
+import io.vertx.mutiny.ext.web.RoutingContext;
 
 public class ApplicationCommandInteraction extends CompletableInteraction<Interaction.ApplicationCommandData> {
 
     public ApplicationCommandInteraction(
+            RoutingContext context,
             Interaction<Interaction.ApplicationCommandData> interaction,
-            HttpServerResponse response,
             DiscordInteractionsClient<?> interactionsClient) {
-        super(interaction, response, interactionsClient);
+        super(context, interaction, interactionsClient);
     }
 
     @Override

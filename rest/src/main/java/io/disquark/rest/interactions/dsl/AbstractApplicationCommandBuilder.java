@@ -18,12 +18,12 @@ import io.disquark.rest.resources.application.command.ApplicationCommand;
 import io.disquark.rest.resources.interactions.ApplicationCommandInteractionDataOption;
 import io.disquark.rest.resources.interactions.Interaction;
 import io.smallrye.mutiny.tuples.Functions;
-import io.vertx.mutiny.core.http.HttpServerResponse;
+import io.vertx.mutiny.ext.web.RoutingContext;
 
 public abstract class AbstractApplicationCommandBuilder<C extends CompletableInteraction<Interaction.ApplicationCommandData>, O extends AbstractApplicationCommandOptionBuilder<O>>
         implements InteractionSchema<Interaction.ApplicationCommandData, C> {
     private final Interaction.Type interactionType;
-    private final Functions.Function3<Interaction<Interaction.ApplicationCommandData>, HttpServerResponse, DiscordInteractionsClient<?>, C> completableInteractionFunction;
+    private final Functions.Function3<RoutingContext, Interaction<Interaction.ApplicationCommandData>, DiscordInteractionsClient<?>, C> completableInteractionFunction;
     private final List<O> options = new ArrayList<>();
 
     @Nullable
@@ -36,7 +36,7 @@ public abstract class AbstractApplicationCommandBuilder<C extends CompletableInt
 
     protected AbstractApplicationCommandBuilder(
             Interaction.Type interactionType,
-            Functions.Function3<Interaction<Interaction.ApplicationCommandData>, HttpServerResponse, DiscordInteractionsClient<?>, C> completableInteractionFunction) {
+            Functions.Function3<RoutingContext, Interaction<Interaction.ApplicationCommandData>, DiscordInteractionsClient<?>, C> completableInteractionFunction) {
         this.interactionType = interactionType;
         this.completableInteractionFunction = completableInteractionFunction;
     }
@@ -94,8 +94,8 @@ public abstract class AbstractApplicationCommandBuilder<C extends CompletableInt
     }
 
     @Override
-    public C getCompletableInteraction(Interaction<Interaction.ApplicationCommandData> interaction, HttpServerResponse response,
+    public C getCompletableInteraction(RoutingContext context, Interaction<Interaction.ApplicationCommandData> interaction,
             DiscordInteractionsClient<?> interactionsClient) {
-        return completableInteractionFunction.apply(interaction, response, interactionsClient);
+        return completableInteractionFunction.apply(context, interaction, interactionsClient);
     }
 }

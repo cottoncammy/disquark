@@ -4,7 +4,7 @@ import io.disquark.rest.interactions.CompletableInteraction;
 import io.disquark.rest.interactions.DiscordInteractionsClient;
 import io.disquark.rest.interactions.PingInteraction;
 import io.disquark.rest.resources.interactions.Interaction;
-import io.vertx.mutiny.core.http.HttpServerResponse;
+import io.vertx.mutiny.ext.web.RoutingContext;
 
 public interface InteractionSchema<D, C extends CompletableInteraction<D>> {
 
@@ -16,9 +16,9 @@ public interface InteractionSchema<D, C extends CompletableInteraction<D>> {
             }
 
             @Override
-            public PingInteraction getCompletableInteraction(Interaction<Void> interaction, HttpServerResponse response,
+            public PingInteraction getCompletableInteraction(RoutingContext context, Interaction<Void> interaction,
                     DiscordInteractionsClient<?> interactionsClient) {
-                return new PingInteraction(interaction, response, interactionsClient);
+                return new PingInteraction(context, interaction, interactionsClient);
             }
         };
     }
@@ -41,6 +41,6 @@ public interface InteractionSchema<D, C extends CompletableInteraction<D>> {
 
     boolean validate(Interaction<D> interaction);
 
-    C getCompletableInteraction(Interaction<D> interaction, HttpServerResponse response,
+    C getCompletableInteraction(RoutingContext context, Interaction<D> interaction,
             DiscordInteractionsClient<?> interactionsClient);
 }

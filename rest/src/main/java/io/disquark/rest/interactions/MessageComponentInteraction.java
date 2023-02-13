@@ -5,15 +5,15 @@ import java.util.List;
 import io.disquark.rest.resources.interactions.Interaction;
 import io.disquark.rest.resources.interactions.components.Component;
 import io.smallrye.mutiny.Uni;
-import io.vertx.mutiny.core.http.HttpServerResponse;
+import io.vertx.mutiny.ext.web.RoutingContext;
 
 public class MessageComponentInteraction extends CompletableInteraction<Interaction.MessageComponentData> {
 
     public MessageComponentInteraction(
+            RoutingContext context,
             Interaction<Interaction.MessageComponentData> interaction,
-            HttpServerResponse response,
             DiscordInteractionsClient<?> interactionsClient) {
-        super(interaction, response, interactionsClient);
+        super(context, interaction, interactionsClient);
     }
 
     @Override
@@ -28,17 +28,15 @@ public class MessageComponentInteraction extends CompletableInteraction<Interact
 
     public Uni<RespondedInteraction<Interaction.MessageComponentData>> deferEdit() {
         return serialize(serialize(Interaction.Response.create(Interaction.CallbackType.DEFERRED_UPDATE_MESSAGE)))
-                .invoke(json -> LOG.debug("Responding to interaction {} with deferred message edit {}",
-                        interaction.id().getValueAsString(), json))
-                .flatMap(response::end)
+                .invoke(() -> LOG.debug("Responding to interaction {} with deferred message edit",
+                        interaction.id().getValueAsString()))
                 .replaceWith(new RespondedInteraction<>(interaction, interactionsClient));
     }
 
     public Uni<RespondedInteraction<Interaction.MessageComponentData>> edit(Interaction.MessageCallbackData data) {
         return serialize(Interaction.Response.builder().type(Interaction.CallbackType.UPDATE_MESSAGE).data(data).build())
-                .invoke(json -> LOG.debug("Responding to interaction {} with message edit {}",
-                        interaction.id().getValueAsString(), json))
-                .flatMap(response::end)
+                .invoke(() -> LOG.debug("Responding to interaction {} with message edit",
+                        interaction.id().getValueAsString()))
                 .replaceWith(new RespondedInteraction<>(interaction, interactionsClient));
     }
 

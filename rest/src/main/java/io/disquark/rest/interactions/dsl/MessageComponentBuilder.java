@@ -11,7 +11,7 @@ import io.disquark.rest.interactions.DiscordInteractionsClient;
 import io.disquark.rest.interactions.MessageComponentInteraction;
 import io.disquark.rest.resources.interactions.Interaction;
 import io.disquark.rest.resources.interactions.components.Component;
-import io.vertx.mutiny.core.http.HttpServerResponse;
+import io.vertx.mutiny.ext.web.RoutingContext;
 
 public class MessageComponentBuilder
         implements InteractionSchema<Interaction.MessageComponentData, MessageComponentInteraction> {
@@ -44,8 +44,9 @@ public class MessageComponentBuilder
     }
 
     @Override
-    public MessageComponentInteraction getCompletableInteraction(Interaction<Interaction.MessageComponentData> interaction,
-            HttpServerResponse response, DiscordInteractionsClient<?> interactionsClient) {
-        return new MessageComponentInteraction(interaction, response, interactionsClient);
+    public MessageComponentInteraction getCompletableInteraction(RoutingContext context,
+            Interaction<Interaction.MessageComponentData> interaction,
+            DiscordInteractionsClient<?> interactionsClient) {
+        return new MessageComponentInteraction(context, interaction, interactionsClient);
     }
 }

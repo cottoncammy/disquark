@@ -2,15 +2,15 @@ package io.disquark.rest.interactions;
 
 import io.disquark.rest.resources.interactions.Interaction;
 import io.smallrye.mutiny.Uni;
-import io.vertx.mutiny.core.http.HttpServerResponse;
+import io.vertx.mutiny.ext.web.RoutingContext;
 
 public class ModalSubmitInteraction extends CompletableInteraction<Interaction.ModalSubmitData> {
 
     public ModalSubmitInteraction(
+            RoutingContext context,
             Interaction<Interaction.ModalSubmitData> interaction,
-            HttpServerResponse response,
             DiscordInteractionsClient<?> interactionsClient) {
-        super(interaction, response, interactionsClient);
+        super(context, interaction, interactionsClient);
     }
 
     @Override

@@ -5,15 +5,15 @@ import java.util.List;
 import io.disquark.rest.resources.application.command.ApplicationCommand;
 import io.disquark.rest.resources.interactions.Interaction;
 import io.smallrye.mutiny.Uni;
-import io.vertx.mutiny.core.http.HttpServerResponse;
+import io.vertx.mutiny.ext.web.RoutingContext;
 
 public class ApplicationCommandAutocompleteInteraction extends CompletableInteraction<Interaction.ApplicationCommandData> {
 
     public ApplicationCommandAutocompleteInteraction(
+            RoutingContext context,
             Interaction<Interaction.ApplicationCommandData> interaction,
-            HttpServerResponse response,
             DiscordInteractionsClient<?> interactionsClient) {
-        super(interaction, response, interactionsClient);
+        super(context, interaction, interactionsClient);
     }
 
     public Uni<RespondedInteraction<Interaction.ApplicationCommandData>> suggestChoices(
@@ -24,9 +24,8 @@ public class ApplicationCommandAutocompleteInteraction extends CompletableIntera
                 .build();
 
         return serialize(interactionResponse)
-                .invoke(json -> LOG.debug("Responding to interaction {} with autocomplete choices {}",
-                        interaction.id().getValueAsString(), json))
-                .flatMap(response::end)
+                .invoke(() -> LOG.debug("Responding to interaction {} with autocomplete choices",
+                        interaction.id().getValueAsString()))
                 .replaceWith(new RespondedInteraction<>(interaction, interactionsClient));
     }
 }

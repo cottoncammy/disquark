@@ -25,7 +25,6 @@ import io.vertx.mutiny.ext.web.Route;
 import io.vertx.mutiny.ext.web.Router;
 import io.vertx.mutiny.ext.web.RoutingContext;
 import io.vertx.mutiny.ext.web.handler.CorsHandler;
-import io.vertx.mutiny.ext.web.handler.ResponseContentTypeHandler;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -100,7 +99,7 @@ class InteractionsVerticle extends AbstractVerticle {
                             ctx.get(REQUEST_ID), interaction.type(), interaction));
 
                     if (interaction.type() == Interaction.Type.PING) {
-                        return new PingInteraction(interaction, context.response(), interactionsClient).pong();
+                        return new PingInteraction(context, interaction, interactionsClient).pong();
                     }
                     return Uni.createFrom().voidItem();
                 })
@@ -136,8 +135,7 @@ class InteractionsVerticle extends AbstractVerticle {
         Route route = router.route(HttpMethod.POST, interactionsUrl)
                 .consumes("application/json")
                 .produces("application/json")
-                .handler(requestHandler())
-                .handler(ResponseContentTypeHandler.create());
+                .handler(requestHandler());
 
         if (handleCors) {
             route.handler(CorsHandler.create()
@@ -169,10 +167,11 @@ class InteractionsVerticle extends AbstractVerticle {
     public <D, C extends CompletableInteraction<D>> Multi<C> on(InteractionSchema<D, C> schema) {
         return processor.onItem().transformToUniAndMerge(context -> {
             Interaction<D> interaction = context.get("interaction");
-            if (!schema.validate(interaction)) {
+            if (!schema.validate(interaction)
+                    || (interaction.type() != Interaction.Type.PING && context.get("responded", false))) {
                 return Uni.createFrom().nullItem();
             }
-            return Uni.createFrom().item(schema.getCompletableInteraction(interaction, context.response(), interactionsClient));
+            return Uni.createFrom().item(schema.getCompletableInteraction(context, interaction, interactionsClient));
         });
     }
 
