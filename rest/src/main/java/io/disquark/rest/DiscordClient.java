@@ -10,6 +10,7 @@ import io.disquark.rest.request.ratelimit.RateLimitStrategy;
 import io.disquark.rest.response.Response;
 import io.vertx.mutiny.core.Vertx;
 
+// TODO https://stackoverflow.com/questions/3284610/returning-an-objects-subclass-with-generics
 public abstract class DiscordClient<T extends Response> {
     protected final Vertx vertx;
     protected final Requester<T> requester;

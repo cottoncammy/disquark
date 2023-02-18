@@ -263,7 +263,7 @@ public interface Interaction<T> {
         }
 
         @ImmutableJson
-        @JsonDeserialize(as = ImmutableInteraction.ResolvedData.class)
+        @JsonDeserialize(as = ImmutableInteraction.PartialChannel.class)
         interface PartialChannel {
 
             static Builder builder() {

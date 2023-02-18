@@ -44,7 +44,7 @@ public abstract class CompletableInteraction<T> {
         }
 
         return serialize(builder.build())
-                .invoke(() -> LOG.debug("Responding to interaction with {} deferred message",
+                .invoke(() -> LOG.debug("Responding to interaction {} with deferred message",
                         interaction.id().getValueAsString()))
                 .replaceWith(new RespondedInteraction<>(interaction, interactionsClient));
     }

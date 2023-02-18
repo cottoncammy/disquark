@@ -3,7 +3,6 @@ package io.disquark.rest.interactions.dsl;
 import static java.util.Objects.requireNonNull;
 
 import java.util.Objects;
-import java.util.Optional;
 
 import javax.annotation.Nullable;
 
@@ -35,12 +34,13 @@ public class MessageComponentBuilder
 
     @Override
     public boolean validate(Interaction<Interaction.MessageComponentData> interaction) {
-        Optional<Interaction.MessageComponentData> data = interaction.data();
         return interaction.type() == Interaction.Type.MESSAGE_COMPONENT &&
                 (customId == null
-                        || Objects.equals(customId, data.map(Interaction.MessageComponentData::customId).orElse(null)))
+                        || Objects.equals(customId,
+                                interaction.data().map(Interaction.MessageComponentData::customId).orElse(null)))
                 &&
-                (type == null || Objects.equals(type, data.map(Interaction.MessageComponentData::componentType).orElse(null)));
+                (type == null || Objects.equals(type,
+                        interaction.data().map(Interaction.MessageComponentData::componentType).orElse(null)));
     }
 
     @Override

@@ -41,8 +41,19 @@ public abstract class AbstractApplicationCommandOptionBuilder<O extends Abstract
 
     @Override
     public boolean test(ApplicationCommandInteractionDataOption interactionOption) {
+        List<ApplicationCommandInteractionDataOption> interactionOptions = interactionOption.options()
+                .orElse(Collections.emptyList());
+
         for (O option : options) {
-            if (interactionOption.options().orElse(Collections.emptyList()).stream().noneMatch(option)) {
+            boolean hasOption = false;
+            for (ApplicationCommandInteractionDataOption optionOption : interactionOptions) {
+                if (option.test(optionOption)) {
+                    hasOption = true;
+                    break;
+                }
+            }
+
+            if (!hasOption) {
                 return false;
             }
         }

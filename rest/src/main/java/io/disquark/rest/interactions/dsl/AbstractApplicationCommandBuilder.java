@@ -68,6 +68,10 @@ public abstract class AbstractApplicationCommandBuilder<C extends CompletableInt
 
     @Override
     public boolean validate(Interaction<Interaction.ApplicationCommandData> interaction) {
+        if (interaction.type() != interactionType) {
+            return false;
+        }
+
         List<ApplicationCommandInteractionDataOption> interactionOptions = interaction.data()
                 .flatMap(Interaction.ApplicationCommandData::options)
                 .orElse(Collections.emptyList());
@@ -87,8 +91,7 @@ public abstract class AbstractApplicationCommandBuilder<C extends CompletableInt
         }
 
         Optional<Interaction.ApplicationCommandData> data = interaction.data();
-        return interaction.type() == interactionType &&
-                (id == null || Objects.equals(id, data.map(Interaction.ApplicationCommandData::id).orElse(null))) &&
+        return (id == null || Objects.equals(id, data.map(Interaction.ApplicationCommandData::id).orElse(null))) &&
                 (name == null || Objects.equals(name, data.map(Interaction.ApplicationCommandData::name).orElse(null))) &&
                 (type == null || Objects.equals(type, data.map(Interaction.ApplicationCommandData::type).orElse(null))) &&
                 guildIdPredicate.test(interaction.guildId());

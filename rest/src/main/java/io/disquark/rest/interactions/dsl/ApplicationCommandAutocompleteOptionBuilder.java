@@ -1,6 +1,7 @@
 package io.disquark.rest.interactions.dsl;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 
 import io.disquark.rest.resources.application.command.ApplicationCommand;
@@ -39,8 +40,19 @@ public class ApplicationCommandAutocompleteOptionBuilder
 
     @Override
     public boolean test(ApplicationCommandInteractionDataOption interactionOption) {
+        List<ApplicationCommandInteractionDataOption> interactionOptions = interactionOption.options()
+                .orElse(Collections.emptyList());
+
         for (ApplicationCommandAutocompleteOptionBuilder option : options) {
-            if (interactionOption.options().orElse(Collections.emptyList()).stream().noneMatch(option)) {
+            boolean hasOption = false;
+            for (ApplicationCommandInteractionDataOption optionOption : interactionOptions) {
+                if (option.test(optionOption)) {
+                    hasOption = true;
+                    break;
+                }
+            }
+
+            if (!hasOption) {
                 return false;
             }
         }

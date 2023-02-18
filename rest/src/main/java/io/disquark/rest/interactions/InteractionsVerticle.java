@@ -6,9 +6,11 @@ import static io.disquark.rest.util.Logger.log;
 import static java.util.Objects.requireNonNull;
 
 import java.time.Duration;
-import java.util.Set;
+import java.util.Collections;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+
+import com.fasterxml.jackson.core.type.TypeReference;
 
 import io.disquark.rest.interactions.dsl.InteractionSchema;
 import io.disquark.rest.resources.interactions.Interaction;
@@ -16,9 +18,13 @@ import io.smallrye.mutiny.Context;
 import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
 import io.smallrye.mutiny.operators.multi.processors.BroadcastProcessor;
+import io.smallrye.mutiny.tuples.Tuple2;
 import io.smallrye.mutiny.vertx.core.AbstractVerticle;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.json.DecodeException;
+import io.vertx.core.json.Json;
+import io.vertx.core.json.JsonObject;
+import io.vertx.core.json.jackson.DatabindCodec;
 import io.vertx.mutiny.core.http.HttpServer;
 import io.vertx.mutiny.core.http.HttpServerRequest;
 import io.vertx.mutiny.ext.web.Route;
@@ -60,6 +66,10 @@ class InteractionsVerticle extends AbstractVerticle {
         this.interactionsClient = interactionsClient;
     }
 
+    private <T> Uni<Interaction<T>> getInteraction(JsonObject json, TypeReference<Interaction<T>> typeReference) {
+        return Uni.createFrom().item(() -> DatabindCodec.decodeValue(json.encode(), typeReference));
+    }
+
     @SuppressWarnings("unchecked")
     private Uni<?> handleRequest(RoutingContext context, Context ctx) {
         HttpServerRequest request = context.request();
@@ -87,8 +97,36 @@ class InteractionsVerticle extends AbstractVerticle {
 
                     return context.response().setStatusCode(401).end();
                 })
-                .map(body -> body.toJsonObject().mapTo(Interaction.class))
-                .onFailure(is(IllegalArgumentException.class, DecodeException.class)).call(e -> {
+                .flatMap(body -> {
+                    return Uni.createFrom().item(() -> Tuple2.of(body.toJsonObject(), Json.decodeValue(
+                            body.toJsonObject().getInteger("type").toString(), Interaction.Type.class)));
+                })
+                .flatMap(tuple -> {
+                    Interaction.Type type = tuple.getItem2();
+                    JsonObject json = tuple.getItem1();
+
+                    switch (type) {
+                        case UNKNOWN:
+                            return Uni.createFrom().failure(new DecodeException("Unknown interaction type: " +
+                                    json.getInteger("type")));
+                        case PING:
+                            return getInteraction(json, new TypeReference<Interaction<Void>>() {
+                            });
+                        case APPLICATION_COMMAND:
+                        case APPLICATION_COMMAND_AUTOCOMPLETE:
+                            return getInteraction(json, new TypeReference<Interaction<Interaction.ApplicationCommandData>>() {
+                            });
+                        case MESSAGE_COMPONENT:
+                            return getInteraction(json, new TypeReference<Interaction<Interaction.MessageComponentData>>() {
+                            });
+                        case MODAL_SUBMIT:
+                            return getInteraction(json, new TypeReference<Interaction<Interaction.ModalSubmitData>>() {
+                            });
+                        default:
+                            return Uni.createFrom().failure(IllegalStateException::new);
+                    }
+                })
+                .onFailure(is(NullPointerException.class, DecodeException.class)).call(e -> {
                     log(LOG, Level.WARN, log -> log.warn("Request body mapping failed for incoming request {}: {}",
                             ctx.get(REQUEST_ID), e.getMessage()));
 
@@ -99,7 +137,7 @@ class InteractionsVerticle extends AbstractVerticle {
                             ctx.get(REQUEST_ID), interaction.type(), interaction));
 
                     if (interaction.type() == Interaction.Type.PING) {
-                        return new PingInteraction(context, interaction, interactionsClient).pong();
+                        return new PingInteraction(context, (Interaction<Void>) interaction, interactionsClient).pong();
                     }
                     return Uni.createFrom().voidItem();
                 })
@@ -140,7 +178,7 @@ class InteractionsVerticle extends AbstractVerticle {
         if (handleCors) {
             route.handler(CorsHandler.create()
                     .addOrigin("https://discord.com")
-                    .allowedMethods(Set.of(HttpMethod.OPTIONS, HttpMethod.POST)));
+                    .allowedMethods(Collections.singleton(HttpMethod.POST)));
         }
 
         if (!startHttpServer) {

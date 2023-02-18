@@ -44,6 +44,7 @@ public class BearerTokenSource implements AccessTokenSource {
                 .setAuthorizationPath("/authorize")
                 .setTokenPath("/token")
                 .setRevocationPath("/token/revoke")
+                // TODO user agent
                 .setUserAgent(String.format("DiscordBot (%s, %s)", "https://github.com/cameronprater/discord-TODO", "0.1.0"));
         return new Builder(requireNonNull(vertx, "vertx"), OAuth2Auth.create(vertx, options));
     }
