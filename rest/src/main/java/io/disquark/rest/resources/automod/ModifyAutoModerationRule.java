@@ -8,47 +8,51 @@ import java.util.Optional;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import io.disquark.immutables.ImmutableJson;
+import io.disquark.immutables.ImmutableUni;
+import io.disquark.rest.request.AbstractRequestUni;
 import io.disquark.rest.request.Auditable;
 import io.disquark.rest.request.Endpoint;
 import io.disquark.rest.request.Request;
-import io.disquark.rest.request.Requestable;
 import io.disquark.rest.resources.Snowflake;
+import io.smallrye.mutiny.subscription.UniSubscriber;
 import io.vertx.core.http.HttpMethod;
 
-@ImmutableJson
-public interface ModifyAutoModerationRule extends Auditable, Requestable {
-
-    static Builder builder() {
-        return new Builder();
-    }
+@ImmutableUni
+abstract class ModifyAutoModerationRule extends AbstractRequestUni<AutoModerationRule> implements Auditable {
 
     @JsonIgnore
-    Snowflake guildId();
+    public abstract Snowflake guildId();
 
     @JsonIgnore
-    Snowflake autoModerationRuleId();
+    public abstract Snowflake autoModerationRuleId();
 
-    Optional<String> name();
+    public abstract Optional<String> name();
 
     @JsonProperty("event_type")
-    Optional<AutoModerationRule.EventType> eventType();
+    public abstract Optional<AutoModerationRule.EventType> eventType();
 
     @JsonProperty("trigger_metadata")
-    Optional<AutoModerationRule.TriggerMetadata> triggerMetadata();
+    public abstract Optional<AutoModerationRule.TriggerMetadata> triggerMetadata();
 
-    Optional<List<AutoModerationAction>> actions();
+    public abstract Optional<List<AutoModerationAction>> actions();
 
-    Optional<Boolean> enabled();
+    public abstract Optional<Boolean> enabled();
 
     @JsonProperty("exempt_roles")
-    Optional<List<Snowflake>> exemptRoles();
+    public abstract Optional<List<Snowflake>> exemptRoles();
 
     @JsonProperty("exempt_channels")
-    Optional<List<Snowflake>> exemptChannels();
+    public abstract Optional<List<Snowflake>> exemptChannels();
 
     @Override
-    default Request asRequest() {
+    public void subscribe(UniSubscriber<? super AutoModerationRule> downstream) {
+        requester().request(asRequest())
+                .flatMap(res -> res.as(AutoModerationRule.class))
+                .subscribe().withSubscriber(downstream);
+    }
+
+    @Override
+    public Request asRequest() {
         return Request.builder()
                 .endpoint(
                         Endpoint.create(HttpMethod.PATCH, "/guilds/{guild.id}/auto-moderation/rules/{auto_moderation_rule.id}"))
@@ -57,10 +61,5 @@ public interface ModifyAutoModerationRule extends Auditable, Requestable {
                 .body(this)
                 .auditLogReason(auditLogReason())
                 .build();
-    }
-
-    class Builder extends ImmutableModifyAutoModerationRule.Builder {
-        protected Builder() {
-        }
     }
 }

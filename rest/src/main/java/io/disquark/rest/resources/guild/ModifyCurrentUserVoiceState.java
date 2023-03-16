@@ -10,45 +10,42 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import io.disquark.immutables.ImmutableJson;
+import io.disquark.immutables.ImmutableUni;
 import io.disquark.nullableoptional.NullableOptional;
 import io.disquark.nullableoptional.jackson.NullableOptionalFilter;
+import io.disquark.rest.request.AbstractRequestUni;
 import io.disquark.rest.request.Endpoint;
 import io.disquark.rest.request.Request;
-import io.disquark.rest.request.Requestable;
 import io.disquark.rest.resources.Snowflake;
+import io.smallrye.mutiny.subscription.UniSubscriber;
 import io.vertx.core.http.HttpMethod;
 
-@ImmutableJson
-public interface ModifyCurrentUserVoiceState extends Requestable {
-
-    static Builder builder() {
-        return new Builder();
-    }
+@ImmutableUni
+abstract class ModifyCurrentUserVoiceState extends AbstractRequestUni<Void> {
 
     @JsonIgnore
-    Snowflake guildId();
+    public abstract Snowflake guildId();
 
     @JsonProperty("channel_id")
-    Optional<Snowflake> channelId();
+    public abstract Optional<Snowflake> channelId();
 
-    Optional<Boolean> suppress();
+    public abstract Optional<Boolean> suppress();
 
     @JsonProperty("request_to_speak_timestamp")
     @JsonInclude(value = Include.CUSTOM, valueFilter = NullableOptionalFilter.class)
-    NullableOptional<Instant> requestToSpeakTimestamp();
+    public abstract NullableOptional<Instant> requestToSpeakTimestamp();
 
     @Override
-    default Request asRequest() {
+    public void subscribe(UniSubscriber<? super Void> downstream) {
+        requester().request(asRequest()).replaceWithVoid().subscribe().withSubscriber(downstream);
+    }
+
+    @Override
+    public Request asRequest() {
         return Request.builder()
                 .endpoint(Endpoint.create(HttpMethod.PATCH, "/guilds/{guild.id}/voice-states/@me"))
                 .variables(variables("guild.id", guildId().getValue()))
                 .body(this)
                 .build();
-    }
-
-    class Builder extends ImmutableModifyCurrentUserVoiceState.Builder {
-        protected Builder() {
-        }
     }
 }

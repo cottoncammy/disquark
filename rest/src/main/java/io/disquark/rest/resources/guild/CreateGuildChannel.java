@@ -9,81 +9,78 @@ import java.util.OptionalInt;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import io.disquark.immutables.ImmutableJson;
+import io.disquark.immutables.ImmutableUni;
+import io.disquark.rest.request.AbstractRequestUni;
 import io.disquark.rest.request.Auditable;
 import io.disquark.rest.request.Endpoint;
 import io.disquark.rest.request.Request;
-import io.disquark.rest.request.Requestable;
 import io.disquark.rest.resources.Snowflake;
 import io.disquark.rest.resources.channel.Channel;
 import io.disquark.rest.resources.channel.forum.DefaultReaction;
 import io.disquark.rest.resources.channel.forum.ForumTag;
+import io.smallrye.mutiny.subscription.UniSubscriber;
 import io.vertx.core.http.HttpMethod;
 
-@ImmutableJson
-public interface CreateGuildChannel extends Auditable, Requestable {
-
-    static Builder builder() {
-        return new Builder();
-    }
+@ImmutableUni
+abstract class CreateGuildChannel extends AbstractRequestUni<Channel> implements Auditable {
 
     @JsonIgnore
-    Snowflake guildId();
+    public abstract Snowflake guildId();
 
-    String name();
+    public abstract String name();
 
-    Optional<Channel.Type> type();
+    public abstract Optional<Channel.Type> type();
 
-    Optional<String> topic();
+    public abstract Optional<String> topic();
 
-    OptionalInt bitrate();
+    public abstract OptionalInt bitrate();
 
     @JsonProperty("user_limit")
-    OptionalInt userLimit();
+    public abstract OptionalInt userLimit();
 
     @JsonProperty("rate_limit_per_user")
-    OptionalInt rateLimitPerUser();
+    public abstract OptionalInt rateLimitPerUser();
 
-    OptionalInt position();
+    public abstract OptionalInt position();
 
     @JsonProperty("permission_overwrites")
-    Optional<List<Channel.Overwrite>> permissionOverwrites();
+    public abstract Optional<List<Channel.Overwrite>> permissionOverwrites();
 
     @JsonProperty("parent_id")
-    Optional<Snowflake> parentId();
+    public abstract Optional<Snowflake> parentId();
 
-    Optional<Boolean> nsfw();
+    public abstract Optional<Boolean> nsfw();
 
     @JsonProperty("rtc_region")
-    Optional<String> rtcRegion();
+    public abstract Optional<String> rtcRegion();
 
     @JsonProperty("video_quality_mode")
-    Optional<Channel.VideoQualityMode> videoQualityMode();
+    public abstract Optional<Channel.VideoQualityMode> videoQualityMode();
 
     @JsonProperty("default_auto_archive_duration")
-    OptionalInt defaultAutoArchiveDuration();
+    public abstract OptionalInt defaultAutoArchiveDuration();
 
     @JsonProperty("default_reaction_emoji")
-    Optional<DefaultReaction> defaultReactionEmoji();
+    public abstract Optional<DefaultReaction> defaultReactionEmoji();
 
     @JsonProperty("available_tags")
-    Optional<List<ForumTag>> availableTags();
+    public abstract Optional<List<ForumTag>> availableTags();
 
     @JsonProperty("default_sort_order")
-    Optional<Channel.SortOrderType> defaultSortOrder();
+    public abstract Optional<Channel.SortOrderType> defaultSortOrder();
 
     @Override
-    default Request asRequest() {
+    public void subscribe(UniSubscriber<? super Channel> downstream) {
+        requester().request(asRequest()).flatMap(res -> res.as(Channel.class)).subscribe().withSubscriber(downstream);
+    }
+
+    @Override
+    public Request asRequest() {
         return Request.builder()
                 .endpoint(Endpoint.create(HttpMethod.POST, "/guilds/{guild.id}/channels"))
                 .variables(variables("guild.id", guildId().getValue()))
                 .body(this)
                 .auditLogReason(auditLogReason())
                 .build();
-    }
-
-    class Builder extends ImmutableCreateGuildChannel.Builder {
-        protected Builder() {
-        }
     }
 }

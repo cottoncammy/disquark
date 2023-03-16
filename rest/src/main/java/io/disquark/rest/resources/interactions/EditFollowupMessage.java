@@ -8,47 +8,49 @@ import java.util.Optional;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import io.disquark.immutables.ImmutableJson;
+import io.disquark.immutables.ImmutableUni;
+import io.disquark.rest.request.AbstractRequestUni;
 import io.disquark.rest.request.Endpoint;
 import io.disquark.rest.request.MultipartRequest;
 import io.disquark.rest.request.Request;
-import io.disquark.rest.request.Requestable;
 import io.disquark.rest.resources.Snowflake;
 import io.disquark.rest.resources.channel.message.AllowedMentions;
 import io.disquark.rest.resources.channel.message.Message;
 import io.disquark.rest.resources.interactions.components.Component;
 import io.disquark.rest.resources.partial.PartialAttachment;
+import io.smallrye.mutiny.subscription.UniSubscriber;
 import io.vertx.core.http.HttpMethod;
 
-@ImmutableJson
-public interface EditFollowupMessage extends MultipartRequest, Requestable {
-
-    static Builder builder() {
-        return new Builder();
-    }
+@ImmutableUni
+abstract class EditFollowupMessage extends AbstractRequestUni<Message> implements MultipartRequest {
 
     @JsonIgnore
-    Snowflake applicationId();
+    public abstract Snowflake applicationId();
 
     @JsonIgnore
-    String interactionToken();
+    public abstract String interactionToken();
 
     @JsonIgnore
-    Snowflake messageId();
+    public abstract Snowflake messageId();
 
-    Optional<String> content();
+    public abstract Optional<String> content();
 
-    Optional<List<Message.Embed>> embeds();
+    public abstract Optional<List<Message.Embed>> embeds();
 
     @JsonProperty("allowed_mentions")
-    Optional<AllowedMentions> allowedMentions();
+    public abstract Optional<AllowedMentions> allowedMentions();
 
-    Optional<List<Component>> components();
+    public abstract Optional<List<Component>> components();
 
-    Optional<List<PartialAttachment>> attachments();
+    public abstract Optional<List<PartialAttachment>> attachments();
 
     @Override
-    default Request asRequest() {
+    public void subscribe(UniSubscriber<? super Message> downstream) {
+        requester().request(asRequest()).flatMap(res -> res.as(Message.class)).subscribe().withSubscriber(downstream);
+    }
+
+    @Override
+    public Request asRequest() {
         return Request.builder()
                 .endpoint(Endpoint.create(HttpMethod.PATCH,
                         "/webhooks/{application.id}/{interaction.token}/messages/{message.id}{?thread_id}", false))
@@ -57,10 +59,5 @@ public interface EditFollowupMessage extends MultipartRequest, Requestable {
                 .body(this)
                 .files(files())
                 .build();
-    }
-
-    class Builder extends ImmutableEditFollowupMessage.Builder {
-        protected Builder() {
-        }
     }
 }

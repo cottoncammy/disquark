@@ -3,69 +3,39 @@ package io.disquark.rest.resources.guild;
 import static io.disquark.rest.util.Variables.variables;
 
 import java.util.List;
-import java.util.OptionalInt;
+import java.util.concurrent.Flow;
 
-import javax.annotation.Nullable;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-import io.disquark.immutables.ImmutableJson;
+import io.disquark.immutables.ImmutableMulti;
+import io.disquark.rest.request.AbstractRequestMulti;
 import io.disquark.rest.request.Auditable;
 import io.disquark.rest.request.Endpoint;
 import io.disquark.rest.request.Request;
-import io.disquark.rest.request.Requestable;
 import io.disquark.rest.resources.Snowflake;
+import io.disquark.rest.resources.permissions.Role;
 import io.vertx.core.http.HttpMethod;
 
-import org.immutables.value.Value.Enclosing;
+@ImmutableMulti
+abstract class ModifyGuildRolePositions extends AbstractRequestMulti<Role> implements Auditable {
 
-@Enclosing
-@ImmutableJson
-public interface ModifyGuildRolePositions extends Auditable, Requestable {
+    public abstract Snowflake guildId();
 
-    static Builder builder() {
-        return new Builder();
-    }
-
-    @Nullable
-    @JsonIgnore
-    Snowflake guildId();
-
-    @JsonValue
-    List<GuildRolePosition> guildRolePositions();
+    public abstract List<GuildRolePosition> guildRolePositions();
 
     @Override
-    default Request asRequest() {
+    public void subscribe(Flow.Subscriber<? super Role> downstream) {
+        requester().request(asRequest())
+                .flatMap(res -> res.as(Role[].class))
+                .onItem().<Role> disjoint()
+                .subscribe().withSubscriber(downstream);
+    }
+
+    @Override
+    public Request asRequest() {
         return Request.builder()
                 .endpoint(Endpoint.create(HttpMethod.PATCH, "/guilds/{guild.id}/roles"))
                 .variables(variables("guild.id", guildId().getValue()))
-                .body(this)
+                .body(guildRolePositions())
                 .auditLogReason(auditLogReason())
                 .build();
-    }
-
-    @ImmutableJson
-    interface GuildRolePosition {
-
-        static Builder builder() {
-            return new Builder();
-        }
-
-        Snowflake id();
-
-        @JsonInclude
-        OptionalInt position();
-
-        class Builder extends ImmutableModifyGuildRolePositions.GuildRolePosition.Builder {
-            protected Builder() {
-            }
-        }
-    }
-
-    class Builder extends ImmutableModifyGuildRolePositions.Builder {
-        protected Builder() {
-        }
     }
 }

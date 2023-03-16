@@ -11,66 +11,64 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-import io.disquark.immutables.ImmutableJson;
+import io.disquark.immutables.ImmutableUni;
 import io.disquark.nullableoptional.NullableOptional;
 import io.disquark.nullableoptional.jackson.NullableOptionalFilter;
 import io.disquark.rest.jackson.ImageDataSerializer;
+import io.disquark.rest.request.AbstractRequestUni;
 import io.disquark.rest.request.Auditable;
 import io.disquark.rest.request.Endpoint;
 import io.disquark.rest.request.Request;
-import io.disquark.rest.request.Requestable;
 import io.disquark.rest.resources.Snowflake;
 import io.disquark.rest.resources.permissions.PermissionFlag;
+import io.disquark.rest.resources.permissions.Role;
+import io.smallrye.mutiny.subscription.UniSubscriber;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.mutiny.core.buffer.Buffer;
 
 import org.immutables.value.Value.Redacted;
 
-@ImmutableJson
+@ImmutableUni
 @JsonInclude(value = Include.CUSTOM, valueFilter = NullableOptionalFilter.class)
-public interface ModifyGuildRole extends Auditable, Requestable {
-
-    static Builder builder() {
-        return new Builder();
-    }
+abstract class ModifyGuildRole extends AbstractRequestUni<Role> implements Auditable {
 
     @JsonIgnore
-    Snowflake guildId();
+    public abstract Snowflake guildId();
 
     @JsonIgnore
-    Snowflake roleId();
+    public abstract Snowflake roleId();
 
-    NullableOptional<String> name();
+    public abstract NullableOptional<String> name();
 
-    NullableOptional<EnumSet<PermissionFlag>> permissions();
+    public abstract NullableOptional<EnumSet<PermissionFlag>> permissions();
 
-    NullableOptional<Integer> color();
+    public abstract NullableOptional<Integer> color();
 
     @JsonInclude(Include.NON_ABSENT)
-    Optional<Boolean> hoist();
+    public abstract Optional<Boolean> hoist();
 
     @Redacted
     @JsonSerialize(contentUsing = ImageDataSerializer.class)
-    NullableOptional<Buffer> icon();
+    public abstract NullableOptional<Buffer> icon();
 
     @JsonProperty("unicode_emoji")
-    NullableOptional<String> unicodeEmoji();
+    public abstract NullableOptional<String> unicodeEmoji();
 
     @JsonInclude(Include.NON_ABSENT)
-    Optional<Boolean> mentionable();
+    public abstract Optional<Boolean> mentionable();
 
     @Override
-    default Request asRequest() {
+    public void subscribe(UniSubscriber<? super Role> downstream) {
+        requester().request(asRequest()).flatMap(res -> res.as(Role.class)).subscribe().withSubscriber(downstream);
+    }
+
+    @Override
+    public Request asRequest() {
         return Request.builder()
                 .endpoint(Endpoint.create(HttpMethod.PATCH, "/guilds/{guild.id}/roles/{role.id}"))
                 .variables(variables("guild.id", guildId().getValue(), "role.id", roleId().getValue()))
                 .body(this)
                 .auditLogReason(auditLogReason())
                 .build();
-    }
-
-    class Builder extends ImmutableModifyGuildRole.Builder {
-        protected Builder() {
-        }
     }
 }

@@ -10,7 +10,7 @@ public interface AccessTokenSource {
     AccessTokenSource DUMMY = new AccessTokenSource() {
         @Override
         public Uni<AccessToken> getToken() {
-            return Uni.createFrom().item(AccessToken.builder().tokenType(TokenType.BOT).accessToken("").build());
+            return Uni.createFrom().item(new AccessToken("", TokenType.BOT));
         }
     };
 

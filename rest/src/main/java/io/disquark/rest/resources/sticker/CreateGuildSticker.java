@@ -4,33 +4,35 @@ import static io.disquark.rest.util.Variables.variables;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import io.disquark.immutables.ImmutableJson;
+import io.disquark.immutables.ImmutableUni;
+import io.disquark.rest.request.AbstractRequestUni;
 import io.disquark.rest.request.Auditable;
 import io.disquark.rest.request.Endpoint;
 import io.disquark.rest.request.MultipartRequest;
 import io.disquark.rest.request.Request;
-import io.disquark.rest.request.Requestable;
 import io.disquark.rest.resources.Snowflake;
+import io.smallrye.mutiny.subscription.UniSubscriber;
 import io.vertx.core.http.HttpMethod;
 
-@ImmutableJson
-public interface CreateGuildSticker extends Auditable, MultipartRequest, Requestable {
-
-    static Builder builder() {
-        return new Builder();
-    }
+@ImmutableUni
+abstract class CreateGuildSticker extends AbstractRequestUni<Sticker> implements Auditable, MultipartRequest {
 
     @JsonIgnore
-    Snowflake guildId();
+    public abstract Snowflake guildId();
 
-    String name();
+    public abstract String name();
 
-    String description();
+    public abstract String description();
 
-    String tags();
+    public abstract String tags();
 
     @Override
-    default Request asRequest() {
+    public void subscribe(UniSubscriber<? super Sticker> downstream) {
+        requester().request(asRequest()).flatMap(res -> res.as(Sticker.class)).subscribe().withSubscriber(downstream);
+    }
+
+    @Override
+    public Request asRequest() {
         return Request.builder()
                 .endpoint(Endpoint.create(HttpMethod.POST, "/guilds/{guild.id}/stickers"))
                 .variables(variables("guild.id", guildId().getValue()))
@@ -38,10 +40,5 @@ public interface CreateGuildSticker extends Auditable, MultipartRequest, Request
                 .auditLogReason(auditLogReason())
                 .files(files())
                 .build();
-    }
-
-    class Builder extends ImmutableCreateGuildSticker.Builder {
-        protected Builder() {
-        }
     }
 }

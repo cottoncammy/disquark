@@ -5,36 +5,38 @@ import static io.disquark.rest.util.Variables.variables;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import io.disquark.immutables.ImmutableJson;
+import io.disquark.immutables.ImmutableUni;
+import io.disquark.rest.request.AbstractRequestUni;
 import io.disquark.rest.request.Endpoint;
 import io.disquark.rest.request.Request;
-import io.disquark.rest.request.Requestable;
 import io.disquark.rest.resources.Snowflake;
+import io.smallrye.mutiny.subscription.UniSubscriber;
 import io.vertx.core.http.HttpMethod;
 
 import org.immutables.value.Value.Redacted;
 
-@ImmutableJson
-public interface GroupDmAddRecipient extends Requestable {
-
-    static GroupDmAddRecipient create(Snowflake channelId, Snowflake userId, String accessToken, String nick) {
-        return ImmutableGroupDmAddRecipient.create(channelId, userId, accessToken, nick);
-    }
+@ImmutableUni
+abstract class GroupDmAddRecipient extends AbstractRequestUni<Void> {
 
     @JsonIgnore
-    Snowflake channelId();
+    public abstract Snowflake channelId();
 
     @JsonIgnore
-    Snowflake userId();
+    public abstract Snowflake userId();
 
     @Redacted
     @JsonProperty("access_token")
-    String accessToken();
+    public abstract String accessToken();
 
-    String nick();
+    public abstract String nick();
 
     @Override
-    default Request asRequest() {
+    public void subscribe(UniSubscriber<? super Void> downstream) {
+        requester().request(asRequest()).replaceWithVoid().subscribe().withSubscriber(downstream);
+    }
+
+    @Override
+    public Request asRequest() {
         return Request.builder()
                 .endpoint(Endpoint.create(HttpMethod.PUT, "/channels/{channel.id}/recipients/{user.id}"))
                 .variables(variables("channel.id", channelId().getValue(), "user.id", userId().getValue()))

@@ -10,47 +10,45 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import io.disquark.immutables.ImmutableJson;
+import io.disquark.immutables.ImmutableUni;
 import io.disquark.nullableoptional.NullableOptional;
 import io.disquark.nullableoptional.jackson.NullableOptionalFilter;
+import io.disquark.rest.request.AbstractRequestUni;
 import io.disquark.rest.request.Auditable;
 import io.disquark.rest.request.Endpoint;
 import io.disquark.rest.request.Request;
-import io.disquark.rest.request.Requestable;
 import io.disquark.rest.resources.Snowflake;
+import io.smallrye.mutiny.subscription.UniSubscriber;
 import io.vertx.core.http.HttpMethod;
 
-@ImmutableJson
+@ImmutableUni
 @JsonInclude(value = Include.CUSTOM, valueFilter = NullableOptionalFilter.class)
-public interface ModifyGuildWelcomeScreen extends Auditable, Requestable {
-
-    static Builder builder() {
-        return new Builder();
-    }
+abstract class ModifyGuildWelcomeScreen extends AbstractRequestUni<Guild.WelcomeScreen> implements Auditable {
 
     @JsonIgnore
-    Snowflake guildId();
+    public abstract Snowflake guildId();
 
     @JsonInclude(Include.NON_ABSENT)
-    Optional<Boolean> enabled();
+    public abstract Optional<Boolean> enabled();
 
     @JsonProperty("welcome_channels")
-    NullableOptional<List<Guild.WelcomeScreen.Channel>> welcomeChannels();
+    public abstract NullableOptional<List<Guild.WelcomeScreenChannel>> welcomeChannels();
 
-    NullableOptional<String> description();
+    public abstract NullableOptional<String> description();
 
     @Override
-    default Request asRequest() {
+    public void subscribe(UniSubscriber<? super Guild.WelcomeScreen> downstream) {
+        requester().request(asRequest()).flatMap(res -> res.as(Guild.WelcomeScreen.class)).subscribe()
+                .withSubscriber(downstream);
+    }
+
+    @Override
+    public Request asRequest() {
         return Request.builder()
                 .endpoint(Endpoint.create(HttpMethod.PATCH, "/guilds/{guild.id}/welcome-screen"))
                 .variables(variables("guild.id", guildId().getValue()))
                 .body(this)
                 .auditLogReason(auditLogReason())
                 .build();
-    }
-
-    class Builder extends ImmutableModifyGuildWelcomeScreen.Builder {
-        protected Builder() {
-        }
     }
 }

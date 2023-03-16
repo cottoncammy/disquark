@@ -10,56 +10,53 @@ import java.util.OptionalInt;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import io.disquark.immutables.ImmutableJson;
+import io.disquark.immutables.ImmutableUni;
+import io.disquark.rest.request.AbstractRequestUni;
 import io.disquark.rest.request.Auditable;
 import io.disquark.rest.request.Endpoint;
 import io.disquark.rest.request.Request;
-import io.disquark.rest.request.Requestable;
 import io.disquark.rest.resources.Snowflake;
 import io.disquark.rest.resources.channel.Channel;
+import io.smallrye.mutiny.subscription.UniSubscriber;
 import io.vertx.core.http.HttpMethod;
 
-@ImmutableJson
-public interface ModifyThread extends Auditable, Requestable {
-
-    static Builder builder() {
-        return new Builder();
-    }
+@ImmutableUni
+abstract class ModifyThread extends AbstractRequestUni<Channel> implements Auditable {
 
     @JsonIgnore
-    Snowflake channelId();
+    public abstract Snowflake channelId();
 
-    Optional<String> name();
+    public abstract Optional<String> name();
 
-    Optional<Boolean> archived();
+    public abstract Optional<Boolean> archived();
 
     @JsonProperty("auto_archive_duration")
-    OptionalInt autoArchiveDuration();
+    public abstract OptionalInt autoArchiveDuration();
 
-    Optional<Boolean> locked();
+    public abstract Optional<Boolean> locked();
 
-    Optional<Boolean> invitable();
+    public abstract Optional<Boolean> invitable();
 
     @JsonProperty("rate_limit_per_user")
-    OptionalInt rateLimitPerUser();
+    public abstract OptionalInt rateLimitPerUser();
 
-    Optional<EnumSet<Channel.Flag>> flags();
+    public abstract Optional<EnumSet<Channel.Flag>> flags();
 
     @JsonProperty("applied_tags")
-    Optional<List<Snowflake>> appliedTags();
+    public abstract Optional<List<Snowflake>> appliedTags();
 
     @Override
-    default Request asRequest() {
+    public void subscribe(UniSubscriber<? super Channel> downstream) {
+        requester().request(asRequest()).flatMap(res -> res.as(Channel.class)).subscribe().withSubscriber(downstream);
+    }
+
+    @Override
+    public Request asRequest() {
         return Request.builder()
                 .endpoint(Endpoint.create(HttpMethod.PATCH, "/channels/{channel.id}"))
                 .variables(variables("channel.id", channelId().getValue()))
                 .body(this)
                 .auditLogReason(auditLogReason())
                 .build();
-    }
-
-    class Builder extends ImmutableModifyThread.Builder {
-        protected Builder() {
-        }
     }
 }

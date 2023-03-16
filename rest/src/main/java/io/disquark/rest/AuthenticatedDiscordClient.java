@@ -16,26 +16,25 @@ import io.disquark.rest.request.ratelimit.GlobalRateLimiter;
 import io.disquark.rest.request.ratelimit.RateLimitStrategy;
 import io.disquark.rest.resources.Snowflake;
 import io.disquark.rest.resources.application.command.ApplicationCommand;
-import io.disquark.rest.resources.application.command.BulkOverwriteGlobalApplicationCommands;
-import io.disquark.rest.resources.application.command.BulkOverwriteGuildApplicationCommands;
-import io.disquark.rest.resources.application.command.CreateGlobalApplicationCommand;
-import io.disquark.rest.resources.application.command.CreateGuildApplicationCommand;
-import io.disquark.rest.resources.application.command.EditGlobalApplicationCommand;
-import io.disquark.rest.resources.application.command.EditGuildApplicationCommand;
+import io.disquark.rest.resources.application.command.BulkOverwriteGlobalApplicationCommandsMulti;
+import io.disquark.rest.resources.application.command.BulkOverwriteGuildApplicationCommandsMulti;
+import io.disquark.rest.resources.application.command.CreateGlobalApplicationCommandUni;
+import io.disquark.rest.resources.application.command.CreateGuildApplicationCommandUni;
+import io.disquark.rest.resources.application.command.EditGlobalApplicationCommandUni;
+import io.disquark.rest.resources.application.command.EditGuildApplicationCommandUni;
 import io.disquark.rest.resources.application.command.GuildApplicationCommandPermissions;
 import io.disquark.rest.resources.channel.message.Message;
-import io.disquark.rest.resources.interactions.CreateFollowupMessage;
-import io.disquark.rest.resources.interactions.EditFollowupMessage;
-import io.disquark.rest.resources.interactions.EditOriginalInteractionResponse;
-import io.disquark.rest.resources.partial.PartialGuild;
-import io.disquark.rest.resources.user.GetCurrentUserGuilds;
+import io.disquark.rest.resources.interactions.CreateFollowupMessageUni;
+import io.disquark.rest.resources.interactions.EditFollowupMessageUni;
+import io.disquark.rest.resources.interactions.EditOriginalInteractionResponseUni;
+import io.disquark.rest.resources.user.GetCurrentUserGuildsMulti;
 import io.disquark.rest.resources.user.User;
-import io.disquark.rest.resources.webhook.EditWebhookMessage;
-import io.disquark.rest.resources.webhook.ExecuteWebhook;
-import io.disquark.rest.resources.webhook.ExecuteWebhookOptions;
-import io.disquark.rest.resources.webhook.ModifyWebhookWithToken;
+import io.disquark.rest.resources.webhook.DeleteWebhookMessageUni;
+import io.disquark.rest.resources.webhook.EditWebhookMessageUni;
+import io.disquark.rest.resources.webhook.ExecuteWebhookUni;
+import io.disquark.rest.resources.webhook.GetWebhookMessageUni;
+import io.disquark.rest.resources.webhook.ModifyWebhookWithTokenUni;
 import io.disquark.rest.resources.webhook.Webhook;
-import io.disquark.rest.resources.webhook.WebhookMessageOptions;
 import io.disquark.rest.response.Response;
 import io.disquark.rest.webhook.DiscordWebhookClient;
 import io.disquark.rest.webhook.WebhooksCapable;
@@ -60,108 +59,106 @@ public abstract class AuthenticatedDiscordClient<T extends Response> extends Dis
     }
 
     public Multi<ApplicationCommand> getGlobalApplicationCommands(Snowflake applicationId, boolean withLocalizations) {
-        return requester.request(new EmptyRequest("/applications/{application.id}/commands{?with_localizations}",
+        return deferredUni(() -> requester.request(new EmptyRequest("/applications/{application.id}/commands{?with_localizations}",
                 variables("application.id", requireNonNull(applicationId, "applicationId").getValue(),
-                        "with_localizations", withLocalizations)))
+                        "with_localizations", withLocalizations))))
                 .flatMap(res -> res.as(ApplicationCommand[].class))
                 .onItem().disjoint();
     }
 
-    public Uni<ApplicationCommand> createGlobalApplicationCommand(
-            CreateGlobalApplicationCommand createGlobalApplicationCommand) {
-        return requester.request(requireNonNull(createGlobalApplicationCommand, "createGlobalApplicationCommand").asRequest())
-                .flatMap(res -> res.as(ApplicationCommand.class));
+    public CreateGlobalApplicationCommandUni createGlobalApplicationCommand(Snowflake applicationId, String name) {
+        return (CreateGlobalApplicationCommandUni)
+                deferredUni(() -> new CreateGlobalApplicationCommandUni(requester, applicationId, name));
     }
 
     public Uni<ApplicationCommand> getGlobalApplicationCommand(Snowflake applicationId, Snowflake commandId) {
-        return requester.request(new EmptyRequest("/applications/{application.id}/commands/{command.id}",
-                variables("application.id", requireNonNull(applicationId, "applicationId").getValue(), "command.id",
-                        requireNonNull(commandId, "commandId").getValue())))
+        return deferredUni(() -> requester.request(new EmptyRequest("/applications/{application.id}/commands/{command.id}",
+                variables("application.id", requireNonNull(applicationId, "applicationId").getValue(),
+                        "command.id", requireNonNull(commandId, "commandId").getValue()))))
                 .flatMap(res -> res.as(ApplicationCommand.class));
     }
 
-    public Uni<ApplicationCommand> editGlobalApplicationCommand(EditGlobalApplicationCommand editGlobalApplicationCommand) {
-        return requester.request(requireNonNull(editGlobalApplicationCommand, "editGlobalApplicationCommand").asRequest())
-                .flatMap(res -> res.as(ApplicationCommand.class));
+    public EditGlobalApplicationCommandUni editGlobalApplicationCommand(Snowflake applicationId, Snowflake commandId) {
+        return (EditGlobalApplicationCommandUni)
+                deferredUni(() -> new EditGlobalApplicationCommandUni(requester, applicationId, commandId));
     }
 
     public Uni<Void> deleteGlobalApplicationCommand(Snowflake applicationId, Snowflake commandId) {
-        return requester.request(new EmptyRequest(HttpMethod.DELETE, "/applications/{application.id}/commands/{command.id}",
-                variables("application.id", requireNonNull(applicationId, "applicationId").getValue(), "command.id",
-                        requireNonNull(commandId, "commandId").getValue())))
+        return deferredUni(() -> requester.request(new EmptyRequest(HttpMethod.DELETE, "/applications/{application.id}/commands/{command.id}",
+                variables("application.id", requireNonNull(applicationId, "applicationId").getValue(),
+                        "command.id", requireNonNull(commandId, "commandId").getValue()))))
                 .replaceWithVoid();
     }
 
-    public Multi<ApplicationCommand> bulkOverwriteGlobalApplicationCommands(
-            BulkOverwriteGlobalApplicationCommands bulkOverwriteGlobalApplicationCommands) {
-        return requester
-                .request(requireNonNull(bulkOverwriteGlobalApplicationCommands, "bulkOverwriteGlobalApplicationCommands")
-                        .asRequest())
-                .flatMap(res -> res.as(ApplicationCommand[].class))
-                .onItem().disjoint();
+    public BulkOverwriteGlobalApplicationCommandsMulti bulkOverwriteGlobalApplicationCommands(Snowflake applicationId) {
+        return (BulkOverwriteGlobalApplicationCommandsMulti)
+                deferredMulti(() -> new BulkOverwriteGlobalApplicationCommandsMulti(requester, applicationId));
     }
 
     public Multi<ApplicationCommand> getGuildApplicationCommands(Snowflake applicationId, Snowflake guildId,
             boolean withLocalizations) {
-        return requester
-                .request(new EmptyRequest("/applications/{application.id}/guilds/{guild.id}/commands{?with_localizations}",
-                        variables("application.id", requireNonNull(applicationId, "applicationId").getValue(), "guild.id",
-                                requireNonNull(guildId, "guildId").getValue(), "with_localizations", withLocalizations)))
+        return deferredUni(() -> requester.request(new EmptyRequest(
+                "/applications/{application.id}/guilds/{guild.id}/commands{?with_localizations}",
+                variables("application.id", requireNonNull(applicationId, "applicationId").getValue(),
+                        "guild.id", requireNonNull(guildId, "guildId").getValue(),
+                        "with_localizations", withLocalizations))))
                 .flatMap(res -> res.as(ApplicationCommand[].class))
                 .onItem().disjoint();
     }
 
-    public Uni<ApplicationCommand> createGuildApplicationCommand(CreateGuildApplicationCommand createGuildApplicationCommand) {
-        return requester.request(requireNonNull(createGuildApplicationCommand, "createGuildApplicationCommand").asRequest())
-                .flatMap(res -> res.as(ApplicationCommand.class));
+    public CreateGuildApplicationCommandUni createGuildApplicationCommand(Snowflake applicationId, Snowflake guildId,
+            String name) {
+        return (CreateGuildApplicationCommandUni)
+                deferredUni(() -> new CreateGuildApplicationCommandUni(requester, applicationId, guildId, name));
     }
 
     public Uni<ApplicationCommand> getGuildApplicationCommand(Snowflake applicationId, Snowflake guildId, Snowflake commandId) {
-        return requester.request(new EmptyRequest("/applications/{application.id}/guilds/{guild.id}/commands/{command.id}",
-                variables("application.id", requireNonNull(applicationId, "applicationId").getValue(), "guild.id",
-                        requireNonNull(guildId, "guildId").getValue(), "command.id",
-                        requireNonNull(commandId, "commandId").getValue())))
+        return deferredUni(() -> requester.request(new EmptyRequest(
+                "/applications/{application.id}/guilds/{guild.id}/commands/{command.id}",
+                variables("application.id", requireNonNull(applicationId, "applicationId").getValue(),
+                        "guild.id", requireNonNull(guildId, "guildId").getValue(),
+                        "command.id", requireNonNull(commandId, "commandId").getValue()))))
                 .flatMap(res -> res.as(ApplicationCommand.class));
     }
 
-    public Uni<ApplicationCommand> editGuildApplicationCommand(EditGuildApplicationCommand editGuildApplicationCommand) {
-        return requester.request(requireNonNull(editGuildApplicationCommand, "editGuildApplicationCommand").asRequest())
-                .flatMap(res -> res.as(ApplicationCommand.class));
+    public EditGuildApplicationCommandUni editGuildApplicationCommand(Snowflake applicationId, Snowflake guildId,
+            Snowflake commandId) {
+        return (EditGuildApplicationCommandUni)
+                deferredUni(() -> new EditGuildApplicationCommandUni(requester, applicationId, guildId, commandId));
     }
 
     public Uni<Void> deleteGuildApplicationCommand(Snowflake applicationId, Snowflake guildId, Snowflake commandId) {
-        return requester.request(new EmptyRequest(HttpMethod.DELETE,
+        return deferredUni(() -> requester.request(new EmptyRequest(HttpMethod.DELETE,
                 "/applications/{application.id}/guilds/{guild.id}/commands/{command.id}",
-                variables("application.id", requireNonNull(applicationId, "applicationId").getValue(), "guild.id",
-                        requireNonNull(guildId, "guildId").getValue(), "command.id",
-                        requireNonNull(commandId, "commandId").getValue())))
+                variables("application.id", requireNonNull(applicationId, "applicationId").getValue(),
+                        "guild.id", requireNonNull(guildId, "guildId").getValue(),
+                        "command.id", requireNonNull(commandId, "commandId").getValue()))))
                 .replaceWithVoid();
     }
 
-    public Multi<ApplicationCommand> bulkOverwriteGuildApplicationCommands(
-            BulkOverwriteGuildApplicationCommands bulkOverwriteGuildApplicationCommands) {
-        return requester.request(requireNonNull(bulkOverwriteGuildApplicationCommands, "bulkOverwriteGuildApplicationCommands")
-                .asRequest())
-                .flatMap(res -> res.as(ApplicationCommand[].class))
-                .onItem().disjoint();
+    public BulkOverwriteGuildApplicationCommandsMulti bulkOverwriteGuildApplicationCommands(Snowflake applicationId,
+            Snowflake guildId) {
+        return (BulkOverwriteGuildApplicationCommandsMulti)
+                deferredMulti(() -> new BulkOverwriteGuildApplicationCommandsMulti(requester, applicationId, guildId));
     }
 
     public Multi<GuildApplicationCommandPermissions> getGuildApplicationCommandPermissions(Snowflake applicationId,
             Snowflake guildId) {
-        return requester.request(new EmptyRequest("/applications/{application.id}/guilds/{guild.id}/commands/permissions",
-                variables("application.id", requireNonNull(applicationId, "applicationId").getValue(), "guild.id",
-                        requireNonNull(guildId, "guildId").getValue())))
+        return deferredUni(() -> requester.request(new EmptyRequest(
+                "/applications/{application.id}/guilds/{guild.id}/commands/permissions",
+                variables("application.id", requireNonNull(applicationId, "applicationId").getValue(),
+                        "guild.id", requireNonNull(guildId, "guildId").getValue()))))
                 .flatMap(res -> res.as(GuildApplicationCommandPermissions[].class))
                 .onItem().disjoint();
     }
 
     public Uni<GuildApplicationCommandPermissions> getApplicationCommandPermissions(Snowflake applicationId, Snowflake guildId,
             Snowflake commandId) {
-        return requester
-                .request(new EmptyRequest("/applications/{application.id}/guilds/{guild.id}/commands/{command.id}/permissions",
-                        variables("application.id", requireNonNull(applicationId, "applicationId").getValue(), "guild.id",
-                                requireNonNull(guildId, "guildId").getValue(), "command.id",
-                                requireNonNull(commandId, "commandId").getValue())))
+        return deferredUni(() -> requester.request(new EmptyRequest(
+                "/applications/{application.id}/guilds/{guild.id}/commands/{command.id}/permissions",
+                variables("application.id", requireNonNull(applicationId, "applicationId").getValue(),
+                        "guild.id", requireNonNull(guildId, "guildId").getValue(),
+                        "command.id", requireNonNull(commandId, "commandId").getValue()))))
                 .flatMap(res -> res.as(GuildApplicationCommandPermissions.class));
     }
 
@@ -212,8 +209,9 @@ public abstract class AuthenticatedDiscordClient<T extends Response> extends Dis
     }
 
     @Override
-    public Uni<Message> editOriginalInteractionResponse(EditOriginalInteractionResponse editOriginalInteractionResponse) {
-        return getInteractionsClient().editOriginalInteractionResponse(editOriginalInteractionResponse);
+    public EditOriginalInteractionResponseUni editOriginalInteractionResponse(Snowflake applicationId,
+            String interactionToken) {
+        return getInteractionsClient().editOriginalInteractionResponse(applicationId, interactionToken);
     }
 
     @Override
@@ -222,8 +220,8 @@ public abstract class AuthenticatedDiscordClient<T extends Response> extends Dis
     }
 
     @Override
-    public Uni<Message> createFollowupMessage(CreateFollowupMessage createFollowupMessage) {
-        return getInteractionsClient().createFollowupMessage(createFollowupMessage);
+    public CreateFollowupMessageUni createFollowupMessage(Snowflake applicationId, String interactionToken) {
+        return getInteractionsClient().createFollowupMessage(applicationId, interactionToken);
     }
 
     @Override
@@ -232,8 +230,8 @@ public abstract class AuthenticatedDiscordClient<T extends Response> extends Dis
     }
 
     @Override
-    public Uni<Message> editFollowupMessage(EditFollowupMessage editFollowupMessage) {
-        return getInteractionsClient().editFollowupMessage(editFollowupMessage);
+    public EditFollowupMessageUni editFollowupMessage(Snowflake applicationId, String interactionToken, Snowflake messageId) {
+        return getInteractionsClient().editFollowupMessage(applicationId, interactionToken, messageId);
     }
 
     @Override
@@ -245,9 +243,8 @@ public abstract class AuthenticatedDiscordClient<T extends Response> extends Dis
         return requester.request(new EmptyRequest("/users/@me")).flatMap(res -> res.as(User.class));
     }
 
-    public Multi<PartialGuild> getCurrentUserGuilds(GetCurrentUserGuilds getCurrentUserGuilds) {
-        return requester.request(requireNonNull(getCurrentUserGuilds, "getCurrentUserGuilds").asRequest())
-                .flatMap(res -> res.as(PartialGuild[].class)).onItem().disjoint();
+    public GetCurrentUserGuildsMulti getCurrentUserGuilds() {
+        return new GetCurrentUserGuildsMulti(requester);
     }
 
     @SuppressWarnings("unchecked")
@@ -277,8 +274,8 @@ public abstract class AuthenticatedDiscordClient<T extends Response> extends Dis
     }
 
     @Override
-    public Uni<Webhook> modifyWebhookWithToken(ModifyWebhookWithToken modifyWebhookWithToken) {
-        return getWebhookClient().modifyWebhookWithToken(modifyWebhookWithToken);
+    public ModifyWebhookWithTokenUni modifyWebhookWithToken(Snowflake webhookId, String webhookToken) {
+        return getWebhookClient().modifyWebhookWithToken(webhookId, webhookToken);
     }
 
     @Override
@@ -287,33 +284,23 @@ public abstract class AuthenticatedDiscordClient<T extends Response> extends Dis
     }
 
     @Override
-    public Uni<Message> executeWebhook(ExecuteWebhook executeWebhook) {
-        return getWebhookClient().executeWebhook(executeWebhook);
+    public ExecuteWebhookUni executeWebhook(Snowflake webhookId, String webhookToken) {
+        return getWebhookClient().executeWebhook(webhookId, webhookToken);
     }
 
     @Override
-    public Uni<Message> executeSlackCompatibleWebhook(ExecuteWebhookOptions options) {
-        return getWebhookClient().executeSlackCompatibleWebhook(options);
+    public GetWebhookMessageUni getWebhookMessage(Snowflake webhookId, String webhookToken, Snowflake messageId) {
+        return getWebhookClient().getWebhookMessage(webhookId, webhookToken, messageId);
     }
 
     @Override
-    public Uni<Message> executeGitHubCompatibleWebhook(ExecuteWebhookOptions options) {
-        return getWebhookClient().executeGitHubCompatibleWebhook(options);
+    public EditWebhookMessageUni editWebhookMessage(Snowflake webhookId, String webhookToken, Snowflake messageId) {
+        return getWebhookClient().editWebhookMessage(webhookId, webhookToken, messageId);
     }
 
     @Override
-    public Uni<Message> getWebhookMessage(WebhookMessageOptions options) {
-        return getWebhookClient().getWebhookMessage(options);
-    }
-
-    @Override
-    public Uni<Message> editWebhookMessage(EditWebhookMessage editWebhookMessage) {
-        return getWebhookClient().editWebhookMessage(editWebhookMessage);
-    }
-
-    @Override
-    public Uni<Void> deleteWebhookMessage(WebhookMessageOptions options) {
-        return getWebhookClient().deleteWebhookMessage(options);
+    public DeleteWebhookMessageUni deleteWebhookMessage(Snowflake webhookId, String webhookToken, Snowflake messageId) {
+        return getWebhookClient().deleteWebhookMessage(webhookId, webhookToken, messageId);
     }
 
     public static abstract class Builder<R extends Response, T extends AuthenticatedDiscordClient<R>>

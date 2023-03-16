@@ -1,2 +1,4 @@
 io.disquark.immutables.ImmutableBuilder
 io.disquark.immutables.ImmutableJson
+io.disquark.immutables.ImmutableMulti
+io.disquark.immutables.ImmutableUni

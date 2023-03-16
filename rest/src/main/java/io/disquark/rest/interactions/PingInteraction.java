@@ -14,7 +14,7 @@ public class PingInteraction extends CompletableInteraction<Void> {
     }
 
     Uni<Void> pong() {
-        return serialize(Interaction.Response.create(Interaction.CallbackType.PONG))
+        return serialize(new Interaction.Response<>(Interaction.CallbackType.PONG))
                 .invoke(() -> LOG.debug("Responding to interaction {} with pong", interaction.id().getValueAsString()));
     }
 }

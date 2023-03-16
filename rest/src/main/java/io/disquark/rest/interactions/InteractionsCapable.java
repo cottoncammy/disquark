@@ -3,9 +3,9 @@ package io.disquark.rest.interactions;
 import io.disquark.rest.interactions.dsl.InteractionSchema;
 import io.disquark.rest.resources.Snowflake;
 import io.disquark.rest.resources.channel.message.Message;
-import io.disquark.rest.resources.interactions.CreateFollowupMessage;
-import io.disquark.rest.resources.interactions.EditFollowupMessage;
-import io.disquark.rest.resources.interactions.EditOriginalInteractionResponse;
+import io.disquark.rest.resources.interactions.CreateFollowupMessageUni;
+import io.disquark.rest.resources.interactions.EditFollowupMessageUni;
+import io.disquark.rest.resources.interactions.EditOriginalInteractionResponseUni;
 import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
 
@@ -15,15 +15,15 @@ public interface InteractionsCapable {
 
     Uni<Message> getOriginalInteractionResponse(Snowflake applicationId, String interactionToken);
 
-    Uni<Message> editOriginalInteractionResponse(EditOriginalInteractionResponse editOriginalInteractionResponse);
+    EditOriginalInteractionResponseUni editOriginalInteractionResponse(Snowflake applicationId, String interactionToken);
 
     Uni<Void> deleteOriginalInteractionResponse(Snowflake applicationId, String interactionToken);
 
-    Uni<Message> createFollowupMessage(CreateFollowupMessage createFollowupMessage);
+    CreateFollowupMessageUni createFollowupMessage(Snowflake applicationId, String interactionToken);
 
     Uni<Message> getFollowupMessage(Snowflake applicationId, String interactionToken, Snowflake messageId);
 
-    Uni<Message> editFollowupMessage(EditFollowupMessage editFollowupMessage);
+    EditFollowupMessageUni editFollowupMessage(Snowflake applicationId, String interactionToken, Snowflake messageId);
 
     Uni<Void> deleteFollowupMessage(Snowflake applicationId, String interactionToken, Snowflake messageId);
 }

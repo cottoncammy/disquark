@@ -10,61 +10,60 @@ import java.util.Optional;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import io.disquark.immutables.ImmutableJson;
+import io.disquark.immutables.ImmutableUni;
+import io.disquark.rest.request.AbstractRequestUni;
 import io.disquark.rest.request.Endpoint;
 import io.disquark.rest.request.Request;
-import io.disquark.rest.request.Requestable;
 import io.disquark.rest.resources.Locale;
 import io.disquark.rest.resources.Snowflake;
 import io.disquark.rest.resources.permissions.PermissionFlag;
+import io.smallrye.mutiny.subscription.UniSubscriber;
 import io.vertx.core.http.HttpMethod;
 
-@ImmutableJson
-public interface CreateGuildApplicationCommand extends Requestable {
-
-    static Builder builder() {
-        return new Builder();
-    }
+@ImmutableUni
+abstract class CreateGuildApplicationCommand extends AbstractRequestUni<ApplicationCommand> {
 
     @JsonIgnore
-    Snowflake applicationId();
+    public abstract Snowflake applicationId();
 
     @JsonIgnore
-    Snowflake guildId();
+    public abstract Snowflake guildId();
 
-    String name();
+    public abstract String name();
 
     @JsonProperty("name_localizations")
-    Optional<Map<Locale, String>> nameLocalizations();
+    public abstract Optional<Map<Locale, String>> nameLocalizations();
 
-    Optional<String> description();
+    public abstract Optional<String> description();
 
     @JsonProperty("description_localizations")
-    Optional<Map<Locale, String>> descriptionLocalizations();
+    public abstract Optional<Map<Locale, String>> descriptionLocalizations();
 
-    Optional<List<ApplicationCommand.Option>> options();
+    public abstract Optional<List<ApplicationCommand.Option>> options();
 
     @JsonProperty("default_member_permissions")
-    Optional<EnumSet<PermissionFlag>> defaultMemberPermissions();
+    public abstract Optional<EnumSet<PermissionFlag>> defaultMemberPermissions();
 
     @JsonProperty("default_permission")
-    Optional<Boolean> defaultPermission();
+    public abstract Optional<Boolean> defaultPermission();
 
-    Optional<ApplicationCommand.Type> type();
+    public abstract Optional<ApplicationCommand.Type> type();
 
-    Optional<Boolean> nsfw();
+    public abstract Optional<Boolean> nsfw();
 
     @Override
-    default Request asRequest() {
+    public void subscribe(UniSubscriber<? super ApplicationCommand> downstream) {
+        requester().request(asRequest())
+                .flatMap(res -> res.as(ApplicationCommand.class))
+                .subscribe().withSubscriber(downstream);
+    }
+
+    @Override
+    public Request asRequest() {
         return Request.builder()
                 .endpoint(Endpoint.create(HttpMethod.POST, "/applications/{application.id}/guilds/{guild.id}/commands"))
                 .variables(variables("application.id", applicationId().getValue(), "guild.id", guildId().getValue()))
                 .body(this)
                 .build();
-    }
-
-    class Builder extends ImmutableCreateGuildApplicationCommand.Builder {
-        protected Builder() {
-        }
     }
 }

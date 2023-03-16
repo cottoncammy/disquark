@@ -2,6 +2,7 @@ package io.disquark.rest.interactions;
 
 import java.util.EnumSet;
 import java.util.List;
+import java.util.function.Supplier;
 
 import io.disquark.rest.resources.channel.message.Message;
 import io.disquark.rest.resources.interactions.Interaction;
@@ -30,32 +31,29 @@ public abstract class CompletableInteraction<T> {
     }
 
     protected Uni<RespondedInteraction<T>> respond(Interaction.MessageCallbackData data) {
-        return serialize(
-                Interaction.Response.builder().type(Interaction.CallbackType.CHANNEL_MESSAGE_WITH_SOURCE).data(data).build())
+        return serialize(new Interaction.Response<>(Interaction.CallbackType.CHANNEL_MESSAGE_WITH_SOURCE).withData(data))
                 .invoke(() -> LOG.debug("Responding to interaction {} with message", interaction.id().getValueAsString()))
                 .replaceWith(new RespondedInteraction<>(interaction, interactionsClient));
     }
 
     protected Uni<RespondedInteraction<T>> deferResponse(boolean ephemeral) {
-        Interaction.Response.Builder<Interaction.CallbackData> builder = Interaction.Response.<Interaction.CallbackData> builder()
-                .type(Interaction.CallbackType.DEFERRED_CHANNEL_MESSAGE_WITH_SOURCE);
+        Interaction.Response<Interaction.CallbackData> response = new Interaction.Response<>(
+                Interaction.CallbackType.DEFERRED_CHANNEL_MESSAGE_WITH_SOURCE);
         if (ephemeral) {
-            builder.data(Interaction.CallbackData.builder().flags(EnumSet.of(Message.Flag.EPHEMERAL)).build());
+            response = response.withData(Interaction.CallbackData.of().withFlags(EnumSet.of(Message.Flag.EPHEMERAL)));
         }
 
-        return serialize(builder.build())
+        return serialize(response)
                 .invoke(() -> LOG.debug("Responding to interaction {} with deferred message",
                         interaction.id().getValueAsString()))
                 .replaceWith(new RespondedInteraction<>(interaction, interactionsClient));
     }
 
     protected Uni<RespondedInteraction<T>> popUpModal(String customId, String title, List<Component> components) {
-        Interaction.Response<?> interactionResponse = Interaction.Response.builder()
-                .type(Interaction.CallbackType.MODAL)
-                .data(Interaction.CallbackData.builder().customId(customId).title(title).components(components).build())
-                .build();
+        Supplier<Interaction.Response<?>> response = () -> new Interaction.Response<>(Interaction.CallbackType.MODAL)
+                .withData(Interaction.CallbackData.of().withCustomId(customId).withTitle(title).withComponents(components));
 
-        return serialize(interactionResponse)
+        return Uni.createFrom().deferred(() -> serialize(response.get()))
                 .invoke(() -> LOG.debug("Responding to interaction {} with modal", interaction.id().getValueAsString()))
                 .replaceWith(new RespondedInteraction<>(interaction, interactionsClient));
     }

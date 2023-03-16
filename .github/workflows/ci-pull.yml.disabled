@@ -15,15 +15,15 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        jdk-version: [ 11, 17 ]
+        java-version: [ 11, 17 ]
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
-      - name: Setup JDK ${{ matrix.jdk-version }}
+      - name: Setup Java ${{ matrix.java-version }}
         uses: actions/setup-java@v3
         with:
           distribution: temurin
-          java-version: ${{ matrix.jdk-version }}
+          java-version: ${{ matrix.java-version }}
           cache: maven
       - name: Maven test
         run: ./mvnw -B -s .github/mvn-ci-settings.xml test
@@ -41,5 +41,5 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@v3
         with:
-          name: test-reports-JDK-${{ matrix.jdk-version }}
+          name: test-reports-java-${{ matrix.java-version }}
           path: '**/target/*-reports/TEST-*.xml'

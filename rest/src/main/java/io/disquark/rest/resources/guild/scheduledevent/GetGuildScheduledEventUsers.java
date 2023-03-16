@@ -1,11 +1,12 @@
 package io.disquark.rest.resources.guild.scheduledevent;
 
 import java.util.Optional;
+import java.util.concurrent.Flow;
 
-import io.disquark.immutables.ImmutableBuilder;
+import io.disquark.immutables.ImmutableMulti;
+import io.disquark.rest.request.AbstractRequestMulti;
 import io.disquark.rest.request.Endpoint;
 import io.disquark.rest.request.Request;
-import io.disquark.rest.request.Requestable;
 import io.disquark.rest.resources.Snowflake;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.json.JsonObject;
@@ -13,37 +14,37 @@ import io.vertx.mutiny.uritemplate.Variables;
 
 import org.immutables.value.Value.Default;
 
-@ImmutableBuilder
-public interface GetGuildScheduledEventUsers extends Requestable {
+@ImmutableMulti
+abstract class GetGuildScheduledEventUsers extends AbstractRequestMulti<GuildScheduledEvent.User> {
 
-    static Builder builder() {
-        return new Builder();
-    }
+    public abstract Snowflake guildId();
 
-    static GetGuildScheduledEventUsers create(Snowflake guildId, Snowflake guildScheduledEventId) {
-        return ImmutableGetGuildScheduledEventUsers.create(guildId, guildScheduledEventId);
-    }
-
-    Snowflake guildId();
-
-    Snowflake guildScheduledEventId();
+    public abstract Snowflake guildScheduledEventId();
 
     @Default
-    default int limit() {
+    public int limit() {
         return 100;
     }
 
     @Default
-    default boolean withMember() {
+    public boolean withMember() {
         return false;
     }
 
-    Optional<Snowflake> before();
+    public abstract Optional<Snowflake> before();
 
-    Optional<Snowflake> after();
+    public abstract Optional<Snowflake> after();
 
     @Override
-    default Request asRequest() {
+    public void subscribe(Flow.Subscriber<? super GuildScheduledEvent.User> downstream) {
+        requester().request(asRequest())
+                .flatMap(res -> res.as(GuildScheduledEvent.User[].class))
+                .onItem().<GuildScheduledEvent.User> disjoint()
+                .subscribe().withSubscriber(downstream);
+    }
+
+    @Override
+    public Request asRequest() {
         JsonObject json = JsonObject.of("guild.id", guildId().getValue(), "guild_scheduled_event.id",
                 guildScheduledEventId().getValue(), "limit", limit(), "with_member", withMember());
         if (before().isPresent()) {
@@ -59,10 +60,5 @@ public interface GetGuildScheduledEventUsers extends Requestable {
                         "/guilds/{guild.id}/scheduled-events/{guild_scheduled_event.id}/users{?limit,with_member,before,after}"))
                 .variables(Variables.variables(json))
                 .build();
-    }
-
-    class Builder extends ImmutableGetGuildScheduledEventUsers.Builder {
-        protected Builder() {
-        }
     }
 }

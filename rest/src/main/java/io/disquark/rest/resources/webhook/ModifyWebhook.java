@@ -10,52 +10,49 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-import io.disquark.immutables.ImmutableJson;
+import io.disquark.immutables.ImmutableUni;
 import io.disquark.nullableoptional.NullableOptional;
 import io.disquark.nullableoptional.jackson.NullableOptionalFilter;
 import io.disquark.rest.jackson.ImageDataSerializer;
+import io.disquark.rest.request.AbstractRequestUni;
 import io.disquark.rest.request.Auditable;
 import io.disquark.rest.request.Endpoint;
 import io.disquark.rest.request.Request;
-import io.disquark.rest.request.Requestable;
 import io.disquark.rest.resources.Snowflake;
+import io.smallrye.mutiny.subscription.UniSubscriber;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.mutiny.core.buffer.Buffer;
 
 import org.immutables.value.Value.Redacted;
 
-@ImmutableJson
-public interface ModifyWebhook extends Auditable, Requestable {
-
-    static Builder builder() {
-        return new Builder();
-    }
+@ImmutableUni
+abstract class ModifyWebhook extends AbstractRequestUni<Webhook> implements Auditable {
 
     @JsonIgnore
-    Snowflake webhookId();
+    public abstract Snowflake webhookId();
 
-    Optional<String> name();
+    public abstract Optional<String> name();
 
     @Redacted
     @JsonSerialize(contentUsing = ImageDataSerializer.class)
     @JsonInclude(value = Include.CUSTOM, valueFilter = NullableOptionalFilter.class)
-    NullableOptional<Buffer> avatar();
+    public abstract NullableOptional<Buffer> avatar();
 
     @JsonProperty("channel_id")
-    Optional<Snowflake> channelId();
+    public abstract Optional<Snowflake> channelId();
 
     @Override
-    default Request asRequest() {
+    public void subscribe(UniSubscriber<? super Webhook> downstream) {
+        requester().request(asRequest()).flatMap(res -> res.as(Webhook.class)).subscribe().withSubscriber(downstream);
+    }
+
+    @Override
+    public Request asRequest() {
         return Request.builder()
                 .endpoint(Endpoint.create(HttpMethod.PATCH, "/webhooks/{webhook.id}"))
                 .variables(variables("webhook.id", webhookId().getValue()))
                 .body(this)
                 .auditLogReason(auditLogReason())
                 .build();
-    }
-
-    class Builder extends ImmutableModifyWebhook.Builder {
-        protected Builder() {
-        }
     }
 }

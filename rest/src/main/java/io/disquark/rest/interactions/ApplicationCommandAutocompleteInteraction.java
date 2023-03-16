@@ -1,6 +1,7 @@
 package io.disquark.rest.interactions;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 import io.disquark.rest.resources.application.command.ApplicationCommand;
 import io.disquark.rest.resources.interactions.Interaction;
@@ -17,13 +18,12 @@ public class ApplicationCommandAutocompleteInteraction extends CompletableIntera
     }
 
     public Uni<RespondedInteraction<Interaction.ApplicationCommandData>> suggestChoices(
-            List<ApplicationCommand.Option.Choice> choices) {
-        Interaction.Response<?> interactionResponse = Interaction.Response.builder()
-                .type(Interaction.CallbackType.APPLICATION_COMMAND_AUTOCOMPLETE_RESULT)
-                .data(Interaction.CallbackData.builder().choices(choices).build())
-                .build();
+            List<ApplicationCommand.OptionChoice> choices) {
+        Supplier<Interaction.Response<?>> response = () -> new Interaction.Response<>(
+                Interaction.CallbackType.APPLICATION_COMMAND_AUTOCOMPLETE_RESULT)
+                .withData(Interaction.CallbackData.of().withChoices(choices));
 
-        return serialize(interactionResponse)
+        return Uni.createFrom().deferred(() -> serialize(response.get()))
                 .invoke(() -> LOG.debug("Responding to interaction {} with autocomplete choices",
                         interaction.id().getValueAsString()))
                 .replaceWith(new RespondedInteraction<>(interaction, interactionsClient));

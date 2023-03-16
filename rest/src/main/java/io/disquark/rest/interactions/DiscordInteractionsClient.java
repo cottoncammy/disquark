@@ -16,9 +16,9 @@ import io.disquark.rest.request.ratelimit.GlobalRateLimiter;
 import io.disquark.rest.request.ratelimit.RateLimitStrategy;
 import io.disquark.rest.resources.Snowflake;
 import io.disquark.rest.resources.channel.message.Message;
-import io.disquark.rest.resources.interactions.CreateFollowupMessage;
-import io.disquark.rest.resources.interactions.EditFollowupMessage;
-import io.disquark.rest.resources.interactions.EditOriginalInteractionResponse;
+import io.disquark.rest.resources.interactions.CreateFollowupMessageUni;
+import io.disquark.rest.resources.interactions.EditFollowupMessageUni;
+import io.disquark.rest.resources.interactions.EditOriginalInteractionResponseUni;
 import io.disquark.rest.response.Response;
 import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
@@ -97,9 +97,10 @@ public class DiscordInteractionsClient<T extends Response> extends DiscordClient
     }
 
     @Override
-    public Uni<Message> editOriginalInteractionResponse(EditOriginalInteractionResponse editOriginalInteractionResponse) {
-        return requester.request(requireNonNull(editOriginalInteractionResponse, "editOriginalInteractionResponse").asRequest())
-                .flatMap(res -> res.as(Message.class));
+    public EditOriginalInteractionResponseUni editOriginalInteractionResponse(Snowflake applicationId,
+            String interactionToken) {
+        return (EditOriginalInteractionResponseUni) Uni.createFrom()
+                .deferred(() -> new EditOriginalInteractionResponseUni(requester, applicationId, interactionToken));
     }
 
     @Override
@@ -113,9 +114,9 @@ public class DiscordInteractionsClient<T extends Response> extends DiscordClient
     }
 
     @Override
-    public Uni<Message> createFollowupMessage(CreateFollowupMessage createFollowupMessage) {
-        return requester.request(requireNonNull(createFollowupMessage, "createFollowupMessage").asRequest())
-                .flatMap(res -> res.as(Message.class));
+    public CreateFollowupMessageUni createFollowupMessage(Snowflake applicationId, String interactionToken) {
+        return (CreateFollowupMessageUni) Uni.createFrom()
+                .deferred(() -> new CreateFollowupMessageUni(requester, applicationId, interactionToken));
     }
 
     @Override
@@ -129,9 +130,9 @@ public class DiscordInteractionsClient<T extends Response> extends DiscordClient
     }
 
     @Override
-    public Uni<Message> editFollowupMessage(EditFollowupMessage editFollowupMessage) {
-        return requester.request(requireNonNull(editFollowupMessage, "editFollowupMessage").asRequest())
-                .flatMap(res -> res.as(Message.class));
+    public EditFollowupMessageUni editFollowupMessage(Snowflake applicationId, String interactionToken, Snowflake messageId) {
+        return (EditFollowupMessageUni) Uni.createFrom()
+                .deferred(() -> new EditFollowupMessageUni(requester, applicationId, interactionToken, messageId));
     }
 
     @Override

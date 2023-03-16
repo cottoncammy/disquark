@@ -9,11 +9,10 @@ import io.disquark.rest.request.AccessTokenSource;
 import io.disquark.rest.request.EmptyRequest;
 import io.disquark.rest.request.Requester;
 import io.disquark.rest.resources.Snowflake;
-import io.disquark.rest.resources.application.command.EditApplicationCommandPermissions;
-import io.disquark.rest.resources.application.command.GuildApplicationCommandPermissions;
+import io.disquark.rest.resources.application.command.EditApplicationCommandPermissionsUni;
 import io.disquark.rest.resources.guild.Guild;
 import io.disquark.rest.resources.oauth2.Authorization;
-import io.disquark.rest.resources.user.UpdateUserApplicationRoleConnections;
+import io.disquark.rest.resources.user.UpdateUserApplicationRoleConnectionsUni;
 import io.disquark.rest.resources.user.User;
 import io.disquark.rest.response.Response;
 import io.smallrye.mutiny.Multi;
@@ -55,16 +54,15 @@ public class DiscordOAuth2Client<T extends Response> extends AuthenticatedDiscor
         return buildInteractionsClient(DiscordInteractionsClient.builder(vertx, verifyKey));
     }
 
-    public Uni<GuildApplicationCommandPermissions> editApplicationCommandPermissions(
-            EditApplicationCommandPermissions editApplicationCommandPermissions) {
-        return requester.request(requireNonNull(editApplicationCommandPermissions,
-                "editApplicationCommandPermissions").asRequest())
-                .flatMap(res -> res.as(GuildApplicationCommandPermissions.class));
+    public EditApplicationCommandPermissionsUni editApplicationCommandPermissions(Snowflake applicationId, Snowflake guildId,
+            Snowflake commandId) {
+        return (EditApplicationCommandPermissionsUni)
+                deferredUni(() -> new EditApplicationCommandPermissionsUni(requester, applicationId, guildId, commandId));
     }
 
     public Uni<Guild.Member> getCurrentUserGuildMember(Snowflake guildId) {
-        return requester.request(new EmptyRequest("/users/@me/guilds/{guild.id}/member",
-                variables("guild.id", requireNonNull(guildId, "guildId").getValue())))
+        return deferredUni(() -> requester.request(new EmptyRequest("/users/@me/guilds/{guild.id}/member",
+                variables("guild.id", requireNonNull(guildId, "guildId").getValue()))))
                 .flatMap(res -> res.as(Guild.Member.class));
     }
 
@@ -75,16 +73,14 @@ public class DiscordOAuth2Client<T extends Response> extends AuthenticatedDiscor
     }
 
     public Uni<User.ApplicationRoleConnection> getUserApplicationRoleConnection(Snowflake applicationId) {
-        return requester.request(new EmptyRequest("/users/@me/applications/{application.id}/role-connection",
-                variables("application.id", requireNonNull(applicationId, "applicationId").getValue())))
+        return deferredUni(() -> requester.request(new EmptyRequest("/users/@me/applications/{application.id}/role-connection",
+                variables("application.id", requireNonNull(applicationId, "applicationId").getValue()))))
                 .flatMap(res -> res.as(User.ApplicationRoleConnection.class));
     }
 
-    public Uni<User.ApplicationRoleConnection> updateUserApplicationRoleConnection(
-            UpdateUserApplicationRoleConnections updateUserApplicationRoleConnections) {
-        return requester.request(requireNonNull(updateUserApplicationRoleConnections, "updateUserApplicationRoleConnections")
-                .asRequest())
-                .flatMap(res -> res.as(User.ApplicationRoleConnection.class));
+    public UpdateUserApplicationRoleConnectionsUni updateUserApplicationRoleConnection(Snowflake applicationId) {
+        return (UpdateUserApplicationRoleConnectionsUni)
+                deferredUni(() -> new UpdateUserApplicationRoleConnectionsUni(requester, applicationId));
     }
 
     public Uni<Authorization> getCurrentAuthorizationInformation() {

@@ -8,42 +8,41 @@ import java.util.Optional;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import io.disquark.immutables.ImmutableJson;
+import io.disquark.immutables.ImmutableUni;
+import io.disquark.rest.request.AbstractRequestUni;
 import io.disquark.rest.request.Endpoint;
 import io.disquark.rest.request.Request;
-import io.disquark.rest.request.Requestable;
 import io.disquark.rest.resources.Snowflake;
+import io.smallrye.mutiny.subscription.UniSubscriber;
 import io.vertx.core.http.HttpMethod;
 
-@ImmutableJson
-public interface UpdateUserApplicationRoleConnections extends Requestable {
-
-    static Builder builder() {
-        return new Builder();
-    }
+@ImmutableUni
+abstract class UpdateUserApplicationRoleConnections extends AbstractRequestUni<User.ApplicationRoleConnection> {
 
     @JsonIgnore
-    Snowflake applicationId();
+    public abstract Snowflake applicationId();
 
     @JsonProperty("platform_name")
-    Optional<String> platformName();
+    public abstract Optional<String> platformName();
 
     @JsonProperty("platform_username")
-    Optional<String> platformUsername();
+    public abstract Optional<String> platformUsername();
 
-    Optional<Map<String, String>> metadata();
+    public abstract Optional<Map<String, String>> metadata();
 
     @Override
-    default Request asRequest() {
+    public void subscribe(UniSubscriber<? super User.ApplicationRoleConnection> downstream) {
+        requester().request(asRequest())
+                .flatMap(res -> res.as(User.ApplicationRoleConnection.class))
+                .subscribe().withSubscriber(downstream);
+    }
+
+    @Override
+    public Request asRequest() {
         return Request.builder()
                 .endpoint(Endpoint.create(HttpMethod.PUT, "/users/@me/applications/{application.id}/role-connection"))
                 .variables(variables("application.id", applicationId().getValue()))
                 .body(this)
                 .build();
-    }
-
-    class Builder extends ImmutableUpdateUserApplicationRoleConnections.Builder {
-        protected Builder() {
-        }
     }
 }

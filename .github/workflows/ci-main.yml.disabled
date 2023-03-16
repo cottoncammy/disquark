@@ -42,7 +42,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: test-reports-JDK-${{ matrix.jdk-version }}
-          path: '**/target/*-reports/TEST-*.xml'
+          path: './**/target/*-reports/TEST-*.xml'
 
   snapshots:
     name: Release snapshots

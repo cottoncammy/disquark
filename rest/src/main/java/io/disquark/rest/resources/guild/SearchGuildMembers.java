@@ -2,45 +2,42 @@ package io.disquark.rest.resources.guild;
 
 import static io.disquark.rest.util.Variables.variables;
 
-import io.disquark.immutables.ImmutableBuilder;
+import java.util.concurrent.Flow;
+
+import io.disquark.immutables.ImmutableMulti;
+import io.disquark.rest.request.AbstractRequestMulti;
 import io.disquark.rest.request.Endpoint;
 import io.disquark.rest.request.Request;
-import io.disquark.rest.request.Requestable;
 import io.disquark.rest.resources.Snowflake;
 import io.vertx.core.http.HttpMethod;
 
 import org.immutables.value.Value.Default;
 
-@ImmutableBuilder
-public interface SearchGuildMembers extends Requestable {
+@ImmutableMulti
+abstract class SearchGuildMembers extends AbstractRequestMulti<Guild.Member> {
 
-    static Builder builder() {
-        return new Builder();
-    }
+    public abstract Snowflake guildId();
 
-    static SearchGuildMembers create(Snowflake guildId, String query) {
-        return ImmutableSearchGuildMembers.create(guildId, query);
-    }
-
-    Snowflake guildId();
-
-    String query();
+    public abstract String query();
 
     @Default
-    default int limit() {
+    public int limit() {
         return 1;
     }
 
     @Override
-    default Request asRequest() {
+    public void subscribe(Flow.Subscriber<? super Guild.Member> downstream) {
+        requester().request(asRequest())
+                .flatMap(res -> res.as(Guild.Member[].class))
+                .onItem().<Guild.Member> disjoint()
+                .subscribe().withSubscriber(downstream);
+    }
+
+    @Override
+    public Request asRequest() {
         return Request.builder()
                 .endpoint(Endpoint.create(HttpMethod.GET, "/guilds/{guild.id}/members/search{?query,limit}"))
                 .variables(variables("guild.id", guildId().getValue(), "query", query(), "limit", limit()))
                 .build();
-    }
-
-    class Builder extends ImmutableSearchGuildMembers.Builder {
-        protected Builder() {
-        }
     }
 }

@@ -2,43 +2,41 @@ package io.disquark.rest.resources.auditlog;
 
 import java.util.Optional;
 
-import io.disquark.immutables.ImmutableBuilder;
+import io.disquark.immutables.ImmutableUni;
+import io.disquark.rest.request.AbstractRequestUni;
 import io.disquark.rest.request.Endpoint;
 import io.disquark.rest.request.Request;
-import io.disquark.rest.request.Requestable;
 import io.disquark.rest.resources.Snowflake;
+import io.smallrye.mutiny.subscription.UniSubscriber;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.json.JsonObject;
 import io.vertx.mutiny.uritemplate.Variables;
 
 import org.immutables.value.Value.Default;
 
-@ImmutableBuilder
-public interface GetGuildAuditLog extends Requestable {
+@ImmutableUni
+abstract class GetGuildAuditLog extends AbstractRequestUni<AuditLog> {
 
-    static Builder builder() {
-        return new Builder();
-    }
+    public abstract Snowflake guildId();
 
-    static GetGuildAuditLog create(Snowflake guildId) {
-        return ImmutableGetGuildAuditLog.create(guildId);
-    }
+    public abstract Optional<Snowflake> userId();
 
-    Snowflake guildId();
+    public abstract Optional<AuditLog.Event> actionType();
 
-    Optional<Snowflake> userId();
-
-    Optional<AuditLog.Event> actionType();
-
-    Optional<Snowflake> before();
+    public abstract Optional<Snowflake> before();
 
     @Default
-    default int limit() {
+    public int limit() {
         return 50;
     }
 
     @Override
-    default Request asRequest() {
+    public void subscribe(UniSubscriber<? super AuditLog> downstream) {
+        requester().request(asRequest()).flatMap(res -> res.as(AuditLog.class)).subscribe().withSubscriber(downstream);
+    }
+
+    @Override
+    public Request asRequest() {
         JsonObject json = JsonObject.of("guild.id", guildId().getValue(), "limit", limit());
         if (userId().isPresent()) {
             json.put("user_id", userId().get().getValue());
@@ -56,10 +54,5 @@ public interface GetGuildAuditLog extends Requestable {
                 .endpoint(Endpoint.create(HttpMethod.GET, "/guilds/{guild.id}/audit-logs{?user_id,action_type,before,limit}"))
                 .variables(Variables.variables(json))
                 .build();
-    }
-
-    class Builder extends ImmutableGetGuildAuditLog.Builder {
-        protected Builder() {
-        }
     }
 }

@@ -10,57 +10,54 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import io.disquark.immutables.ImmutableJson;
+import io.disquark.immutables.ImmutableUni;
 import io.disquark.nullableoptional.NullableOptional;
 import io.disquark.nullableoptional.jackson.NullableOptionalFilter;
+import io.disquark.rest.request.AbstractRequestUni;
 import io.disquark.rest.request.Endpoint;
 import io.disquark.rest.request.MultipartRequest;
 import io.disquark.rest.request.Request;
-import io.disquark.rest.request.Requestable;
 import io.disquark.rest.resources.Snowflake;
 import io.disquark.rest.resources.interactions.components.Component;
 import io.disquark.rest.resources.partial.PartialAttachment;
+import io.smallrye.mutiny.subscription.UniSubscriber;
 import io.vertx.core.http.HttpMethod;
 
-@ImmutableJson
+@ImmutableUni
 @JsonInclude(value = Include.CUSTOM, valueFilter = NullableOptionalFilter.class)
-public interface EditMessage extends MultipartRequest, Requestable {
-
-    static Builder builder() {
-        return new Builder();
-    }
+abstract class EditMessage extends AbstractRequestUni<Message> implements MultipartRequest {
 
     @JsonIgnore
-    Snowflake channelId();
+    public abstract Snowflake channelId();
 
     @JsonIgnore
-    Snowflake messageId();
+    public abstract Snowflake messageId();
 
-    NullableOptional<String> content();
+    public abstract NullableOptional<String> content();
 
-    NullableOptional<List<Message.Embed>> embeds();
+    public abstract NullableOptional<List<Message.Embed>> embeds();
 
-    NullableOptional<EnumSet<Message.Flag>> flags();
+    public abstract NullableOptional<EnumSet<Message.Flag>> flags();
 
     @JsonProperty("allowed_mentions")
-    NullableOptional<AllowedMentions> allowedMentions();
+    public abstract NullableOptional<AllowedMentions> allowedMentions();
 
-    NullableOptional<List<Component>> components();
+    public abstract NullableOptional<List<Component>> components();
 
-    NullableOptional<List<PartialAttachment>> attachments();
+    public abstract NullableOptional<List<PartialAttachment>> attachments();
 
     @Override
-    default Request asRequest() {
+    public void subscribe(UniSubscriber<? super Message> downstream) {
+        requester().request(asRequest()).flatMap(res -> res.as(Message.class)).subscribe().withSubscriber(downstream);
+    }
+
+    @Override
+    public Request asRequest() {
         return Request.builder()
                 .endpoint(Endpoint.create(HttpMethod.PATCH, "/channels/{channel.id}/messages/{message.id}"))
                 .variables(variables("channel.id", channelId().getValue(), "message.id", messageId().getValue()))
                 .body(this)
                 .files(files())
                 .build();
-    }
-
-    class Builder extends ImmutableEditMessage.Builder {
-        protected Builder() {
-        }
     }
 }

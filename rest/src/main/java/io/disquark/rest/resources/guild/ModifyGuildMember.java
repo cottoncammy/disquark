@@ -11,58 +11,55 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import io.disquark.immutables.ImmutableJson;
+import io.disquark.immutables.ImmutableUni;
 import io.disquark.nullableoptional.NullableOptional;
 import io.disquark.nullableoptional.jackson.NullableOptionalFilter;
+import io.disquark.rest.request.AbstractRequestUni;
 import io.disquark.rest.request.Auditable;
 import io.disquark.rest.request.Endpoint;
 import io.disquark.rest.request.Request;
-import io.disquark.rest.request.Requestable;
 import io.disquark.rest.resources.Snowflake;
+import io.smallrye.mutiny.subscription.UniSubscriber;
 import io.vertx.core.http.HttpMethod;
 
-@ImmutableJson
+@ImmutableUni
 @JsonInclude(value = Include.CUSTOM, valueFilter = NullableOptionalFilter.class)
-public interface ModifyGuildMember extends Auditable, Requestable {
-
-    static Builder builder() {
-        return new Builder();
-    }
+abstract class ModifyGuildMember extends AbstractRequestUni<Guild.Member> implements Auditable {
 
     @JsonIgnore
-    Snowflake guildId();
+    public abstract Snowflake guildId();
 
     @JsonIgnore
-    Snowflake userId();
+    public abstract Snowflake userId();
 
-    NullableOptional<String> nick();
+    public abstract NullableOptional<String> nick();
 
-    NullableOptional<List<Snowflake>> roles();
-
-    @JsonInclude(Include.NON_ABSENT)
-    Optional<Boolean> mute();
+    public abstract NullableOptional<List<Snowflake>> roles();
 
     @JsonInclude(Include.NON_ABSENT)
-    Optional<Boolean> deaf();
+    public abstract Optional<Boolean> mute();
+
+    @JsonInclude(Include.NON_ABSENT)
+    public abstract Optional<Boolean> deaf();
 
     @JsonProperty("channel_id")
-    NullableOptional<Snowflake> channelId();
+    public abstract NullableOptional<Snowflake> channelId();
 
     @JsonProperty("communication_disabled_until")
-    NullableOptional<Instant> communicationDisabledUntil();
+    public abstract NullableOptional<Instant> communicationDisabledUntil();
 
     @Override
-    default Request asRequest() {
+    public void subscribe(UniSubscriber<? super Guild.Member> downstream) {
+        requester().request(asRequest()).flatMap(res -> res.as(Guild.Member.class)).subscribe().withSubscriber(downstream);
+    }
+
+    @Override
+    public Request asRequest() {
         return Request.builder()
                 .endpoint(Endpoint.create(HttpMethod.PATCH, "/guilds/{guild.id}/members/{user.id}"))
                 .variables(variables("guild.id", guildId().getValue(), "user.id", userId().getValue()))
                 .body(this)
                 .auditLogReason(auditLogReason())
                 .build();
-    }
-
-    class Builder extends ImmutableModifyGuildMember.Builder {
-        protected Builder() {
-        }
     }
 }

@@ -2,38 +2,37 @@ package io.disquark.rest.resources.guild;
 
 import static io.disquark.rest.util.Variables.variables;
 
-import java.util.Optional;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import io.disquark.immutables.ImmutableJson;
+import io.disquark.immutables.ImmutableUni;
+import io.disquark.rest.request.AbstractRequestUni;
 import io.disquark.rest.request.Auditable;
 import io.disquark.rest.request.Endpoint;
 import io.disquark.rest.request.Request;
-import io.disquark.rest.request.Requestable;
 import io.disquark.rest.resources.Snowflake;
+import io.smallrye.mutiny.subscription.UniSubscriber;
 import io.vertx.core.http.HttpMethod;
 
-@ImmutableJson
-public interface ModifyGuildMfaLevel extends Auditable, Requestable {
-
-    static ModifyGuildMfaLevel create(Snowflake guildId, Guild.MfaLevel level, String auditLogReason) {
-        return ImmutableModifyGuildMfaLevel.builder()
-                .guildId(guildId)
-                .level(level)
-                .auditLogReason(Optional.ofNullable(auditLogReason))
-                .build();
-    }
+@ImmutableUni
+abstract class ModifyGuildMfaLevel extends AbstractRequestUni<GuildJson.MfaLevel> implements Auditable {
 
     @JsonIgnore
-    Snowflake guildId();
+    public abstract Snowflake guildId();
 
-    Guild.MfaLevel level();
+    public abstract Guild.MfaLevel level();
 
     @Override
-    default Request asRequest() {
+    public void subscribe(UniSubscriber<? super GuildJson.MfaLevel> downstream) {
+        requester().request(asRequest())
+                .flatMap(res -> res.as(Response.class))
+                .map(Response::getLevel)
+                .subscribe().withSubscriber(downstream);
+    }
+
+    @Override
+    public Request asRequest() {
         return Request.builder()
                 .endpoint(Endpoint.create(HttpMethod.POST, "/guilds/{guild.id}/mfa"))
                 .variables(variables("guild.id", guildId().getValue()))
@@ -42,7 +41,7 @@ public interface ModifyGuildMfaLevel extends Auditable, Requestable {
                 .build();
     }
 
-    class Response {
+    static class Response {
         private final Guild.MfaLevel level;
 
         @JsonCreator

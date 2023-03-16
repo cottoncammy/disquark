@@ -1,45 +1,47 @@
 package io.disquark.rest.resources.channel.message;
 
 import java.util.Optional;
+import java.util.concurrent.Flow;
 
-import io.disquark.immutables.ImmutableBuilder;
+import io.disquark.immutables.ImmutableMulti;
 import io.disquark.rest.emoji.ReactionEmoji;
+import io.disquark.rest.request.AbstractRequestMulti;
 import io.disquark.rest.request.Endpoint;
 import io.disquark.rest.request.Request;
-import io.disquark.rest.request.Requestable;
 import io.disquark.rest.resources.Snowflake;
+import io.disquark.rest.resources.user.User;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.json.JsonObject;
 import io.vertx.mutiny.uritemplate.Variables;
 
 import org.immutables.value.Value.Default;
 
-@ImmutableBuilder
-public interface GetReactions extends Requestable {
+@ImmutableMulti
+abstract class GetReactions extends AbstractRequestMulti<User> {
 
-    static Builder builder() {
-        return new Builder();
-    }
+    public abstract Snowflake channelId();
 
-    static GetReactions create(Snowflake channelId, Snowflake messageId, ReactionEmoji emoji) {
-        return ImmutableGetReactions.create(channelId, messageId, emoji);
-    }
+    public abstract Snowflake messageId();
 
-    Snowflake channelId();
+    public abstract ReactionEmoji emoji();
 
-    Snowflake messageId();
-
-    ReactionEmoji emoji();
-
-    Optional<Snowflake> after();
+    public abstract Optional<Snowflake> after();
 
     @Default
-    default int limit() {
+    public int limit() {
         return 25;
     }
 
     @Override
-    default Request asRequest() {
+    public void subscribe(Flow.Subscriber<? super User> downstream) {
+        requester().request(asRequest())
+                .flatMap(res -> res.as(User[].class))
+                .onItem().<User> disjoint()
+                .subscribe().withSubscriber(downstream);
+    }
+
+    @Override
+    public Request asRequest() {
         JsonObject json = JsonObject.of("channel.id", channelId().getValue(), "message.id", messageId().getValue(), "emoji",
                 emoji().getValue(), "limit", limit());
         if (after().isPresent()) {
@@ -51,10 +53,5 @@ public interface GetReactions extends Requestable {
                         "/channels/{channel.id}/messages/{message.id}/reactions/{emoji}{?after,limit}"))
                 .variables(Variables.variables(json))
                 .build();
-    }
-
-    class Builder extends ImmutableGetReactions.Builder {
-        protected Builder() {
-        }
     }
 }

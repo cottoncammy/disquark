@@ -8,9 +8,12 @@ import io.disquark.rest.request.RequesterFactory;
 import io.disquark.rest.request.ratelimit.GlobalRateLimiter;
 import io.disquark.rest.request.ratelimit.RateLimitStrategy;
 import io.disquark.rest.response.Response;
+import io.smallrye.mutiny.Multi;
+import io.smallrye.mutiny.Uni;
 import io.vertx.mutiny.core.Vertx;
 
-// TODO https://stackoverflow.com/questions/3284610/returning-an-objects-subclass-with-generics
+import java.util.function.Supplier;
+
 public abstract class DiscordClient<T extends Response> {
     protected final Vertx vertx;
     protected final Requester<T> requester;
@@ -18,6 +21,14 @@ public abstract class DiscordClient<T extends Response> {
     protected DiscordClient(Vertx vertx, Requester<T> requester) {
         this.vertx = vertx;
         this.requester = requester;
+    }
+
+    protected <T> Uni<T> deferredUni(Supplier<Uni<? extends T>> uni) {
+        return Uni.createFrom().deferred(uni);
+    }
+
+    protected <T> Multi<T> deferredMulti(Supplier<Multi<? extends T>> multi) {
+        return Multi.createFrom().deferred(multi);
     }
 
     public Vertx getVertx() {

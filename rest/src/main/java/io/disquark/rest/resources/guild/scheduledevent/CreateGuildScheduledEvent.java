@@ -9,64 +9,63 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-import io.disquark.immutables.ImmutableJson;
+import io.disquark.immutables.ImmutableUni;
 import io.disquark.rest.jackson.ImageDataSerializer;
+import io.disquark.rest.request.AbstractRequestUni;
 import io.disquark.rest.request.Endpoint;
 import io.disquark.rest.request.Request;
-import io.disquark.rest.request.Requestable;
 import io.disquark.rest.resources.Snowflake;
+import io.smallrye.mutiny.subscription.UniSubscriber;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.mutiny.core.buffer.Buffer;
 
 import org.immutables.value.Value.Redacted;
 
-@ImmutableJson
-public interface CreateGuildScheduledEvent extends Requestable {
-
-    static Builder builder() {
-        return new Builder();
-    }
+@ImmutableUni
+abstract class CreateGuildScheduledEvent extends AbstractRequestUni<GuildScheduledEvent> {
 
     @JsonIgnore
-    Snowflake guildId();
+    public abstract Snowflake guildId();
 
     @JsonProperty("channel_id")
-    Optional<Snowflake> channelId();
+    public abstract Optional<Snowflake> channelId();
 
     @JsonProperty("entity_metadata")
-    Optional<GuildScheduledEvent.EntityMetadata> entityMetadata();
+    public abstract Optional<GuildScheduledEvent.EntityMetadata> entityMetadata();
 
-    String name();
+    public abstract String name();
 
     @JsonProperty("privacy_level")
-    GuildScheduledEvent.PrivacyLevel privacyLevel();
+    public abstract GuildScheduledEvent.PrivacyLevel privacyLevel();
 
     @JsonProperty("scheduled_start_time")
-    Instant scheduledStartTime();
+    public abstract Instant scheduledStartTime();
 
     @JsonProperty("scheduled_end_time")
-    Optional<Instant> scheduledEndTime();
+    public abstract Optional<Instant> scheduledEndTime();
 
-    Optional<String> description();
+    public abstract Optional<String> description();
 
     @JsonProperty("entity_type")
-    GuildScheduledEvent.EntityType entityType();
+    public abstract GuildScheduledEvent.EntityType entityType();
 
     @Redacted
     @JsonSerialize(contentUsing = ImageDataSerializer.class)
-    Optional<Buffer> image();
+    public abstract Optional<Buffer> image();
 
     @Override
-    default Request asRequest() {
+    public void subscribe(UniSubscriber<? super GuildScheduledEvent> downstream) {
+        requester().request(asRequest())
+                .flatMap(res -> res.as(GuildScheduledEvent.class))
+                .subscribe().withSubscriber(downstream);
+    }
+
+    @Override
+    public Request asRequest() {
         return Request.builder()
                 .endpoint(Endpoint.create(HttpMethod.POST, "/guilds/{guild.id}/scheduled-events"))
                 .variables(variables("guild.id", guildId().getValue()))
                 .body(this)
                 .build();
-    }
-
-    class Builder extends ImmutableCreateGuildScheduledEvent.Builder {
-        protected Builder() {
-        }
     }
 }

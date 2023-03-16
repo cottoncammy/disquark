@@ -12,58 +12,62 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import io.disquark.immutables.ImmutableJson;
+import io.disquark.immutables.ImmutableUni;
 import io.disquark.nullableoptional.NullableOptional;
 import io.disquark.nullableoptional.jackson.NullableOptionalFilter;
+import io.disquark.rest.request.AbstractRequestUni;
 import io.disquark.rest.request.Endpoint;
 import io.disquark.rest.request.Request;
-import io.disquark.rest.request.Requestable;
 import io.disquark.rest.resources.Locale;
 import io.disquark.rest.resources.Snowflake;
 import io.disquark.rest.resources.permissions.PermissionFlag;
+import io.smallrye.mutiny.subscription.UniSubscriber;
 import io.vertx.core.http.HttpMethod;
 
-@ImmutableJson
-public interface EditGuildApplicationCommand extends Requestable {
-
-    static Builder builder() {
-        return new Builder();
-    }
+@ImmutableUni
+abstract class EditGuildApplicationCommand extends AbstractRequestUni<ApplicationCommand> {
 
     @JsonIgnore
-    Snowflake applicationId();
+    public abstract Snowflake applicationId();
 
     @JsonIgnore
-    Snowflake guildId();
+    public abstract Snowflake guildId();
 
     @JsonIgnore
-    Snowflake commandId();
+    public abstract Snowflake commandId();
 
-    Optional<String> name();
+    public abstract Optional<String> name();
 
     @JsonProperty("name_localizations")
     @JsonInclude(value = Include.CUSTOM, valueFilter = NullableOptionalFilter.class)
-    NullableOptional<Map<Locale, String>> nameLocalizations();
+    public abstract NullableOptional<Map<Locale, String>> nameLocalizations();
 
-    Optional<String> description();
+    public abstract Optional<String> description();
 
     @JsonProperty("description_localizations")
     @JsonInclude(value = Include.CUSTOM, valueFilter = NullableOptionalFilter.class)
-    NullableOptional<Map<Locale, String>> descriptionLocalizations();
+    public abstract NullableOptional<Map<Locale, String>> descriptionLocalizations();
 
-    Optional<List<ApplicationCommand.Option>> options();
+    public abstract Optional<List<ApplicationCommand.Option>> options();
 
     @JsonProperty("default_member_permissions")
     @JsonInclude(value = Include.CUSTOM, valueFilter = NullableOptionalFilter.class)
-    NullableOptional<EnumSet<PermissionFlag>> defaultMemberPermissions();
+    public abstract NullableOptional<EnumSet<PermissionFlag>> defaultMemberPermissions();
 
     @JsonProperty("default_permission")
-    Optional<Boolean> defaultPermission();
+    public abstract Optional<Boolean> defaultPermission();
 
-    Optional<Boolean> nsfw();
+    public abstract Optional<Boolean> nsfw();
 
     @Override
-    default Request asRequest() {
+    public void subscribe(UniSubscriber<? super ApplicationCommand> downstream) {
+        requester().request(asRequest())
+                .flatMap(res -> res.as(ApplicationCommand.class))
+                .subscribe().withSubscriber(downstream);
+    }
+
+    @Override
+    public Request asRequest() {
         return Request.builder()
                 .endpoint(Endpoint.create(HttpMethod.PATCH,
                         "/applications/{application.id}/guilds/{guild.id}/commands/{command.id}"))
@@ -71,10 +75,5 @@ public interface EditGuildApplicationCommand extends Requestable {
                         "command.id", commandId().getValue()))
                 .body(this)
                 .build();
-    }
-
-    class Builder extends ImmutableEditGuildApplicationCommand.Builder {
-        protected Builder() {
-        }
     }
 }
