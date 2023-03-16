@@ -56,8 +56,8 @@ public class DiscordOAuth2Client<T extends Response> extends AuthenticatedDiscor
 
     public EditApplicationCommandPermissionsUni editApplicationCommandPermissions(Snowflake applicationId, Snowflake guildId,
             Snowflake commandId) {
-        return (EditApplicationCommandPermissionsUni)
-                deferredUni(() -> new EditApplicationCommandPermissionsUni(requester, applicationId, guildId, commandId));
+        return (EditApplicationCommandPermissionsUni) deferredUni(
+                () -> new EditApplicationCommandPermissionsUni(requester, applicationId, guildId, commandId));
     }
 
     public Uni<Guild.Member> getCurrentUserGuildMember(Snowflake guildId) {
@@ -79,8 +79,8 @@ public class DiscordOAuth2Client<T extends Response> extends AuthenticatedDiscor
     }
 
     public UpdateUserApplicationRoleConnectionsUni updateUserApplicationRoleConnection(Snowflake applicationId) {
-        return (UpdateUserApplicationRoleConnectionsUni)
-                deferredUni(() -> new UpdateUserApplicationRoleConnectionsUni(requester, applicationId));
+        return (UpdateUserApplicationRoleConnectionsUni) deferredUni(
+                () -> new UpdateUserApplicationRoleConnectionsUni(requester, applicationId));
     }
 
     public Uni<Authorization> getCurrentAuthorizationInformation() {

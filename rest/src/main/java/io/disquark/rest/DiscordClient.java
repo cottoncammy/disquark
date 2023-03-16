@@ -2,6 +2,8 @@ package io.disquark.rest;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.function.Supplier;
+
 import io.disquark.rest.request.AccessTokenSource;
 import io.disquark.rest.request.Requester;
 import io.disquark.rest.request.RequesterFactory;
@@ -11,8 +13,6 @@ import io.disquark.rest.response.Response;
 import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
 import io.vertx.mutiny.core.Vertx;
-
-import java.util.function.Supplier;
 
 public abstract class DiscordClient<T extends Response> {
     protected final Vertx vertx;

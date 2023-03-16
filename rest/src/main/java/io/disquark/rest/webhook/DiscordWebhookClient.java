@@ -44,15 +44,15 @@ public class DiscordWebhookClient<T extends Response> extends DiscordClient<T> i
 
     @Override
     public ModifyWebhookWithTokenUni modifyWebhookWithToken(Snowflake webhookId, String webhookToken) {
-        return (ModifyWebhookWithTokenUni)
-                deferredUni(() -> new ModifyWebhookWithTokenUni(requester, webhookId, webhookToken));
+        return (ModifyWebhookWithTokenUni) deferredUni(() -> new ModifyWebhookWithTokenUni(requester, webhookId, webhookToken));
     }
 
     @Override
     public Uni<Void> deleteWebhookWithToken(Snowflake webhookId, String webhookToken) {
-        return deferredUni(() -> requester.request(new EmptyRequest(HttpMethod.DELETE, "/webhooks/{webhook.id}/{webhook.token}", false,
-                variables("webhook.id", requireNonNull(webhookId, "webhookId").getValue(),
-                        "webhook.token", requireNonNull(webhookToken, "webhookToken")))))
+        return deferredUni(
+                () -> requester.request(new EmptyRequest(HttpMethod.DELETE, "/webhooks/{webhook.id}/{webhook.token}", false,
+                        variables("webhook.id", requireNonNull(webhookId, "webhookId").getValue(),
+                                "webhook.token", requireNonNull(webhookToken, "webhookToken")))))
                 .replaceWithVoid();
     }
 
@@ -63,19 +63,20 @@ public class DiscordWebhookClient<T extends Response> extends DiscordClient<T> i
 
     @Override
     public GetWebhookMessageUni getWebhookMessage(Snowflake webhookId, String webhookToken, Snowflake messageId) {
-        return (GetWebhookMessageUni) deferredUni(() -> new GetWebhookMessageUni(requester, webhookId, webhookToken, messageId));
+        return (GetWebhookMessageUni) deferredUni(
+                () -> new GetWebhookMessageUni(requester, webhookId, webhookToken, messageId));
     }
 
     @Override
     public EditWebhookMessageUni editWebhookMessage(Snowflake webhookId, String webhookToken, Snowflake messageId) {
-        return (EditWebhookMessageUni)
-                deferredUni(() -> new EditWebhookMessageUni(requester, webhookId, webhookToken, messageId));
+        return (EditWebhookMessageUni) deferredUni(
+                () -> new EditWebhookMessageUni(requester, webhookId, webhookToken, messageId));
     }
 
     @Override
     public DeleteWebhookMessageUni deleteWebhookMessage(Snowflake webhookId, String webhookToken, Snowflake messageId) {
-        return (DeleteWebhookMessageUni)
-                deferredUni(() -> new DeleteWebhookMessageUni(requester, webhookId, webhookToken, messageId));
+        return (DeleteWebhookMessageUni) deferredUni(
+                () -> new DeleteWebhookMessageUni(requester, webhookId, webhookToken, messageId));
     }
 
     public static class Builder<T extends Response> extends DiscordClient.Builder<T, DiscordWebhookClient<T>> {

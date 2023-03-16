@@ -1,4 +1,4 @@
-@NonnullByDefault
+@NonnullApi
 package io.disquark.rest;
 
 import java.lang.annotation.Documented;
@@ -14,6 +14,6 @@ import javax.annotation.meta.TypeQualifierDefault;
 @Documented
 @Target(ElementType.PACKAGE)
 @Retention(RetentionPolicy.RUNTIME)
-@TypeQualifierDefault({ ElementType.METHOD, ElementType.PARAMETER })
-@interface NonnullByDefault {
+@TypeQualifierDefault({ ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER, ElementType.TYPE_PARAMETER })
+@interface NonnullApi {
 }

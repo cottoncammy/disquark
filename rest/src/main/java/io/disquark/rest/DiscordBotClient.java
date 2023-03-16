@@ -144,8 +144,8 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
 
     public UpdateApplicationRoleConnectionMetadataRecordsMulti updateApplicationRoleConnectionMetadataRecords(
             Snowflake applicationId) {
-        return (UpdateApplicationRoleConnectionMetadataRecordsMulti)
-                deferredMulti(() -> new UpdateApplicationRoleConnectionMetadataRecordsMulti(requester, applicationId));
+        return (UpdateApplicationRoleConnectionMetadataRecordsMulti) deferredMulti(
+                () -> new UpdateApplicationRoleConnectionMetadataRecordsMulti(requester, applicationId));
     }
 
     public GetGuildAuditLogUni getGuildAuditLog(Snowflake guildId) {
@@ -160,7 +160,8 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public Uni<AutoModerationRule> getAutoModerationRule(Snowflake guildId, Snowflake autoModerationRuleId) {
-        return deferredUni(() -> requester.request(new EmptyRequest("/guilds/{guild.id}/auto-moderation/rules/{auto_moderation_rule.id}",
+        return deferredUni(() -> requester.request(new EmptyRequest(
+                "/guilds/{guild.id}/auto-moderation/rules/{auto_moderation_rule.id}",
                 variables("guild.id", requireNonNull(guildId, "guildId").getValue(),
                         "auto_moderation_rule.id", requireNonNull(autoModerationRuleId, "autoModerationRuleId").getValue()))))
                 .flatMap(res -> res.as(AutoModerationRule.class));
@@ -168,13 +169,13 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
 
     public CreateAutoModerationRuleUni createAutoModerationRule(Snowflake guildId, String name,
             AutoModerationRule.EventType eventType, AutoModerationRule.TriggerType triggerType) {
-        return (CreateAutoModerationRuleUni)
-                deferredUni(() -> new CreateAutoModerationRuleUni(requester, guildId, name, eventType, triggerType));
+        return (CreateAutoModerationRuleUni) deferredUni(
+                () -> new CreateAutoModerationRuleUni(requester, guildId, name, eventType, triggerType));
     }
 
     public ModifyAutoModerationRuleUni modifyAutoModerationRule(Snowflake guildId, Snowflake autoModerationRuleId) {
-        return (ModifyAutoModerationRuleUni)
-                deferredUni(() -> new ModifyAutoModerationRuleUni(requester, guildId, autoModerationRuleId));
+        return (ModifyAutoModerationRuleUni) deferredUni(
+                () -> new ModifyAutoModerationRuleUni(requester, guildId, autoModerationRuleId));
     }
 
     public Uni<Void> deleteAutoModerationRule(Snowflake guildId, Snowflake autoModerationRuleId,
@@ -227,18 +228,19 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public Uni<Message> crosspostMessage(Snowflake channelId, Snowflake messageId) {
-        return deferredUni(() -> requester.request(new EmptyRequest(HttpMethod.POST, "/channels/{channel.id}/messages/{message.id}/crosspost",
-                variables("channel.id", requireNonNull(channelId, "channelId").getValue(),
-                        "message.id", requireNonNull(messageId, "messageId").getValue()))))
+        return deferredUni(() -> requester
+                .request(new EmptyRequest(HttpMethod.POST, "/channels/{channel.id}/messages/{message.id}/crosspost",
+                        variables("channel.id", requireNonNull(channelId, "channelId").getValue(),
+                                "message.id", requireNonNull(messageId, "messageId").getValue()))))
                 .flatMap(res -> res.as(Message.class));
     }
 
     public Uni<Void> createReaction(Snowflake channelId, Snowflake messageId, ReactionEmoji emoji) {
         return deferredUni(() -> requester.request(new EmptyRequest(HttpMethod.PUT,
                 "/channels/{channel.id}/messages/{message.id}/reactions/{emoji}/@me",
-                        variables("channel.id", requireNonNull(channelId, "channelId").getValue(),
-                                "message.id", requireNonNull(messageId, "messageId").getValue(),
-                                "emoji", requireNonNull(emoji, "emoji").getValue()))))
+                variables("channel.id", requireNonNull(channelId, "channelId").getValue(),
+                        "message.id", requireNonNull(messageId, "messageId").getValue(),
+                        "emoji", requireNonNull(emoji, "emoji").getValue()))))
                 .replaceWithVoid();
     }
 
@@ -262,8 +264,7 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public GetReactionsMulti getReactions(Snowflake channelId, Snowflake messageId, ReactionEmoji emoji) {
-        return (GetReactionsMulti)
-                deferredMulti(() -> new GetReactionsMulti(requester, channelId, messageId, emoji));
+        return (GetReactionsMulti) deferredMulti(() -> new GetReactionsMulti(requester, channelId, messageId, emoji));
     }
 
     public Uni<Void> deleteAllReactions(Snowflake channelId, Snowflake messageId) {
@@ -277,9 +278,9 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     public Uni<Void> deleteAllReactionsForEmoji(Snowflake channelId, Snowflake messageId, ReactionEmoji emoji) {
         return deferredUni(() -> requester.request(new EmptyRequest(HttpMethod.DELETE,
                 "/channels/{channel.id}/messages/{message.id}/reactions/{emoji}",
-                        variables("channel.id", requireNonNull(channelId, "channelId").getValue(),
-                                "message.id", requireNonNull(messageId, "messageId").getValue(),
-                                "emoji", requireNonNull(emoji, "emoji").getValue()))))
+                variables("channel.id", requireNonNull(channelId, "channelId").getValue(),
+                        "message.id", requireNonNull(messageId, "messageId").getValue(),
+                        "emoji", requireNonNull(emoji, "emoji").getValue()))))
                 .replaceWithVoid();
     }
 
@@ -302,8 +303,8 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
 
     public EditChannelPermissionsUni editChannelPermissions(Snowflake channelId, Snowflake overwriteId,
             Channel.Overwrite.Type type) {
-        return (EditChannelPermissionsUni)
-                deferredUni(() -> new EditChannelPermissionsUni(requester, channelId, overwriteId, type));
+        return (EditChannelPermissionsUni) deferredUni(
+                () -> new EditChannelPermissionsUni(requester, channelId, overwriteId, type));
     }
 
     public Multi<Invite> getChannelInvites(Snowflake channelId) {
@@ -352,10 +353,11 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public Uni<Void> unpinMessage(Snowflake channelId, Snowflake messageId, @Nullable String auditLogReason) {
-        return deferredUni(() -> requester.request(new EmptyRequest(HttpMethod.DELETE, "/channels/{channel.id}/pins/{message.id}",
-                variables("channel.id", requireNonNull(channelId, "channelId").getValue(),
-                        "message.id", requireNonNull(messageId, "messageId").getValue()),
-                auditLogReason)))
+        return deferredUni(
+                () -> requester.request(new EmptyRequest(HttpMethod.DELETE, "/channels/{channel.id}/pins/{message.id}",
+                        variables("channel.id", requireNonNull(channelId, "channelId").getValue(),
+                                "message.id", requireNonNull(messageId, "messageId").getValue()),
+                        auditLogReason)))
                 .replaceWithVoid();
     }
 
@@ -364,25 +366,25 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public Uni<Void> groupDmRemoveRecipient(Snowflake channelId, Snowflake userId) {
-        return deferredUni(() -> requester.request(new EmptyRequest(HttpMethod.DELETE, "/channels/{channel.id}/recipients/users/{user.id}",
-                variables("channel.id", requireNonNull(channelId, "channelId").getValue(),
-                        "user.id", requireNonNull(userId, "userId").getValue()))))
+        return deferredUni(
+                () -> requester.request(new EmptyRequest(HttpMethod.DELETE, "/channels/{channel.id}/recipients/users/{user.id}",
+                        variables("channel.id", requireNonNull(channelId, "channelId").getValue(),
+                                "user.id", requireNonNull(userId, "userId").getValue()))))
                 .replaceWithVoid();
     }
 
     public StartThreadFromMessageUni startThreadFromMessage(Snowflake channelId, Snowflake messageId, String name) {
-        return (StartThreadFromMessageUni)
-                deferredUni(() -> new StartThreadFromMessageUni(requester, channelId, messageId, name));
+        return (StartThreadFromMessageUni) deferredUni(
+                () -> new StartThreadFromMessageUni(requester, channelId, messageId, name));
     }
 
     public StartThreadWithoutMessageUni startThreadWithoutMessage(Snowflake channelId, String name) {
-        return (StartThreadWithoutMessageUni)
-                deferredUni(() -> new StartThreadWithoutMessageUni(requester, channelId, name));
+        return (StartThreadWithoutMessageUni) deferredUni(() -> new StartThreadWithoutMessageUni(requester, channelId, name));
     }
 
     public StartThreadInForumChannelUni startThreadInForumChannel(Snowflake channelId, String name) {
-        return (StartThreadInForumChannelUni)
-                deferredUni(() -> new StartThreadInForumChannelUni(requester, channelId, name, null));
+        return (StartThreadInForumChannelUni) deferredUni(
+                () -> new StartThreadInForumChannelUni(requester, channelId, name, null));
     }
 
     public Uni<Void> joinThread(Snowflake channelId) {
@@ -392,30 +394,34 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public Uni<Void> addThreadMember(Snowflake channelId, Snowflake userId) {
-        return deferredUni(() -> requester.request(new EmptyRequest(HttpMethod.PUT, "/channels/{channel.id}/thread-members/{user.id}",
-                variables("channel.id", requireNonNull(channelId, "channelId").getValue(),
-                        "user.id", requireNonNull(userId, "userId").getValue()))))
+        return deferredUni(
+                () -> requester.request(new EmptyRequest(HttpMethod.PUT, "/channels/{channel.id}/thread-members/{user.id}",
+                        variables("channel.id", requireNonNull(channelId, "channelId").getValue(),
+                                "user.id", requireNonNull(userId, "userId").getValue()))))
                 .replaceWithVoid();
     }
 
     public Uni<Void> leaveThread(Snowflake channelId) {
-        return deferredUni(() -> requester.request(new EmptyRequest(HttpMethod.DELETE, "/channels/{channel.id}/thread-members/@me",
-                variables("channel.id", requireNonNull(channelId, "channelId").getValue()))))
+        return deferredUni(
+                () -> requester.request(new EmptyRequest(HttpMethod.DELETE, "/channels/{channel.id}/thread-members/@me",
+                        variables("channel.id", requireNonNull(channelId, "channelId").getValue()))))
                 .replaceWithVoid();
     }
 
     public Uni<Void> removeThreadMember(Snowflake channelId, Snowflake userId) {
-        return deferredUni(() -> requester.request(new EmptyRequest(HttpMethod.DELETE, "/channels/{channel.id}/thread-members/{user.id}",
-                variables("channel.id", requireNonNull(channelId, "channelId").getValue(),
-                        "user.id", requireNonNull(userId, "userId").getValue()))))
+        return deferredUni(
+                () -> requester.request(new EmptyRequest(HttpMethod.DELETE, "/channels/{channel.id}/thread-members/{user.id}",
+                        variables("channel.id", requireNonNull(channelId, "channelId").getValue(),
+                                "user.id", requireNonNull(userId, "userId").getValue()))))
                 .replaceWithVoid();
     }
 
     public Uni<ThreadMember> getThreadMember(Snowflake channelId, Snowflake userId, boolean withMember) {
-        return deferredUni(() -> requester.request(new EmptyRequest("/channels/{channel.id}/thread-members/{user.id}{?with_member}",
-                variables("channel.id", requireNonNull(channelId, "channelId").getValue(),
-                        "user.id", requireNonNull(userId, "userId").getValue(),
-                        "with_member", withMember))))
+        return deferredUni(
+                () -> requester.request(new EmptyRequest("/channels/{channel.id}/thread-members/{user.id}{?with_member}",
+                        variables("channel.id", requireNonNull(channelId, "channelId").getValue(),
+                                "user.id", requireNonNull(userId, "userId").getValue(),
+                                "with_member", withMember))))
                 .flatMap(res -> res.as(ThreadMember.class));
     }
 
@@ -506,8 +512,7 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public ModifyGuildChannelPositionsUni modifyGuildChannelPositions(Snowflake guildId) {
-        return (ModifyGuildChannelPositionsUni)
-                deferredUni(() -> new ModifyGuildChannelPositionsUni(requester, guildId));
+        return (ModifyGuildChannelPositionsUni) deferredUni(() -> new ModifyGuildChannelPositionsUni(requester, guildId));
     }
 
     public Uni<ListThreadsResult> listActiveGuildThreads(Snowflake guildId) {
@@ -715,8 +720,8 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     public CreateGuildScheduledEventUni createGuildScheduledEvent(Snowflake guildId, String name,
             GuildScheduledEvent.PrivacyLevel privacyLevel, Instant scheduledStartTime,
             GuildScheduledEvent.EntityType entityType) {
-        return (CreateGuildScheduledEventUni)
-                deferredUni(() -> new CreateGuildScheduledEventUni(requester, guildId, name, privacyLevel, scheduledStartTime, entityType));
+        return (CreateGuildScheduledEventUni) deferredUni(
+                () -> new CreateGuildScheduledEventUni(requester, guildId, name, privacyLevel, scheduledStartTime, entityType));
     }
 
     public Uni<GuildScheduledEvent> getGuildScheduledEvent(Snowflake guildId, Snowflake guildScheduledEventId,
@@ -730,21 +735,22 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public ModifyGuildScheduledEventUni modifyGuildScheduledEvent(Snowflake guildId, Snowflake guildScheduledEventId) {
-        return (ModifyGuildScheduledEventUni)
-                deferredUni(() -> new ModifyGuildScheduledEventUni(requester, guildId, guildScheduledEventId));
+        return (ModifyGuildScheduledEventUni) deferredUni(
+                () -> new ModifyGuildScheduledEventUni(requester, guildId, guildScheduledEventId));
     }
 
     public Uni<Void> deleteGuildScheduledEvent(Snowflake guildId, Snowflake guildScheduledEventId) {
         return deferredUni(() -> requester.request(new EmptyRequest(HttpMethod.DELETE,
-                        "/guilds/{guild.id}/scheduled-events/{guild_scheduled_event.id}",
-                        variables("guild.id", requireNonNull(guildId, "guildId").getValue(),
-                                "guild_scheduled_event.id", requireNonNull(guildScheduledEventId, "guildScheduledEventId").getValue()))))
+                "/guilds/{guild.id}/scheduled-events/{guild_scheduled_event.id}",
+                variables("guild.id", requireNonNull(guildId, "guildId").getValue(),
+                        "guild_scheduled_event.id",
+                        requireNonNull(guildScheduledEventId, "guildScheduledEventId").getValue()))))
                 .replaceWithVoid();
     }
 
     public GetGuildScheduledEventUsersMulti getGuildScheduledEventUsers(Snowflake guildId, Snowflake guildScheduledEventId) {
-        return (GetGuildScheduledEventUsersMulti)
-                deferredMulti(() -> new GetGuildScheduledEventUsersMulti(requester, guildId, guildScheduledEventId));
+        return (GetGuildScheduledEventUsersMulti) deferredMulti(
+                () -> new GetGuildScheduledEventUsersMulti(requester, guildId, guildScheduledEventId));
     }
 
     public Uni<GuildTemplate> getGuildTemplate(String templateCode) {
@@ -754,7 +760,8 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public CreateGuildFromGuildTemplateUni createGuildFromGuildTemplate(String templateCode, String name) {
-        return (CreateGuildFromGuildTemplateUni) deferredUni(() -> new CreateGuildFromGuildTemplateUni(requester, templateCode, name));
+        return (CreateGuildFromGuildTemplateUni) deferredUni(
+                () -> new CreateGuildFromGuildTemplateUni(requester, templateCode, name));
     }
 
     public Multi<GuildTemplate> getGuildTemplates(Snowflake guildId) {
@@ -769,9 +776,10 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public Uni<GuildTemplate> syncGuildTemplate(Snowflake guildId, String templateCode) {
-        return deferredUni(() -> requester.request(new EmptyRequest(HttpMethod.PUT, "/guilds/{guild.id}/templates/{template.code}",
-                variables("guild.id", requireNonNull(guildId, "guildId").getValue(),
-                        "template.code", requireNonNull(templateCode, "templateCode")))))
+        return deferredUni(
+                () -> requester.request(new EmptyRequest(HttpMethod.PUT, "/guilds/{guild.id}/templates/{template.code}",
+                        variables("guild.id", requireNonNull(guildId, "guildId").getValue(),
+                                "template.code", requireNonNull(templateCode, "templateCode")))))
                 .flatMap(res -> res.as(GuildTemplate.class));
     }
 
@@ -780,9 +788,10 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public Uni<Void> deleteGuildTemplate(Snowflake guildId, String templateCode) {
-        return deferredUni(() -> requester.request(new EmptyRequest(HttpMethod.DELETE, "/guilds/{guild.id}/templates/{template.code}",
-                variables("guild.id", requireNonNull(guildId, "guildId").getValue(),
-                        "template.code", requireNonNull(templateCode, "templateCode")))))
+        return deferredUni(
+                () -> requester.request(new EmptyRequest(HttpMethod.DELETE, "/guilds/{guild.id}/templates/{template.code}",
+                        variables("guild.id", requireNonNull(guildId, "guildId").getValue(),
+                                "template.code", requireNonNull(templateCode, "templateCode")))))
                 .replaceWithVoid();
     }
 
@@ -844,7 +853,8 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public CreateGuildStickerUni createGuildSticker(Snowflake guildId, String name, String description, String tags) {
-        return (CreateGuildStickerUni) deferredUni(() -> new CreateGuildStickerUni(requester, guildId, name, description, tags));
+        return (CreateGuildStickerUni) deferredUni(
+                () -> new CreateGuildStickerUni(requester, guildId, name, description, tags));
     }
 
     public ModifyGuildStickerUni modifyGuildSticker(Snowflake guildId, Snowflake stickerId) {
@@ -852,10 +862,11 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public Uni<Void> deleteGuildSticker(Snowflake guildId, Snowflake stickerId, @Nullable String auditLogReason) {
-        return deferredUni(() -> requester.request(new EmptyRequest(HttpMethod.DELETE, "/guilds/{guild.id}/stickers/{sticker.id}",
-                variables("guild.id", requireNonNull(guildId, "guildId").getValue(),
-                        "sticker.id", requireNonNull(stickerId, "stickerId").getValue()),
-                auditLogReason)))
+        return deferredUni(
+                () -> requester.request(new EmptyRequest(HttpMethod.DELETE, "/guilds/{guild.id}/stickers/{sticker.id}",
+                        variables("guild.id", requireNonNull(guildId, "guildId").getValue(),
+                                "sticker.id", requireNonNull(stickerId, "stickerId").getValue()),
+                        auditLogReason)))
                 .replaceWithVoid();
     }
 
