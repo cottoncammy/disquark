@@ -3,10 +3,8 @@ package io.disquark.it;
 import io.disquark.it.config.ConfigValue;
 import io.disquark.rest.DiscordBotClient;
 import io.disquark.rest.json.Snowflake;
-import io.disquark.rest.resources.automod.AutoModerationAction;
-import io.disquark.rest.resources.automod.AutoModerationRule;
-import io.disquark.rest.resources.automod.CreateAutoModerationRule;
-import io.disquark.rest.resources.automod.ModifyAutoModerationRule;
+import io.disquark.rest.json.automod.AutoModerationAction;
+import io.disquark.rest.json.automod.AutoModerationRule;
 import io.smallrye.mutiny.helpers.test.UniAssertSubscriber;
 
 import org.junit.jupiter.api.MethodOrderer;
@@ -34,15 +32,9 @@ class AutoModerationIT {
     @Test
     @Order(2)
     void testCreateAutoModerationRule(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_GUILD_ID") Snowflake guildId) {
-        CreateAutoModerationRule createAutoModerationRule = CreateAutoModerationRule.builder()
-                .guildId(guildId)
-                .name("foo")
-                .eventType(AutoModerationRule.EventType.MESSAGE_SEND)
-                .triggerType(AutoModerationRule.TriggerType.SPAM)
-                .addAction(AutoModerationAction.builder().type(AutoModerationAction.Type.BLOCK_MESSAGE).build())
-                .build();
-
-        autoModerationRuleId = botClient.createAutoModerationRule(createAutoModerationRule)
+        autoModerationRuleId = botClient.createAutoModerationRule(guildId, "foo",
+                        AutoModerationRule.EventType.MESSAGE_SEND, AutoModerationRule.TriggerType.SPAM)
+                .withActions(new AutoModerationAction(AutoModerationAction.Type.BLOCK_MESSAGE))
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .awaitItem()
                 .getItem()
@@ -61,13 +53,8 @@ class AutoModerationIT {
     @Test
     @Order(4)
     void testModifyAutoModerationRule(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_GUILD_ID") Snowflake guildId) {
-        ModifyAutoModerationRule modifyAutoModerationRule = ModifyAutoModerationRule.builder()
-                .guildId(guildId)
-                .autoModerationRuleId(autoModerationRuleId)
-                .name("bar")
-                .build();
-
-        botClient.modifyAutoModerationRule(modifyAutoModerationRule)
+        botClient.modifyAutoModerationRule(guildId, autoModerationRuleId)
+                .withName("bar")
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .awaitItem()
                 .assertCompleted();

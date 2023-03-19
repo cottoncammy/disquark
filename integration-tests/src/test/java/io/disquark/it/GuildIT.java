@@ -4,30 +4,13 @@ import java.util.EnumSet;
 
 import io.disquark.it.config.ConfigValue;
 import io.disquark.rest.DiscordBotClient;
+import io.disquark.rest.json.channel.GuildChannelPosition;
+import io.disquark.rest.json.guild.Guild;
+import io.disquark.rest.json.role.GuildRolePosition;
+import io.disquark.rest.json.oauth2.AccessToken;
 import io.disquark.rest.oauth2.BearerTokenSource;
 import io.disquark.rest.json.Snowflake;
-import io.disquark.rest.resources.guild.AddGuildMember;
-import io.disquark.rest.resources.guild.CreateGuild;
-import io.disquark.rest.resources.guild.CreateGuildBan;
-import io.disquark.rest.resources.guild.CreateGuildRole;
-import io.disquark.rest.resources.guild.GetGuildBans;
-import io.disquark.rest.resources.guild.Guild;
-import io.disquark.rest.resources.guild.ListGuildMembers;
-import io.disquark.rest.resources.guild.ModifyCurrentMember;
-import io.disquark.rest.resources.guild.ModifyCurrentUserVoiceState;
-import io.disquark.rest.resources.guild.ModifyGuild;
-import io.disquark.rest.resources.guild.ModifyGuildChannelPositions;
-import io.disquark.rest.resources.guild.ModifyGuildMember;
-import io.disquark.rest.resources.guild.ModifyGuildRole;
-import io.disquark.rest.resources.guild.ModifyGuildRolePositions;
-import io.disquark.rest.resources.guild.ModifyGuildWelcomeScreen;
-import io.disquark.rest.resources.guild.ModifyGuildWidget;
-import io.disquark.rest.resources.guild.SearchGuildMembers;
-import io.disquark.rest.resources.guild.prune.BeginGuildPrune;
-import io.disquark.rest.resources.guild.prune.GetGuildPruneCount;
-import io.disquark.rest.resources.oauth2.AccessToken;
 import io.disquark.rest.json.oauth2.Scope;
-import io.disquark.rest.resources.user.GetCurrentUserGuilds;
 import io.disquark.rest.response.DiscordException;
 import io.smallrye.mutiny.Uni;
 import io.smallrye.mutiny.helpers.test.UniAssertSubscriber;
@@ -48,7 +31,7 @@ class GuildIT {
 
     @BeforeAll
     void init(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_GUILD_ID") Snowflake guildId) {
-        botClient.getCurrentUserGuilds(GetCurrentUserGuilds.create())
+        botClient.getCurrentUserGuilds()
                 .filter(guild -> !guild.id().equals(guildId))
                 .onItem().transformToUniAndMerge(guild -> botClient.deleteGuild(guild.id())
                         .onFailure(DiscordException.statusCodeIs(403)).recoverWithNull())
@@ -60,7 +43,7 @@ class GuildIT {
     @Test
     @Order(1)
     void testCreateGuild(DiscordBotClient<?> botClient) {
-        guildId = botClient.createGuild(CreateGuild.builder().name("foo").build())
+        guildId = botClient.createGuild("foo")
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .awaitItem()
                 .getItem()
@@ -88,7 +71,8 @@ class GuildIT {
     @Test
     @Order(4)
     void testModifyGuild(DiscordBotClient<?> botClient) {
-        botClient.modifyGuild(ModifyGuild.builder().guildId(guildId).name("bar").build())
+        botClient.modifyGuild(guildId)
+                .withName("bar")
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .awaitItem()
                 .assertCompleted();
@@ -97,13 +81,10 @@ class GuildIT {
     @Test
     @Order(5)
     void testModifyGuildChannelPositions(DiscordBotClient<?> botClient) {
-        ModifyGuildChannelPositions.Builder builder = ModifyGuildChannelPositions.builder().guildId(guildId);
-        botClient.getGuildChannels(guildId).toUni()
-                .invoke(channel -> builder.addGuildChannelPosition(ModifyGuildChannelPositions.GuildChannelPosition.builder()
-                        .id(channel.id())
-                        .position(1)
-                        .build()))
-                .replaceWith(botClient.modifyGuildChannelPositions(builder.build()))
+        botClient.getGuildChannels(guildId)
+                .toUni()
+                .call(channel -> botClient.modifyGuildChannelPositions(guildId)
+                        .withGuildChannelPositions(new GuildChannelPosition(channel.id()).withPosition(1)))
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .awaitItem()
                 .assertCompleted();
@@ -122,7 +103,7 @@ class GuildIT {
     @Tag("members-intent")
     @Order(7)
     void testListGuildMembers(DiscordBotClient<?> botClient) {
-        botClient.listGuildMembers(ListGuildMembers.create(guildId))
+        botClient.listGuildMembers(guildId)
                 .collect().asList()
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .awaitItem()
@@ -132,7 +113,7 @@ class GuildIT {
     @Test
     @Order(8)
     void testSearchGuildMembers(DiscordBotClient<?> botClient) {
-        botClient.searchGuildMembers(SearchGuildMembers.create(guildId, "foo"))
+        botClient.searchGuildMembers(guildId, "foo")
                 .collect().asList()
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .awaitItem()
@@ -148,8 +129,7 @@ class GuildIT {
                 .getToken()
                 .map(AccessToken::accessToken);
 
-        tokenUni.call(token -> botClient
-                .addGuildMember(AddGuildMember.builder().guildId(guildId).userId(userId).accessToken(token).build()))
+        tokenUni.call(token -> botClient.addGuildMember(guildId, userId, token))
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .awaitItem()
                 .assertCompleted();
@@ -167,7 +147,8 @@ class GuildIT {
     @Test
     @Order(11)
     void testModifyGuildMember(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_USER_ID") Snowflake userId) {
-        botClient.modifyGuildMember(ModifyGuildMember.builder().guildId(guildId).userId(userId).nick("foo").build())
+        botClient.modifyGuildMember(guildId, userId)
+                .withNick("foo")
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .awaitItem()
                 .assertCompleted();
@@ -176,7 +157,8 @@ class GuildIT {
     @Test
     @Order(12)
     void testModifyCurrentMember(DiscordBotClient<?> botClient) {
-        botClient.modifyCurrentMember(ModifyCurrentMember.builder().guildId(guildId).nick("foo").build())
+        botClient.modifyCurrentMember(guildId)
+                .withNick("foo")
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .awaitItem()
                 .assertCompleted();
@@ -185,7 +167,7 @@ class GuildIT {
     @Test
     @Order(13)
     void testGetGuildBans(DiscordBotClient<?> botClient) {
-        botClient.getGuildBans(GetGuildBans.create(guildId))
+        botClient.getGuildBans(guildId)
                 .collect().asList()
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .awaitItem()
@@ -205,7 +187,8 @@ class GuildIT {
     @Test
     @Order(15)
     void testCreateGuildRole(DiscordBotClient<?> botClient) {
-        roleId = botClient.createGuildRole(CreateGuildRole.builder().guildId(guildId).name("foo").build())
+        roleId = botClient.createGuildRole(guildId)
+                .withName("foo")
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .awaitItem()
                 .getItem()
@@ -242,7 +225,7 @@ class GuildIT {
     @Test
     @Order(19)
     void testCreateGuildBan(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_USER_ID") Snowflake userId) {
-        botClient.createGuildBan(CreateGuildBan.builder().guildId(guildId).userId(userId).build())
+        botClient.createGuildBan(guildId, userId)
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .awaitItem()
                 .assertCompleted();
@@ -269,15 +252,8 @@ class GuildIT {
     @Test
     @Order(22)
     void testModifyGuildRolePositions(DiscordBotClient<?> botClient) {
-        ModifyGuildRolePositions modifyGuildRolePositions = ModifyGuildRolePositions.builder()
-                .guildId(guildId)
-                .addGuildRolePosition(ModifyGuildRolePositions.GuildRolePosition.builder()
-                        .id(roleId)
-                        .position(1)
-                        .build())
-                .build();
-
-        botClient.modifyGuildRolePositions(modifyGuildRolePositions)
+        botClient.modifyGuildRolePositions(guildId)
+                .withGuildRolePositions(new GuildRolePosition(roleId).withPosition(1))
                 .collect().asList()
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .awaitItem()
@@ -287,7 +263,8 @@ class GuildIT {
     @Test
     @Order(23)
     void testModifyGuildRole(DiscordBotClient<?> botClient) {
-        botClient.modifyGuildRole(ModifyGuildRole.builder().guildId(guildId).roleId(roleId).name("bar").build())
+        botClient.modifyGuildRole(guildId, roleId)
+                .withName("bar")
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .awaitItem()
                 .assertCompleted();
@@ -296,7 +273,7 @@ class GuildIT {
     @Test
     @Order(24)
     void testModifyGuildMfaLevel(DiscordBotClient<?> botClient) {
-        botClient.modifyGuildMfaLevel(guildId, Guild.MfaLevel.NONE, null)
+        botClient.modifyGuildMfaLevel(guildId, Guild.MfaLevel.NONE)
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .awaitItem()
                 .assertCompleted();
@@ -314,7 +291,7 @@ class GuildIT {
     @Test
     @Order(26)
     void testGetGuildPruneCount(DiscordBotClient<?> botClient) {
-        botClient.getGuildPruneCount(GetGuildPruneCount.create(guildId))
+        botClient.getGuildPruneCount(guildId)
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .awaitItem()
                 .assertCompleted();
@@ -323,7 +300,7 @@ class GuildIT {
     @Test
     @Order(27)
     void testBeginGuildPrune(DiscordBotClient<?> botClient) {
-        botClient.beginGuildPrune(BeginGuildPrune.create(guildId))
+        botClient.beginGuildPrune(guildId)
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .awaitItem()
                 .assertCompleted();
@@ -371,7 +348,8 @@ class GuildIT {
     @Test
     @Order(32)
     void testModifyGuildWidget(DiscordBotClient<?> botClient) {
-        botClient.modifyGuildWidget(ModifyGuildWidget.builder().guildId(guildId).enabled(true).build())
+        botClient.modifyGuildWidget(guildId)
+                .withEnabled(true)
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .awaitItem()
                 .assertCompleted();
@@ -410,7 +388,8 @@ class GuildIT {
     @Tag("welcome-screen")
     @Order(36)
     void testModifyGuildWelcomeScreen(DiscordBotClient<?> botClient) {
-        botClient.modifyGuildWelcomeScreen(ModifyGuildWelcomeScreen.builder().guildId(guildId).description("foo").build())
+        botClient.modifyGuildWelcomeScreen(guildId)
+                .withDescription("foo")
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .awaitItem()
                 .assertCompleted();
@@ -420,12 +399,8 @@ class GuildIT {
     @Tag("stage-channel")
     @Order(37)
     void testModifyCurrentUserVoiceState(DiscordBotClient<?> botClient) {
-        ModifyCurrentUserVoiceState modifyCurrentUserVoiceState = ModifyCurrentUserVoiceState.builder()
-                .guildId(guildId)
-                .suppress(true)
-                .build();
-
-        botClient.modifyCurrentUserVoiceState(modifyCurrentUserVoiceState)
+        botClient.modifyCurrentUserVoiceState(guildId)
+                .withSuppress(true)
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .awaitItem()
                 .assertCompleted();
@@ -436,7 +411,7 @@ class GuildIT {
     @Order(38)
     void testModifyUserVoiceState(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_USER_ID") Snowflake userId,
             @ConfigValue("DISCORD_STAGE_CHANNEL_ID") Snowflake channelId) {
-        botClient.modifyUserVoiceState(guildId, userId, channelId, true)
+        botClient.modifyUserVoiceState(guildId, userId, channelId)
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .awaitItem()
                 .assertCompleted();

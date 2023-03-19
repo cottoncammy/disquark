@@ -3,8 +3,6 @@ package io.disquark.it;
 import io.disquark.it.config.ConfigValue;
 import io.disquark.rest.DiscordBotClient;
 import io.disquark.rest.json.Snowflake;
-import io.disquark.rest.resources.stageinstance.CreateStageInstance;
-import io.disquark.rest.resources.stageinstance.ModifyStageInstance;
 import io.smallrye.mutiny.helpers.test.UniAssertSubscriber;
 
 import org.junit.jupiter.api.MethodOrderer;
@@ -22,7 +20,7 @@ class StageInstanceIT {
     @Test
     @Order(1)
     void testCreateStageInstance(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_STAGE_CHANNEL_ID") Snowflake channelId) {
-        botClient.createStageInstance(CreateStageInstance.builder().channelId(channelId).topic("foo").build())
+        botClient.createStageInstance(channelId, "foo")
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .awaitItem()
                 .assertCompleted();
@@ -40,7 +38,8 @@ class StageInstanceIT {
     @Test
     @Order(3)
     void testModifyStageInstance(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_STAGE_CHANNEL_ID") Snowflake channelId) {
-        botClient.modifyStageInstance(ModifyStageInstance.builder().channelId(channelId).topic("bar").build())
+        botClient.modifyStageInstance(channelId)
+                .withTopic("bar")
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .awaitItem()
                 .assertCompleted();

@@ -2,15 +2,10 @@ package io.disquark.it;
 
 import io.disquark.it.config.ConfigHelper;
 import io.disquark.rest.AuthenticatedDiscordClient;
+import io.disquark.rest.json.command.GlobalApplicationCommandOverwrite;
+import io.disquark.rest.json.command.GuildApplicationCommandOverwrite;
 import io.disquark.rest.oauth2.DiscordOAuth2Client;
 import io.disquark.rest.json.Snowflake;
-import io.disquark.rest.resources.application.command.BulkOverwriteGlobalApplicationCommands;
-import io.disquark.rest.resources.application.command.BulkOverwriteGuildApplicationCommands;
-import io.disquark.rest.resources.application.command.CreateGlobalApplicationCommand;
-import io.disquark.rest.resources.application.command.CreateGuildApplicationCommand;
-import io.disquark.rest.resources.application.command.EditGlobalApplicationCommand;
-import io.disquark.rest.resources.application.command.EditGuildApplicationCommand;
-import io.disquark.rest.resources.user.GetCurrentUserGuilds;
 import io.smallrye.mutiny.helpers.test.UniAssertSubscriber;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -71,13 +66,8 @@ class AuthenticatedDiscordClientIT {
     @ExtendWith(DisQuarkJUnit5TestTemplateProvider.class)
     @Order(2)
     void testCreateGlobalApplicationCommand(AuthenticatedDiscordClient<?> discordClient) {
-        CreateGlobalApplicationCommand createGlobalApplicationCommand = CreateGlobalApplicationCommand.builder()
-                .applicationId(applicationId)
-                .name("foo")
-                .description("bar")
-                .build();
-
-        globalCommandId = discordClient.createGlobalApplicationCommand(createGlobalApplicationCommand)
+        globalCommandId = discordClient.createGlobalApplicationCommand(applicationId, "foo")
+                .withDescription("bar")
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .awaitItem()
                 .getItem()
@@ -98,13 +88,8 @@ class AuthenticatedDiscordClientIT {
     @ExtendWith(DisQuarkJUnit5TestTemplateProvider.class)
     @Order(4)
     void testEditGlobalApplicationCommand(AuthenticatedDiscordClient<?> discordClient) {
-        EditGlobalApplicationCommand editGlobalApplicationCommand = EditGlobalApplicationCommand.builder()
-                .applicationId(applicationId)
-                .commandId(globalCommandId)
-                .name("bar")
-                .build();
-
-        discordClient.editGlobalApplicationCommand(editGlobalApplicationCommand)
+        discordClient.editGlobalApplicationCommand(applicationId, globalCommandId)
+                .withName("bar")
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .awaitItem()
                 .assertCompleted();
@@ -114,17 +99,8 @@ class AuthenticatedDiscordClientIT {
     @ExtendWith(DisQuarkJUnit5TestTemplateProvider.class)
     @Order(5)
     void testBulkOverwriteGlobalApplicationCommands(AuthenticatedDiscordClient<?> discordClient) {
-        BulkOverwriteGlobalApplicationCommands bulkOverwriteGlobalApplicationCommands = BulkOverwriteGlobalApplicationCommands
-                .builder()
-                .applicationId(applicationId)
-                .addGlobalApplicationCommandOverwrite(
-                        BulkOverwriteGlobalApplicationCommands.GlobalApplicationCommandOverwrite.builder()
-                                .name("bar")
-                                .description("foo bar")
-                                .build())
-                .build();
-
-        discordClient.bulkOverwriteGlobalApplicationCommands(bulkOverwriteGlobalApplicationCommands)
+        discordClient.bulkOverwriteGlobalApplicationCommands(applicationId)
+                .withGlobalApplicationCommandOverwrites(new GlobalApplicationCommandOverwrite("bar").withDescription("foo bar"))
                 .collect().asList()
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .awaitItem()
@@ -146,14 +122,8 @@ class AuthenticatedDiscordClientIT {
     @ExtendWith(DisQuarkJUnit5TestTemplateProvider.class)
     @Order(7)
     void testCreateGuildApplicationCommand(AuthenticatedDiscordClient<?> discordClient) {
-        CreateGuildApplicationCommand createGuildApplicationCommand = CreateGuildApplicationCommand.builder()
-                .applicationId(applicationId)
-                .guildId(guildId)
-                .name("foo")
-                .description("bar")
-                .build();
-
-        guildCommandId = discordClient.createGuildApplicationCommand(createGuildApplicationCommand)
+        guildCommandId = discordClient.createGuildApplicationCommand(applicationId, guildId, "foo")
+                .withDescription("bar")
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .awaitItem()
                 .getItem()
@@ -174,14 +144,8 @@ class AuthenticatedDiscordClientIT {
     @ExtendWith(DisQuarkJUnit5TestTemplateProvider.class)
     @Order(9)
     void testEditGuildApplicationCommand(AuthenticatedDiscordClient<?> discordClient) {
-        EditGuildApplicationCommand editGuildApplicationCommand = EditGuildApplicationCommand.builder()
-                .applicationId(applicationId)
-                .guildId(guildId)
-                .commandId(guildCommandId)
-                .name("bar")
-                .build();
-
-        discordClient.editGuildApplicationCommand(editGuildApplicationCommand)
+        discordClient.editGuildApplicationCommand(applicationId, guildId, globalCommandId)
+                .withName("bar")
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .awaitItem()
                 .assertCompleted();
@@ -191,18 +155,8 @@ class AuthenticatedDiscordClientIT {
     @ExtendWith(DisQuarkJUnit5TestTemplateProvider.class)
     @Order(10)
     void testBulkOverwriteGuildApplicationCommands(AuthenticatedDiscordClient<?> discordClient) {
-        BulkOverwriteGuildApplicationCommands bulkOverwriteGuildApplicationCommands = BulkOverwriteGuildApplicationCommands
-                .builder()
-                .applicationId(applicationId)
-                .guildId(guildId)
-                .addGuildApplicationCommandOverwrite(
-                        BulkOverwriteGuildApplicationCommands.GuildApplicationCommandOverwrite.builder()
-                                .name("bar")
-                                .description("foo bar")
-                                .build())
-                .build();
-
-        discordClient.bulkOverwriteGuildApplicationCommands(bulkOverwriteGuildApplicationCommands)
+        discordClient.bulkOverwriteGuildApplicationCommands(applicationId, guildId)
+                .withGuildApplicationCommandOverwrites(new GuildApplicationCommandOverwrite("bar").withDescription("foo bar"))
                 .collect().asList()
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .awaitItem()
@@ -262,7 +216,7 @@ class AuthenticatedDiscordClientIT {
     @TestTemplate
     @ExtendWith(DisQuarkJUnit5TestTemplateProvider.class)
     void testGetCurrentUserGuilds(AuthenticatedDiscordClient<?> discordClient) {
-        discordClient.getCurrentUserGuilds(GetCurrentUserGuilds.create())
+        discordClient.getCurrentUserGuilds()
                 .collect().asList()
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .awaitItem()

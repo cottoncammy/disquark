@@ -3,8 +3,6 @@ package io.disquark.it;
 import io.disquark.it.config.ConfigValue;
 import io.disquark.rest.DiscordBotClient;
 import io.disquark.rest.json.Snowflake;
-import io.disquark.rest.resources.channel.CreateChannelInvite;
-import io.disquark.rest.resources.invite.GetInvite;
 import io.smallrye.mutiny.helpers.test.UniAssertSubscriber;
 
 import org.junit.jupiter.api.MethodOrderer;
@@ -20,9 +18,8 @@ class InviteIT {
 
     @Test
     @Order(1)
-    void testGetInvite(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_CHANNEL_ID") Snowflake channelId) {
-        inviteCode = botClient.createChannelInvite(CreateChannelInvite.create(channelId))
-                .call(invite -> botClient.getInvite(GetInvite.create(invite.code())))
+    void testCreateInvite(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_CHANNEL_ID") Snowflake channelId) {
+        inviteCode = botClient.createChannelInvite(channelId)
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .awaitItem()
                 .getItem()
@@ -31,6 +28,15 @@ class InviteIT {
 
     @Test
     @Order(2)
+    void testGetInvite(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_CHANNEL_ID") Snowflake channelId) {
+        botClient.getInvite(inviteCode)
+                .subscribe().withSubscriber(UniAssertSubscriber.create())
+                .awaitItem()
+                .assertCompleted();
+    }
+
+    @Test
+    @Order(3)
     void testDeleteInvite(DiscordBotClient<?> botClient) {
         botClient.deleteInvite(inviteCode, null)
                 .subscribe().withSubscriber(UniAssertSubscriber.create())

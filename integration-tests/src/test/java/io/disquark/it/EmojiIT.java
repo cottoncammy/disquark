@@ -3,8 +3,6 @@ package io.disquark.it;
 import io.disquark.it.config.ConfigValue;
 import io.disquark.rest.DiscordBotClient;
 import io.disquark.rest.json.Snowflake;
-import io.disquark.rest.resources.emoji.CreateGuildEmoji;
-import io.disquark.rest.resources.emoji.ModifyGuildEmoji;
 import io.smallrye.mutiny.helpers.test.UniAssertSubscriber;
 import io.vertx.mutiny.core.buffer.Buffer;
 
@@ -33,13 +31,7 @@ class EmojiIT {
     @Order(2)
     void testCreateGuildEmoji(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_GUILD_ID") Snowflake guildId) {
         Buffer image = botClient.getVertx().fileSystem().readFileAndAwait("images/emoji.png");
-        CreateGuildEmoji createGuildEmoji = CreateGuildEmoji.builder()
-                .guildId(guildId)
-                .name("foo")
-                .image(image)
-                .build();
-
-        emojiId = botClient.createGuildEmoji(createGuildEmoji)
+        emojiId = botClient.createGuildEmoji(guildId, "foo", image)
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .awaitItem()
                 .getItem()
@@ -59,7 +51,8 @@ class EmojiIT {
     @Test
     @Order(4)
     void testModifyGuildEmoji(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_GUILD_ID") Snowflake guildId) {
-        botClient.modifyGuildEmoji(ModifyGuildEmoji.builder().guildId(guildId).emojiId(emojiId).name("bar").build())
+        botClient.modifyGuildEmoji(guildId, emojiId)
+                .withName("bar")
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .awaitItem()
                 .assertCompleted();

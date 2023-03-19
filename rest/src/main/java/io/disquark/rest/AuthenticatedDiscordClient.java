@@ -59,10 +59,10 @@ public abstract class AuthenticatedDiscordClient<T extends Response> extends Dis
     }
 
     public Multi<ApplicationCommand> getGlobalApplicationCommands(Snowflake applicationId, boolean withLocalizations) {
-        return deferredUni(
-                () -> requester.request(new EmptyRequest("/applications/{application.id}/commands{?with_localizations}",
-                        variables("application.id", requireNonNull(applicationId, "applicationId").getValue(),
-                                "with_localizations", withLocalizations))))
+        return deferredUni(() -> requester.request(new EmptyRequest(
+                "/applications/{application.id}/commands{?with_localizations}",
+                variables("application.id", requireNonNull(applicationId, "applicationId").getValue(),
+                        "with_localizations", withLocalizations))))
                 .flatMap(res -> res.as(ApplicationCommand[].class))
                 .onItem().disjoint();
     }

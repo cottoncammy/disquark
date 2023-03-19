@@ -26,7 +26,7 @@ abstract class EditApplicationCommandPermissions extends AbstractRequestUni<Guil
     @JsonIgnore
     public abstract Snowflake commandId();
 
-    public abstract List<ApplicationCommand.Permissions> permissions();
+    public abstract List<ApplicationCommandPermissions> permissions();
 
     @Override
     public void subscribe(UniSubscriber<? super GuildApplicationCommandPermissions> downstream) {

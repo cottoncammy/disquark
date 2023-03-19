@@ -165,34 +165,4 @@ interface ApplicationCommandJson {
 
         JsonNode value();
     }
-
-    @ImmutableJson
-    @JsonDeserialize(as = ApplicationCommand.Permissions.class)
-    interface PermissionsJson {
-
-        Snowflake id();
-
-        Type type();
-
-        boolean permission();
-
-        enum Type {
-            @JsonEnumDefaultValue
-            UNKNOWN(-1),
-            ROLE(1),
-            USER(2),
-            CHANNEL(3);
-
-            private final int value;
-
-            Type(int value) {
-                this.value = value;
-            }
-
-            @JsonValue
-            public int getValue() {
-                return value;
-            }
-        }
-    }
 }

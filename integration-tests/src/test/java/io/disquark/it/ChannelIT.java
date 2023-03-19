@@ -6,26 +6,12 @@ import java.util.List;
 import io.disquark.it.config.ConfigValue;
 import io.disquark.rest.DiscordBotClient;
 import io.disquark.rest.emoji.ReactionEmoji;
+import io.disquark.rest.json.channel.Channel;
+import io.disquark.rest.json.forum.ForumThreadMessageParams;
+import io.disquark.rest.json.oauth2.AccessToken;
 import io.disquark.rest.oauth2.BearerTokenSource;
 import io.disquark.rest.json.Snowflake;
-import io.disquark.rest.resources.channel.BulkDeleteMessages;
-import io.disquark.rest.resources.channel.Channel;
-import io.disquark.rest.resources.channel.CreateMessage;
-import io.disquark.rest.resources.channel.EditChannelPermissions;
-import io.disquark.rest.resources.channel.GetChannelMessages;
-import io.disquark.rest.resources.channel.ListThreads;
-import io.disquark.rest.resources.channel.ModifyDmChannel;
-import io.disquark.rest.resources.channel.ModifyGuildChannel;
-import io.disquark.rest.resources.channel.StartThreadWithoutMessage;
-import io.disquark.rest.resources.channel.forum.StartThreadInForumChannel;
-import io.disquark.rest.resources.channel.message.EditMessage;
-import io.disquark.rest.resources.channel.message.GetReactions;
-import io.disquark.rest.resources.channel.message.Message;
-import io.disquark.rest.resources.channel.message.StartThreadFromMessage;
-import io.disquark.rest.resources.channel.thread.ListThreadMembers;
-import io.disquark.rest.resources.channel.thread.ModifyThread;
-import io.disquark.rest.resources.guild.CreateGuildChannel;
-import io.disquark.rest.resources.oauth2.AccessToken;
+import io.disquark.rest.json.message.Message;
 import io.disquark.rest.json.oauth2.Scope;
 import io.smallrye.mutiny.Uni;
 import io.smallrye.mutiny.helpers.test.UniAssertSubscriber;
@@ -49,12 +35,12 @@ class ChannelIT {
     private Snowflake threadId;
 
     private Uni<Message> createMessage(DiscordBotClient<?> botClient, Snowflake channelId, String content) {
-        return botClient.createMessage(CreateMessage.builder().channelId(channelId).content(content).build());
+        return botClient.createMessage(channelId).withContent(content);
     }
 
     @BeforeAll
     void init(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_GUILD_ID") Snowflake guildId) {
-        channelId = botClient.createGuildChannel(CreateGuildChannel.builder().guildId(guildId).name("foo").build())
+        channelId = botClient.createGuildChannel(guildId, "foo")
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .awaitItem()
                 .getItem()
@@ -81,10 +67,9 @@ class ChannelIT {
                 .getToken()
                 .map(AccessToken::accessToken);
 
-        ModifyDmChannel.Builder builder = ModifyDmChannel.builder().name("foo");
         dmChannelId = botClient.createDm(userId2)
                 .call(channel -> tokenUni.call(token -> botClient.groupDmAddRecipient(channel.id(), userId, token, null)))
-                .call(channel -> botClient.modifyChannel(builder.channelId(channel.id()).build()))
+                .call(channel -> botClient.modifyDmChannel(channel.id()).withName("foo"))
                 .call(channel -> botClient.deleteOrCloseChannel(channel.id(), null))
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .awaitItem()
@@ -95,7 +80,8 @@ class ChannelIT {
     @Test
     @Order(3)
     void testModifyGuildChannel(DiscordBotClient<?> botClient) {
-        botClient.modifyChannel(ModifyGuildChannel.builder().channelId(channelId).name("bar").build())
+        botClient.modifyGuildChannel(channelId)
+                .withName("bar")
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .awaitItem()
                 .assertCompleted();
@@ -104,7 +90,7 @@ class ChannelIT {
     @Test
     @Order(4)
     void testGetChannelMessages(DiscordBotClient<?> botClient) {
-        botClient.getChannelMessages(GetChannelMessages.create(channelId))
+        botClient.getChannelMessages(channelId)
                 .collect().asList()
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .awaitItem()
@@ -175,7 +161,7 @@ class ChannelIT {
     @Test
     @Order(11)
     void testGetReactions(DiscordBotClient<?> botClient) {
-        botClient.getReactions(GetReactions.create(channelId, messageId, ReactionEmoji.create(ROBOT_EMOJI)))
+        botClient.getReactions(channelId, messageId, ReactionEmoji.create(ROBOT_EMOJI))
                 .collect().asList()
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .awaitItem()
@@ -203,13 +189,8 @@ class ChannelIT {
     @Test
     @Order(14)
     void testEditMessage(DiscordBotClient<?> botClient) {
-        EditMessage editMessage = EditMessage.builder()
-                .channelId(channelId)
-                .messageId(messageId)
-                .content("Goodbye Cruel World...")
-                .build();
-
-        botClient.editMessage(editMessage)
+        botClient.editMessage(channelId, messageId)
+                .withContent("Goodbye Cruel World...")
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .awaitItem()
                 .assertCompleted();
@@ -218,14 +199,13 @@ class ChannelIT {
     @Test
     @Order(15)
     void testBulkDeleteMessages(DiscordBotClient<?> botClient) {
-        BulkDeleteMessages.Builder builder = BulkDeleteMessages.builder().channelId(channelId);
         Uni.combine()
                 .all().unis(
                         createMessage(botClient, channelId, "One"),
                         createMessage(botClient, channelId, "Two"),
                         createMessage(botClient, channelId, "Three"))
                 .combinedWith((m1, m2, m3) -> List.of(m1.id(), m2.id(), m3.id()))
-                .flatMap(messages -> botClient.bulkDeleteMessages(builder.messages(messages).build()))
+                .flatMap(messages -> botClient.bulkDeleteMessages(channelId).withMessages(messages))
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .awaitItem()
                 .assertCompleted();
@@ -234,13 +214,7 @@ class ChannelIT {
     @Test
     @Order(16)
     void testEditChannelPermissions(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_USER_ID") Snowflake userId) {
-        EditChannelPermissions editChannelPermissions = EditChannelPermissions.builder()
-                .channelId(channelId)
-                .overwriteId(userId)
-                .type(Channel.Overwrite.Type.MEMBER)
-                .build();
-
-        botClient.editChannelPermissions(editChannelPermissions)
+        botClient.editChannelPermissions(channelId, userId, Channel.Overwrite.Type.MEMBER)
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .awaitItem()
                 .assertCompleted();
@@ -317,13 +291,7 @@ class ChannelIT {
     @Test
     @Order(24)
     void testStartThreadFromMessage(DiscordBotClient<?> botClient) {
-        StartThreadFromMessage startThreadFromMessage = StartThreadFromMessage.builder()
-                .channelId(channelId)
-                .messageId(messageId)
-                .name("foo")
-                .build();
-
-        botClient.startThreadFromMessage(startThreadFromMessage)
+        botClient.startThreadFromMessage(channelId, messageId, "foo")
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .awaitItem()
                 .assertCompleted();
@@ -332,12 +300,7 @@ class ChannelIT {
     @Test
     @Order(25)
     void testStartThreadWithoutMessage(DiscordBotClient<?> botClient) {
-        StartThreadWithoutMessage startThreadWithoutMessage = StartThreadWithoutMessage.builder()
-                .channelId(channelId)
-                .name("foo")
-                .build();
-
-        threadId = botClient.startThreadWithoutMessage(startThreadWithoutMessage)
+        threadId = botClient.startThreadWithoutMessage(channelId, "foo")
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .awaitItem()
                 .getItem()
@@ -347,7 +310,8 @@ class ChannelIT {
     @Test
     @Order(26)
     void testModifyThread(DiscordBotClient<?> botClient) {
-        botClient.modifyChannel(ModifyThread.builder().channelId(threadId).name("bar").build())
+        botClient.modifyThread(threadId)
+                .withName("bar")
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .awaitItem()
                 .assertCompleted();
@@ -358,12 +322,8 @@ class ChannelIT {
     @Order(27)
     void testStartThreadInForumChannel(DiscordBotClient<?> botClient,
             @ConfigValue("DISCORD_FORUM_CHANNEL_ID") Snowflake forumChannelId) {
-        StartThreadInForumChannel startThreadInForumChannel = StartThreadInForumChannel.builder()
-                .channelId(forumChannelId)
-                .message(StartThreadInForumChannel.ForumThreadMessageParams.builder().content("Hello World!").build())
-                .build();
-
-        botClient.startThreadInForumChannel(startThreadInForumChannel)
+        botClient.startThreadInForumChannel(forumChannelId, "foo")
+                .withMessage(ForumThreadMessageParams.of().withContent("Hello World!"))
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .awaitItem()
                 .assertCompleted();
@@ -418,7 +378,7 @@ class ChannelIT {
     @Tag("members-intent")
     @Order(33)
     void testListThreadMembers(DiscordBotClient<?> botClient) {
-        botClient.listThreadMembers(ListThreadMembers.create(threadId))
+        botClient.listThreadMembers(threadId)
                 .collect().asList()
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .awaitItem()
@@ -428,7 +388,7 @@ class ChannelIT {
     @Test
     @Order(34)
     void testListPublicArchivedThreads(DiscordBotClient<?> botClient) {
-        botClient.listPublicArchivedThreads(ListThreads.create(channelId))
+        botClient.listPublicArchivedThreads(channelId)
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .awaitItem()
                 .assertCompleted();
@@ -437,7 +397,7 @@ class ChannelIT {
     @Test
     @Order(35)
     void testListPrivateArchivedThreads(DiscordBotClient<?> botClient) {
-        botClient.listPrivateArchivedThreads(ListThreads.create(channelId))
+        botClient.listPrivateArchivedThreads(channelId)
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .awaitItem()
                 .assertCompleted();
@@ -446,7 +406,7 @@ class ChannelIT {
     @Test
     @Order(36)
     void testListJoinedPrivateArchivedThreads(DiscordBotClient<?> botClient) {
-        botClient.listJoinedPrivateArchivedThreads(ListThreads.create(channelId))
+        botClient.listJoinedPrivateArchivedThreads(channelId)
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .awaitItem()
                 .assertCompleted();

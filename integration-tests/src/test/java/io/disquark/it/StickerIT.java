@@ -5,8 +5,6 @@ import java.util.Map;
 import io.disquark.it.config.ConfigValue;
 import io.disquark.rest.DiscordBotClient;
 import io.disquark.rest.json.Snowflake;
-import io.disquark.rest.resources.sticker.CreateGuildSticker;
-import io.disquark.rest.resources.sticker.ModifyGuildSticker;
 import io.smallrye.mutiny.helpers.test.UniAssertSubscriber;
 import io.vertx.mutiny.core.buffer.Buffer;
 
@@ -54,15 +52,8 @@ class StickerIT {
     @Order(4)
     void testCreateGuildSticker(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_GUILD_ID") Snowflake guildId) {
         Buffer image = botClient.getVertx().fileSystem().readFileAndAwait("images/sticker.png");
-        CreateGuildSticker createGuildSticker = CreateGuildSticker.builder()
-                .guildId(guildId)
-                .name("foo")
-                .description("bar")
-                .tags("baz")
-                .addFile(Map.entry("sticker.png", image))
-                .build();
-
-        stickerId = botClient.createGuildSticker(createGuildSticker)
+        stickerId = botClient.createGuildSticker(guildId, "foo", "bar", "baz")
+                .withFiles(Map.entry("sticker.png", image))
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .awaitItem()
                 .getItem()
@@ -81,13 +72,8 @@ class StickerIT {
     @Test
     @Order(6)
     void testModifyGuildSticker(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_GUILD_ID") Snowflake guildId) {
-        ModifyGuildSticker modifyGuildSticker = ModifyGuildSticker.builder()
-                .guildId(guildId)
-                .stickerId(stickerId)
-                .name("alice")
-                .build();
-
-        botClient.modifyGuildSticker(modifyGuildSticker)
+        botClient.modifyGuildSticker(guildId, stickerId)
+                .withName("alice")
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .awaitItem()
                 .assertCompleted();

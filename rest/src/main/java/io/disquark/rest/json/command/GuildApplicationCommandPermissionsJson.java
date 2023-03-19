@@ -20,5 +20,5 @@ interface GuildApplicationCommandPermissionsJson {
     @JsonProperty("guild_id")
     Snowflake guildId();
 
-    List<ApplicationCommand.Permissions> permissions();
+    List<ApplicationCommandPermissions> permissions();
 }

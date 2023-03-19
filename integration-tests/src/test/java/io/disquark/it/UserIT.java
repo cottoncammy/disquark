@@ -3,7 +3,6 @@ package io.disquark.it;
 import io.disquark.it.config.ConfigValue;
 import io.disquark.rest.DiscordBotClient;
 import io.disquark.rest.json.Snowflake;
-import io.disquark.rest.resources.user.ModifyCurrentUser;
 import io.smallrye.mutiny.Uni;
 import io.smallrye.mutiny.helpers.test.UniAssertSubscriber;
 import io.vertx.core.http.RequestOptions;
@@ -26,11 +25,10 @@ class UserIT {
     @Test
     void testModifyCurrentUser(DiscordBotClient<?> botClient) {
         Buffer avatar = botClient.getVertx().fileSystem().readFileAndAwait("images/avatar.png");
-        ModifyCurrentUser modifyCurrentUser = ModifyCurrentUser.builder().avatar(avatar).build();
         HttpClient httpClient = botClient.getVertx().createHttpClient();
 
         botClient.getCurrentUser()
-                .call(user -> botClient.modifyCurrentUser(modifyCurrentUser))
+                .call(user -> botClient.modifyCurrentUser().withAvatar(avatar))
                 .call(user -> {
                     if (user.avatar().isPresent()) {
                         RequestOptions options = new RequestOptions()
@@ -40,7 +38,7 @@ class UserIT {
                         return httpClient.request(options)
                                 .flatMap(HttpClientRequest::send)
                                 .flatMap(HttpClientResponse::body)
-                                .call(b -> botClient.modifyCurrentUser(ModifyCurrentUser.builder().avatar(b).build()));
+                                .call(b -> botClient.modifyCurrentUser().withAvatar(b));
                     }
                     return Uni.createFrom().voidItem();
                 })

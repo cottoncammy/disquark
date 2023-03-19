@@ -3,9 +3,6 @@ package io.disquark.it;
 import io.disquark.it.config.ConfigValue;
 import io.disquark.rest.DiscordBotClient;
 import io.disquark.rest.json.Snowflake;
-import io.disquark.rest.resources.guild.template.CreateGuildFromGuildTemplate;
-import io.disquark.rest.resources.guild.template.CreateGuildTemplate;
-import io.disquark.rest.resources.guild.template.ModifyGuildTemplate;
 import io.smallrye.mutiny.helpers.test.UniAssertSubscriber;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -32,7 +29,7 @@ class GuildTemplateIT {
     @Test
     @Order(1)
     void testCreateGuildTemplate(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_GUILD_ID") Snowflake guildId) {
-        templateCode = botClient.createGuildTemplate(CreateGuildTemplate.builder().guildId(guildId).name("foo").build())
+        templateCode = botClient.createGuildTemplate(guildId, "foo")
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .awaitItem()
                 .getItem()
@@ -51,13 +48,8 @@ class GuildTemplateIT {
     @Test
     @Order(3)
     void testCreateGuildFromGuildTemplate(DiscordBotClient<?> botClient) {
-        CreateGuildFromGuildTemplate createGuildFromGuildTemplate = CreateGuildFromGuildTemplate.builder()
-                .templateCode(templateCode)
-                .name("foo")
-                .build();
-
-        botClient.createGuildFromGuildTemplate(createGuildFromGuildTemplate)
-                .flatMap(guild -> botClient.deleteGuild(guild.id()))
+        botClient.createGuildFromGuildTemplate(templateCode, "foo")
+                .call(guild -> botClient.deleteGuild(guild.id()))
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .awaitItem()
                 .assertCompleted();
@@ -85,13 +77,8 @@ class GuildTemplateIT {
     @Test
     @Order(6)
     void testModifyGuildTemplate(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_GUILD_ID") Snowflake guildId) {
-        ModifyGuildTemplate modifyGuildTemplate = ModifyGuildTemplate.builder()
-                .guildId(guildId)
-                .templateCode(templateCode)
-                .name("bar")
-                .build();
-
-        botClient.modifyGuildTemplate(modifyGuildTemplate)
+        botClient.modifyGuildTemplate(guildId, templateCode)
+                .withName("bar")
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .awaitItem()
                 .assertCompleted();

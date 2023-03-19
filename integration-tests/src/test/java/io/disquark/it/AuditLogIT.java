@@ -14,7 +14,7 @@ class AuditLogIT {
 
     @Test
     void testGetGuildAuditLog(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_GUILD_ID") Snowflake guildId) {
-        botClient.getGuildAuditLog(GetGuildAuditLog.create(guildId))
+        botClient.getGuildAuditLog(guildId)
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .awaitItem()
                 .assertCompleted();

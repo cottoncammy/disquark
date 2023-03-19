@@ -1,11 +1,9 @@
 package io.disquark.it;
 
 import io.disquark.it.config.ConfigValue;
+import io.disquark.rest.json.command.ApplicationCommandPermissions;
 import io.disquark.rest.oauth2.DiscordOAuth2Client;
 import io.disquark.rest.json.Snowflake;
-import io.disquark.rest.resources.application.command.ApplicationCommand;
-import io.disquark.rest.resources.application.command.CreateGuildApplicationCommand;
-import io.disquark.rest.resources.application.command.EditApplicationCommandPermissions;
 import io.smallrye.mutiny.helpers.test.UniAssertSubscriber;
 
 import org.junit.jupiter.api.Test;
@@ -24,26 +22,13 @@ class DiscordOAuth2ClientIT {
                 .application()
                 .id();
 
-        CreateGuildApplicationCommand createGuildApplicationCommand = CreateGuildApplicationCommand.builder()
-                .applicationId(applicationId)
-                .guildId(guildId)
-                .name("foo")
-                .description("bar")
-                .build();
-
-        oAuth2Client.createGuildApplicationCommand(createGuildApplicationCommand)
-                .call(command -> oAuth2Client.editApplicationCommandPermissions(EditApplicationCommandPermissions.builder()
-                        .applicationId(applicationId)
-                        .guildId(guildId)
-                        .commandId(command.id())
-                        .addPermission(ApplicationCommand.Permissions.builder()
-                                .id(guildId)
-                                .type(ApplicationCommand.Permissions.Type.ROLE)
-                                .permission(true)
-                                .build())
-                        .build()))
-                .onItemOrFailure()
-                .call((command, e) -> oAuth2Client.deleteGuildApplicationCommand(applicationId, guildId, command.id()))
+        oAuth2Client.createGuildApplicationCommand(applicationId, guildId, "foo")
+                .withDescription("bar")
+                .call(command -> oAuth2Client.editApplicationCommandPermissions(applicationId, guildId, command.id())
+                        .withPermissions(new ApplicationCommandPermissions(guildId,
+                                ApplicationCommandPermissions.Type.ROLE, true)))
+                .onItemOrFailure().call((command, e) -> oAuth2Client.deleteGuildApplicationCommand(applicationId,
+                        guildId, command.id()))
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .awaitItem()
                 .assertCompleted();

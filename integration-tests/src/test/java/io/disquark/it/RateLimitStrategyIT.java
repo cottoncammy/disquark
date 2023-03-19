@@ -17,7 +17,6 @@ import io.disquark.rest.request.RequesterFactory;
 import io.disquark.rest.request.ratelimit.Bucket4jRateLimiter;
 import io.disquark.rest.request.ratelimit.RateLimitStrategy;
 import io.disquark.rest.json.Snowflake;
-import io.disquark.rest.resources.channel.CreateMessage;
 import io.disquark.rest.response.HttpResponse;
 import io.disquark.rest.response.RateLimitException;
 import io.smallrye.mutiny.Uni;
@@ -44,14 +43,11 @@ class RateLimitStrategyIT {
         this.channelId = channelId;
     }
 
-    private CreateMessage createMessage(Snowflake channelId) {
-        return CreateMessage.builder().channelId(channelId).content("foo").build();
-    }
-
     @Test
     void testGlobalRateLimiting() {
         DiscordBotClient.create(VERTX, token)
-                .createMessage(createMessage(channelId))
+                .createMessage(channelId)
+                .withContent("foo")
                 .repeat().atMost(MAX_REQUESTS + 1)
                 .subscribe().withSubscriber(AssertSubscriber.create())
                 .awaitItems(MAX_REQUESTS + 1)
@@ -80,7 +76,8 @@ class RateLimitStrategyIT {
                 })
                 .build();
 
-        botClient.createMessage(createMessage(channelId))
+        botClient.createMessage(channelId)
+                .withContent("foo")
                 .replaceWith(remaining.get())
                 .repeat().until(val -> val == 0)
                 .subscribe().withSubscriber(AssertSubscriber.create())
@@ -94,7 +91,8 @@ class RateLimitStrategyIT {
                 .rateLimitStrategy(RateLimitStrategy.BUCKET)
                 .build();
 
-        botClient.createMessage(createMessage(channelId))
+        botClient.createMessage(channelId)
+                .withContent("foo")
                 .repeat().atMost(MAX_REQUESTS + 1)
                 .subscribe().withSubscriber(AssertSubscriber.create())
                 .awaitItems(MAX_REQUESTS)
@@ -110,7 +108,8 @@ class RateLimitStrategyIT {
                 .rateLimitStrategy(RateLimitStrategy.GLOBAL)
                 .build();
 
-        botClient.createMessage(createMessage(channelId))
+        botClient.createMessage(channelId)
+                .withContent("foo")
                 .repeat().indefinitely()
                 .subscribe().withSubscriber(AssertSubscriber.create())
                 .awaitFailure(t -> {

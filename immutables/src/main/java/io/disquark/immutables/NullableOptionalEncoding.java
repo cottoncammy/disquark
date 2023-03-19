@@ -16,25 +16,15 @@ class NullableOptionalEncoding<T> {
         return value;
     }
 
-    @Encoding.Builder
-    static class Builder<T> {
-        private NullableOptional<T> value = NullableOptional.empty();
+    @Encoding.Copy
+    @Encoding.Naming(standard = Encoding.StandardNaming.WITH)
+    NullableOptional<T> set(NullableOptional<T> value) {
+        return Objects.requireNonNull(value);
+    }
 
-        @Encoding.Init
-        @Encoding.Copy
-        void set(NullableOptional<T> value) {
-            // can't use static imports
-            this.value = Objects.requireNonNull(value);
-        }
-
-        @Encoding.Init
-        void setValue(T value) {
-            this.value = NullableOptional.of(value);
-        }
-
-        @Encoding.Build
-        NullableOptional<T> build() {
-            return value;
-        }
+    @Encoding.Copy
+    @Encoding.Naming(standard = Encoding.StandardNaming.WITH)
+    NullableOptional<T> setUnwrapped(T value) {
+        return NullableOptional.of(value);
     }
 }
