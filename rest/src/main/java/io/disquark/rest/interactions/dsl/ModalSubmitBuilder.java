@@ -8,7 +8,7 @@ import javax.annotation.Nullable;
 
 import io.disquark.rest.interactions.DiscordInteractionsClient;
 import io.disquark.rest.interactions.ModalSubmitInteraction;
-import io.disquark.rest.resources.interactions.Interaction;
+import io.disquark.rest.json.interaction.Interaction;
 import io.vertx.mutiny.ext.web.RoutingContext;
 
 public class ModalSubmitBuilder implements InteractionSchema<Interaction.ModalSubmitData, ModalSubmitInteraction> {

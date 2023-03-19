@@ -1,8 +1,8 @@
 package io.disquark.rest.interactions.dsl;
 
 import io.disquark.rest.interactions.ApplicationCommandAutocompleteInteraction;
-import io.disquark.rest.resources.Snowflake;
-import io.disquark.rest.resources.interactions.Interaction;
+import io.disquark.rest.json.Snowflake;
+import io.disquark.rest.json.interaction.Interaction;
 
 public class ApplicationCommandAutocompleteBuilder extends
         AbstractApplicationCommandBuilder<ApplicationCommandAutocompleteInteraction, ApplicationCommandAutocompleteOptionBuilder> {

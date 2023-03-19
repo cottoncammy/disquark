@@ -1,6 +1,6 @@
 package io.disquark.rest.emoji;
 
-import io.disquark.rest.resources.Snowflake;
+import io.disquark.rest.json.Snowflake;
 
 public class CustomReactionEmoji implements ReactionEmoji {
     private final Snowflake id;

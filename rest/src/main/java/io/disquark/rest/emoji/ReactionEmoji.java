@@ -2,8 +2,8 @@ package io.disquark.rest.emoji;
 
 import static java.util.Objects.requireNonNull;
 
-import io.disquark.rest.resources.Snowflake;
-import io.disquark.rest.resources.emoji.Emoji;
+import io.disquark.rest.json.Snowflake;
+import io.disquark.rest.json.emoji.Emoji;
 
 public interface ReactionEmoji {
 

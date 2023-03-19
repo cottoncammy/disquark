@@ -9,92 +9,97 @@ import javax.annotation.Nullable;
 
 import io.disquark.rest.emoji.ReactionEmoji;
 import io.disquark.rest.interactions.DiscordInteractionsClient;
+import io.disquark.rest.json.Snowflake;
+import io.disquark.rest.json.application.Application;
+import io.disquark.rest.json.auditlog.GetGuildAuditLogUni;
+import io.disquark.rest.json.automod.AutoModerationRule;
+import io.disquark.rest.json.automod.CreateAutoModerationRuleUni;
+import io.disquark.rest.json.automod.ModifyAutoModerationRuleUni;
+import io.disquark.rest.json.channel.Channel;
+import io.disquark.rest.json.channel.CreateDmUni;
+import io.disquark.rest.json.channel.CreateGuildChannelUni;
+import io.disquark.rest.json.channel.EditChannelPermissionsUni;
+import io.disquark.rest.json.channel.FollowAnnouncementChannelUni;
+import io.disquark.rest.json.channel.FollowedChannel;
+import io.disquark.rest.json.channel.GroupDmAddRecipientUni;
+import io.disquark.rest.json.channel.ModifyDmChannelUni;
+import io.disquark.rest.json.channel.ModifyGuildChannelPositionsUni;
+import io.disquark.rest.json.channel.ModifyGuildChannelUni;
+import io.disquark.rest.json.emoji.CreateGuildEmojiUni;
+import io.disquark.rest.json.emoji.Emoji;
+import io.disquark.rest.json.emoji.ModifyGuildEmojiUni;
+import io.disquark.rest.json.forum.StartThreadInForumChannelUni;
+import io.disquark.rest.json.guild.BeginGuildPruneUni;
+import io.disquark.rest.json.guild.CreateGuildBanUni;
+import io.disquark.rest.json.guild.CreateGuildUni;
+import io.disquark.rest.json.guild.GetGuildBansMulti;
+import io.disquark.rest.json.guild.GetGuildPruneCountUni;
+import io.disquark.rest.json.guild.Guild;
+import io.disquark.rest.json.guild.GuildWidget;
+import io.disquark.rest.json.guild.Integration;
+import io.disquark.rest.json.guild.ModifyGuildMfaLevelUni;
+import io.disquark.rest.json.guild.ModifyGuildUni;
+import io.disquark.rest.json.guild.ModifyGuildWelcomeScreenUni;
+import io.disquark.rest.json.guild.ModifyGuildWidgetUni;
+import io.disquark.rest.json.guild.WelcomeScreen;
+import io.disquark.rest.json.guildtemplate.CreateGuildFromGuildTemplateUni;
+import io.disquark.rest.json.guildtemplate.CreateGuildTemplateUni;
+import io.disquark.rest.json.guildtemplate.GuildTemplate;
+import io.disquark.rest.json.guildtemplate.ModifyGuildTemplateUni;
+import io.disquark.rest.json.invite.CreateChannelInviteUni;
+import io.disquark.rest.json.invite.GetInviteUni;
+import io.disquark.rest.json.invite.Invite;
+import io.disquark.rest.json.member.AddGuildMemberUni;
+import io.disquark.rest.json.member.GuildMember;
+import io.disquark.rest.json.member.ListGuildMembersMulti;
+import io.disquark.rest.json.member.ModifyCurrentMemberUni;
+import io.disquark.rest.json.member.ModifyGuildMemberUni;
+import io.disquark.rest.json.member.SearchGuildMembersMulti;
+import io.disquark.rest.json.message.BulkDeleteMessagesUni;
+import io.disquark.rest.json.message.CreateMessageUni;
+import io.disquark.rest.json.message.EditMessageUni;
+import io.disquark.rest.json.message.GetChannelMessagesMulti;
+import io.disquark.rest.json.message.GetReactionsMulti;
+import io.disquark.rest.json.message.Message;
+import io.disquark.rest.json.oauth2.AccessToken;
+import io.disquark.rest.json.oauth2.TokenType;
+import io.disquark.rest.json.partial.GuildVanityUrl;
+import io.disquark.rest.json.role.CreateGuildRoleUni;
+import io.disquark.rest.json.role.ModifyGuildRolePositionsMulti;
+import io.disquark.rest.json.role.ModifyGuildRoleUni;
+import io.disquark.rest.json.role.Role;
+import io.disquark.rest.json.roleconnection.ApplicationRoleConnection;
+import io.disquark.rest.json.roleconnection.UpdateApplicationRoleConnectionMetadataRecordsMulti;
+import io.disquark.rest.json.scheduledevent.CreateGuildScheduledEventUni;
+import io.disquark.rest.json.scheduledevent.GetGuildScheduledEventUsersMulti;
+import io.disquark.rest.json.scheduledevent.GuildScheduledEvent;
+import io.disquark.rest.json.scheduledevent.ModifyGuildScheduledEventUni;
+import io.disquark.rest.json.stage.CreateStageInstanceUni;
+import io.disquark.rest.json.stage.ModifyStageInstanceUni;
+import io.disquark.rest.json.stage.StageInstance;
+import io.disquark.rest.json.sticker.CreateGuildStickerUni;
+import io.disquark.rest.json.sticker.ListNitroStickerPacksResponse;
+import io.disquark.rest.json.sticker.ModifyGuildStickerUni;
+import io.disquark.rest.json.sticker.Sticker;
+import io.disquark.rest.json.sticker.StickerPack;
+import io.disquark.rest.json.thread.ListThreadMembersMulti;
+import io.disquark.rest.json.thread.ListThreadsResult;
+import io.disquark.rest.json.thread.ListThreadsUni;
+import io.disquark.rest.json.thread.ModifyThreadUni;
+import io.disquark.rest.json.thread.StartThreadFromMessageUni;
+import io.disquark.rest.json.thread.StartThreadWithoutMessageUni;
+import io.disquark.rest.json.thread.ThreadMember;
+import io.disquark.rest.json.user.ModifyCurrentUserUni;
+import io.disquark.rest.json.user.User;
+import io.disquark.rest.json.voice.ModifyCurrentUserVoiceStateUni;
+import io.disquark.rest.json.voice.ModifyUserVoiceStateUni;
+import io.disquark.rest.json.voice.VoiceRegion;
+import io.disquark.rest.json.webhook.CreateWebhookUni;
+import io.disquark.rest.json.webhook.ModifyWebhookUni;
+import io.disquark.rest.json.webhook.Webhook;
 import io.disquark.rest.request.AccessTokenSource;
 import io.disquark.rest.request.EmptyRequest;
 import io.disquark.rest.request.Requester;
-import io.disquark.rest.resources.Snowflake;
-import io.disquark.rest.resources.application.Application;
-import io.disquark.rest.resources.application.ApplicationRoleConnectionMetadata;
-import io.disquark.rest.resources.application.UpdateApplicationRoleConnectionMetadataRecordsMulti;
-import io.disquark.rest.resources.auditlog.GetGuildAuditLogUni;
-import io.disquark.rest.resources.automod.AutoModerationRule;
-import io.disquark.rest.resources.automod.CreateAutoModerationRuleUni;
-import io.disquark.rest.resources.automod.ModifyAutoModerationRuleUni;
-import io.disquark.rest.resources.channel.BulkDeleteMessagesUni;
-import io.disquark.rest.resources.channel.Channel;
-import io.disquark.rest.resources.channel.CreateChannelInviteUni;
-import io.disquark.rest.resources.channel.CreateMessageUni;
-import io.disquark.rest.resources.channel.EditChannelPermissionsUni;
-import io.disquark.rest.resources.channel.FollowAnnouncementChannelUni;
-import io.disquark.rest.resources.channel.FollowedChannel;
-import io.disquark.rest.resources.channel.GetChannelMessagesMulti;
-import io.disquark.rest.resources.channel.GroupDmAddRecipientUni;
-import io.disquark.rest.resources.channel.ListThreadsResult;
-import io.disquark.rest.resources.channel.ListThreadsUni;
-import io.disquark.rest.resources.channel.ModifyDmChannelUni;
-import io.disquark.rest.resources.channel.ModifyGuildChannelUni;
-import io.disquark.rest.resources.channel.StartThreadWithoutMessageUni;
-import io.disquark.rest.resources.channel.forum.StartThreadInForumChannelUni;
-import io.disquark.rest.resources.channel.message.EditMessageUni;
-import io.disquark.rest.resources.channel.message.GetReactionsMulti;
-import io.disquark.rest.resources.channel.message.Message;
-import io.disquark.rest.resources.channel.message.StartThreadFromMessageUni;
-import io.disquark.rest.resources.channel.thread.ListThreadMembersMulti;
-import io.disquark.rest.resources.channel.thread.ModifyThreadUni;
-import io.disquark.rest.resources.channel.thread.ThreadMember;
-import io.disquark.rest.resources.emoji.CreateGuildEmojiUni;
-import io.disquark.rest.resources.emoji.Emoji;
-import io.disquark.rest.resources.emoji.ModifyGuildEmojiUni;
-import io.disquark.rest.resources.guild.AddGuildMemberUni;
-import io.disquark.rest.resources.guild.CreateGuildBanUni;
-import io.disquark.rest.resources.guild.CreateGuildChannelUni;
-import io.disquark.rest.resources.guild.CreateGuildRoleUni;
-import io.disquark.rest.resources.guild.CreateGuildUni;
-import io.disquark.rest.resources.guild.GetGuildBansMulti;
-import io.disquark.rest.resources.guild.Guild;
-import io.disquark.rest.resources.guild.ListGuildMembersMulti;
-import io.disquark.rest.resources.guild.ModifyCurrentMemberUni;
-import io.disquark.rest.resources.guild.ModifyCurrentUserVoiceStateUni;
-import io.disquark.rest.resources.guild.ModifyGuildChannelPositionsUni;
-import io.disquark.rest.resources.guild.ModifyGuildMemberUni;
-import io.disquark.rest.resources.guild.ModifyGuildMfaLevelUni;
-import io.disquark.rest.resources.guild.ModifyGuildRolePositionsMulti;
-import io.disquark.rest.resources.guild.ModifyGuildRoleUni;
-import io.disquark.rest.resources.guild.ModifyGuildUni;
-import io.disquark.rest.resources.guild.ModifyGuildWelcomeScreenUni;
-import io.disquark.rest.resources.guild.ModifyGuildWidgetUni;
-import io.disquark.rest.resources.guild.ModifyUserVoiceStateUni;
-import io.disquark.rest.resources.guild.SearchGuildMembersMulti;
-import io.disquark.rest.resources.guild.prune.BeginGuildPruneUni;
-import io.disquark.rest.resources.guild.prune.GetGuildPruneCountUni;
-import io.disquark.rest.resources.guild.scheduledevent.CreateGuildScheduledEventUni;
-import io.disquark.rest.resources.guild.scheduledevent.GetGuildScheduledEventUsersMulti;
-import io.disquark.rest.resources.guild.scheduledevent.GuildScheduledEvent;
-import io.disquark.rest.resources.guild.scheduledevent.ModifyGuildScheduledEventUni;
-import io.disquark.rest.resources.guild.template.CreateGuildFromGuildTemplateUni;
-import io.disquark.rest.resources.guild.template.CreateGuildTemplateUni;
-import io.disquark.rest.resources.guild.template.GuildTemplate;
-import io.disquark.rest.resources.guild.template.ModifyGuildTemplateUni;
-import io.disquark.rest.resources.invite.GetInviteUni;
-import io.disquark.rest.resources.invite.Invite;
-import io.disquark.rest.resources.oauth2.AccessToken;
-import io.disquark.rest.resources.oauth2.TokenType;
-import io.disquark.rest.resources.partial.GuildVanityUrl;
-import io.disquark.rest.resources.permissions.Role;
-import io.disquark.rest.resources.stageinstance.CreateStageInstanceUni;
-import io.disquark.rest.resources.stageinstance.ModifyStageInstanceUni;
-import io.disquark.rest.resources.stageinstance.StageInstance;
-import io.disquark.rest.resources.sticker.CreateGuildStickerUni;
-import io.disquark.rest.resources.sticker.ListNitroStickerPacksResponse;
-import io.disquark.rest.resources.sticker.ModifyGuildStickerUni;
-import io.disquark.rest.resources.sticker.Sticker;
-import io.disquark.rest.resources.user.CreateDmUni;
-import io.disquark.rest.resources.user.ModifyCurrentUserUni;
-import io.disquark.rest.resources.user.User;
-import io.disquark.rest.resources.voice.VoiceRegion;
-import io.disquark.rest.resources.webhook.CreateWebhookUni;
-import io.disquark.rest.resources.webhook.ModifyWebhookUni;
-import io.disquark.rest.resources.webhook.Webhook;
 import io.disquark.rest.response.Response;
 import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
@@ -135,10 +140,10 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
         return buildInteractionsClient(DiscordInteractionsClient.builder(vertx, verifyKey));
     }
 
-    public Multi<ApplicationRoleConnectionMetadata> getApplicationRoleConnectionMetadataRecords(Snowflake applicationId) {
+    public Multi<ApplicationRoleConnection.Metadata> getApplicationRoleConnectionMetadataRecords(Snowflake applicationId) {
         return deferredUni(() -> requester.request(new EmptyRequest("/applications/{application.id}/role-connections/metadata",
                 variables("application.id", requireNonNull(applicationId, "applicationId").getValue()))))
-                .flatMap(res -> res.as(ApplicationRoleConnectionMetadata[].class))
+                .flatMap(res -> res.as(ApplicationRoleConnection.Metadata[].class))
                 .onItem().disjoint();
     }
 
@@ -521,11 +526,11 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
                 .flatMap(res -> res.as(ListThreadsResult.class));
     }
 
-    public Uni<Guild.Member> getGuildMember(Snowflake guildId, Snowflake userId) {
+    public Uni<GuildMember> getGuildMember(Snowflake guildId, Snowflake userId) {
         return deferredUni(() -> requester.request(new EmptyRequest("/guilds/{guild.id}/members/{user.id}",
                 variables("guild.id", requireNonNull(guildId, "guildId").getValue(),
                         "user.id", requireNonNull(userId, "userId").getValue()))))
-                .flatMap(res -> res.as(Guild.Member.class));
+                .flatMap(res -> res.as(GuildMember.class));
     }
 
     public ListGuildMembersMulti listGuildMembers(Snowflake guildId) {
@@ -654,10 +659,10 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
                 .onItem().disjoint();
     }
 
-    public Multi<Guild.Integration> getGuildIntegrations(Snowflake guildId) {
+    public Multi<Integration> getGuildIntegrations(Snowflake guildId) {
         return deferredUni(() -> requester.request(new EmptyRequest("/guilds/{guild.id}/integrations",
                 variables("guild.id", requireNonNull(guildId, "guildId").getValue()))))
-                .flatMap(res -> res.as(Guild.Integration[].class))
+                .flatMap(res -> res.as(Integration[].class))
                 .onItem().disjoint();
     }
 
@@ -680,10 +685,10 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
         return (ModifyGuildWidgetUni) deferredUni(() -> new ModifyGuildWidgetUni(requester, guildId));
     }
 
-    public Uni<Guild.Widget> getGuildWidget(Snowflake guildId) {
+    public Uni<GuildWidget> getGuildWidget(Snowflake guildId) {
         return deferredUni(() -> requester.request(new EmptyRequest("/guilds/{guild.id}/widget.json",
                 variables("guild.id", requireNonNull(guildId, "guildId").getValue()))))
-                .flatMap(res -> res.as(Guild.Widget.class));
+                .flatMap(res -> res.as(GuildWidget.class));
     }
 
     public Uni<GuildVanityUrl> getGuildVanityUrl(Snowflake guildId) {
@@ -692,10 +697,10 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
                 .flatMap(res -> res.as(GuildVanityUrl.class));
     }
 
-    public Uni<Guild.WelcomeScreen> getGuildWelcomeScreen(Snowflake guildId) {
+    public Uni<WelcomeScreen> getGuildWelcomeScreen(Snowflake guildId) {
         return deferredUni(() -> requester.request(new EmptyRequest("/guilds/{guild.id}/welcome-screen",
                 variables("guild.id", requireNonNull(guildId, "guildId").getValue()))))
-                .flatMap(res -> res.as(Guild.WelcomeScreen.class));
+                .flatMap(res -> res.as(WelcomeScreen.class));
     }
 
     public ModifyGuildWelcomeScreenUni modifyGuildWelcomeScreen(Snowflake guildId) {
@@ -831,7 +836,7 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
                 .flatMap(res -> res.as(Sticker.class));
     }
 
-    public Multi<Sticker.Pack> listNitroStickerPacks() {
+    public Multi<StickerPack> listNitroStickerPacks() {
         return requester.request(new EmptyRequest("/sticker-packs"))
                 .flatMap(res -> res.as(ListNitroStickerPacksResponse.class))
                 .map(ListNitroStickerPacksResponse::getStickerPacks)
@@ -950,7 +955,7 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
         private final Uni<AccessToken> token;
 
         protected BotToken(String token) {
-            this.token = Uni.createFrom().item(new AccessToken(token, TokenType.BOT));
+            this.token = Uni.createFrom().item(new AccessToken(TokenType.BOT, token));
         }
 
         @Override

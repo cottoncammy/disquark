@@ -7,7 +7,7 @@ import io.disquark.it.config.ConfigValue;
 import io.disquark.rest.DiscordBotClient;
 import io.disquark.rest.emoji.ReactionEmoji;
 import io.disquark.rest.oauth2.BearerTokenSource;
-import io.disquark.rest.resources.Snowflake;
+import io.disquark.rest.json.Snowflake;
 import io.disquark.rest.resources.channel.BulkDeleteMessages;
 import io.disquark.rest.resources.channel.Channel;
 import io.disquark.rest.resources.channel.CreateMessage;
@@ -26,7 +26,7 @@ import io.disquark.rest.resources.channel.thread.ListThreadMembers;
 import io.disquark.rest.resources.channel.thread.ModifyThread;
 import io.disquark.rest.resources.guild.CreateGuildChannel;
 import io.disquark.rest.resources.oauth2.AccessToken;
-import io.disquark.rest.resources.oauth2.Scope;
+import io.disquark.rest.json.oauth2.Scope;
 import io.smallrye.mutiny.Uni;
 import io.smallrye.mutiny.helpers.test.UniAssertSubscriber;
 

@@ -3,7 +3,7 @@ package io.disquark.rest.interactions.dsl;
 import io.disquark.rest.interactions.CompletableInteraction;
 import io.disquark.rest.interactions.DiscordInteractionsClient;
 import io.disquark.rest.interactions.PingInteraction;
-import io.disquark.rest.resources.interactions.Interaction;
+import io.disquark.rest.json.interaction.Interaction;
 import io.vertx.mutiny.ext.web.RoutingContext;
 
 public interface InteractionSchema<D, C extends CompletableInteraction<D>> {

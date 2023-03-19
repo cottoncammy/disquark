@@ -1,6 +1,6 @@
 package io.disquark.it.config;
 
-import io.disquark.rest.resources.Snowflake;
+import io.disquark.rest.json.Snowflake;
 
 import org.eclipse.microprofile.config.spi.Converter;
 

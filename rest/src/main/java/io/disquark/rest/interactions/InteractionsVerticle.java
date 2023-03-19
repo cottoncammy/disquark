@@ -13,7 +13,7 @@ import java.util.function.Supplier;
 import com.fasterxml.jackson.core.type.TypeReference;
 
 import io.disquark.rest.interactions.dsl.InteractionSchema;
-import io.disquark.rest.resources.interactions.Interaction;
+import io.disquark.rest.json.interaction.Interaction;
 import io.smallrye.mutiny.Context;
 import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;

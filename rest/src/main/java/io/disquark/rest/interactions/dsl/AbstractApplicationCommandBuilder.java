@@ -13,10 +13,10 @@ import javax.annotation.Nullable;
 
 import io.disquark.rest.interactions.CompletableInteraction;
 import io.disquark.rest.interactions.DiscordInteractionsClient;
-import io.disquark.rest.resources.Snowflake;
-import io.disquark.rest.resources.application.command.ApplicationCommand;
-import io.disquark.rest.resources.interactions.ApplicationCommandInteractionDataOption;
-import io.disquark.rest.resources.interactions.Interaction;
+import io.disquark.rest.json.Snowflake;
+import io.disquark.rest.json.command.ApplicationCommand;
+import io.disquark.rest.json.interaction.ApplicationCommandInteractionDataOption;
+import io.disquark.rest.json.interaction.Interaction;
 import io.smallrye.mutiny.tuples.Functions;
 import io.vertx.mutiny.ext.web.RoutingContext;
 

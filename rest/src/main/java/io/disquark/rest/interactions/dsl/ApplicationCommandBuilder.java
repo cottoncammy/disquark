@@ -3,9 +3,9 @@ package io.disquark.rest.interactions.dsl;
 import static java.util.Objects.requireNonNull;
 
 import io.disquark.rest.interactions.ApplicationCommandInteraction;
-import io.disquark.rest.resources.Snowflake;
-import io.disquark.rest.resources.application.command.ApplicationCommand;
-import io.disquark.rest.resources.interactions.Interaction;
+import io.disquark.rest.json.Snowflake;
+import io.disquark.rest.json.command.ApplicationCommand;
+import io.disquark.rest.json.interaction.Interaction;
 
 public class ApplicationCommandBuilder
         extends AbstractApplicationCommandBuilder<ApplicationCommandInteraction, ApplicationCommandOptionBuilder> {

@@ -1,12 +1,12 @@
 package io.disquark.rest.webhook;
 
-import io.disquark.rest.resources.Snowflake;
-import io.disquark.rest.resources.webhook.DeleteWebhookMessageUni;
-import io.disquark.rest.resources.webhook.EditWebhookMessageUni;
-import io.disquark.rest.resources.webhook.ExecuteWebhookUni;
-import io.disquark.rest.resources.webhook.GetWebhookMessageUni;
-import io.disquark.rest.resources.webhook.ModifyWebhookWithTokenUni;
-import io.disquark.rest.resources.webhook.Webhook;
+import io.disquark.rest.json.Snowflake;
+import io.disquark.rest.json.webhook.DeleteWebhookMessageUni;
+import io.disquark.rest.json.webhook.EditWebhookMessageUni;
+import io.disquark.rest.json.webhook.ExecuteWebhookUni;
+import io.disquark.rest.json.webhook.GetWebhookMessageUni;
+import io.disquark.rest.json.webhook.ModifyWebhookWithTokenUni;
+import io.disquark.rest.json.webhook.Webhook;
 import io.smallrye.mutiny.Uni;
 
 public interface WebhooksCapable {

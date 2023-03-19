@@ -2,7 +2,7 @@ package io.disquark.it;
 
 import io.disquark.it.config.ConfigValue;
 import io.disquark.rest.oauth2.DiscordOAuth2Client;
-import io.disquark.rest.resources.Snowflake;
+import io.disquark.rest.json.Snowflake;
 import io.disquark.rest.resources.application.command.ApplicationCommand;
 import io.disquark.rest.resources.application.command.CreateGuildApplicationCommand;
 import io.disquark.rest.resources.application.command.EditApplicationCommandPermissions;

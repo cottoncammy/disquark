@@ -16,7 +16,7 @@ import io.disquark.rest.request.Requester;
 import io.disquark.rest.request.RequesterFactory;
 import io.disquark.rest.request.ratelimit.Bucket4jRateLimiter;
 import io.disquark.rest.request.ratelimit.RateLimitStrategy;
-import io.disquark.rest.resources.Snowflake;
+import io.disquark.rest.json.Snowflake;
 import io.disquark.rest.resources.channel.CreateMessage;
 import io.disquark.rest.response.HttpResponse;
 import io.disquark.rest.response.RateLimitException;

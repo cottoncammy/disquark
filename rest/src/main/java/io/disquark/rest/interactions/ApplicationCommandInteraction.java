@@ -2,8 +2,8 @@ package io.disquark.rest.interactions;
 
 import java.util.List;
 
-import io.disquark.rest.resources.interactions.Interaction;
-import io.disquark.rest.resources.interactions.components.Component;
+import io.disquark.rest.json.interaction.Interaction;
+import io.disquark.rest.json.messagecomponent.Component;
 import io.smallrye.mutiny.Uni;
 import io.vertx.mutiny.ext.web.RoutingContext;
 

@@ -3,7 +3,7 @@ package io.disquark.rest;
 import java.time.Instant;
 import java.util.Optional;
 
-import io.disquark.rest.resources.Snowflake;
+import io.disquark.rest.json.Snowflake;
 import io.disquark.rest.resources.interactions.Interaction;
 import io.smallrye.mutiny.Uni;
 import io.vertx.core.http.HttpMethod;

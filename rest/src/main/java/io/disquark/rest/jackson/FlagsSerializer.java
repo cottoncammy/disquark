@@ -14,8 +14,8 @@ import com.fasterxml.jackson.databind.ser.ContextualSerializer;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 
 import io.disquark.nullableoptional.NullableOptional;
-import io.disquark.rest.resources.FlagEnum;
-import io.disquark.rest.resources.permissions.PermissionFlag;
+import io.disquark.rest.json.FlagEnum;
+import io.disquark.rest.json.PermissionFlag;
 
 public class FlagsSerializer extends StdSerializer<EnumSet<? extends FlagEnum>> implements ContextualSerializer {
 

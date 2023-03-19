@@ -1,11 +1,11 @@
 package io.disquark.rest.interactions;
 
 import io.disquark.rest.interactions.dsl.InteractionSchema;
-import io.disquark.rest.resources.Snowflake;
-import io.disquark.rest.resources.channel.message.Message;
-import io.disquark.rest.resources.interactions.CreateFollowupMessageUni;
-import io.disquark.rest.resources.interactions.EditFollowupMessageUni;
-import io.disquark.rest.resources.interactions.EditOriginalInteractionResponseUni;
+import io.disquark.rest.json.Snowflake;
+import io.disquark.rest.json.interaction.CreateFollowupMessageUni;
+import io.disquark.rest.json.interaction.EditFollowupMessageUni;
+import io.disquark.rest.json.interaction.EditOriginalInteractionResponseUni;
+import io.disquark.rest.json.message.Message;
 import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
 

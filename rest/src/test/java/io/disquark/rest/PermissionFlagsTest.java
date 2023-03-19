@@ -11,7 +11,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import io.disquark.rest.resources.permissions.PermissionFlag;
+import io.disquark.rest.json.PermissionFlag;
 import io.vertx.core.json.Json;
 import io.vertx.core.json.jackson.DatabindCodec;
 

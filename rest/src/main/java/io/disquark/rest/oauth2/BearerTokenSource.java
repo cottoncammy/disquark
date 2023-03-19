@@ -7,9 +7,9 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
 
+import io.disquark.rest.json.oauth2.AccessToken;
+import io.disquark.rest.json.oauth2.Scope;
 import io.disquark.rest.request.AccessTokenSource;
-import io.disquark.rest.resources.oauth2.AccessToken;
-import io.disquark.rest.resources.oauth2.Scope;
 import io.smallrye.mutiny.Uni;
 import io.vertx.ext.auth.oauth2.OAuth2FlowType;
 import io.vertx.ext.auth.oauth2.OAuth2Options;

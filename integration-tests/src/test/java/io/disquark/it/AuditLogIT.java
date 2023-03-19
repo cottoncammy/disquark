@@ -2,7 +2,7 @@ package io.disquark.it;
 
 import io.disquark.it.config.ConfigValue;
 import io.disquark.rest.DiscordBotClient;
-import io.disquark.rest.resources.Snowflake;
+import io.disquark.rest.json.Snowflake;
 import io.disquark.rest.resources.auditlog.GetGuildAuditLog;
 import io.smallrye.mutiny.helpers.test.UniAssertSubscriber;
 

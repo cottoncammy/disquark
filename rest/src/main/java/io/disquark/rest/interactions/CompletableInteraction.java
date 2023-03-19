@@ -4,9 +4,9 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.function.Supplier;
 
-import io.disquark.rest.resources.channel.message.Message;
-import io.disquark.rest.resources.interactions.Interaction;
-import io.disquark.rest.resources.interactions.components.Component;
+import io.disquark.rest.json.interaction.Interaction;
+import io.disquark.rest.json.message.Message;
+import io.disquark.rest.json.messagecomponent.Component;
 import io.smallrye.mutiny.Uni;
 import io.vertx.mutiny.ext.web.RoutingContext;
 

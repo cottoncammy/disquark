@@ -1,6 +1,6 @@
 package io.disquark.rest.interactions.dsl;
 
-import io.disquark.rest.resources.application.command.ApplicationCommand;
+import io.disquark.rest.json.command.ApplicationCommand;
 
 public class ApplicationCommandOptionBuilder extends AbstractApplicationCommandOptionBuilder<ApplicationCommandOptionBuilder> {
 

@@ -5,7 +5,7 @@ import java.time.Instant;
 
 import io.disquark.it.config.ConfigValue;
 import io.disquark.rest.DiscordBotClient;
-import io.disquark.rest.resources.Snowflake;
+import io.disquark.rest.json.Snowflake;
 import io.disquark.rest.resources.channel.Channel;
 import io.disquark.rest.resources.guild.scheduledevent.CreateGuildScheduledEvent;
 import io.disquark.rest.resources.guild.scheduledevent.GetGuildScheduledEventUsers;

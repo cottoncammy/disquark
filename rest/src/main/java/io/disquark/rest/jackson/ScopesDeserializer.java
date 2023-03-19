@@ -1,6 +1,6 @@
 package io.disquark.rest.jackson;
 
-import static io.disquark.rest.resources.oauth2.Scope.*;
+import static io.disquark.rest.json.oauth2.Scope.*;
 import static java.util.Objects.requireNonNull;
 
 import java.io.IOException;
@@ -13,7 +13,7 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 
-import io.disquark.rest.resources.oauth2.Scope;
+import io.disquark.rest.json.oauth2.Scope;
 
 public class ScopesDeserializer extends JsonDeserializer<List<Scope>> {
 

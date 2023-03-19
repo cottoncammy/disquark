@@ -9,8 +9,8 @@ import java.util.function.Predicate;
 
 import javax.annotation.Nullable;
 
-import io.disquark.rest.resources.application.command.ApplicationCommand;
-import io.disquark.rest.resources.interactions.ApplicationCommandInteractionDataOption;
+import io.disquark.rest.json.command.ApplicationCommand;
+import io.disquark.rest.json.interaction.ApplicationCommandInteractionDataOption;
 
 public abstract class AbstractApplicationCommandOptionBuilder<O extends AbstractApplicationCommandOptionBuilder<O>>
         implements Predicate<ApplicationCommandInteractionDataOption> {

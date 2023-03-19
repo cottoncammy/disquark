@@ -8,7 +8,7 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 
-import io.disquark.rest.resources.permissions.PermissionFlag;
+import io.disquark.rest.json.PermissionFlag;
 
 public class PermissionFlagsSerializer extends StdSerializer<EnumSet<PermissionFlag>> {
 

@@ -4,8 +4,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-import io.disquark.rest.resources.application.command.ApplicationCommand;
-import io.disquark.rest.resources.interactions.ApplicationCommandInteractionDataOption;
+import io.disquark.rest.json.command.ApplicationCommand;
+import io.disquark.rest.json.interaction.ApplicationCommandInteractionDataOption;
 
 public class ApplicationCommandAutocompleteOptionBuilder
         extends AbstractApplicationCommandOptionBuilder<ApplicationCommandAutocompleteOptionBuilder> {

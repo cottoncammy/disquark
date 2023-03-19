@@ -11,7 +11,7 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.deser.ContextualDeserializer;
 
-import io.disquark.rest.resources.FlagEnum;
+import io.disquark.rest.json.FlagEnum;
 
 public class FlagsDeserializer<E extends Enum<E> & FlagEnum> extends JsonDeserializer<EnumSet<E>>
         implements ContextualDeserializer {

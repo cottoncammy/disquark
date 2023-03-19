@@ -5,15 +5,16 @@ import static java.util.Objects.requireNonNull;
 
 import io.disquark.rest.AuthenticatedDiscordClient;
 import io.disquark.rest.interactions.DiscordInteractionsClient;
+import io.disquark.rest.json.Snowflake;
+import io.disquark.rest.json.command.EditApplicationCommandPermissionsUni;
+import io.disquark.rest.json.member.GuildMember;
+import io.disquark.rest.json.oauth2.Authorization;
+import io.disquark.rest.json.roleconnection.ApplicationRoleConnection;
+import io.disquark.rest.json.roleconnection.UpdateUserApplicationRoleConnectionsUni;
+import io.disquark.rest.json.user.Connection;
 import io.disquark.rest.request.AccessTokenSource;
 import io.disquark.rest.request.EmptyRequest;
 import io.disquark.rest.request.Requester;
-import io.disquark.rest.resources.Snowflake;
-import io.disquark.rest.resources.application.command.EditApplicationCommandPermissionsUni;
-import io.disquark.rest.resources.guild.Guild;
-import io.disquark.rest.resources.oauth2.Authorization;
-import io.disquark.rest.resources.user.UpdateUserApplicationRoleConnectionsUni;
-import io.disquark.rest.resources.user.User;
 import io.disquark.rest.response.Response;
 import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
@@ -60,22 +61,22 @@ public class DiscordOAuth2Client<T extends Response> extends AuthenticatedDiscor
                 () -> new EditApplicationCommandPermissionsUni(requester, applicationId, guildId, commandId));
     }
 
-    public Uni<Guild.Member> getCurrentUserGuildMember(Snowflake guildId) {
+    public Uni<GuildMember> getCurrentUserGuildMember(Snowflake guildId) {
         return deferredUni(() -> requester.request(new EmptyRequest("/users/@me/guilds/{guild.id}/member",
                 variables("guild.id", requireNonNull(guildId, "guildId").getValue()))))
-                .flatMap(res -> res.as(Guild.Member.class));
+                .flatMap(res -> res.as(GuildMember.class));
     }
 
-    public Multi<User.Connection> getUserConnections() {
+    public Multi<Connection> getUserConnections() {
         return requester.request(new EmptyRequest("/users/@me/connections"))
-                .flatMap(res -> res.as(User.Connection[].class))
+                .flatMap(res -> res.as(Connection[].class))
                 .onItem().disjoint();
     }
 
-    public Uni<User.ApplicationRoleConnection> getUserApplicationRoleConnection(Snowflake applicationId) {
+    public Uni<ApplicationRoleConnection> getUserApplicationRoleConnection(Snowflake applicationId) {
         return deferredUni(() -> requester.request(new EmptyRequest("/users/@me/applications/{application.id}/role-connection",
                 variables("application.id", requireNonNull(applicationId, "applicationId").getValue()))))
-                .flatMap(res -> res.as(User.ApplicationRoleConnection.class));
+                .flatMap(res -> res.as(ApplicationRoleConnection.class));
     }
 
     public UpdateUserApplicationRoleConnectionsUni updateUserApplicationRoleConnection(Snowflake applicationId) {

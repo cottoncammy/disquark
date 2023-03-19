@@ -6,7 +6,7 @@ import java.util.EnumSet;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.module.SimpleSerializers;
 
-import io.disquark.rest.resources.FlagEnum;
+import io.disquark.rest.json.FlagEnum;
 
 public class DisQuarkModule extends SimpleModule {
 

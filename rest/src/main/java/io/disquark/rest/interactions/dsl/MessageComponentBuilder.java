@@ -8,8 +8,8 @@ import javax.annotation.Nullable;
 
 import io.disquark.rest.interactions.DiscordInteractionsClient;
 import io.disquark.rest.interactions.MessageComponentInteraction;
-import io.disquark.rest.resources.interactions.Interaction;
-import io.disquark.rest.resources.interactions.components.Component;
+import io.disquark.rest.json.interaction.Interaction;
+import io.disquark.rest.json.messagecomponent.Component;
 import io.vertx.mutiny.ext.web.RoutingContext;
 
 public class MessageComponentBuilder

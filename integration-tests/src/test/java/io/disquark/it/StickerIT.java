@@ -4,7 +4,7 @@ import java.util.Map;
 
 import io.disquark.it.config.ConfigValue;
 import io.disquark.rest.DiscordBotClient;
-import io.disquark.rest.resources.Snowflake;
+import io.disquark.rest.json.Snowflake;
 import io.disquark.rest.resources.sticker.CreateGuildSticker;
 import io.disquark.rest.resources.sticker.ModifyGuildSticker;
 import io.smallrye.mutiny.helpers.test.UniAssertSubscriber;
