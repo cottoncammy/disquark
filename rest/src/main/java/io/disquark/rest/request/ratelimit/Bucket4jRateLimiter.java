@@ -43,19 +43,11 @@ public class Bucket4jRateLimiter extends GlobalRateLimiter {
     }
 
     private String getLogString(boolean app) {
-        if (app) {
-            return "authenticated";
-        }
-
-        return "unauthenticated";
+        return app ? "authenticated" : "unauthenticated";
     }
 
     private Bucket getBucket(boolean app) {
-        if (app) {
-            return appBucket;
-        }
-
-        return ipBucket;
+        return app ? appBucket : ipBucket;
     }
 
     private <T> Uni<T> rateLimit(Uni<T> upstream, boolean app, Context ctx) {
