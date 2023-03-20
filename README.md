@@ -4,15 +4,21 @@
 [![License](https://img.shields.io/github/license/disquark/disquark?style=for-the-badge&logo=mozilla)](https://www.mozilla.org/en-US/MPL/2.0/)
 [![Main branch build](<https://img.shields.io/github/actions/workflow/status/disquark/disquark/ci-main.yml?branch=main&style=for-the-badge&logo=github>)](https://github.com/disquark/disquark/actions/workflows/ci-main.yml)
 
-DisQuark is a reactive library that enables developers to write fast and performant Java applications that leverage Discord's REST API without having to worry about its underlying complexities. Includes support for REST interactions and OAuth2. Written from the ground up for use with the [Quarkus](https://quarkus.io) framework.
+DisQuark is a reactive library that enables developers to write fast and performant JVM applications that leverage Discord's REST API. Includes support for REST interactions and OAuth2. Written from the ground up for use with the [Quarkus](https://quarkus.io) framework using our official [Quarkiverse extension]().
 
 Powered by [Vert.x](https://vertx.io), [SmallRye Mutiny](https://smallrye.io/smallrye-mutiny), and [Immutables](https://immutables.github.io). 
 
 Read our [documentation](https://docs.disquark.io) to learn how to get started and more.
 
+# Kotlin
+
+DisQuark provides an [idiomatic Kotlin API]() for users who prefer Kotlin and will continue to do so for any future modules.
+
 # Status
 
-DisQuark's API should be considered technical preview, but it will be stable [soon]().
+DisQuark's API should be considered technical preview, but it will be stable [soon](). 
+
+DisQuark currently does not support Discord's Gateway or Voice APIs.
 
 # Snapshots
 
