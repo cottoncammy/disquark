@@ -13,9 +13,3 @@ internal fun <T : Response> Requester<T>.requestDeferred(requestable: Requestabl
     Uni.createFrom().deferred(() -> request(requestable.asRequest()))
 
 internal inline fun <reified T> Response.`as`(): Uni<T> = `as`(T::class.java)
-
-@DslMarker
-annotation class FooMarker
-
-@FooMarker
-abstract class Foo

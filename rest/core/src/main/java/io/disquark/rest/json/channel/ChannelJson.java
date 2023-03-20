@@ -7,14 +7,11 @@ import java.util.Optional;
 import java.util.OptionalInt;
 
 import com.fasterxml.jackson.annotation.JsonEnumDefaultValue;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import io.disquark.immutables.ImmutableJson;
-import io.disquark.nullableoptional.NullableOptional;
-import io.disquark.nullableoptional.jackson.NullableOptionalFilter;
 import io.disquark.rest.json.FlagEnum;
 import io.disquark.rest.json.PermissionFlag;
 import io.disquark.rest.json.Snowflake;
@@ -187,16 +184,15 @@ interface ChannelJson {
 
     @ImmutableJson
     @JsonDeserialize(as = Channel.Overwrite.class)
-    @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableOptionalFilter.class)
     interface OverwriteJson {
 
         Snowflake id();
 
         Type type();
 
-        NullableOptional<EnumSet<PermissionFlag>> allow();
+        Optional<EnumSet<PermissionFlag>> allow();
 
-        NullableOptional<EnumSet<PermissionFlag>> deny();
+        Optional<EnumSet<PermissionFlag>> deny();
 
         enum Type {
             @JsonEnumDefaultValue

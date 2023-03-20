@@ -1,4 +1,4 @@
-package io.disquark.rest.json.partial;
+package io.disquark.rest.json.guild;
 
 import java.util.List;
 import java.util.Optional;

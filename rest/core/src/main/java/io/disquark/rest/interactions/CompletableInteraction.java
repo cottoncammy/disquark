@@ -31,7 +31,9 @@ public abstract class CompletableInteraction<T> {
     }
 
     protected Uni<RespondedInteraction<T>> respond(Interaction.MessageCallbackData data) {
-        return Uni.createFrom().deferred(() -> serialize(new Interaction.Response<>(Interaction.CallbackType.CHANNEL_MESSAGE_WITH_SOURCE).withData(data)))
+        return Uni.createFrom()
+                .deferred(() -> serialize(
+                        new Interaction.Response<>(Interaction.CallbackType.CHANNEL_MESSAGE_WITH_SOURCE).withData(data)))
                 .invoke(() -> LOG.debug("Responding to interaction {} with message", interaction.id().getValueAsString()))
                 .replaceWith(new RespondedInteraction<>(interaction, interactionsClient));
     }

@@ -34,7 +34,7 @@ abstract class EditChannelPermissions extends AbstractRequestUni<Void> implement
 
     public abstract NullableOptional<EnumSet<PermissionFlag>> deny();
 
-    public abstract ChannelJson.OverwriteJson.Type type();
+    public abstract Channel.Overwrite.Type type();
 
     @Override
     public void subscribe(UniSubscriber<? super Void> downstream) {

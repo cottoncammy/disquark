@@ -28,6 +28,7 @@ import io.disquark.rest.json.channel.ModifyGuildChannelUni;
 import io.disquark.rest.json.emoji.CreateGuildEmojiUni;
 import io.disquark.rest.json.emoji.Emoji;
 import io.disquark.rest.json.emoji.ModifyGuildEmojiUni;
+import io.disquark.rest.json.forum.ForumThreadMessageParams;
 import io.disquark.rest.json.forum.StartThreadInForumChannelUni;
 import io.disquark.rest.json.guild.BeginGuildPruneUni;
 import io.disquark.rest.json.guild.CreateGuildBanUni;
@@ -387,9 +388,10 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
         return (StartThreadWithoutMessageUni) deferredUni(() -> new StartThreadWithoutMessageUni(requester, channelId, name));
     }
 
-    public StartThreadInForumChannelUni startThreadInForumChannel(Snowflake channelId, String name) {
+    public StartThreadInForumChannelUni startThreadInForumChannel(Snowflake channelId, String name,
+            ForumThreadMessageParams message) {
         return (StartThreadInForumChannelUni) deferredUni(
-                () -> new StartThreadInForumChannelUni(requester, channelId, name, null));
+                () -> new StartThreadInForumChannelUni(requester, channelId, name, message));
     }
 
     public Uni<Void> joinThread(Snowflake channelId) {

@@ -36,7 +36,7 @@ abstract class CreateGuildScheduledEvent extends AbstractRequestUni<GuildSchedul
     public abstract String name();
 
     @JsonProperty("privacy_level")
-    public abstract GuildScheduledEventJson.PrivacyLevel privacyLevel();
+    public abstract GuildScheduledEvent.PrivacyLevel privacyLevel();
 
     @JsonProperty("scheduled_start_time")
     public abstract Instant scheduledStartTime();
@@ -47,7 +47,7 @@ abstract class CreateGuildScheduledEvent extends AbstractRequestUni<GuildSchedul
     public abstract Optional<String> description();
 
     @JsonProperty("entity_type")
-    public abstract GuildScheduledEventJson.EntityType entityType();
+    public abstract GuildScheduledEvent.EntityType entityType();
 
     @Redacted
     @JsonSerialize(contentUsing = ImageDataSerializer.class)

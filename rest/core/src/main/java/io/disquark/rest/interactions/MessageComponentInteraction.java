@@ -34,7 +34,8 @@ public class MessageComponentInteraction extends CompletableInteraction<Interact
     }
 
     public Uni<RespondedInteraction<Interaction.MessageComponentData>> edit(Interaction.MessageCallbackData data) {
-        return Uni.createFrom().deferred(() -> serialize(new Interaction.Response<>(Interaction.CallbackType.UPDATE_MESSAGE).withData(data)))
+        return Uni.createFrom()
+                .deferred(() -> serialize(new Interaction.Response<>(Interaction.CallbackType.UPDATE_MESSAGE).withData(data)))
                 .invoke(() -> LOG.debug("Responding to interaction {} with message edit",
                         interaction.id().getValueAsString()))
                 .replaceWith(new RespondedInteraction<>(interaction, interactionsClient));

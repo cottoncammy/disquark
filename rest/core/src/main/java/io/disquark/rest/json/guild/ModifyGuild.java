@@ -40,13 +40,13 @@ abstract class ModifyGuild extends AbstractRequestUni<Guild> implements Auditabl
     public abstract NullableOptional<String> region();
 
     @JsonProperty("verification_level")
-    public abstract NullableOptional<GuildJson.VerificationLevel> verificationLevel();
+    public abstract NullableOptional<Guild.VerificationLevel> verificationLevel();
 
     @JsonProperty("default_message_notifications")
-    public abstract NullableOptional<GuildJson.DefaultMessageNotificationLevel> defaultMessageNotifications();
+    public abstract NullableOptional<Guild.DefaultMessageNotificationLevel> defaultMessageNotifications();
 
     @JsonProperty("explicit_content_filter")
-    public abstract NullableOptional<GuildJson.ExplicitContentFilterLevel> explicitContentFilter();
+    public abstract NullableOptional<Guild.ExplicitContentFilterLevel> explicitContentFilter();
 
     @JsonProperty("afk_channel_id")
     public abstract NullableOptional<Snowflake> afkChannelId();

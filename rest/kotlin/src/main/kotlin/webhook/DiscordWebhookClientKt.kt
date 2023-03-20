@@ -3,8 +3,12 @@ package io.disquark.rest.kotlin.webhook
 import io.disquark.rest.json.Snowflake
 import io.disquark.rest.json.message.AllowedMentions
 import io.disquark.rest.json.message.Message
+import io.disquark.rest.json.message.MessageEmbed
+import io.disquark.rest.json.messagecomponent.Component
+import io.disquark.rest.json.partial.PartialAttachment
 import io.disquark.rest.json.webhook.ModifyWebhookWithTokenUni
 import io.disquark.rest.json.webhook.Webhook
+import io.disquark.rest.kotlin.json.webhook.ModifyWebhookWithTokenRequest
 import io.disquark.rest.kotlin.nullableoptional.toNullableOptional
 import io.disquark.rest.kotlin.request.RequestKt
 import io.disquark.rest.kotlin.request.`as`
@@ -22,21 +26,6 @@ import java.util.Optional
 suspend fun <T : Response> DiscordWebhookClient<T>.getWebhookWithTokenSuspending(webhookId: Snowflake, webhookToken: String): Webhook =
     getWebhookWithToken(webhookId, webhookToken).awaitSuspending()
 
-class ModifyWebhookWithTokenRequest(
-    override val requester: Requester<*>,
-    private val webhookId: Snowflake,
-    private val webhookToken: String,
-    var name: String? = null,
-    var avatar: Optional<Buffer>? = null,
-): RequestKt() {
-    override fun asRequest(): Request {
-        return ModifyWebhookWithTokenUni(requester, webhookId, webhookToken)
-            .run { name?.let { withName(name) } ?: this }
-            .run { avatar?.let { withAvatar(avatar.toNullableOptional()) } ?: this }
-            .asRequest()
-    }
-}
-
 fun <T : Response> DiscordWebhookClient<T>.modifyWebhookWithToken(webhookId: Snowflake, webhookToken: String, init: (ModifyWebhookWithTokenRequest.() -> Unit)? = null): Uni<Webhook> =
     requester.requestDeferred(ModifyWebhookWithTokenRequest(requester, webhookId, webhookToken)
         .apply { init?.let { init() } })
@@ -47,14 +36,6 @@ suspend fun <T : Response> DiscordWebhookClient<T>.modifyWebhookWithTokenSuspend
 
 suspend fun <T : Response> DiscordWebhookClient<T>.deleteWebhookWithTokenSuspending(webhookId: Snowflake, webhookToken: String): Unit =
     deleteWebhookWithToken(webhookId, webhookToken).replaceWithUnit().awaitSuspending()
-
-class ExecuteWebhookRequest(
-    override val requester: Requester<*>,
-): RequestKt() {
-    override fun asRequest(): Request {
-        TODO("Not yet implemented")
-    }
-}
 
 fun <T : Response> DiscordWebhookClient<T>.executeWebhook(webhookId: Snowflake, webhookToken: String, init: (ExecuteWebhookRequest.() -> Unit)? = null): Uni<Message?> =
     TODO()
@@ -67,20 +48,6 @@ fun <T : Response> DiscordWebhookClient<T>.getWebhookMessage(webhookId: Snowflak
 
 suspend fun <T : Response> DiscordWebhookClient<T>.getWebhookMessageSuspending(webhookId: Snowflake, webhookToken: String, messageId: Snowflake, threadId: Snowflake? = null): Message =
     getWebhookMessage(webhookId, webhookToken, messageId, threadId).awaitSuspending()
-
-class EditWebhookMessageRequest(
-    override val requester: Requester<*>,
-    private val webhookId: Snowflake,
-    private val webhookToken: String,
-    private val messageId: Snowflake,
-    var threadId: Snowflake? = null,
-    var content: String? = null,
-    var allowedMentions: AllowedMentions? = null,
-): RequestKt() {
-    override fun asRequest(): Request {
-        TODO("Not yet implemented")
-    }
-}
 
 fun <T : Response> DiscordWebhookClient<T>.editWebhookMessage(webhookId: Snowflake, webhookToken: String, messageId: Snowflake, init: (EditWebhookMessageRequest.() -> Unit)? = null): Uni<Message> =
     TODO()

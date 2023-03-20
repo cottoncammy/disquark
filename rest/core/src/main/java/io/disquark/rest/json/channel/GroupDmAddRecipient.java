@@ -2,6 +2,8 @@ package io.disquark.rest.json.channel;
 
 import static io.disquark.rest.util.Variables.variables;
 
+import java.util.Optional;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -28,7 +30,7 @@ abstract class GroupDmAddRecipient extends AbstractRequestUni<Void> {
     @JsonProperty("access_token")
     public abstract String accessToken();
 
-    public abstract String nick();
+    public abstract Optional<String> nick();
 
     @Override
     public void subscribe(UniSubscriber<? super Void> downstream) {

@@ -1,6 +1,7 @@
 package io.disquark.rest.json.message;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
@@ -13,14 +14,14 @@ import io.disquark.rest.json.Snowflake;
 @JsonDeserialize(as = AllowedMentions.class)
 interface AllowedMentionsJson {
 
-    List<Type> parse();
+    Optional<List<Type>> parse();
 
-    List<Snowflake> roles();
+    Optional<List<Snowflake>> roles();
 
-    List<Snowflake> users();
+    Optional<List<Snowflake>> users();
 
     @JsonProperty("replied_user")
-    boolean repliedUser();
+    Optional<Boolean> repliedUser();
 
     enum Type {
         ROLE_MENTIONS("roles"),

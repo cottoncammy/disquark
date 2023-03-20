@@ -47,7 +47,7 @@ abstract class CreateGuildApplicationCommand extends AbstractRequestUni<Applicat
     @JsonProperty("default_permission")
     public abstract Optional<Boolean> defaultPermission();
 
-    public abstract Optional<ApplicationCommandJson.Type> type();
+    public abstract Optional<ApplicationCommand.Type> type();
 
     public abstract Optional<Boolean> nsfw();
 

@@ -5,7 +5,6 @@ import java.util.concurrent.Flow;
 
 import io.disquark.immutables.ImmutableMulti;
 import io.disquark.rest.json.Snowflake;
-import io.disquark.rest.json.partial.PartialGuild;
 import io.disquark.rest.request.AbstractRequestMulti;
 import io.disquark.rest.request.Endpoint;
 import io.disquark.rest.request.Request;
@@ -16,7 +15,7 @@ import io.vertx.mutiny.uritemplate.Variables;
 import org.immutables.value.Value.Default;
 
 @ImmutableMulti
-abstract class GetCurrentUserGuilds extends AbstractRequestMulti<PartialGuild> {
+abstract class GetCurrentUserGuilds extends AbstractRequestMulti<CurrentUserGuild> {
 
     public abstract Optional<Snowflake> before();
 
@@ -28,10 +27,10 @@ abstract class GetCurrentUserGuilds extends AbstractRequestMulti<PartialGuild> {
     }
 
     @Override
-    public void subscribe(Flow.Subscriber<? super PartialGuild> downstream) {
+    public void subscribe(Flow.Subscriber<? super CurrentUserGuild> downstream) {
         requester().request(asRequest())
-                .flatMap(res -> res.as(PartialGuild[].class))
-                .onItem().<PartialGuild> disjoint()
+                .flatMap(res -> res.as(CurrentUserGuild[].class))
+                .onItem().<CurrentUserGuild> disjoint()
                 .subscribe().withSubscriber(downstream);
     }
 

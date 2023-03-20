@@ -4,9 +4,13 @@ import java.util.List;
 import java.util.Optional;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.disquark.immutables.ImmutableUni;
+import io.disquark.nullableoptional.NullableOptional;
+import io.disquark.nullableoptional.jackson.NullableOptionalFilter;
 import io.disquark.rest.json.Snowflake;
 import io.disquark.rest.json.message.AllowedMentions;
 import io.disquark.rest.json.message.Message;
@@ -23,6 +27,7 @@ import io.vertx.core.json.JsonObject;
 import io.vertx.mutiny.uritemplate.Variables;
 
 @ImmutableUni
+@JsonInclude(value = Include.CUSTOM, valueFilter = NullableOptionalFilter.class)
 abstract class EditWebhookMessage extends AbstractRequestUni<Message> implements MultipartRequest {
 
     @JsonIgnore
@@ -37,16 +42,16 @@ abstract class EditWebhookMessage extends AbstractRequestUni<Message> implements
     @JsonIgnore
     public abstract Optional<Snowflake> threadId();
 
-    public abstract Optional<String> content();
+    public abstract NullableOptional<String> content();
 
-    public abstract Optional<List<MessageEmbed>> embeds();
+    public abstract NullableOptional<List<MessageEmbed>> embeds();
 
     @JsonProperty("allowed_mentions")
-    public abstract Optional<AllowedMentions> allowedMentions();
+    public abstract NullableOptional<AllowedMentions> allowedMentions();
 
-    public abstract Optional<List<Component>> components();
+    public abstract NullableOptional<List<Component>> components();
 
-    public abstract Optional<List<PartialAttachment>> attachments();
+    public abstract NullableOptional<List<PartialAttachment>> attachments();
 
     @Override
     public void subscribe(UniSubscriber<? super Message> downstream) {

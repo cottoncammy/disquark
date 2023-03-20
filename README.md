@@ -12,13 +12,13 @@ Read our [documentation](https://docs.disquark.io) to learn how to get started a
 
 # Kotlin
 
-DisQuark provides an [idiomatic Kotlin API]() for users who prefer Kotlin and will continue to do so for any future modules.
+DisQuark provides a (WIP) [idiomatic Kotlin API]() for users who prefer to develop their Discord applications in Kotlin.
 
 # Status
 
 DisQuark's API should be considered technical preview, but it will be stable [soon](). 
 
-DisQuark currently does not support Discord's Gateway or Voice APIs.
+DisQuark currently does not support Discord's Gateway or Voice APIs. Interest in the project will determine whether time is invested to develop corresponding modules.
 
 # Snapshots
 

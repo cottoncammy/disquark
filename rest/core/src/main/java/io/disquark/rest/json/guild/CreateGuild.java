@@ -8,15 +8,9 @@ import java.util.OptionalInt;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-import io.disquark.immutables.ImmutableJson;
 import io.disquark.immutables.ImmutableUni;
 import io.disquark.rest.jackson.ImageDataSerializer;
 import io.disquark.rest.json.Snowflake;
-import io.disquark.rest.json.channel.Channel;
-import io.disquark.rest.json.forum.DefaultReaction;
-import io.disquark.rest.json.forum.ForumTag;
-import io.disquark.rest.json.forum.SortOrderType;
-import io.disquark.rest.json.partial.PartialGuildChannel;
 import io.disquark.rest.json.role.Role;
 import io.disquark.rest.request.AbstractRequestUni;
 import io.disquark.rest.request.Endpoint;
@@ -66,51 +60,5 @@ abstract class CreateGuild extends AbstractRequestUni<Guild> {
                 .endpoint(Endpoint.create(HttpMethod.POST, "/guilds"))
                 .body(this)
                 .build();
-    }
-
-    @ImmutableJson
-    interface PartialChannelJson {
-
-        Optional<Snowflake> id();
-
-        String name();
-
-        Optional<Channel.Type> type();
-
-        Optional<String> topic();
-
-        OptionalInt bitrate();
-
-        @JsonProperty("user_limit")
-        OptionalInt userLimit();
-
-        @JsonProperty("rate_limit_per_user")
-        OptionalInt rateLimitPerUser();
-
-        @JsonProperty("permission_overwrites")
-        Optional<List<Channel.Overwrite>> permissionOverwrites();
-
-        @JsonProperty("parent_id")
-        Optional<Snowflake> parentId();
-
-        Optional<Boolean> nsfw();
-
-        @JsonProperty("rtc_region")
-        Optional<String> rtcRegion();
-
-        @JsonProperty("video_quality_mode")
-        Optional<Channel.VideoQualityMode> videoQualityMode();
-
-        @JsonProperty("default_auto_archive_duration")
-        OptionalInt defaultAutoArchiveDuration();
-
-        @JsonProperty("default_reaction_emoji")
-        Optional<DefaultReaction> defaultReactionEmoji();
-
-        @JsonProperty("available_tags")
-        Optional<List<ForumTag>> availableTags();
-
-        @JsonProperty("default_sort_order")
-        Optional<SortOrderType> defaultSortOrder();
     }
 }
