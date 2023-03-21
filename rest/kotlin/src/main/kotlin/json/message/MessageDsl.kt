@@ -1,10 +1,7 @@
 package io.disquark.rest.kotlin.json.message
 
-import io.disquark.rest.json.Snowflake
-import io.disquark.rest.json.message.AllowedMentions
-import io.disquark.rest.json.message.MessageEmbed
-import io.disquark.rest.json.partial.PartialAttachment
 import io.disquark.rest.kotlin.json.messageComponent.ComponentDslEntrypoint
+import io.disquark.rest.kotlin.request.FileUploadDslEntrypoint
 
 // create application command dsl, dsls for json that accepts json (startmessageinforum, modifyguildchannelpositions)
 
@@ -17,7 +14,6 @@ abstract class CreateMessageRequest(
     var embeds: MutableList<MessageEmbed>? = null,
     var allowedMentions: AllowedMentions? = null,
     var attachments: MutableList<PartialAttachment>? = null,
-    var files: MutableList<Any>? = null,
 ): ComponentDslEntrypoint() {
     private val _embeds: MutableList<MessageEmbed>
         get() = embeds ?: mutableListOf()
@@ -25,22 +21,27 @@ abstract class CreateMessageRequest(
     private val _attachments: MutableList<PartialAttachment>
         get() = attachments ?: mutableListOf()
 
-    private val _files: MutableList<Any>
-        get() = files ?: mutableListOf()
+    operator fun MessageEmbed.unaryPlus() {
+        _embeds + this
+    }
 
     fun embed(init: MessageEmbed.() -> Unit) {
-
+        _embeds + MessageEmbed().apply(init)
     }
 
     fun allowedMentions(init: AllowedMentions.() -> Unit) {
-        allowedMentions = AllowedMentions.of().apply(init)
+        allowedMentions = AllowedMentions().apply(init)
     }
 
-    fun attachment(id: Snowflake, init: (PartialAttachment.() -> Unit)? = null) {
-        _attachments + PartialAttachment(id).apply { init?.let{ init() } }
+    operator fun Collection<PartialAttachment>.unaryPlus() {
+        _attachments + this
     }
 
-    fun file() {
+    operator fun PartialAttachment.unaryPlus() {
+        _attachments + this
+    }
+
+    fun file(init: FileUploadDslEntrypoint.() -> Unit) {
 
     }
 }

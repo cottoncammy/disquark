@@ -19,8 +19,6 @@ interface MessageEmbedJson {
 
     Optional<String> title();
 
-    Optional<Message.Type> type();
-
     Optional<String> description();
 
     Optional<String> url();

@@ -2,39 +2,45 @@ package io.disquark.rest.kotlin.json.messageComponent
 
 import io.disquark.rest.json.channel.Channel
 import io.disquark.rest.json.messagecomponent.Component
-import io.disquark.rest.json.messagecomponent.SelectOption
 
 @DslMarker
 annotation class ComponentDslMarker
 
 @ComponentDslMarker
-abstract class ComponentDslEntrypoint(var components: MutableList<Component>? = null) {
-    private val _components: MutableList<Component>
+abstract class ComponentDslEntrypoint(var components: MutableList<out ComponentDsl>? = null) {
+    protected val _components: MutableList<out ComponentDsl>
         get() = components ?: mutableListOf()
 
+    operator fun ComponentDsl.unaryPlus() {
+        _components + this
+    }
+
     fun actionRow(init: ActionRow.() -> Unit) {
-        _components + ActionRow().apply(init).toComponent()
-    }
-
-    fun button(style: ButtonStyle, init: (Button.() -> Unit)? = null) {
-        _components + Button(style).apply{ init?.let { init() } }.toComponent()
-    }
-
-    fun selectMenu(type: SelectMenuType, init: (SelectMenu.() -> Unit)? = null) {
-        _components + SelectMenu(type).apply{ init?.let { init() } }.toComponent()
-    }
-
-    fun textInput(style: TextInputStyle, value: String, init: (TextInput.() -> Unit)? = null) {
-        _components + TextInput(style, value).apply{ init?.let { init() } }.toComponent()
+        _components + ActionRow().apply(init)
     }
 }
 
 sealed interface ComponentDsl {
-    fun toComponent(): Component
+    fun build(): Component
 }
 
 class ActionRow : ComponentDslEntrypoint(), ComponentDsl {
-    override fun toComponent() = Component(Component.Type.ACTION_ROW).withComponents(components)
+    fun button(style: ButtonStyle, init: (Button.() -> Unit)? = null) {
+        _components + Button(style).apply{ init?.let { init() } }
+    }
+
+    fun selectMenu(type: SelectMenuType, init: (SelectMenu.() -> Unit)? = null) {
+        _components + SelectMenu(type).apply{ init?.let { init() } }
+    }
+
+    fun textInput(style: TextInputStyle, value: String, init: (TextInput.() -> Unit)? = null) {
+        _components + TextInput(style, value).apply{ init?.let { init() } }
+    }
+
+    override fun build(): Component {
+        return Component(Component.Type.ACTION_ROW)
+            .run{ components?.let { it -> withComponents(it.map { it.build() }) } ?: this }
+    }
 }
 
 enum class ButtonStyle(val value: Int) {
@@ -53,14 +59,14 @@ class Button(
     var url: String? = null,
     var disabled: Boolean? = null,
 ): ComponentDsl {
-    override fun toComponent(): Component {
+    override fun build(): Component {
         return Component(Component.Type.BUTTON)
             .withStyle(style.value)
-            .run { label?.let { withLabel(label) } ?: this }
-            .run { emoji?.let { withEmoji(emoji.toEmoji()) } ?: this }
-            .run { customId?.let { withCustomId(customId) } ?: this }
-            .run { url?.let { withUrl(url) } ?: this }
-            .run { disabled?.let { withDisabled(disabled) } ?: this }
+            .run { label?.let { withLabel(it) } ?: this }
+            .run { emoji?.let { withEmoji(it.toEmoji()) } ?: this }
+            .run { customId?.let { withCustomId(it) } ?: this }
+            .run { url?.let { withUrl(it) } ?: this }
+            .run { disabled?.let { withDisabled(it) } ?: this }
     }
 }
 
@@ -85,19 +91,23 @@ class SelectMenu(
     private val _options: MutableList<SelectOption>
         get() = options ?: mutableListOf()
 
-    fun option(label: String, value: String, init: MutableSelectOption.() -> Unit) {
-        _options + MutableSelectOption(label, value).apply(init).toImmutable()
+    operator fun SelectOption.unaryPlus() {
+        _options + this
     }
 
-    override fun toComponent(): Component {
+    fun option(label: String, value: String, init: (SelectOption.() -> Unit)? = null) {
+        _options + SelectOption(label, value).apply{ init?.let { init() } }.toImmutable()
+    }
+
+    override fun build(): Component {
         return Component(type.value)
-            .run { customId?.let { withCustomId(customId) } ?: this }
-            .run { options?.let { withOptions(options) } ?: this }
-            .run { channelTypes?.let { withChannelTypes(channelTypes) } ?: this }
-            .run { placeholder?.let { withPlaceholder(placeholder) } ?: this }
-            .run { minValues?.let { withMinValues(minValues) } ?: this }
-            .run { maxValues?.let { withMaxValues(maxValues) } ?: this }
-            .run { disabled?.let { withDisabled(disabled) } ?: this }
+            .run { customId?.let { withCustomId(it) } ?: this }
+            .run { options?.let { withOptions(it) } ?: this }
+            .run { channelTypes?.let { withChannelTypes(it) } ?: this }
+            .run { placeholder?.let { withPlaceholder(it) } ?: this }
+            .run { minValues?.let { withMinValues(it) } ?: this }
+            .run { maxValues?.let { withMaxValues(it) } ?: this }
+            .run { disabled?.let { withDisabled(it) } ?: this }
     }
 }
 
@@ -116,15 +126,15 @@ class TextInput(
     var value: String? = null,
     var placeholder: String? = null,
 ): ComponentDsl {
-    override fun toComponent(): Component {
+    override fun build(): Component {
         return Component(Component.Type.TEXT_INPUT)
             .withStyle(style.value)
             .withLabel(label)
-            .run { customId?.let { withCustomId(customId) } ?: this }
-            .run { minLength?.let { withMinLength(minLength) } ?: this }
-            .run { maxLength?.let { withMaxLength(maxLength) } ?: this }
-            .run { required?.let { withRequired(required) } ?: this }
-            .run { value?.let { withValue(value) } ?: this }
-            .run { placeholder?.let { withPlaceholder(placeholder) } ?: this }
+            .run { customId?.let { withCustomId(it) } ?: this }
+            .run { minLength?.let { withMinLength(it) } ?: this }
+            .run { maxLength?.let { withMaxLength(it) } ?: this }
+            .run { required?.let { withRequired(it) } ?: this }
+            .run { value?.let { withValue(it) } ?: this }
+            .run { placeholder?.let { withPlaceholder(it) } ?: this }
     }
 }

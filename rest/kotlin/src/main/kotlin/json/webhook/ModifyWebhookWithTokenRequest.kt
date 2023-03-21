@@ -18,8 +18,8 @@ class ModifyWebhookWithTokenRequest(
 ): RequestKt() {
     override fun asRequest(): Request {
         return ModifyWebhookWithTokenUni(requester, webhookId, webhookToken)
-            .run { name?.let { withName(name) } ?: this }
-            .run { avatar?.let { withAvatar(avatar.toNullableOptional()) } ?: this }
+            .run { name?.let { withName(it) } ?: this }
+            .run { avatar?.let { withAvatar(it.toNullableOptional()) } ?: this }
             .asRequest()
     }
 }

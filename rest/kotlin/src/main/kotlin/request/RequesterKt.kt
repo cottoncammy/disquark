@@ -10,6 +10,6 @@ abstract class RequestKt: Requestable {
 }
 
 internal fun <T : Response> Requester<T>.requestDeferred(requestable: Requestable): Uni<T> =
-    Uni.createFrom().deferred(() -> request(requestable.asRequest()))
+    Uni.createFrom().deferred { request(requestable.asRequest()) }
 
 internal inline fun <reified T> Response.`as`(): Uni<T> = `as`(T::class.java)

@@ -8,6 +8,8 @@ import io.disquark.rest.json.messagecomponent.Component
 import io.disquark.rest.json.partial.PartialAttachment
 import io.disquark.rest.json.webhook.ModifyWebhookWithTokenUni
 import io.disquark.rest.json.webhook.Webhook
+import io.disquark.rest.kotlin.json.webhook.EditWebhookMessageRequest
+import io.disquark.rest.kotlin.json.webhook.ExecuteWebhookRequest
 import io.disquark.rest.kotlin.json.webhook.ModifyWebhookWithTokenRequest
 import io.disquark.rest.kotlin.nullableoptional.toNullableOptional
 import io.disquark.rest.kotlin.request.RequestKt
@@ -44,7 +46,7 @@ suspend fun <T : Response> DiscordWebhookClient<T>.executeWebhookSuspending(webh
     executeWebhook(webhookId, webhookToken, init).awaitSuspending()
 
 fun <T : Response> DiscordWebhookClient<T>.getWebhookMessage(webhookId: Snowflake, webhookToken: String, messageId: Snowflake, threadId: Snowflake? = null): Uni<Message> =
-    getWebhookMessage(webhookId, webhookToken, messageId).run { threadId?.let { withThreadId(threadId) } ?: this }
+    getWebhookMessage(webhookId, webhookToken, messageId).run { threadId?.let { withThreadId(it) } ?: this }
 
 suspend fun <T : Response> DiscordWebhookClient<T>.getWebhookMessageSuspending(webhookId: Snowflake, webhookToken: String, messageId: Snowflake, threadId: Snowflake? = null): Message =
     getWebhookMessage(webhookId, webhookToken, messageId, threadId).awaitSuspending()
@@ -57,7 +59,7 @@ suspend fun <T : Response> DiscordWebhookClient<T>.editWebhookMessageSuspending(
 
 fun <T : Response> DiscordWebhookClient<T>.deleteWebhookMessage(webhookId: Snowflake, webhookToken: String, messageId: Snowflake, threadId: Snowflake? = null): Uni<Unit> =
     deleteWebhookMessage(webhookId, webhookToken, messageId)
-        .run { threadId?.let { withThreadId(threadId) } ?: this }
+        .run { threadId?.let { withThreadId(it) } ?: this }
         .replaceWithUnit()
 
 suspend fun <T : Response> DiscordWebhookClient<T>.deleteWebhookMessageSuspending(webhookId: Snowflake, webhookToken: String, messageId: Snowflake, threadId: Snowflake? = null): Unit =
