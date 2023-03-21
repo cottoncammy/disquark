@@ -1,55 +1,106 @@
 package io.disquark.rest.kotlin.json.message
 
-import io.disquark.rest.kotlin.json.messageComponent.ComponentDslEntrypoint
-import io.disquark.rest.kotlin.request.FileUploadDslEntrypoint
+import io.disquark.rest.kotlin.json.messageComponent.Component
+import io.disquark.rest.kotlin.json.messageComponent.ComponentDsl
+import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
-// create application command dsl, dsls for json that accepts json (startmessageinforum, modifyguildchannelpositions)
+// TODO create application command dsl, dsls for json that accepts json (startmessageinforum, modifyguildchannelpositions)
+// TODO create file upload dsl
 
 @DslMarker
-annotation class CreateMessageDslMarker
+annotation class MessageDslMarker
 
-@CreateMessageDslMarker
-abstract class CreateMessageRequest(
-    var content: String? = null,
-    var embeds: MutableList<MessageEmbed>? = null,
-    var allowedMentions: AllowedMentions? = null,
-    var attachments: MutableList<PartialAttachment>? = null,
-): ComponentDslEntrypoint() {
-    private val _embeds: MutableList<MessageEmbed>
-        get() = embeds ?: mutableListOf()
+@MessageDslMarker
+sealed class MessageDsl: ComponentDsl() {
+    protected var _content: Optional<String>? = Optional.empty()
+    protected var _embeds: Optional<MutableList<MessageEmbed>>? = Optional.empty()
+    protected var _allowedMentions: Optional<AllowedMentions>? = Optional.empty()
+    protected var _attachments: Optional<MutableList<PartialAttachment>>? = Optional.empty()
 
-    private val _attachments: MutableList<PartialAttachment>
-        get() = attachments ?: mutableListOf()
+    private val embeds: MutableList<MessageEmbed>
+        get() = _embeds?.getOrNull() ?: mutableListOf()
+
+    private val attachments: MutableList<PartialAttachment>
+        get() = _attachments?.getOrNull() ?: mutableListOf()
 
     operator fun MessageEmbed.unaryPlus() {
-        _embeds + this
+        embeds += this
     }
 
     fun embed(init: MessageEmbed.() -> Unit) {
-        _embeds + MessageEmbed().apply(init)
+        embeds += MessageEmbed().apply(init)
     }
 
     fun allowedMentions(init: AllowedMentions.() -> Unit) {
-        allowedMentions = AllowedMentions().apply(init)
-    }
-
-    operator fun Collection<PartialAttachment>.unaryPlus() {
-        _attachments + this
+        _allowedMentions = Optional.ofNullable(AllowedMentions().apply(init))
     }
 
     operator fun PartialAttachment.unaryPlus() {
-        _attachments + this
-    }
-
-    fun file(init: FileUploadDslEntrypoint.() -> Unit) {
-
+        attachments += this
     }
 }
 
-@DslMarker
-annotation class EditMessageDslMarker
+abstract class CreateMessageDsl: MessageDsl() {
+    var content: String?
+        get() = _content?.getOrNull()
+        set(value) {
+            _content = Optional.ofNullable(value)
+        }
 
-@EditMessageDslMarker
-abstract class EditMessageRequest() {
+    var embeds: MutableList<MessageEmbed>?
+        get() = _embeds?.getOrNull()
+        set(value) {
+            _embeds = Optional.ofNullable(value)
+        }
 
+    var allowedMentions: AllowedMentions?
+        get() = _allowedMentions?.getOrNull()
+        set(value) {
+            _allowedMentions = Optional.ofNullable(value)
+        }
+
+    var components: MutableList<Component>?
+        get() = _components?.getOrNull()
+        set(value) {
+            _components = Optional.ofNullable(value)
+        }
+
+    var attachments: MutableList<PartialAttachment>?
+        get() = _attachments?.getOrNull()
+        set(value) {
+            _attachments = Optional.ofNullable(value)
+        }
+}
+
+abstract class EditMessageDsl: MessageDsl() {
+    var content: Optional<String>?
+        get() = _content
+        set(value) {
+            _content = value
+        }
+
+    var embeds: Optional<MutableList<MessageEmbed>>?
+        get() = _embeds
+        set(value) {
+            _embeds = value
+        }
+
+    var allowedMentions: Optional<AllowedMentions>?
+        get() = _allowedMentions
+        set(value) {
+            _allowedMentions = value
+        }
+
+    var components: Optional<MutableList<Component>>?
+        get() = _components
+        set(value) {
+            _components = value
+        }
+
+    var attachments: Optional<MutableList<PartialAttachment>>?
+        get() = _attachments
+        set(value) {
+            _attachments = value
+        }
 }

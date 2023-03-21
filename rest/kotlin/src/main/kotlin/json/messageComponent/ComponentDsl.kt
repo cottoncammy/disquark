@@ -1,45 +1,49 @@
 package io.disquark.rest.kotlin.json.messageComponent
 
 import io.disquark.rest.json.channel.Channel
-import io.disquark.rest.json.messagecomponent.Component
+import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
+import io.disquark.rest.json.messagecomponent.Component as ImmutableComponent
 
 @DslMarker
 annotation class ComponentDslMarker
 
 @ComponentDslMarker
-abstract class ComponentDslEntrypoint(var components: MutableList<out ComponentDsl>? = null) {
-    protected val _components: MutableList<out ComponentDsl>
-        get() = components ?: mutableListOf()
+abstract class ComponentDsl {
+    protected var _components: Optional<MutableList<Component>>? = Optional.empty()
 
-    operator fun ComponentDsl.unaryPlus() {
-        _components + this
+    private val components: MutableList<Component>
+        get() = components?.getOrNull() ?: mutableListOf()
+
+    operator fun Component.unaryPlus() {
+        components += this
     }
 
     fun actionRow(init: ActionRow.() -> Unit) {
-        _components + ActionRow().apply(init)
+        components += ActionRow.apply(init)
     }
 }
 
-sealed interface ComponentDsl {
-    fun build(): Component
+sealed interface Component {
+    fun toImmutable(): ImmutableComponent
 }
 
-class ActionRow : ComponentDslEntrypoint(), ComponentDsl {
+object ActionRow : ComponentDsl(), Component {
     fun button(style: ButtonStyle, init: (Button.() -> Unit)? = null) {
-        _components + Button(style).apply{ init?.let { init() } }
+        +Button(style).apply { init?.let { init() } }
     }
 
     fun selectMenu(type: SelectMenuType, init: (SelectMenu.() -> Unit)? = null) {
-        _components + SelectMenu(type).apply{ init?.let { init() } }
+        +SelectMenu(type).apply { init?.let { init() } }
     }
 
     fun textInput(style: TextInputStyle, value: String, init: (TextInput.() -> Unit)? = null) {
-        _components + TextInput(style, value).apply{ init?.let { init() } }
+        +TextInput(style, value).apply { init?.let { init() } }
     }
 
-    override fun build(): Component {
-        return Component(Component.Type.ACTION_ROW)
-            .run{ components?.let { it -> withComponents(it.map { it.build() }) } ?: this }
+    override fun toImmutable(): ImmutableComponent {
+        return ImmutableComponent(ImmutableComponent.Type.ACTION_ROW)
+            .run { withComponents(components?.getOrNull()?.map { it.build() }) ?: this }
     }
 }
 
@@ -58,9 +62,9 @@ class Button(
     var customId: String? = null,
     var url: String? = null,
     var disabled: Boolean? = null,
-): ComponentDsl {
-    override fun build(): Component {
-        return Component(Component.Type.BUTTON)
+): Component {
+    override fun toImmutable(): ImmutableComponent {
+        return ImmutableComponent(ImmutableComponent.Type.BUTTON)
             .withStyle(style.value)
             .run { label?.let { withLabel(it) } ?: this }
             .run { emoji?.let { withEmoji(it.toEmoji()) } ?: this }
@@ -70,12 +74,12 @@ class Button(
     }
 }
 
-enum class SelectMenuType(val value: Component.Type) {
-    STRING(Component.Type.STRING_SELECT),
-    USER(Component.Type.USER_SELECT),
-    ROLE(Component.Type.STRING_SELECT),
-    MENTIONABLE(Component.Type.STRING_SELECT),
-    CHANNEL(Component.Type.STRING_SELECT),
+enum class SelectMenuType(val value: ImmutableComponent.Type) {
+    STRING(ImmutableComponent.Type.STRING_SELECT),
+    USER(ImmutableComponent.Type.USER_SELECT),
+    ROLE(ImmutableComponent.Type.STRING_SELECT),
+    MENTIONABLE(ImmutableComponent.Type.STRING_SELECT),
+    CHANNEL(ImmutableComponent.Type.STRING_SELECT),
 }
 
 class SelectMenu(
@@ -87,22 +91,22 @@ class SelectMenu(
     var minValues: Int? = null,
     var maxValues: Int? = null,
     var disabled: Boolean? = null,
-): ComponentDsl {
+): Component {
     private val _options: MutableList<SelectOption>
         get() = options ?: mutableListOf()
 
     operator fun SelectOption.unaryPlus() {
-        _options + this
+        _options += this
     }
 
     fun option(label: String, value: String, init: (SelectOption.() -> Unit)? = null) {
-        _options + SelectOption(label, value).apply{ init?.let { init() } }.toImmutable()
+        _options += SelectOption(label, value).apply{ init?.let { init() } }
     }
 
-    override fun build(): Component {
-        return Component(type.value)
+    override fun toImmutable(): ImmutableComponent {
+        return ImmutableComponent(type.value)
             .run { customId?.let { withCustomId(it) } ?: this }
-            .run { options?.let { withOptions(it) } ?: this }
+            .run { options?.let { it -> withOptions(it.map { it.toImmutable() }) } ?: this }
             .run { channelTypes?.let { withChannelTypes(it) } ?: this }
             .run { placeholder?.let { withPlaceholder(it) } ?: this }
             .run { minValues?.let { withMinValues(it) } ?: this }
@@ -125,9 +129,9 @@ class TextInput(
     var required: Boolean? = null,
     var value: String? = null,
     var placeholder: String? = null,
-): ComponentDsl {
-    override fun build(): Component {
-        return Component(Component.Type.TEXT_INPUT)
+): Component {
+    override fun toImmutable(): ImmutableComponent {
+        return ImmutableComponent(ImmutableComponent.Type.TEXT_INPUT)
             .withStyle(style.value)
             .withLabel(label)
             .run { customId?.let { withCustomId(it) } ?: this }

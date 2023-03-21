@@ -11,3 +11,5 @@ fun <T : Any> Optional<T>?.toNullableOptional(): NullableOptional<T> =
     }
 
 fun <T : Any> NullableOptional<T>.getOrNull(): T? = if (isNull) null else toOptional().get()
+
+fun <T : Any> Optional<T>.mapInner()

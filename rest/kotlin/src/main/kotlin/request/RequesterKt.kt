@@ -5,10 +5,6 @@ import io.disquark.rest.request.Requester
 import io.disquark.rest.response.Response
 import io.smallrye.mutiny.Uni
 
-abstract class RequestKt: Requestable {
-    protected abstract val requester: Requester<*>
-}
-
 internal fun <T : Response> Requester<T>.requestDeferred(requestable: Requestable): Uni<T> =
     Uni.createFrom().deferred { request(requestable.asRequest()) }
 

@@ -4,15 +4,11 @@ import io.disquark.rest.json.Snowflake
 import io.disquark.rest.json.member.GuildMember
 import io.disquark.rest.json.oauth2.Authorization
 import io.disquark.rest.json.roleconnection.ApplicationRoleConnection
-import io.disquark.rest.json.roleconnection.UpdateUserApplicationRoleConnectionUni
 import io.disquark.rest.json.user.Connection
 import io.disquark.rest.kotlin.json.roleConnection.UpdateUserApplicationRoleConnectionRequest
-import io.disquark.rest.kotlin.request.RequestKt
 import io.disquark.rest.kotlin.request.`as`
 import io.disquark.rest.kotlin.request.requestDeferred
 import io.disquark.rest.oauth2.DiscordOAuth2Client
-import io.disquark.rest.request.Request
-import io.disquark.rest.request.Requester
 import io.disquark.rest.response.Response
 import io.smallrye.mutiny.Uni
 import io.smallrye.mutiny.coroutines.awaitSuspending
