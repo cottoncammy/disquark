@@ -1,9 +1,6 @@
 package io.disquark.rest.interactions;
 
-import java.util.List;
-
 import io.disquark.rest.json.interaction.Interaction;
-import io.disquark.rest.json.messagecomponent.Component;
 import io.smallrye.mutiny.Uni;
 import io.vertx.mutiny.ext.web.RoutingContext;
 
@@ -17,8 +14,8 @@ public class MessageComponentInteraction extends CompletableInteraction<Interact
     }
 
     @Override
-    public Uni<RespondedInteraction<Interaction.MessageComponentData>> respond(Interaction.MessageCallbackData data) {
-        return super.respond(data);
+    public ResponseCallbackUni<Interaction.MessageComponentData> respond() {
+        return super.respond();
     }
 
     @Override
@@ -26,25 +23,16 @@ public class MessageComponentInteraction extends CompletableInteraction<Interact
         return super.deferResponse(ephemeral);
     }
 
-    public Uni<RespondedInteraction<Interaction.MessageComponentData>> deferEdit() {
-        return serialize(new Interaction.Response<>(Interaction.CallbackType.DEFERRED_UPDATE_MESSAGE))
-                .invoke(() -> LOG.debug("Responding to interaction {} with deferred message edit",
-                        interaction.id().getValueAsString()))
-                .replaceWith(new RespondedInteraction<>(interaction, interactionsClient));
+    public DeferEditCallbackUni deferEdit() {
+        return new DeferEditCallbackUni(context, interaction, interactionsClient);
     }
 
-    // TODO message fields are nullable.
-    public Uni<RespondedInteraction<Interaction.MessageComponentData>> edit(Interaction.MessageCallbackData data) {
-        return Uni.createFrom()
-                .deferred(() -> serialize(new Interaction.Response<>(Interaction.CallbackType.UPDATE_MESSAGE).withData(data)))
-                .invoke(() -> LOG.debug("Responding to interaction {} with message edit",
-                        interaction.id().getValueAsString()))
-                .replaceWith(new RespondedInteraction<>(interaction, interactionsClient));
+    public UpdateMessageCallbackUni edit() {
+        return new UpdateMessageCallbackUni(context, interaction, interactionsClient);
     }
 
     @Override
-    public Uni<RespondedInteraction<Interaction.MessageComponentData>> popUpModal(String customId, String title,
-            List<Component> components) {
-        return super.popUpModal(customId, title, components);
+    public ModalCallbackUni<Interaction.MessageComponentData> popUpModal(String customId, String title) {
+        return super.popUpModal(customId, title);
     }
 }

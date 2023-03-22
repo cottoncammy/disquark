@@ -14,8 +14,8 @@ public class ModalSubmitInteraction extends CompletableInteraction<Interaction.M
     }
 
     @Override
-    public Uni<RespondedInteraction<Interaction.ModalSubmitData>> respond(Interaction.MessageCallbackData data) {
-        return super.respond(data);
+    public ResponseCallbackUni<Interaction.ModalSubmitData> respond() {
+        return super.respond();
     }
 
     @Override

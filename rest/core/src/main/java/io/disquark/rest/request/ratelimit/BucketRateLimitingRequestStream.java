@@ -27,6 +27,7 @@ class BucketRateLimitingRequestStream {
         processor.onNext(request);
     }
 
+    // TODO fix race condition
     public void subscribe() {
         LOG.debug("Subscribing to request stream for buckets matching key {}", bucketKey);
         Uni.createFrom().voidItem()

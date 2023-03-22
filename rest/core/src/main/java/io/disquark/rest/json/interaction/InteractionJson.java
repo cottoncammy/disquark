@@ -18,10 +18,7 @@ import io.disquark.rest.json.Snowflake;
 import io.disquark.rest.json.channel.Channel;
 import io.disquark.rest.json.command.ApplicationCommand;
 import io.disquark.rest.json.member.GuildMember;
-import io.disquark.rest.json.message.AllowedMentions;
 import io.disquark.rest.json.message.Message;
-import io.disquark.rest.json.message.MessageEmbed;
-import io.disquark.rest.json.message.PartialAttachment;
 import io.disquark.rest.json.messagecomponent.Component;
 import io.disquark.rest.json.role.Role;
 import io.disquark.rest.json.thread.ThreadMetadata;
@@ -226,7 +223,6 @@ interface InteractionJson<T> {
     }
 
     @ImmutableJson
-    @JsonDeserialize(as = Interaction.Response.class)
     interface ResponseJson<T> {
 
         CallbackType type();
@@ -256,47 +252,8 @@ interface InteractionJson<T> {
     }
 
     @ImmutableJson
-    @JsonDeserialize(as = Interaction.CallbackData.class)
     interface CallbackDataJson {
 
-        Optional<Boolean> tts();
-
-        Optional<String> content();
-
-        Optional<List<MessageEmbed>> embeds();
-
-        @JsonProperty("allowed_mentions")
-        Optional<AllowedMentions> allowedMentions();
-
         Optional<EnumSet<Message.Flag>> flags();
-
-        Optional<List<Component>> components();
-
-        Optional<List<PartialAttachment>> attachments();
-
-        Optional<List<ApplicationCommand.OptionChoice>> choices();
-
-        @JsonProperty("custom_id")
-        Optional<String> customId();
-
-        Optional<String> title();
-    }
-
-    @ImmutableJson
-    @JsonDeserialize(as = Interaction.CallbackData.class)
-    interface MessageCallbackDataJson {
-
-        Optional<Boolean> tts();
-
-        Optional<String> content();
-
-        Optional<List<MessageEmbed>> embeds();
-
-        @JsonProperty("allowed_mentions")
-        Optional<AllowedMentions> allowedMentions();
-
-        Optional<EnumSet<Message.Flag>> flags();
-
-        Optional<List<Component>> components();
     }
 }

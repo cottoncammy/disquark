@@ -8,6 +8,7 @@ import java.util.Optional;
 import javax.annotation.Nullable;
 
 public class NullableOptional<T> {
+    @Nullable
     private final Optional<T> optional;
 
     public static <T> NullableOptional<T> of(T value) {
