@@ -13,14 +13,14 @@ abstract class ComponentDsl {
     protected var _components: Optional<MutableList<Component>>? = Optional.empty()
 
     private val components: MutableList<Component>
-        get() = components?.getOrNull() ?: mutableListOf()
+        get() = _components?.getOrNull() ?: mutableListOf()
 
     operator fun Component.unaryPlus() {
         components += this
     }
 
     fun actionRow(init: ActionRow.() -> Unit) {
-        components += ActionRow.apply(init)
+        +ActionRow.apply(init)
     }
 }
 
@@ -43,7 +43,7 @@ object ActionRow : ComponentDsl(), Component {
 
     override fun toImmutable(): ImmutableComponent {
         return ImmutableComponent(ImmutableComponent.Type.ACTION_ROW)
-            .run { withComponents(components?.getOrNull()?.map { it.build() }) ?: this }
+            .run { withComponents(_components?.getOrNull()?.map { it.toImmutable() }) ?: this }
     }
 }
 
@@ -67,7 +67,7 @@ class Button(
         return ImmutableComponent(ImmutableComponent.Type.BUTTON)
             .withStyle(style.value)
             .run { label?.let { withLabel(it) } ?: this }
-            .run { emoji?.let { withEmoji(it.toEmoji()) } ?: this }
+            .run { emoji?.let { withEmoji(it.toImmutable()) } ?: this }
             .run { customId?.let { withCustomId(it) } ?: this }
             .run { url?.let { withUrl(it) } ?: this }
             .run { disabled?.let { withDisabled(it) } ?: this }
@@ -100,7 +100,7 @@ class SelectMenu(
     }
 
     fun option(label: String, value: String, init: (SelectOption.() -> Unit)? = null) {
-        _options += SelectOption(label, value).apply{ init?.let { init() } }
+        +SelectOption(label, value).apply{ init?.let { init() } }
     }
 
     override fun toImmutable(): ImmutableComponent {

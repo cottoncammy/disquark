@@ -29,7 +29,7 @@ sealed class MessageDsl: ComponentDsl() {
     }
 
     fun embed(init: MessageEmbed.() -> Unit) {
-        embeds += MessageEmbed().apply(init)
+        +MessageEmbed().apply(init)
     }
 
     fun allowedMentions(init: AllowedMentions.() -> Unit) {

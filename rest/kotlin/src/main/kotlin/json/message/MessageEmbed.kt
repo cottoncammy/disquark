@@ -16,13 +16,13 @@ data class MessageEmbed(
     var fields: MutableList<Field>? = null,
 ) {
     data class Footer(val text: String, var iconUrl: String? = null) {
-        fun toImmutable(): ImmutableMessageEmbed.Footer {
+        internal fun toImmutable(): ImmutableMessageEmbed.Footer {
             return ImmutableMessageEmbed.Footer(text).run { iconUrl?.let { withIconUrl(it) } ?: this }
         }
     }
 
     data class Author(val name: String, var url: String? = null, var iconUrl: String? = null) {
-        fun toImmutable(): ImmutableMessageEmbed.Author {
+        internal fun toImmutable(): ImmutableMessageEmbed.Author {
             return ImmutableMessageEmbed.Author(name)
                 .run { url?.let { withUrl(it) } ?: this }
                 .run { iconUrl?.let { withIconUrl(it) } ?: this }
@@ -30,7 +30,7 @@ data class MessageEmbed(
     }
 
     data class Field(val name: String, val value: String, var inline: Boolean? = null) {
-        fun toImmutable(): ImmutableMessageEmbed.Field {
+        internal fun toImmutable(): ImmutableMessageEmbed.Field {
             return ImmutableMessageEmbed.Field(name, value).run { inline?.let { withInline(it) } ?: this }
         }
     }
@@ -43,10 +43,10 @@ data class MessageEmbed(
     }
 
     fun field(name: String, value: String, inline: Boolean? = null) {
-        _fields + Field(name, value, inline)
+        +Field(name, value, inline)
     }
 
-    fun toImmutable(): ImmutableMessageEmbed {
+    internal fun toImmutable(): ImmutableMessageEmbed {
         return ImmutableMessageEmbed.of()
             .run { title?.let { withTitle(it) } ?: this }
             .run { description?.let { withDescription(it) } ?: this }

@@ -4,7 +4,7 @@ import io.disquark.rest.json.Snowflake
 import io.disquark.rest.json.emoji.Emoji
 
 data class PartialEmoji(val id: Snowflake? = null, val name: String? = null, val animated: Boolean? = null) {
-    fun toEmoji(): Emoji {
+    internal fun toImmutable(): Emoji {
         return Emoji.of()
             .run { id?.let { withId(it) } ?: this }
             .run { name?.let { withName(it) } ?: this }

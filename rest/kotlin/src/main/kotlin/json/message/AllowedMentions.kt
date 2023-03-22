@@ -9,7 +9,7 @@ data class AllowedMentions(
     var users: List<Snowflake>? = null,
     var repliedUser: Boolean? = null,
 ) {
-    fun toImmutable() : ImmutableAllowedMentions {
+    internal fun toImmutable() : ImmutableAllowedMentions {
         return ImmutableAllowedMentions.of()
             .run { parse?.let { withParse(it) } ?: this }
             .run { roles?.let { withRoles(it) } ?: this }

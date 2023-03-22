@@ -9,10 +9,10 @@ data class SelectOption(
     var emoji: PartialEmoji? = null,
     var default: Boolean? = null,
 ) {
-    fun toImmutable(): ImmutableSelectOption {
+    internal fun toImmutable(): ImmutableSelectOption {
         return ImmutableSelectOption(label, value)
             .run { description?.let { withDescription(it) } ?: this }
-            .run { emoji?.let { withEmoji(it.toEmoji()) } ?: this }
+            .run { emoji?.let { withEmoji(it.toImmutable()) } ?: this }
             .run { default?.let { withIsDefault(it) } ?: this }
     }
 }

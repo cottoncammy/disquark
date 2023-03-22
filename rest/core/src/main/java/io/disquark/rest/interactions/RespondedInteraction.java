@@ -21,6 +21,10 @@ public class RespondedInteraction<T> {
         return interaction;
     }
 
+    public DiscordInteractionsClient<?> getInteractionsClient() {
+        return interactionsClient;
+    }
+
     public Uni<Message> getOriginalInteractionResponse() {
         return interactionsClient.getOriginalInteractionResponse(interaction.applicationId(), interaction.token());
     }

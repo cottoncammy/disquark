@@ -22,12 +22,13 @@ suspend fun <T : Response> DiscordOAuth2Client<T>.getUserConnectionsSuspending()
 suspend fun <T : Response> DiscordOAuth2Client<T>.getUserApplicationRoleConnectionSuspending(applicationId: Snowflake): ApplicationRoleConnection =
     getUserApplicationRoleConnection(applicationId).awaitSuspending()
 
-fun <T : Response> DiscordOAuth2Client<T>.updateUserApplicationRoleConnection(applicationId: Snowflake, init: (UpdateUserApplicationRoleConnectionRequest.() -> Unit)? = null): Uni<ApplicationRoleConnection> =
-    requester.requestDeferred(UpdateUserApplicationRoleConnectionRequest(requester, applicationId)
-        .apply { init?.let { init() }})
+fun <T : Response> DiscordOAuth2Client<T>.updateUserApplicationRoleConnection(applicationId: Snowflake, init: UpdateUserApplicationRoleConnectionRequest.() -> Unit): Uni<ApplicationRoleConnection> {
+    return requester.requestDeferred(UpdateUserApplicationRoleConnectionRequest(requester, applicationId)
+        .apply(init))
         .flatMap { it.`as`() }
+}
 
-suspend fun <T : Response> DiscordOAuth2Client<T>.updateUserApplicationRoleConnectionSuspending(applicationId: Snowflake, init: (UpdateUserApplicationRoleConnectionRequest.() -> Unit)? = null): ApplicationRoleConnection =
+suspend fun <T : Response> DiscordOAuth2Client<T>.updateUserApplicationRoleConnectionSuspending(applicationId: Snowflake, init: UpdateUserApplicationRoleConnectionRequest.() -> Unit): ApplicationRoleConnection =
     updateUserApplicationRoleConnection(applicationId, init).awaitSuspending()
 
 suspend fun <T : Response> DiscordOAuth2Client<T>.getCurrentAuthorizationInformationSuspending(): Authorization =
