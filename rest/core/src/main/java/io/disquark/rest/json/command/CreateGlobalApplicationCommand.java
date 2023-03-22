@@ -44,9 +44,6 @@ abstract class CreateGlobalApplicationCommand extends AbstractRequestUni<Applica
     @JsonProperty("dm_permission")
     public abstract Optional<Boolean> dmPermission();
 
-    @JsonProperty("default_permission")
-    public abstract Optional<Boolean> defaultPermission();
-
     public abstract Optional<ApplicationCommand.Type> type();
 
     public abstract Optional<Boolean> nsfw();

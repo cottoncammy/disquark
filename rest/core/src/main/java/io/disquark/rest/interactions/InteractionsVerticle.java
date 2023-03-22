@@ -78,7 +78,7 @@ class InteractionsVerticle extends AbstractVerticle {
         }
 
         return request.resume().body()
-                .ifNoItem().after(Duration.ofSeconds(5)).failWith(
+                .ifNoItem().after(Duration.ofSeconds(3)).failWith(
                         new IllegalArgumentException("No request body received after timeout"))
                 .call(body -> {
                     log(LOG, Level.DEBUG, log -> log.debug("Received incoming request {} from {}:{} with body {}",

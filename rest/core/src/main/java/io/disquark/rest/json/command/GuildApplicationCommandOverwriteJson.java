@@ -38,9 +38,6 @@ interface GuildApplicationCommandOverwriteJson {
     @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableOptionalFilter.class)
     NullableOptional<EnumSet<PermissionFlag>> defaultMemberPermissions();
 
-    @JsonProperty("default_permission")
-    Optional<Boolean> defaultPermission();
-
     Optional<ApplicationCommandJson.Type> type();
 
     Optional<Boolean> nsfw();

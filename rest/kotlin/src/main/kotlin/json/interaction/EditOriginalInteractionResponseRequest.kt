@@ -15,11 +15,11 @@ class EditOriginalInteractionResponseRequest(
 ): EditMessageDsl(), Requestable {
     override fun asRequest(): Request {
         return EditOriginalInteractionResponseUni(requester, applicationId, interactionToken)
-            .run { content?.let { withContent(it.toNullableOptional()) } ?: this }
-            .run { embeds?.let { withContent(it.toNullableOptional()) } ?: this }
-            .run { allowedMentions?.let { withContent(it.toNullableOptional()) } ?: this }
-            .run { components?.let { withContent(it.toNullableOptional()) } ?: this }
-            .run { attachments?.let { withContent(it.toNullableOptional()) } ?: this }
+            .run { withContent(content.toNullableOptional()) }
+            .run { withEmbeds(embeds?.map { it -> it.map { it.toImmutable() } }.toNullableOptional()) }
+            .run { withAllowedMentions(allowedMentions?.map { it.toImmutable() }.toNullableOptional()) }
+            .run { withComponents(components?.map { it -> it.map { it.toImmutable() } }.toNullableOptional()) }
+            .run { withAttachments(attachments?.map { it -> it.map { it.toImmutable() } }.toNullableOptional()) }
             .asRequest()
     }
 }

@@ -1,11 +1,11 @@
 package io.disquark.rest.kotlin.json.message
 
+import io.disquark.rest.json.Snowflake
 import io.disquark.rest.kotlin.json.messageComponent.Component
 import io.disquark.rest.kotlin.json.messageComponent.ComponentDsl
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-// TODO create application command dsl, dsls for json that accepts json (startmessageinforum, modifyguildchannelpositions)
 // TODO create file upload dsl
 
 @DslMarker

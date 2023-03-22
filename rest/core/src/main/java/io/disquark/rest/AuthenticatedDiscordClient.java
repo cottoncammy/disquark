@@ -189,7 +189,7 @@ public abstract class AuthenticatedDiscordClient<T extends Response> extends Dis
 
     protected abstract DiscordInteractionsClient<T> buildInteractionsClient();
 
-    private DiscordInteractionsClient<T> getInteractionsClient() {
+    public DiscordInteractionsClient<T> getInteractionsClient() {
         if (interactionsClient == null) {
             synchronized (this) {
                 if (interactionsClient == null) {
@@ -257,7 +257,7 @@ public abstract class AuthenticatedDiscordClient<T extends Response> extends Dis
         return requester;
     }
 
-    private DiscordWebhookClient<T> getWebhookClient() {
+    public DiscordWebhookClient<T> getWebhookClient() {
         if (webhookClient == null) {
             synchronized (this) {
                 if (webhookClient == null) {

@@ -54,9 +54,6 @@ abstract class EditGlobalApplicationCommand extends AbstractRequestUni<Applicati
     @JsonProperty("dm_permission")
     public abstract Optional<Boolean> dmPermission();
 
-    @JsonProperty("default_permission")
-    public abstract Optional<Boolean> defaultPermission();
-
     public abstract Optional<Boolean> nsfw();
 
     @Override

@@ -11,8 +11,8 @@ import io.disquark.rest.json.Snowflake;
 import io.disquark.rest.json.message.AllowedMentions;
 import io.disquark.rest.json.message.Message;
 import io.disquark.rest.json.message.MessageEmbed;
+import io.disquark.rest.json.message.PartialAttachment;
 import io.disquark.rest.json.messagecomponent.Component;
-import io.disquark.rest.json.partial.PartialAttachment;
 
 @ImmutableJson
 interface ForumThreadMessageParamsJson {

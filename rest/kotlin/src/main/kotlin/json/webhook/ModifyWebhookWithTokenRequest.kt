@@ -14,7 +14,7 @@ class ModifyWebhookWithTokenRequest(
     private val webhookId: Snowflake,
     private val webhookToken: String,
     var name: String? = null,
-    var avatar: Optional<Buffer>? = null,
+    var avatar: Optional<Buffer>? = Optional.empty(),
 ): Requestable {
     override fun asRequest(): Request {
         return ModifyWebhookWithTokenUni(requester, webhookId, webhookToken)

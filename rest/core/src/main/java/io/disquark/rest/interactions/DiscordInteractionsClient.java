@@ -89,8 +89,8 @@ public class DiscordInteractionsClient<T extends Response> extends DiscordClient
 
     @Override
     public Uni<Message> getOriginalInteractionResponse(Snowflake applicationId, String interactionToken) {
-        return requester
-                .request(new EmptyRequest("/webhooks/{application.id}/{interaction.token}/messages/@original", false,
+        return requester.request(new EmptyRequest(
+                "/webhooks/{application.id}/{interaction.token}/messages/@original", false,
                         variables("application.id", requireNonNull(applicationId, "applicationId").getValue(),
                                 "interaction.token", requireNonNull(interactionToken, "interactionToken"))))
                 .flatMap(res -> res.as(Message.class));
@@ -105,8 +105,7 @@ public class DiscordInteractionsClient<T extends Response> extends DiscordClient
 
     @Override
     public Uni<Void> deleteOriginalInteractionResponse(Snowflake applicationId, String interactionToken) {
-        return requester
-                .request(new EmptyRequest(HttpMethod.DELETE,
+        return requester.request(new EmptyRequest(HttpMethod.DELETE,
                         "/webhooks/{application.id}/{interaction.token}/messages/@original", false,
                         variables("application.id", requireNonNull(applicationId, "applicationId").getValue(),
                                 "interaction.token", requireNonNull(interactionToken, "interactionToken"))))
@@ -121,8 +120,8 @@ public class DiscordInteractionsClient<T extends Response> extends DiscordClient
 
     @Override
     public Uni<Message> getFollowupMessage(Snowflake applicationId, String interactionToken, Snowflake messageId) {
-        return requester
-                .request(new EmptyRequest("/webhooks/{application.id}/{interaction.token}/messages/{message.id}", false,
+        return requester.request(new EmptyRequest(
+                "/webhooks/{application.id}/{interaction.token}/messages/{message.id}", false,
                         variables("application.id", requireNonNull(applicationId, "applicationId").getValue(),
                                 "interaction.token", requireNonNull(interactionToken, "interactionToken"), "message.id",
                                 requireNonNull(messageId, "messageId").getValue())))
@@ -137,8 +136,7 @@ public class DiscordInteractionsClient<T extends Response> extends DiscordClient
 
     @Override
     public Uni<Void> deleteFollowupMessage(Snowflake applicationId, String interactionToken, Snowflake messageId) {
-        return requester
-                .request(new EmptyRequest(HttpMethod.DELETE,
+        return requester.request(new EmptyRequest(HttpMethod.DELETE,
                         "/webhooks/{application.id}/{interaction.token}/messages/{message.id}", false,
                         variables("application.id", requireNonNull(applicationId, "applicationId").getValue(),
                                 "interaction.token", requireNonNull(interactionToken, "interactionToken"), "message.id",

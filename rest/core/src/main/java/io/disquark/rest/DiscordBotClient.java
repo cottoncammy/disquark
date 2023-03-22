@@ -36,6 +36,7 @@ import io.disquark.rest.json.guild.CreateGuildUni;
 import io.disquark.rest.json.guild.GetGuildBansMulti;
 import io.disquark.rest.json.guild.GetGuildPruneCountUni;
 import io.disquark.rest.json.guild.Guild;
+import io.disquark.rest.json.guild.GuildVanityUrl;
 import io.disquark.rest.json.guild.GuildWidget;
 import io.disquark.rest.json.guild.Integration;
 import io.disquark.rest.json.guild.ModifyGuildMfaLevelUni;
@@ -64,7 +65,6 @@ import io.disquark.rest.json.message.GetReactionsMulti;
 import io.disquark.rest.json.message.Message;
 import io.disquark.rest.json.oauth2.AccessToken;
 import io.disquark.rest.json.oauth2.TokenType;
-import io.disquark.rest.json.partial.GuildVanityUrl;
 import io.disquark.rest.json.role.CreateGuildRoleUni;
 import io.disquark.rest.json.role.ModifyGuildRolePositionsMulti;
 import io.disquark.rest.json.role.ModifyGuildRoleUni;
@@ -234,8 +234,8 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public Uni<Message> crosspostMessage(Snowflake channelId, Snowflake messageId) {
-        return deferredUni(() -> requester
-                .request(new EmptyRequest(HttpMethod.POST, "/channels/{channel.id}/messages/{message.id}/crosspost",
+        return deferredUni(() -> requester.request(new EmptyRequest(HttpMethod.POST,
+                "/channels/{channel.id}/messages/{message.id}/crosspost",
                         variables("channel.id", requireNonNull(channelId, "channelId").getValue(),
                                 "message.id", requireNonNull(messageId, "messageId").getValue()))))
                 .flatMap(res -> res.as(Message.class));
@@ -359,21 +359,22 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public Uni<Void> unpinMessage(Snowflake channelId, Snowflake messageId, @Nullable String auditLogReason) {
-        return deferredUni(
-                () -> requester.request(new EmptyRequest(HttpMethod.DELETE, "/channels/{channel.id}/pins/{message.id}",
+        return deferredUni(() -> requester.request(new EmptyRequest(HttpMethod.DELETE,
+                "/channels/{channel.id}/pins/{message.id}",
                         variables("channel.id", requireNonNull(channelId, "channelId").getValue(),
                                 "message.id", requireNonNull(messageId, "messageId").getValue()),
                         auditLogReason)))
                 .replaceWithVoid();
     }
 
-    public Uni<Void> groupDmAddRecipient(Snowflake channelId, Snowflake userId, String accessToken, String nick) {
-        return deferredUni(() -> new GroupDmAddRecipientUni(requester, channelId, userId, accessToken, nick));
+    public GroupDmAddRecipientUni groupDmAddRecipient(Snowflake channelId, Snowflake userId, String accessToken) {
+        return (GroupDmAddRecipientUni) deferredUni(
+                () -> new GroupDmAddRecipientUni(requester, channelId, userId, accessToken));
     }
 
     public Uni<Void> groupDmRemoveRecipient(Snowflake channelId, Snowflake userId) {
-        return deferredUni(
-                () -> requester.request(new EmptyRequest(HttpMethod.DELETE, "/channels/{channel.id}/recipients/users/{user.id}",
+        return deferredUni(() -> requester.request(new EmptyRequest(HttpMethod.DELETE,
+                "/channels/{channel.id}/recipients/users/{user.id}",
                         variables("channel.id", requireNonNull(channelId, "channelId").getValue(),
                                 "user.id", requireNonNull(userId, "userId").getValue()))))
                 .replaceWithVoid();
@@ -783,8 +784,8 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public Uni<GuildTemplate> syncGuildTemplate(Snowflake guildId, String templateCode) {
-        return deferredUni(
-                () -> requester.request(new EmptyRequest(HttpMethod.PUT, "/guilds/{guild.id}/templates/{template.code}",
+        return deferredUni(() -> requester.request(new EmptyRequest(HttpMethod.PUT,
+                "/guilds/{guild.id}/templates/{template.code}",
                         variables("guild.id", requireNonNull(guildId, "guildId").getValue(),
                                 "template.code", requireNonNull(templateCode, "templateCode")))))
                 .flatMap(res -> res.as(GuildTemplate.class));
@@ -795,8 +796,8 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public Uni<Void> deleteGuildTemplate(Snowflake guildId, String templateCode) {
-        return deferredUni(
-                () -> requester.request(new EmptyRequest(HttpMethod.DELETE, "/guilds/{guild.id}/templates/{template.code}",
+        return deferredUni(() -> requester.request(new EmptyRequest(HttpMethod.DELETE,
+                "/guilds/{guild.id}/templates/{template.code}",
                         variables("guild.id", requireNonNull(guildId, "guildId").getValue(),
                                 "template.code", requireNonNull(templateCode, "templateCode")))))
                 .replaceWithVoid();
@@ -869,8 +870,8 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public Uni<Void> deleteGuildSticker(Snowflake guildId, Snowflake stickerId, @Nullable String auditLogReason) {
-        return deferredUni(
-                () -> requester.request(new EmptyRequest(HttpMethod.DELETE, "/guilds/{guild.id}/stickers/{sticker.id}",
+        return deferredUni(() -> requester.request(new EmptyRequest(HttpMethod.DELETE,
+                "/guilds/{guild.id}/stickers/{sticker.id}",
                         variables("guild.id", requireNonNull(guildId, "guildId").getValue(),
                                 "sticker.id", requireNonNull(stickerId, "stickerId").getValue()),
                         auditLogReason)))

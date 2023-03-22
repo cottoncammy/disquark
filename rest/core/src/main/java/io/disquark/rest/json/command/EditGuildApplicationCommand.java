@@ -54,9 +54,6 @@ abstract class EditGuildApplicationCommand extends AbstractRequestUni<Applicatio
     @JsonInclude(value = Include.CUSTOM, valueFilter = NullableOptionalFilter.class)
     public abstract NullableOptional<EnumSet<PermissionFlag>> defaultMemberPermissions();
 
-    @JsonProperty("default_permission")
-    public abstract Optional<Boolean> defaultPermission();
-
     public abstract Optional<Boolean> nsfw();
 
     @Override

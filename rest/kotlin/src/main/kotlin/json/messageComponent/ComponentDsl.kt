@@ -24,21 +24,22 @@ abstract class ComponentDsl {
     }
 }
 
+// TODO make this internal
 sealed interface Component {
     fun toImmutable(): ImmutableComponent
 }
 
 object ActionRow : ComponentDsl(), Component {
-    fun button(style: ButtonStyle, init: (Button.() -> Unit)? = null) {
-        +Button(style).apply { init?.let { init() } }
+    fun button(style: ButtonStyle, init: Button.() -> Unit) {
+        +Button(style).apply(init)
     }
 
-    fun selectMenu(type: SelectMenuType, init: (SelectMenu.() -> Unit)? = null) {
-        +SelectMenu(type).apply { init?.let { init() } }
+    fun selectMenu(type: SelectMenuType, customId: String, init: SelectMenu.() -> Unit) {
+        +SelectMenu(type, customId).apply(init)
     }
 
-    fun textInput(style: TextInputStyle, value: String, init: (TextInput.() -> Unit)? = null) {
-        +TextInput(style, value).apply { init?.let { init() } }
+    fun textInput(style: TextInputStyle, customId: String, label: String, init: TextInput.() -> Unit) {
+        +TextInput(style, customId, label).apply(init)
     }
 
     override fun toImmutable(): ImmutableComponent {
@@ -84,7 +85,7 @@ enum class SelectMenuType(val value: ImmutableComponent.Type) {
 
 class SelectMenu(
     val type: SelectMenuType,
-    var customId: String? = null,
+    var customId: String,
     var options: MutableList<SelectOption>? = null,
     var channelTypes: MutableSet<Channel.Type>? = null,
     var placeholder: String? = null,
@@ -105,7 +106,7 @@ class SelectMenu(
 
     override fun toImmutable(): ImmutableComponent {
         return ImmutableComponent(type.value)
-            .run { customId?.let { withCustomId(it) } ?: this }
+            .withCustomId(customId)
             .run { options?.let { it -> withOptions(it.map { it.toImmutable() }) } ?: this }
             .run { channelTypes?.let { withChannelTypes(it) } ?: this }
             .run { placeholder?.let { withPlaceholder(it) } ?: this }
@@ -122,8 +123,8 @@ enum class TextInputStyle(val value: Int) {
 
 class TextInput(
     val style: TextInputStyle,
+    var customId: String,
     val label: String,
-    var customId: String? = null,
     var minLength: Int? = null,
     var maxLength: Int? = null,
     var required: Boolean? = null,
@@ -133,8 +134,8 @@ class TextInput(
     override fun toImmutable(): ImmutableComponent {
         return ImmutableComponent(ImmutableComponent.Type.TEXT_INPUT)
             .withStyle(style.value)
+            .withCustomId(customId)
             .withLabel(label)
-            .run { customId?.let { withCustomId(it) } ?: this }
             .run { minLength?.let { withMinLength(it) } ?: this }
             .run { maxLength?.let { withMaxLength(it) } ?: this }
             .run { required?.let { withRequired(it) } ?: this }

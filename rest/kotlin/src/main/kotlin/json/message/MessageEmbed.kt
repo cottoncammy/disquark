@@ -42,10 +42,6 @@ data class MessageEmbed(
         _fields + this
     }
 
-    fun field(name: String, value: String, inline: Boolean? = null) {
-        +Field(name, value, inline)
-    }
-
     internal fun toImmutable(): ImmutableMessageEmbed {
         return ImmutableMessageEmbed.of()
             .run { title?.let { withTitle(it) } ?: this }

@@ -4,13 +4,22 @@ import io.disquark.rest.interactions.ApplicationCommandInteraction
 import io.disquark.rest.interactions.RespondedInteraction
 import io.disquark.rest.json.interaction.Interaction
 import io.disquark.rest.json.messagecomponent.Component
+import io.smallrye.mutiny.Uni
 import io.smallrye.mutiny.coroutines.awaitSuspending
 
-suspend fun ApplicationCommandInteraction.respondSuspending(data: Interaction.MessageCallbackData): RespondedInteraction<Interaction.ApplicationCommandData> =
-    respond(data).awaitSuspending()
+fun ApplicationCommandInteraction.respond(init: Any.() -> Unit): Uni<RespondedInteraction<Interaction.ApplicationCommandData>> {
+    TODO()
+}
+
+suspend fun ApplicationCommandInteraction.respondSuspending(init: Any.() -> Unit): RespondedInteraction<Interaction.ApplicationCommandData> =
+    respond(init).awaitSuspending()
 
 suspend fun ApplicationCommandInteraction.deferResponseSuspending(ephemeral: Boolean): RespondedInteraction<Interaction.ApplicationCommandData> =
     deferResponse(ephemeral).awaitSuspending()
 
-suspend fun ApplicationCommandInteraction.popupModalSuspending(customId: String, title: String, components: List<Component>): RespondedInteraction<Interaction.ApplicationCommandData> =
-    popUpModal(customId, title, components).awaitSuspending()
+fun ApplicationCommandInteraction.popupModal(init: Any.() -> Unit): Uni<RespondedInteraction<Interaction.ApplicationCommandData>> {
+    TODO()
+}
+
+suspend fun ApplicationCommandInteraction.popupModalSuspending(init: Any.() -> Unit): RespondedInteraction<Interaction.ApplicationCommandData> =
+    popUpModal(init).awaitSuspending()

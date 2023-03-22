@@ -33,6 +33,7 @@ public class MessageComponentInteraction extends CompletableInteraction<Interact
                 .replaceWith(new RespondedInteraction<>(interaction, interactionsClient));
     }
 
+    // TODO message fields are nullable.
     public Uni<RespondedInteraction<Interaction.MessageComponentData>> edit(Interaction.MessageCallbackData data) {
         return Uni.createFrom()
                 .deferred(() -> serialize(new Interaction.Response<>(Interaction.CallbackType.UPDATE_MESSAGE).withData(data)))

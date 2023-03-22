@@ -12,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.disquark.immutables.ImmutableUni;
 import io.disquark.rest.json.Snowflake;
 import io.disquark.rest.json.messagecomponent.Component;
-import io.disquark.rest.json.partial.PartialAttachment;
 import io.disquark.rest.request.AbstractRequestUni;
 import io.disquark.rest.request.Endpoint;
 import io.disquark.rest.request.MultipartRequest;

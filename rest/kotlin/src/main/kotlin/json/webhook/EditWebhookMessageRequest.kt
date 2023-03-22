@@ -18,7 +18,7 @@ class EditWebhookMessageRequest(
     override fun asRequest(): Request {
         return EditWebhookMessageUni(requester, webhookId, webhookToken, messageId)
             .run { threadId?.let { withThreadId(it) } ?: this }
-            .run { content?.let { withContent(it.toNullableOptional()) } ?: this }
+            .run { withContent(content.toNullableOptional()) }
             .run { withEmbeds(embeds?.map { it -> it.map { it.toImmutable() } }.toNullableOptional()) }
             .run { withAllowedMentions(allowedMentions?.map { it.toImmutable() }.toNullableOptional()) }
             .run { withComponents(components?.map { it -> it.map { it.toImmutable() } }.toNullableOptional()) }

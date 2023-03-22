@@ -15,7 +15,6 @@ import io.disquark.nullableoptional.NullableOptional;
 import io.disquark.nullableoptional.jackson.NullableOptionalFilter;
 import io.disquark.rest.json.Snowflake;
 import io.disquark.rest.json.messagecomponent.Component;
-import io.disquark.rest.json.partial.PartialAttachment;
 import io.disquark.rest.request.AbstractRequestUni;
 import io.disquark.rest.request.Endpoint;
 import io.disquark.rest.request.MultipartRequest;
