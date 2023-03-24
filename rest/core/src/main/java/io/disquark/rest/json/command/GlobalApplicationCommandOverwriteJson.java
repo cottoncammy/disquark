@@ -26,7 +26,7 @@ interface GlobalApplicationCommandOverwriteJson {
     @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableOptionalFilter.class)
     NullableOptional<Map<Locale, String>> nameLocalizations();
 
-    Optional<String> description();
+    String description();
 
     @JsonProperty("description_localizations")
     @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableOptionalFilter.class)
@@ -38,7 +38,7 @@ interface GlobalApplicationCommandOverwriteJson {
     @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableOptionalFilter.class)
     NullableOptional<EnumSet<PermissionFlag>> defaultMemberPermissions();
 
-    Optional<ApplicationCommandJson.Type> type();
+    Optional<ApplicationCommand.Type> type();
 
     Optional<Boolean> nsfw();
 

@@ -2,11 +2,11 @@ package io.disquark.rest.kotlin.json.command
 
 import io.disquark.rest.json.Locale
 import io.disquark.rest.json.PermissionFlag
+import io.disquark.rest.json.Snowflake
 import io.disquark.rest.json.command.ApplicationCommand
+import io.disquark.rest.request.Requester
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
-
-// TODO message flags unary plus
 
 @DslMarker
 annotation class ApplicationCommandDslMarker
@@ -59,8 +59,15 @@ interface ApplicationCommandOptionsDsl {
     }
 }
 
-sealed class CreateApplicationCommand(val name: String): ApplicationCommandDsl() {
-    protected abstract var type: ApplicationCommand.Type?
+sealed class CreateApplicationCommand(
+    private val requester: Requester<*>,
+    private val applicationId: Snowflake,
+    protected val name: String,
+): ApplicationCommandDsl() {
+    protected abstract val type: ApplicationCommand.Type?
+
+    protected open val _guildId: Snowflake? = null
+    protected open var dmPermission: Boolean? = null
 
     var nameLocalizations: MutableMap<Locale, String>?
         get() = _nameLocalizations?.getOrNull()
@@ -75,13 +82,99 @@ sealed class CreateApplicationCommand(val name: String): ApplicationCommandDsl()
         }
 }
 
-sealed class CreateApplicationCommandWithOptions(name: String): CreateApplicationCommand(name), ApplicationCommandOptionsDsl {
+sealed class CreateApplicationCommandWithOptions(requester: Requester<*>, applicationId: Snowflake, name: String):
+    CreateApplicationCommand(requester, applicationId, name), ApplicationCommandOptionsDsl {
+
+    override var options: MutableList<ApplicationCommandOption>? = null
 }
 
-interface EditApplicationCommandDsl {
+sealed class CreateChatInputCommand(requester: Requester<*>, applicationId: Snowflake, name: String):
+    CreateApplicationCommandWithOptions(requester, applicationId, name) {
+
+    override val type: ApplicationCommand.Type? = ApplicationCommand.Type.CHAT_INPUT
+}
+
+sealed class CreateUserCommand(requester: Requester<*>, applicationId: Snowflake, name: String):
+    CreateApplicationCommand(requester, applicationId, name) {
+
+    override val type: ApplicationCommand.Type? = ApplicationCommand.Type.USER
+}
+
+sealed class CreateMessageCommand(requester: Requester<*>, applicationId: Snowflake, name: String):
+    CreateApplicationCommand(requester, applicationId, name) {
+
+    override val type: ApplicationCommand.Type? = ApplicationCommand.Type.MESSAGE
+}
+
+class CreateGlobalChatInputCommand(requester: Requester<*>, applicationId: Snowflake, name: String): CreateChatInputCommand(requester, applicationId, name) {
+    public override var dmPermission: Boolean? = null
+}
+
+class CreateGlobalUserCommand(requester: Requester<*>, applicationId: Snowflake, name: String): CreateUserCommand(requester, applicationId, name) {
+    public override var dmPermission: Boolean? = null
+}
+
+class CreateGlobalMessageCommand(requester: Requester<*>, applicationId: Snowflake, name: String): CreateMessageCommand(requester, applicationId, name) {
+    public override var dmPermission: Boolean? = null
+}
+
+class CreateGuildChatInputCommand(requester: Requester<*>, applicationId: Snowflake, private val guildId: Snowflake, name: String): CreateChatInputCommand(requester, applicationId, name) {
+    override val _guildId: Snowflake?
+        get() = guildId
+}
+
+class CreateGuildUserCommand(requester: Requester<*>, applicationId: Snowflake, private val guildId: Snowflake, name: String): CreateUserCommand(requester, applicationId, name) {
+    override val _guildId: Snowflake?
+        get() = guildId
+}
+
+class CreateGuildMessageCommand(requester: Requester<*>, applicationId: Snowflake, private val guildId: Snowflake?, name: String): CreateMessageCommand(requester, applicationId, name) {
+    override val _guildId: Snowflake?
+        get() = guildId
+}
+
+sealed class EditApplicationCommandDsl(
+    private val requester: Requester<*>,
+    private val applicationId: Snowflake,
+    private val commandId: Snowflake,
+): ApplicationCommandDsl(), ApplicationCommandOptionsDsl {
+    protected open val _guildId: Snowflake? = null
+    protected open var dmPermission: Boolean? = null
+
+    override var options: MutableList<ApplicationCommandOption>? = null
+
     var name: String? = null
+
+    var nameLocalizations: Optional<MutableMap<Locale, String>>?
+        get() = _nameLocalizations
+        set(value) {
+            _nameLocalizations = nameLocalizations
+        }
+
+    var descriptionLocalizations: Optional<MutableMap<Locale, String>>?
+        get() = _descriptionLocalizations
+        set(value) {
+            _descriptionLocalizations = descriptionLocalizations
+        }
 }
 
-class OverwriteApplicationCommandDsl {
-    val name: String
+class EditGlobalApplicationCommand(requester: Requester<*>, applicationId: Snowflake, commandId: Snowflake):
+    EditApplicationCommandDsl(requester, applicationId, commandId) {
+
+    public override var dmPermission: Boolean? = null
+}
+
+class EditGuildApplicationCommand(requester: Requester<*>, applicationId: Snowflake, private val guildId: Snowflake, commandId: Snowflake):
+    EditApplicationCommandDsl(requester, applicationId, commandId) {
+
+    override val _guildId: Snowflake?
+        get() = guildId
+}
+
+sealed class BulkOverwriteApplicationCommandDsl(private val requester: Requester<*>, private val applicationId: Snowflake) {
+    protected abstract val _guildId: Snowflake?
+
+    var _commandOverwrites = MutableList<>
+
+    private fun
 }
