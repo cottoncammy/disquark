@@ -1,6 +1,5 @@
 package io.disquark.rest.kotlin.json.message
 
-import io.disquark.rest.json.Snowflake
 import io.disquark.rest.kotlin.json.messageComponent.Component
 import io.disquark.rest.kotlin.json.messageComponent.ComponentDsl
 import java.util.Optional

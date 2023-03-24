@@ -16,6 +16,7 @@ class MultipartCodec implements Codec {
         form.binaryFileUpload(paramName, file.getKey(), file.getValue(), Tika.detect(file.getValue().getBytes()));
     }
 
+    // TODO account for partialAttachmentIds
     @Override
     public Body serialize(Request request, MultiMap headers) {
         MultipartForm form = MultipartForm.create();

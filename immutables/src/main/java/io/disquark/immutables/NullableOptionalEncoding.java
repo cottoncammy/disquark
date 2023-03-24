@@ -24,7 +24,29 @@ class NullableOptionalEncoding<T> {
 
     @Encoding.Copy
     @Encoding.Naming(standard = Encoding.StandardNaming.WITH)
-    NullableOptional<T> setUnwrapped(T value) {
+    NullableOptional<T> setValue(T value) {
         return NullableOptional.of(value);
+    }
+
+    @Encoding.Builder
+    static class Builder<T> {
+        private NullableOptional<T> value = NullableOptional.empty();
+
+        @Encoding.Init
+        @Encoding.Copy
+        void set(NullableOptional<T> value) {
+            // can't use static imports
+            this.value = Objects.requireNonNull(value);
+        }
+
+        @Encoding.Init
+        void setValue(T value) {
+            this.value = NullableOptional.of(value);
+        }
+
+        @Encoding.Build
+        NullableOptional<T> build() {
+            return value;
+        }
     }
 }

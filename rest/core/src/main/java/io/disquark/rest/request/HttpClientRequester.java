@@ -159,6 +159,10 @@ public class HttpClientRequester implements Requester<HttpResponse> {
                 });
     }
 
+    public HttpClient getHttpClient() {
+        return httpClient;
+    }
+
     @Override
     public Uni<HttpResponse> request(Request request) {
         return Uni.createFrom().context(ctx -> request(request, ctx));

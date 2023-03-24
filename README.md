@@ -12,7 +12,7 @@ Read our [documentation](https://docs.disquark.io) to learn how to get started a
 
 ## Kotlin API
 
-DisQuark provides a (WIP) [idiomatic Kotlin API]() for users who prefer to develop their Discord applications in Kotlin. The API provides Kotlin DSLs as alternatives to public Java builders and offers translations of SmallRye Mutiny semantics to Coroutine semantics.
+DisQuark provides a (WIP) [idiomatic Kotlin API]() for users who prefer to develop their Discord applications in Kotlin. The API provides Kotlin DSLs as alternatives to public Java builders and offers extension methods to translate SmallRye Mutiny constructs to Coroutine constructs.
 
 ## API Status
 

@@ -3,33 +3,14 @@ package io.disquark.rest.kotlin.interactions
 import io.disquark.rest.interactions.MessageComponentInteraction
 import io.disquark.rest.interactions.RespondedInteraction
 import io.disquark.rest.json.interaction.Interaction
-import io.disquark.rest.json.messagecomponent.Component
 import io.smallrye.mutiny.Uni
 import io.smallrye.mutiny.coroutines.awaitSuspending
 
-fun MessageComponentInteraction.respond(init: Any.() -> Unit): Uni<RespondedInteraction<Interaction.MessageComponentData>> {
-    TODO()
-}
+fun MessageComponentInteraction.respond(init: ResponseCallback<MessageComponentInteraction, Interaction.MessageComponentData>.() -> Unit): Uni<RespondedInteraction<Interaction.MessageComponentData>> =
+    ResponseCallback(this).apply(init).toUni()
 
-suspend fun MessageComponentInteraction.respondSuspending(init: Any.() -> Unit): RespondedInteraction<Interaction.MessageComponentData> =
-    respond(init).awaitSuspending()
+fun MessageComponentInteraction.edit(init: UpdateMessageCallback.() -> Unit): Uni<RespondedInteraction<Interaction.MessageComponentData>> =
+    UpdateMessageCallback(this).apply(init).toUni()
 
-suspend fun MessageComponentInteraction.deferResponseSuspending(ephemeral: Boolean): RespondedInteraction<Interaction.MessageComponentData> =
-    deferResponse(ephemeral).awaitSuspending()
-
-suspend fun MessageComponentInteraction.deferEditSuspending(): RespondedInteraction<Interaction.MessageComponentData> =
-    deferEdit().awaitSuspending()
-
-fun MessageComponentInteraction.edit(init: Any.() -> Unit): Uni<RespondedInteraction<Interaction.MessageComponentData>> {
-    TODO()
-}
-
-suspend fun MessageComponentInteraction.editSuspending(init: Any.() -> Unit): RespondedInteraction<Interaction.MessageComponentData> =
-    edit(init).awaitSuspending()
-
-fun MessageComponentInteraction.popupModal(init: Any.() -> Unit): Uni<RespondedInteraction<Interaction.MessageComponentData>> {
-    TODO()
-}
-
-suspend fun MessageComponentInteraction.popupModalSuspending(init: Any.() -> Unit): RespondedInteraction<Interaction.MessageComponentData> =
-    popUpModal(init).awaitSuspending()
+fun MessageComponentInteraction.popUpModal(customId: String, title: String, init: ModalCallback<MessageComponentInteraction, Interaction.MessageComponentData>.() -> Unit): Uni<RespondedInteraction<Interaction.MessageComponentData>> =
+    ModalCallback(this, customId, title).apply(init).toUni()
