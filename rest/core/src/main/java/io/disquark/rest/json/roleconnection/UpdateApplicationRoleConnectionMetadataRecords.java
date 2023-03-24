@@ -17,7 +17,7 @@ abstract class UpdateApplicationRoleConnectionMetadataRecords extends AbstractRe
 
     public abstract Snowflake applicationId();
 
-    public abstract List<ApplicationRoleConnection.Metadata> applicationRoleConnectionMetadataRecords();
+    public abstract List<ApplicationRoleConnection.Metadata> records();
 
     @Override
     public void subscribe(Flow.Subscriber<? super ApplicationRoleConnection.Metadata> downstream) {
@@ -32,7 +32,7 @@ abstract class UpdateApplicationRoleConnectionMetadataRecords extends AbstractRe
         return Request.builder()
                 .endpoint(Endpoint.create(HttpMethod.PUT, "/applications/{application.id}/role-connections/metadata"))
                 .variables(variables("application.id", applicationId().getValue()))
-                .body(applicationRoleConnectionMetadataRecords())
+                .body(records())
                 .build();
     }
 }

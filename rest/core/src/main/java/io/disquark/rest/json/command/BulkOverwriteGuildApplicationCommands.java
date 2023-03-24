@@ -19,7 +19,7 @@ abstract class BulkOverwriteGuildApplicationCommands extends AbstractRequestMult
 
     public abstract Snowflake guildId();
 
-    public abstract List<GuildApplicationCommandOverwrite> guildApplicationCommandOverwrites();
+    public abstract List<GuildApplicationCommandOverwrite> overwrites();
 
     @Override
     public void subscribe(Flow.Subscriber<? super ApplicationCommand> downstream) {
@@ -34,7 +34,7 @@ abstract class BulkOverwriteGuildApplicationCommands extends AbstractRequestMult
         return Request.builder()
                 .endpoint(Endpoint.create(HttpMethod.PUT, "/applications/{application.id}/guilds/{guild.id}/commands"))
                 .variables(variables("application.id", applicationId().getValue(), "guild.id", guildId().getValue()))
-                .body(guildApplicationCommandOverwrites())
+                .body(overwrites())
                 .build();
     }
 }

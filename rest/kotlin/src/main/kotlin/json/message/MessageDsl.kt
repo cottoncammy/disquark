@@ -25,7 +25,7 @@ sealed class MessageDsl: ComponentDsl() {
         get() = _attachments?.getOrNull() ?: mutableListOf()
 
     operator fun MessageEmbed.unaryPlus() {
-        embeds += this
+        embeds + this
     }
 
     fun embed(init: MessageEmbed.() -> Unit) {
@@ -37,7 +37,7 @@ sealed class MessageDsl: ComponentDsl() {
     }
 
     operator fun PartialAttachment.unaryPlus() {
-        attachments += this
+        attachments + this
     }
 }
 

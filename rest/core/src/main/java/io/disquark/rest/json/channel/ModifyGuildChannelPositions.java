@@ -17,7 +17,7 @@ abstract class ModifyGuildChannelPositions extends AbstractRequestUni<Void> {
 
     public abstract Snowflake guildId();
 
-    public abstract List<GuildChannelPosition> guildChannelPositions();
+    public abstract List<GuildChannelPosition> positions();
 
     @Override
     public void subscribe(UniSubscriber<? super Void> downstream) {
@@ -29,7 +29,7 @@ abstract class ModifyGuildChannelPositions extends AbstractRequestUni<Void> {
         return Request.builder()
                 .endpoint(Endpoint.create(HttpMethod.PATCH, "/guilds/{guild.id}/channels"))
                 .variables(variables("guild.id", guildId().getValue()))
-                .body(guildChannelPositions())
+                .body(positions())
                 .build();
     }
 }

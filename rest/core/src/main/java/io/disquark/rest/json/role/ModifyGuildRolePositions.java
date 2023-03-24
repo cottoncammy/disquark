@@ -18,7 +18,7 @@ abstract class ModifyGuildRolePositions extends AbstractRequestMulti<Role> imple
 
     public abstract Snowflake guildId();
 
-    public abstract List<GuildRolePosition> guildRolePositions();
+    public abstract List<GuildRolePosition> positions();
 
     @Override
     public void subscribe(Flow.Subscriber<? super Role> downstream) {
@@ -33,7 +33,7 @@ abstract class ModifyGuildRolePositions extends AbstractRequestMulti<Role> imple
         return Request.builder()
                 .endpoint(Endpoint.create(HttpMethod.PATCH, "/guilds/{guild.id}/roles"))
                 .variables(variables("guild.id", guildId().getValue()))
-                .body(guildRolePositions())
+                .body(positions())
                 .auditLogReason(auditLogReason())
                 .build();
     }

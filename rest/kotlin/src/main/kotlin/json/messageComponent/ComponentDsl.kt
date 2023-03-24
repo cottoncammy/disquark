@@ -16,7 +16,7 @@ abstract class ComponentDsl {
         get() = _components?.getOrNull() ?: mutableListOf()
 
     operator fun Component.unaryPlus() {
-        components += this
+        components + this
     }
 
     fun actionRow(init: ActionRow.() -> Unit) {
@@ -97,7 +97,7 @@ class SelectMenu(
         get() = options ?: mutableListOf()
 
     operator fun SelectOption.unaryPlus() {
-        _options += this
+        _options + this
     }
 
     fun option(label: String, value: String, init: (SelectOption.() -> Unit)? = null) {
