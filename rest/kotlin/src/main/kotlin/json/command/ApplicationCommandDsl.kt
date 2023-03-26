@@ -3,18 +3,14 @@ package io.disquark.rest.kotlin.json.command
 import io.disquark.rest.json.Locale
 import io.disquark.rest.json.PermissionFlag
 import io.disquark.rest.json.Snowflake
-import io.disquark.rest.json.command.ApplicationCommand
-import io.disquark.rest.json.command.BulkOverwriteGlobalApplicationCommandsMulti
+import io.disquark.rest.json.command.*
+import io.disquark.rest.kotlin.nullableoptional.toNullableOptional
 import io.disquark.rest.request.Requester
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 @DslMarker
 annotation class ApplicationCommandDslMarker
-
-data class NameLocalization(val locale: Locale, val name: String)
-
-data class DescriptionLocalization(val locale: Locale, val description: String)
 
 typealias DefaultMemberPermission = PermissionFlag
 
@@ -29,23 +25,20 @@ sealed class ApplicationCommandLocalizationsDsl {
     private val descriptionLocalizations: MutableMap<Locale, String>
         get() = _descriptionLocalizations?.getOrNull() ?: mutableMapOf()
 
-    operator fun NameLocalization.unaryPlus() {
-        nameLocalizations + (locale to name)
+    fun nameLocalizations(init: MutableMap<Locale, String>.() -> Unit) {
+        nameLocalizations + mutableMapOf<Locale, String>().apply(init)
     }
 
-    operator fun DescriptionLocalization.unaryPlus() {
-        descriptionLocalizations + (locale to description)
+    fun descriptionLocalizations(init: MutableMap<Locale, String>.() -> Unit) {
+        descriptionLocalizations + mutableMapOf<Locale, String>().apply(init)
     }
 }
 
-sealed class ApplicationCommandDsl: ApplicationCommandLocalizationsDsl() {
+sealed class ApplicationCommandDsl(var description: String? = null, var nsfw: Boolean? = null): ApplicationCommandLocalizationsDsl() {
     protected var _defaultMemberPermissions: Optional<MutableSet<PermissionFlag>>? = Optional.empty()
 
     private val defaultMemberPermissions: MutableSet<PermissionFlag>
         get() = _defaultMemberPermissions?.getOrNull() ?: mutableSetOf()
-
-    var description: String? = null
-    var nsfw: Boolean? = null
 
     operator fun DefaultMemberPermission.unaryPlus() {
         defaultMemberPermissions + this
@@ -55,8 +48,56 @@ sealed class ApplicationCommandDsl: ApplicationCommandLocalizationsDsl() {
 interface ApplicationCommandOptionsDsl {
     var options: MutableList<ApplicationCommandOption>?
 
-    fun option(init: ApplicationCommandOption.() -> Unit) {
-        (options ?: mutableListOf()) + ApplicationCommandOption().apply(init)
+    operator fun ApplicationCommandOption.unaryPlus() {
+        (options ?: mutableListOf()) + this
+    }
+
+    fun stringOption(name: String, description: String, init: StringOption.() -> Unit) {
+        +StringOption(name, description).apply(init)
+    }
+
+    fun intOption(name: String, description: String, init: IntOption.() -> Unit) {
+        +IntOption(name, description).apply(init)
+    }
+
+    fun booleanOption(name: String, description: String, init: ApplicationCommandOption.() -> Unit) {
+        +ApplicationCommandOption(ApplicationCommand.Option.Type.BOOLEAN, name, description).apply(init)
+    }
+
+    fun userOption(name: String, description: String, init: ApplicationCommandOption.() -> Unit) {
+        +ApplicationCommandOption(ApplicationCommand.Option.Type.USER, name, description).apply(init)
+    }
+
+    fun channelOption(name: String, description: String, init: ChannelOption.() -> Unit) {
+        +ChannelOption(name, description).apply(init)
+    }
+
+    fun roleOption(name: String, description: String, init: ApplicationCommandOption.() -> Unit) {
+        +ApplicationCommandOption(ApplicationCommand.Option.Type.ROLE, name, description).apply(init)
+    }
+
+    fun mentionableOption(name: String, description: String, init: ApplicationCommandOption.() -> Unit) {
+        +ApplicationCommandOption(ApplicationCommand.Option.Type.MENTIONABLE, name, description).apply(init)
+    }
+
+    fun doubleOption(name: String, description: String, init: DoubleOption.() -> Unit) {
+        +DoubleOption(name, description).apply(init)
+    }
+
+    fun attachmentOption(name: String, description: String, init: ApplicationCommandOption.() -> Unit) {
+        +ApplicationCommandOption(ApplicationCommand.Option.Type.ATTACHMENT, name, description).apply(init)
+    }
+}
+
+interface ApplicationCommandOptionsWithSubcommandDsl: ApplicationCommandOptionsDsl {
+    fun subcommand(name: String, description: String, init: SubcommandOption.() -> Unit) {
+        +SubcommandOption(name, description).apply(init)
+    }
+}
+
+interface ApplicationCommandOptionsWithSubcommandGroupDsl: ApplicationCommandOptionsWithSubcommandDsl {
+    fun subcommandGroup(name: String, description: String, init: SubcommandGroupOption.() -> Unit) {
+        +SubcommandGroupOption(name, description).apply(init)
     }
 }
 
@@ -66,7 +107,6 @@ sealed class CreateApplicationCommand(
     protected val name: String,
 ): ApplicationCommandDsl() {
     protected abstract val type: ApplicationCommand.Type?
-
     protected open val _guildId: Snowflake? = null
     protected open var dmPermission: Boolean? = null
 
@@ -81,12 +121,63 @@ sealed class CreateApplicationCommand(
         set(value) {
             _descriptionLocalizations = Optional.ofNullable(value)
         }
+
+    var defaultMemberPermissions: MutableSet<PermissionFlag>?
+        get() = _defaultMemberPermissions?.getOrNull()
+        set(value) {
+            _defaultMemberPermissions = Optional.ofNullable(value)
+        }
+
+    protected open fun toGlobalCommandUni(): CreateGlobalApplicationCommandUni {
+        return CreateGlobalApplicationCommandUni.builder()
+            .requester(requester)
+            .applicationId(applicationId)
+            .name(name)
+            .nameLocalizations(nameLocalizations)
+            .description(description)
+            .descriptionLocalizations(descriptionLocalizations)
+            .defaultMemberPermissions(defaultMemberPermissions)
+            .dmPermission(dmPermission)
+            .type(type)
+            .nsfw(nsfw)
+            .build()
+    }
+
+    protected open fun toGuildCommandUni(): CreateGuildApplicationCommandUni {
+        return CreateGuildApplicationCommandUni.builder()
+            .requester(requester)
+            .applicationId(applicationId)
+            .guildId(_guildId!!)
+            .name(name)
+            .nameLocalizations(nameLocalizations)
+            .description(description)
+            .descriptionLocalizations(descriptionLocalizations)
+            .defaultMemberPermissions(defaultMemberPermissions)
+            .dmPermission(dmPermission)
+            .type(type)
+            .nsfw(nsfw)
+            .build()
+    }
 }
 
 sealed class CreateApplicationCommandWithOptions(requester: Requester<*>, applicationId: Snowflake, name: String):
     CreateApplicationCommand(requester, applicationId, name), ApplicationCommandOptionsDsl {
 
     override var options: MutableList<ApplicationCommandOption>? = null
+
+    override fun toGlobalCommandUni(): CreateGlobalApplicationCommandUni {
+        return CreateGlobalApplicationCommandUni.builder()
+            .from(super.toGlobalCommandUni())
+            .options(options?.map { it.toImmutable() })
+            .build()
+    }
+
+    override fun toGuildCommandUni(): CreateGuildApplicationCommandUni {
+        return CreateGuildApplicationCommandUni.builder()
+            .from(super.toGuildCommandUni())
+            .options(options?.map { it.toImmutable() })
+            .build()
+    }
 }
 
 sealed class CreateChatInputCommand(requester: Requester<*>, applicationId: Snowflake, name: String):
@@ -109,52 +200,69 @@ sealed class CreateMessageCommand(requester: Requester<*>, applicationId: Snowfl
 
 class CreateGlobalChatInputCommand(requester: Requester<*>, applicationId: Snowflake, name: String): CreateChatInputCommand(requester, applicationId, name) {
     public override var dmPermission: Boolean? = null
+
+    internal fun toUni(): CreateGlobalApplicationCommandUni = toGlobalCommandUni()
 }
 
 class CreateGlobalUserCommand(requester: Requester<*>, applicationId: Snowflake, name: String): CreateUserCommand(requester, applicationId, name) {
     public override var dmPermission: Boolean? = null
+
+    internal fun toUni(): CreateGlobalApplicationCommandUni = toGlobalCommandUni()
 }
 
 class CreateGlobalMessageCommand(requester: Requester<*>, applicationId: Snowflake, name: String): CreateMessageCommand(requester, applicationId, name) {
     public override var dmPermission: Boolean? = null
+
+    internal fun toUni(): CreateGlobalApplicationCommandUni = toGlobalCommandUni()
 }
 
 class CreateGuildChatInputCommand(requester: Requester<*>, applicationId: Snowflake, private val guildId: Snowflake, name: String): CreateChatInputCommand(requester, applicationId, name) {
     override val _guildId: Snowflake?
         get() = guildId
+
+    internal fun toUni(): CreateGuildApplicationCommandUni = toGuildCommandUni()
 }
 
 class CreateGuildUserCommand(requester: Requester<*>, applicationId: Snowflake, private val guildId: Snowflake, name: String): CreateUserCommand(requester, applicationId, name) {
     override val _guildId: Snowflake?
         get() = guildId
+
+    internal fun toUni(): CreateGuildApplicationCommandUni = toGuildCommandUni()
 }
 
 class CreateGuildMessageCommand(requester: Requester<*>, applicationId: Snowflake, private val guildId: Snowflake?, name: String): CreateMessageCommand(requester, applicationId, name) {
     override val _guildId: Snowflake?
         get() = guildId
+
+    internal fun toUni(): CreateGuildApplicationCommandUni = toGuildCommandUni()
 }
 
 sealed class EditApplicationCommandDsl(
-    private val requester: Requester<*>,
-    private val applicationId: Snowflake,
-    private val commandId: Snowflake,
-): ApplicationCommandDsl(), ApplicationCommandOptionsDsl {
+    protected val requester: Requester<*>,
+    protected val applicationId: Snowflake,
+    protected val commandId: Snowflake,
+    var name: String? = null,
+): ApplicationCommandDsl(), ApplicationCommandOptionsWithSubcommandGroupDsl {
     protected open var dmPermission: Boolean? = null
 
     override var options: MutableList<ApplicationCommandOption>? = null
 
-    var name: String? = null
-
     var nameLocalizations: Optional<MutableMap<Locale, String>>?
         get() = _nameLocalizations
         set(value) {
-            _nameLocalizations = nameLocalizations
+            _nameLocalizations = value
         }
 
     var descriptionLocalizations: Optional<MutableMap<Locale, String>>?
         get() = _descriptionLocalizations
         set(value) {
-            _descriptionLocalizations = descriptionLocalizations
+            _descriptionLocalizations = value
+        }
+
+    var defaultMemberPermissions: Optional<MutableSet<PermissionFlag>>?
+        get() = _defaultMemberPermissions
+        set(value) {
+            _defaultMemberPermissions = value
         }
 }
 
@@ -162,10 +270,44 @@ class EditGlobalApplicationCommand(requester: Requester<*>, applicationId: Snowf
     EditApplicationCommandDsl(requester, applicationId, commandId) {
 
     public override var dmPermission: Boolean? = null
+
+    internal fun toUni(): EditGlobalApplicationCommandUni {
+        return EditGlobalApplicationCommandUni.builder()
+            .requester(requester)
+            .applicationId(applicationId)
+            .commandId(commandId)
+            .name(name)
+            .nameLocalizations(nameLocalizations.toNullableOptional())
+            .description(description)
+            .descriptionLocalizations(descriptionLocalizations.toNullableOptional())
+            .options(options?.map { it.toImmutable() })
+            .defaultMemberPermissions(defaultMemberPermissions.toNullableOptional())
+            .dmPermission(dmPermission)
+            .nsfw(nsfw)
+            .build()
+    }
 }
 
 class EditGuildApplicationCommand(requester: Requester<*>, applicationId: Snowflake, private val guildId: Snowflake, commandId: Snowflake):
     EditApplicationCommandDsl(requester, applicationId, commandId) {
+
+    internal fun toUni(): EditGuildApplicationCommandUni {
+        return EditGuildApplicationCommandUni.builder()
+            .requester(requester)
+            .applicationId(applicationId)
+            .commandId(commandId)
+            .guildId(guildId)
+            .name(name)
+            .name(name)
+            .nameLocalizations(nameLocalizations.toNullableOptional())
+            .description(description)
+            .descriptionLocalizations(descriptionLocalizations.toNullableOptional())
+            .options(options?.map { it.toImmutable() })
+            .defaultMemberPermissions(defaultMemberPermissions.toNullableOptional())
+            .dmPermission(dmPermission)
+            .nsfw(nsfw)
+            .build()
+    }
 }
 
 sealed class BulkOverwriteApplicationCommandDsl<T : CreateApplicationCommand>(protected val requester: Requester<*>, protected val applicationId: Snowflake) {
@@ -221,5 +363,14 @@ class BulkOverwriteGuildApplicationCommands<T : CreateApplicationCommand>(reques
 
     fun messageCommand(name: String, init: CreateGuildMessageCommand.() -> Unit) {
         messageCommand(CreateGuildMessageCommand(requester, applicationId, guildId, name).apply(init))
+    }
+
+    internal fun toMulti(): BulkOverwriteGuildApplicationCommandsMulti {
+        return BulkOverwriteGuildApplicationCommandsMulti.builder()
+            .requester(requester)
+            .applicationId(applicationId)
+            .guildId(guildId)
+            .overwrites()
+            .build()
     }
 }

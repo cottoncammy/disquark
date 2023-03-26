@@ -35,6 +35,7 @@ data class MessageEmbed(
         }
     }
 
+    // TODO assign nullable collections in the get
     private val _fields: MutableList<Field>
         get() = fields ?: mutableListOf()
 

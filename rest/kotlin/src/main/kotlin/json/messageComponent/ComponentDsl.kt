@@ -44,7 +44,7 @@ object ActionRow : ComponentDsl(), Component {
 
     override fun toImmutable(): ImmutableComponent {
         return ImmutableComponent(ImmutableComponent.Type.ACTION_ROW)
-            .run { withComponents(_components?.getOrNull()?.map { it.toImmutable() }) ?: this }
+            .run { _components?.getOrNull()?.map { it.toImmutable() }?.let { withComponents(it) } ?: this }
     }
 }
 
