@@ -12,7 +12,7 @@ Read our [documentation](https://docs.disquark.io) to learn how to get started a
 
 ## Kotlin API
 
-DisQuark provides a (WIP) [idiomatic Kotlin API]() for users who prefer to develop their Discord applications in Kotlin. The API provides Kotlin DSLs as alternatives to public Java builders and offers extension methods to translate SmallRye Mutiny constructs to Coroutine constructs. The Kotlin API is strongly recommended since the DSL syntax for building requests is _currently_ easier to use than the Java request builder syntax.
+DisQuark provides a (WIP) [idiomatic Kotlin API]() for users who prefer to develop their Discord applications in Kotlin. The API provides Kotlin DSLs as alternatives to public Java builders and offers extension methods to translate SmallRye Mutiny constructs to Coroutine constructs.
 
 ## API Status
 
@@ -26,9 +26,11 @@ DisQuark is the newest addition to the existing lineup of *five* Java libraries 
 
 ## Should you use DisQuark?
 
-It's recommended to use DisQuark only if you enjoy reactive programming syntax or if you intend to use our Kotlin API. DisQuark was developed to interact with the Discord API in [Quarkus](https://quarkus.io) applications. Therefore, it's strongly recommended to use DisQuark along with our [Quarkiverse extension]() which minimizes the boilerplate needed to develop HTTP interactions with DisQuark. If you intend to use [Spring Boot](https://spring.io/projects/spring-boot) or [Ktor](https://ktor.io), you should use [Discord4J](https://github.com/Discord4J/Discord4J) or [Kord](https://github.com/kordlib/kord), the two existing JVM wrappers that most closely resemble DisQuark, as your corresponding API wrapper instead to reduce your dependency requirements.
+It's recommended to use DisQuark only if you enjoy reactive programming syntax or if you intend to use our Kotlin API. DisQuark was developed to interact with the Discord API in [Quarkus](https://quarkus.io) applications. Therefore, it's strongly recommended to use DisQuark along with our [Quarkiverse extension]() which minimizes the boilerplate needed to develop HTTP interactions with DisQuark. If you intend to use [Spring Boot](https://spring.io/projects/spring-boot) or [Ktor](https://ktor.io), you should instead use [Discord4J](https://github.com/Discord4J/Discord4J) or [Kord](https://github.com/kordlib/kord), the two existing JVM wrappers that most closely resemble DisQuark, as your corresponding API wrapper to reduce your dependency requirements.
 
 You shouldn't use DisQuark in production until its API is stable and until it's had more time to incubate in the Discord ecosystem. You shouldn't use DisQuark at all if you intend to use it to interface with the Gateway or Voice APIs. 
+
+## Examples
 
 ## Using Snapshots
 

@@ -118,7 +118,8 @@ class StringOption(name: String, description: String, var minLength: Int? = null
 
 sealed class NumberOption<C : ApplicationCommandOption.Choice<T>, T : Number>(
     type: ImmutableApplicationCommandOption.Type,
-    name: String, description: String,
+    name: String,
+    description: String,
     var minValue: T? = null,
     var maxValue: T? = null,
 ): ApplicationCommandOptionWithChoicesDsl<C, T>(type, name, description) {

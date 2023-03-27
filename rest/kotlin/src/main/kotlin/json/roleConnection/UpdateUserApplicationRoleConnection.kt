@@ -2,8 +2,6 @@ package io.disquark.rest.kotlin.json.roleConnection
 
 import io.disquark.rest.json.Snowflake
 import io.disquark.rest.json.roleconnection.UpdateUserApplicationRoleConnectionUni
-import io.disquark.rest.request.Request
-import io.disquark.rest.request.Requestable
 import io.disquark.rest.request.Requester
 
 class UpdateUserApplicationRoleConnection(

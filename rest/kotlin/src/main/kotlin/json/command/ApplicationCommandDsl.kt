@@ -147,7 +147,7 @@ sealed class CreateApplicationCommand(
         return CreateGuildApplicationCommandUni.builder()
             .requester(requester)
             .applicationId(applicationId)
-            .guildId(_guildId!!)
+            .apply { _guildId?.let { guildId(it) } }
             .name(name)
             .nameLocalizations(nameLocalizations)
             .description(description)
@@ -310,8 +310,8 @@ class EditGuildApplicationCommand(requester: Requester<*>, applicationId: Snowfl
     }
 }
 
-sealed class BulkOverwriteApplicationCommandDsl<T : CreateApplicationCommand>(protected val requester: Requester<*>, protected val applicationId: Snowflake) {
-    var overwrites: MutableList<T> = mutableListOf()
+sealed class BulkOverwriteApplicationCommandDsl(protected val requester: Requester<*>, protected val applicationId: Snowflake) {
+    var overwrites: MutableList<CreateApplicationCommand> = mutableListOf()
 
     protected fun <T : CreateChatInputCommand> chatInputCommand(t: T) {
         overwrites + t
@@ -326,8 +326,8 @@ sealed class BulkOverwriteApplicationCommandDsl<T : CreateApplicationCommand>(pr
     }
 }
 
-class BulkOverwriteGlobalApplicationCommands<T : CreateApplicationCommand>(requester: Requester<*>, applicationId: Snowflake):
-    BulkOverwriteApplicationCommandDsl<T>(requester, applicationId) {
+class BulkOverwriteGlobalApplicationCommands(requester: Requester<*>, applicationId: Snowflake):
+    BulkOverwriteApplicationCommandDsl(requester, applicationId) {
 
     fun chatInputCommand(name: String, init: CreateGlobalChatInputCommand.() -> Unit) {
         chatInputCommand(CreateGlobalChatInputCommand(requester, applicationId, name).apply(init))
@@ -345,13 +345,13 @@ class BulkOverwriteGlobalApplicationCommands<T : CreateApplicationCommand>(reque
         return BulkOverwriteGlobalApplicationCommandsMulti.builder()
             .requester(requester)
             .applicationId(applicationId)
-            .overwrites()
+            .overwrites(overwrites.map {  })
             .build()
     }
 }
 
-class BulkOverwriteGuildApplicationCommands<T : CreateApplicationCommand>(requester: Requester<*>, applicationId: Snowflake, private val guildId: Snowflake):
-    BulkOverwriteApplicationCommandDsl<T>(requester, applicationId) {
+class BulkOverwriteGuildApplicationCommands(requester: Requester<*>, applicationId: Snowflake, private val guildId: Snowflake):
+    BulkOverwriteApplicationCommandDsl(requester, applicationId) {
 
     fun chatInputCommand(name: String, init: CreateGuildChatInputCommand.() -> Unit) {
         chatInputCommand(CreateGuildChatInputCommand(requester, applicationId, guildId, name).apply(init))
@@ -365,12 +365,16 @@ class BulkOverwriteGuildApplicationCommands<T : CreateApplicationCommand>(reques
         messageCommand(CreateGuildMessageCommand(requester, applicationId, guildId, name).apply(init))
     }
 
+    private inline fun <reified T : CreateApplicationCommand> T.toImmutable(): GuildApplicationCommandOverwrite {
+        GuildApplicationCommandOverwrite(name, description)
+    }
+
     internal fun toMulti(): BulkOverwriteGuildApplicationCommandsMulti {
         return BulkOverwriteGuildApplicationCommandsMulti.builder()
             .requester(requester)
             .applicationId(applicationId)
             .guildId(guildId)
-            .overwrites()
+            .overwrites(overwrites.map {  })
             .build()
     }
 }

@@ -4,6 +4,7 @@ import java.util.EnumSet;
 
 import io.disquark.immutables.ImmutableUni;
 import io.disquark.rest.json.interaction.Interaction;
+import io.disquark.rest.json.message.Message;
 
 @ImmutableUni
 abstract class DeferResponseCallback<T> extends AbstractInteractionCallbackUni<T> {

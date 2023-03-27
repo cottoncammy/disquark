@@ -8,5 +8,5 @@ import io.smallrye.mutiny.Uni
 import io.smallrye.mutiny.coroutines.awaitSuspending
 
 fun ApplicationCommandAutocompleteInteraction.suggestChoices(init: Any.() -> Unit): Uni<RespondedInteraction<Interaction.ApplicationCommandData>> {
-    TODO()
+
 }

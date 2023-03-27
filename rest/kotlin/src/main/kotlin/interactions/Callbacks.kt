@@ -2,6 +2,7 @@
 
 package io.disquark.rest.kotlin.interactions
 
+import io.disquark.rest.interactions.ApplicationCommandAutocompleteInteraction
 import io.disquark.rest.interactions.ApplicationCommandInteraction
 import io.disquark.rest.interactions.CompletableInteraction
 import io.disquark.rest.interactions.MessageComponentInteraction
@@ -87,6 +88,6 @@ class ModalCallback<C : CompletableInteraction<D>, D>(
     }
 }
 
-class AutocompleteCallback {
+class AutocompleteCallback(private val interaction: ApplicationCommandAutocompleteInteraction) {
     // TODO use abstracted application command DSL
 }

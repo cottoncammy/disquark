@@ -4,7 +4,6 @@ import io.disquark.rest.interactions.MessageComponentInteraction
 import io.disquark.rest.interactions.RespondedInteraction
 import io.disquark.rest.json.interaction.Interaction
 import io.smallrye.mutiny.Uni
-import io.smallrye.mutiny.coroutines.awaitSuspending
 
 fun MessageComponentInteraction.respond(init: ResponseCallback<MessageComponentInteraction, Interaction.MessageComponentData>.() -> Unit): Uni<RespondedInteraction<Interaction.MessageComponentData>> =
     ResponseCallback(this).apply(init).toUni()

@@ -100,8 +100,8 @@ class SelectMenu(
         _options + this
     }
 
-    fun option(label: String, value: String, init: (SelectOption.() -> Unit)? = null) {
-        +SelectOption(label, value).apply{ init?.let { init() } }
+    fun option(label: String, value: String, init: SelectOption.() -> Unit) {
+        +SelectOption(label, value).apply(init)
     }
 
     override fun toImmutable(): ImmutableComponent {

@@ -2,13 +2,16 @@ package io.disquark.rest.kotlin
 
 import io.disquark.rest.AuthenticatedDiscordClient
 import io.disquark.rest.json.Snowflake
+import io.disquark.rest.json.command.ApplicationCommand
 import io.disquark.rest.json.message.Message
 import io.disquark.rest.json.webhook.Webhook
 import io.disquark.rest.kotlin.interactions.editOriginalInteractionResponse
 import io.disquark.rest.kotlin.interactions.createFollowupMessage
 import io.disquark.rest.kotlin.interactions.editFollowupMessage
+import io.disquark.rest.kotlin.json.command.*
 import io.disquark.rest.kotlin.json.interaction.CreateFollowupMessage
 import io.disquark.rest.kotlin.json.interaction.EditFollowupMessage
+import io.disquark.rest.kotlin.json.interaction.EditOriginalInteractionResponse
 import io.disquark.rest.kotlin.json.webhook.EditWebhookMessage
 import io.disquark.rest.kotlin.json.webhook.ExecuteWebhook
 import io.disquark.rest.kotlin.json.webhook.ModifyWebhookWithToken
@@ -17,33 +20,46 @@ import io.disquark.rest.kotlin.webhook.editWebhookMessage
 import io.disquark.rest.kotlin.webhook.getWebhookMessage
 import io.disquark.rest.kotlin.webhook.modifyWebhookWithToken
 import io.disquark.rest.response.Response
+import io.smallrye.mutiny.Multi
 import io.smallrye.mutiny.Uni
 
-suspend fun <T : Response> AuthenticatedDiscordClient<T>.createGlobalApplicationCommand(): Unit =
-    TODO()
+fun <T : Response> AuthenticatedDiscordClient<T>.createGlobalChatInputCommand(applicationId: Snowflake, name: String, init: CreateGlobalChatInputCommand.() -> Unit): Uni<ApplicationCommand> =
+    CreateGlobalChatInputCommand(requester, applicationId, name).apply(init).toUni()
 
-suspend fun <T : Response> AuthenticatedDiscordClient<T>.editGlobalApplicationCommand(): Unit =
-    TODO()
+fun <T : Response> AuthenticatedDiscordClient<T>.createGlobalUserCommand(applicationId: Snowflake, name: String, init: CreateGlobalUserCommand.() -> Unit): Uni<ApplicationCommand> =
+    CreateGlobalUserCommand(requester, applicationId, name).apply(init).toUni()
 
-suspend fun <T : Response> AuthenticatedDiscordClient<T>.bulkOverwriteGlobalApplicationCommands(): Unit =
-    TODO()
+fun <T : Response> AuthenticatedDiscordClient<T>.createGlobalMessageCommand(applicationId: Snowflake, name: String, init: CreateGlobalMessageCommand.() -> Unit): Uni<ApplicationCommand> =
+    CreateGlobalMessageCommand(requester, applicationId, name).apply(init).toUni()
 
-suspend fun <T : Response> AuthenticatedDiscordClient<T>.createGuildApplicationCommand(): Unit =
-    TODO()
+fun <T : Response> AuthenticatedDiscordClient<T>.editGlobalApplicationCommand(applicationId: Snowflake, commandId: Snowflake, init: EditGlobalApplicationCommand.() -> Unit): Uni<ApplicationCommand> =
+    EditGlobalApplicationCommand(requester, applicationId, commandId).apply(init).toUni()
 
-suspend fun <T : Response> AuthenticatedDiscordClient<T>.editGuildApplicationCommand(): Unit =
-    TODO()
+fun <T : Response> AuthenticatedDiscordClient<T>.bulkOverwriteGlobalApplicationCommands(applicationId: Snowflake, init: BulkOverwriteGlobalApplicationCommands.() -> Unit): Multi<ApplicationCommand> =
+    BulkOverwriteGlobalApplicationCommands(requester, applicationId).apply(init).toMulti()
 
-suspend fun <T : Response> AuthenticatedDiscordClient<T>.bulkOverwriteGuildApplicationCommands(): Unit =
-    TODO()
+fun <T : Response> AuthenticatedDiscordClient<T>.createGuildChatInputCommand(applicationId: Snowflake, guildId: Snowflake, name: String, init: CreateGuildChatInputCommand.() -> Unit): Uni<ApplicationCommand> =
+    CreateGuildChatInputCommand(requester, applicationId, guildId, name).apply(init).toUni()
 
-fun <T : Response> AuthenticatedDiscordClient<T>.editOriginalInteractionResponse(applicationId: Snowflake, interactionToken: String, init: (EditOriginalInteractionResponseRequest.() -> Unit)): Uni<Message> =
+fun <T : Response> AuthenticatedDiscordClient<T>.createGuildUserCommand(applicationId: Snowflake, guildId: Snowflake, name: String, init: CreateGuildUserCommand.() -> Unit): Uni<ApplicationCommand> =
+    CreateGuildUserCommand(requester, applicationId, guildId, name).apply(init).toUni()
+
+fun <T : Response> AuthenticatedDiscordClient<T>.createGuildMessageCommand(applicationId: Snowflake, guildId: Snowflake, name: String, init: CreateGuildMessageCommand.() -> Unit): Uni<ApplicationCommand> =
+    CreateGuildMessageCommand(requester, applicationId, guildId, name).apply(init).toUni()
+
+fun <T : Response> AuthenticatedDiscordClient<T>.editGuildApplicationCommand(applicationId: Snowflake, guildId: Snowflake, commandId: Snowflake, init: EditGuildApplicationCommand.() -> Unit): Uni<ApplicationCommand> =
+    EditGuildApplicationCommand(requester, applicationId, guildId, commandId).apply(init).toUni()
+
+fun <T : Response> AuthenticatedDiscordClient<T>.bulkOverwriteGuildApplicationCommands(applicationId: Snowflake, guildId: Snowflake, init: BulkOverwriteGuildApplicationCommands.() -> Unit): Multi<ApplicationCommand> =
+    BulkOverwriteGuildApplicationCommands(requester, applicationId, guildId).apply(init).toMulti()
+
+fun <T : Response> AuthenticatedDiscordClient<T>.editOriginalInteractionResponse(applicationId: Snowflake, interactionToken: String, init: EditOriginalInteractionResponse.() -> Unit): Uni<Message> =
     interactionsClient.editOriginalInteractionResponse(applicationId, interactionToken, init)
 
-fun <T : Response> AuthenticatedDiscordClient<T>.createFollowupMessage(applicationId: Snowflake, interactionToken: String, init: (CreateFollowupMessage.() -> Unit)): Uni<Message> =
+fun <T : Response> AuthenticatedDiscordClient<T>.createFollowupMessage(applicationId: Snowflake, interactionToken: String, init: CreateFollowupMessage.() -> Unit): Uni<Message> =
     interactionsClient.createFollowupMessage(applicationId, interactionToken, init)
 
-fun <T : Response> AuthenticatedDiscordClient<T>.editFollowupMessage(applicationId: Snowflake, interactionToken: String, messageId: Snowflake, init: (EditFollowupMessage.() -> Unit)): Uni<Message> =
+fun <T : Response> AuthenticatedDiscordClient<T>.editFollowupMessage(applicationId: Snowflake, interactionToken: String, messageId: Snowflake, init: EditFollowupMessage.() -> Unit): Uni<Message> =
     interactionsClient.editFollowupMessage(applicationId, interactionToken, messageId, init)
 
 fun <T : Response> AuthenticatedDiscordClient<T>.modifyWebhookWithToken(webhookId: Snowflake, webhookToken: String, init: ModifyWebhookWithToken.() -> Unit): Uni<Webhook> =
