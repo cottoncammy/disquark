@@ -82,6 +82,7 @@ public class BearerTokenSource implements AccessTokenSource {
             uni = oAuth2.authenticate(credentials).invoke(user -> this.user = user);
         }
 
+        // TODO use codecs
         return uni.map(user -> user.principal().mapTo(AccessToken.class));
     }
 

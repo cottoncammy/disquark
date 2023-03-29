@@ -4,6 +4,7 @@ package io.disquark.rest.kotlin.interactions
 
 import io.disquark.rest.interactions.ApplicationCommandAutocompleteInteraction
 import io.disquark.rest.interactions.ApplicationCommandInteraction
+import io.disquark.rest.interactions.AutocompleteCallbackUni
 import io.disquark.rest.interactions.CompletableInteraction
 import io.disquark.rest.interactions.MessageComponentInteraction
 import io.disquark.rest.interactions.ModalCallbackUni
@@ -11,6 +12,7 @@ import io.disquark.rest.interactions.ModalSubmitInteraction
 import io.disquark.rest.interactions.ResponseCallbackUni
 import io.disquark.rest.interactions.UpdateMessageCallbackUni
 import io.disquark.rest.json.message.Message
+import io.disquark.rest.kotlin.json.command.*
 import io.disquark.rest.kotlin.json.message.CreateMessageDsl
 import io.disquark.rest.kotlin.json.message.EditMessageDsl
 import io.disquark.rest.kotlin.json.messageComponent.Component
@@ -21,7 +23,8 @@ import kotlin.jvm.optionals.getOrNull
 
 class ResponseCallback<C : CompletableInteraction<D>, D>(
     private val interaction: C,
-    var tts: Boolean? = null, var flags: MutableSet<Message.Flag>? = null,
+    var tts: Boolean? = null,
+    var flags: MutableSet<Message.Flag>? = null,
 ): CreateMessageDsl() {
     internal fun toUni(): ResponseCallbackUni<D> {
         val uni: ResponseCallbackUni<D> = when (interaction) {
@@ -88,6 +91,34 @@ class ModalCallback<C : CompletableInteraction<D>, D>(
     }
 }
 
-class AutocompleteCallback(private val interaction: ApplicationCommandAutocompleteInteraction) {
-    // TODO use abstracted application command DSL
+sealed class AutocompleteCallback<C : ApplicationCommandOption.Choice<T>, T>(private val interaction: ApplicationCommandAutocompleteInteraction):
+    ApplicationCommandOptionChoicesDsl<C, T> {
+
+    override var choices: MutableList<C>? = null
+
+    @PublishedApi
+    internal fun toUni(): AutocompleteCallbackUni {
+        return AutocompleteCallbackUni.builder()
+            .from(interaction.suggestChoices())
+            .apply { choices?.let { it -> choices(it.map { it.toImmutable() }) } }
+            .build()
+    }
+}
+
+class AutocompleteStringOptionCallback(interaction: ApplicationCommandAutocompleteInteraction): AutocompleteCallback<StringOption.Choice, String>(interaction) {
+    override fun choice(name: String, value: String, init: ApplicationCommandOption.Choice<String>.() -> Unit) {
+        +StringOption.Choice(name, value).apply(init)
+    }
+}
+
+class AutocompleteIntOptionCallback(interaction: ApplicationCommandAutocompleteInteraction): AutocompleteCallback<IntOption.Choice, Int>(interaction) {
+    override fun choice(name: String, value: Int, init: ApplicationCommandOption.Choice<Int>.() -> Unit) {
+        +IntOption.Choice(name, value).apply(init)
+    }
+}
+
+class AutocompleteDoubleOptionCallback(interaction: ApplicationCommandAutocompleteInteraction): AutocompleteCallback<DoubleOption.Choice, Double>(interaction) {
+    override fun choice(name: String, value: Double, init: ApplicationCommandOption.Choice<Double>.() -> Unit) {
+        +DoubleOption.Choice(name, value).apply(init)
+    }
 }

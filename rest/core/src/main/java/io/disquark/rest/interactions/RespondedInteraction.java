@@ -12,7 +12,7 @@ public class RespondedInteraction<T> {
     private final Interaction<T> interaction;
     private final DiscordInteractionsClient<?> interactionsClient;
 
-    RespondedInteraction(Interaction<T> interaction, DiscordInteractionsClient<?> interactionsClient) {
+    public RespondedInteraction(Interaction<T> interaction, DiscordInteractionsClient<?> interactionsClient) {
         this.interaction = interaction;
         this.interactionsClient = interactionsClient;
     }

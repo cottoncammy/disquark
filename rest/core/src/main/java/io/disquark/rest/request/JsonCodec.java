@@ -6,6 +6,12 @@ import io.vertx.mutiny.core.buffer.Buffer;
 import io.vertx.mutiny.core.http.HttpHeaders;
 
 class JsonCodec implements Codec {
+    public static String CONTENT_TYPE = "application/json";
+
+    @Override
+    public String getContentType() {
+        return CONTENT_TYPE;
+    }
 
     @Override
     public Body serialize(Request request, MultiMap headers) {

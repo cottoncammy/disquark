@@ -1,4 +1,4 @@
-package io.disquark.rest.interactions;
+package io.disquark.rest.interactions.callbacks;
 
 import java.util.EnumSet;
 

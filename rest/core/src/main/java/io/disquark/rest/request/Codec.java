@@ -12,6 +12,8 @@ import io.vertx.mutiny.core.buffer.Buffer;
 
 public interface Codec {
 
+    String getContentType();
+
     Body serialize(Request request, MultiMap headers);
 
     <T> T deserialize(Buffer buffer, Class<T> type);

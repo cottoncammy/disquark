@@ -11,9 +11,15 @@ import io.vertx.mutiny.core.buffer.Buffer;
 import io.vertx.mutiny.ext.web.multipart.MultipartForm;
 
 class MultipartCodec implements Codec {
+    public static String CONTENT_TYPE = "multipart/form-data";
 
     private void addFile(MultipartForm form, String paramName, Map.Entry<String, Buffer> file) {
         form.binaryFileUpload(paramName, file.getKey(), file.getValue(), Tika.detect(file.getValue().getBytes()));
+    }
+
+    @Override
+    public String getContentType() {
+        return CONTENT_TYPE;
     }
 
     // TODO account for partialAttachmentIds

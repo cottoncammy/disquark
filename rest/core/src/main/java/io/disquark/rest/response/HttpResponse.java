@@ -2,9 +2,8 @@ package io.disquark.rest.response;
 
 import static java.util.Objects.requireNonNull;
 
-import java.util.Map;
-
 import io.disquark.rest.request.Codec;
+import io.disquark.rest.request.Codecs;
 import io.smallrye.mutiny.Uni;
 import io.vertx.mutiny.core.http.HttpClientResponse;
 import io.vertx.mutiny.core.http.HttpHeaders;
@@ -15,12 +14,10 @@ import org.slf4j.LoggerFactory;
 public class HttpResponse implements Response {
     private static final Logger LOG = LoggerFactory.getLogger(HttpResponse.class);
     private final String requestId;
-    private final Map<String, Codec> codecs;
     private final HttpClientResponse response;
 
-    public HttpResponse(String requestId, Map<String, Codec> codecs, HttpClientResponse response) {
+    public HttpResponse(String requestId, HttpClientResponse response) {
         this.requestId = requestId;
-        this.codecs = codecs;
         this.response = response;
     }
 
@@ -28,7 +25,7 @@ public class HttpResponse implements Response {
         return response.body().map(body -> {
             LOG.trace("Response body for outgoing request {}: {}", requestId, body);
             String contentType = requireNonNull(response.getHeader(HttpHeaders.CONTENT_TYPE), "contentType");
-            Codec codec = requireNonNull(codecs.get(contentType), String.format("%s codec", contentType));
+            Codec codec = Codecs.getCodec(contentType);
             LOG.debug("Deserializing {} response body for outgoing request {} as {}",
                     contentType, requestId, type.getSimpleName());
 

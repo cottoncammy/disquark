@@ -33,18 +33,6 @@ open class ApplicationCommandOption(
         internal abstract fun toImmutable(): ImmutableApplicationCommandOptionChoice
     }
 
-    var nameLocalizations: Optional<MutableMap<Locale, String>>?
-        get() = _nameLocalizations
-        set(value) {
-            _nameLocalizations = value
-        }
-
-    var descriptionLocalizations: Optional<MutableMap<Locale, String>>?
-        get() = _descriptionLocalizations
-        set(value) {
-            _descriptionLocalizations = value
-        }
-
     internal open fun toImmutable(): ImmutableApplicationCommandOption {
         return ImmutableApplicationCommandOption(type, name, description)
             .withNameLocalizations(nameLocalizations.toNullableOptional())
@@ -77,12 +65,8 @@ class SubcommandOption(name: String, description: String):
     }
 }
 
-sealed class ApplicationCommandOptionWithChoicesDsl<C : ApplicationCommandOption.Choice<T>, T>(
-    type: ImmutableApplicationCommandOption.Type,
-    name: String,
-    description: String,
-): ApplicationCommandOption(type, name, description) {
-    var choices: MutableList<C>? = null
+interface ApplicationCommandOptionChoicesDsl<C : ApplicationCommandOption.Choice<T>, T> {
+    var choices: MutableList<C>?
 
     private val _choices: MutableList<C>
         get() = choices ?: mutableListOf()
@@ -91,7 +75,15 @@ sealed class ApplicationCommandOptionWithChoicesDsl<C : ApplicationCommandOption
         _choices + this
     }
 
-    abstract fun choice(name: String, value: T, init: C.() -> Unit)
+    fun choice(name: String, value: T, init: ApplicationCommandOption.Choice<T>.() -> Unit)
+}
+
+sealed class ApplicationCommandOptionWithChoicesDsl<C : ApplicationCommandOption.Choice<T>, T>(
+    type: ImmutableApplicationCommandOption.Type,
+    name: String,
+    description: String,
+): ApplicationCommandOption(type, name, description), ApplicationCommandOptionChoicesDsl<C, T> {
+    override var choices: MutableList<C>? = null
 }
 
 class StringOption(name: String, description: String, var minLength: Int? = null, var maxLength: Int? = null):
@@ -104,7 +96,7 @@ class StringOption(name: String, description: String, var minLength: Int? = null
         }
     }
 
-    override fun choice(name: String, value: String, init: Choice.() -> Unit) {
+    override fun choice(name: String, value: String, init: ApplicationCommandOption.Choice<String>.() -> Unit) {
         +Choice(name, value).apply(init)
     }
 
@@ -140,7 +132,7 @@ class IntOption(name: String, description: String): NumberOption<IntOption.Choic
         }
     }
 
-    override fun choice(name: String, value: Int, init: Choice.() -> Unit) {
+    override fun choice(name: String, value: Int, init: ApplicationCommandOption.Choice<Int>.() -> Unit) {
         +Choice(name, value).apply(init)
     }
 }
@@ -153,7 +145,7 @@ class DoubleOption(name: String, description: String): NumberOption<DoubleOption
         }
     }
 
-    override fun choice(name: String, value: Double, init: Choice.() -> Unit) {
+    override fun choice(name: String, value: Double, init: ApplicationCommandOption.Choice<Double>.() -> Unit) {
         +Choice(name, value).apply(init)
     }
 }

@@ -16,32 +16,32 @@ typealias DefaultMemberPermission = PermissionFlag
 
 @ApplicationCommandDslMarker
 sealed class ApplicationCommandLocalizationsDsl {
-    protected var _nameLocalizations: Optional<MutableMap<Locale, String>>? = Optional.empty()
-    protected var _descriptionLocalizations: Optional<MutableMap<Locale, String>>? = Optional.empty()
+    var nameLocalizations: Optional<MutableMap<Locale, String>>? = Optional.empty()
+    var descriptionLocalizations: Optional<MutableMap<Locale, String>>? = Optional.empty()
 
-    private val nameLocalizations: MutableMap<Locale, String>
-        get() = _nameLocalizations?.getOrNull() ?: mutableMapOf()
+    private val _nameLocalizations: MutableMap<Locale, String>
+        get() = nameLocalizations?.getOrNull() ?: mutableMapOf()
 
-    private val descriptionLocalizations: MutableMap<Locale, String>
-        get() = _descriptionLocalizations?.getOrNull() ?: mutableMapOf()
+    private val _descriptionLocalizations: MutableMap<Locale, String>
+        get() = descriptionLocalizations?.getOrNull() ?: mutableMapOf()
 
     fun nameLocalizations(init: MutableMap<Locale, String>.() -> Unit) {
-        nameLocalizations + mutableMapOf<Locale, String>().apply(init)
+        _nameLocalizations + mutableMapOf<Locale, String>().apply(init)
     }
 
     fun descriptionLocalizations(init: MutableMap<Locale, String>.() -> Unit) {
-        descriptionLocalizations + mutableMapOf<Locale, String>().apply(init)
+        _descriptionLocalizations + mutableMapOf<Locale, String>().apply(init)
     }
 }
 
 sealed class ApplicationCommandDsl(var description: String? = null, var nsfw: Boolean? = null): ApplicationCommandLocalizationsDsl() {
-    protected var _defaultMemberPermissions: Optional<MutableSet<PermissionFlag>>? = Optional.empty()
+    var defaultMemberPermissions: Optional<MutableSet<PermissionFlag>>? = Optional.empty()
 
-    private val defaultMemberPermissions: MutableSet<PermissionFlag>
-        get() = _defaultMemberPermissions?.getOrNull() ?: mutableSetOf()
+    private val _defaultMemberPermissions: MutableSet<PermissionFlag>
+        get() = defaultMemberPermissions?.getOrNull() ?: mutableSetOf()
 
     operator fun DefaultMemberPermission.unaryPlus() {
-        defaultMemberPermissions + this
+        _defaultMemberPermissions + this
     }
 }
 
@@ -110,37 +110,30 @@ sealed class CreateApplicationCommand(
     protected open val _guildId: Snowflake? = null
     protected open var dmPermission: Boolean? = null
 
-    var nameLocalizations: MutableMap<Locale, String>?
-        get() = _nameLocalizations?.getOrNull()
-        set(value) {
-            _nameLocalizations = Optional.ofNullable(value)
-        }
-
-    var descriptionLocalizations: MutableMap<Locale, String>?
-        get() = _descriptionLocalizations?.getOrNull()
-        set(value) {
-            _descriptionLocalizations = Optional.ofNullable(value)
-        }
-
-    var defaultMemberPermissions: MutableSet<PermissionFlag>?
-        get() = _defaultMemberPermissions?.getOrNull()
-        set(value) {
-            _defaultMemberPermissions = Optional.ofNullable(value)
-        }
-
     protected open fun toGlobalCommandUni(): CreateGlobalApplicationCommandUni {
         return CreateGlobalApplicationCommandUni.builder()
             .requester(requester)
             .applicationId(applicationId)
             .name(name)
-            .nameLocalizations(nameLocalizations)
+            .nameLocalizations(nameLocalizations?.getOrNull())
             .description(description)
-            .descriptionLocalizations(descriptionLocalizations)
-            .defaultMemberPermissions(defaultMemberPermissions)
+            .descriptionLocalizations(descriptionLocalizations?.getOrNull())
+            .defaultMemberPermissions(defaultMemberPermissions?.getOrNull())
             .dmPermission(dmPermission)
             .type(type)
             .nsfw(nsfw)
             .build()
+    }
+
+    protected open fun toGlobalCommandOverwrite(): GlobalApplicationCommandOverwrite {
+        return GlobalApplicationCommandOverwrite(name)
+            .withNameLocalizations(nameLocalizations.toNullableOptional())
+            .run { description?.let { withDescription(it) } ?: this }
+            .withDescriptionLocalizations(descriptionLocalizations.toNullableOptional())
+            .withDefaultMemberPermissions(defaultMemberPermissions.toNullableOptional())
+            .run { type?.let { withType(it) } ?: this }
+            .run { nsfw?.let { withNsfw(it) } ?: this }
+            .run { dmPermission?.let { withDmPermission(it) } ?: this }
     }
 
     protected open fun toGuildCommandUni(): CreateGuildApplicationCommandUni {
@@ -149,14 +142,24 @@ sealed class CreateApplicationCommand(
             .applicationId(applicationId)
             .apply { _guildId?.let { guildId(it) } }
             .name(name)
-            .nameLocalizations(nameLocalizations)
+            .nameLocalizations(nameLocalizations?.getOrNull())
             .description(description)
-            .descriptionLocalizations(descriptionLocalizations)
-            .defaultMemberPermissions(defaultMemberPermissions)
+            .descriptionLocalizations(descriptionLocalizations?.getOrNull())
+            .defaultMemberPermissions(defaultMemberPermissions?.getOrNull())
             .dmPermission(dmPermission)
             .type(type)
             .nsfw(nsfw)
             .build()
+    }
+
+    protected open fun toGuildCommandOverwrite(): GuildApplicationCommandOverwrite {
+        return GuildApplicationCommandOverwrite(name)
+            .withNameLocalizations(nameLocalizations.toNullableOptional())
+            .run { description?.let { withDescription(it) } ?: this }
+            .withDescriptionLocalizations(descriptionLocalizations.toNullableOptional())
+            .withDefaultMemberPermissions(defaultMemberPermissions.toNullableOptional())
+            .run { type?.let { withType(it) } ?: this }
+            .run { nsfw?.let { withNsfw(it) } ?: this }
     }
 }
 
@@ -172,11 +175,21 @@ sealed class CreateApplicationCommandWithOptions(requester: Requester<*>, applic
             .build()
     }
 
+    override fun toGlobalCommandOverwrite(): GlobalApplicationCommandOverwrite {
+        return super.toGlobalCommandOverwrite()
+            .run { options?.let { it -> withOptions(it.map { it.toImmutable() }) } ?: this }
+    }
+
     override fun toGuildCommandUni(): CreateGuildApplicationCommandUni {
         return CreateGuildApplicationCommandUni.builder()
             .from(super.toGuildCommandUni())
             .options(options?.map { it.toImmutable() })
             .build()
+    }
+
+    override fun toGuildCommandOverwrite(): GuildApplicationCommandOverwrite {
+        return super.toGuildCommandOverwrite()
+            .run { options?.let { it -> withOptions(it.map { it.toImmutable() }) } ?: this }
     }
 }
 
@@ -246,24 +259,6 @@ sealed class EditApplicationCommandDsl(
     protected open var dmPermission: Boolean? = null
 
     override var options: MutableList<ApplicationCommandOption>? = null
-
-    var nameLocalizations: Optional<MutableMap<Locale, String>>?
-        get() = _nameLocalizations
-        set(value) {
-            _nameLocalizations = value
-        }
-
-    var descriptionLocalizations: Optional<MutableMap<Locale, String>>?
-        get() = _descriptionLocalizations
-        set(value) {
-            _descriptionLocalizations = value
-        }
-
-    var defaultMemberPermissions: Optional<MutableSet<PermissionFlag>>?
-        get() = _defaultMemberPermissions
-        set(value) {
-            _defaultMemberPermissions = value
-        }
 }
 
 class EditGlobalApplicationCommand(requester: Requester<*>, applicationId: Snowflake, commandId: Snowflake):
@@ -345,7 +340,7 @@ class BulkOverwriteGlobalApplicationCommands(requester: Requester<*>, applicatio
         return BulkOverwriteGlobalApplicationCommandsMulti.builder()
             .requester(requester)
             .applicationId(applicationId)
-            .overwrites(overwrites.map {  })
+            .overwrites(overwrites.map { i })
             .build()
     }
 }
@@ -363,10 +358,6 @@ class BulkOverwriteGuildApplicationCommands(requester: Requester<*>, application
 
     fun messageCommand(name: String, init: CreateGuildMessageCommand.() -> Unit) {
         messageCommand(CreateGuildMessageCommand(requester, applicationId, guildId, name).apply(init))
-    }
-
-    private inline fun <reified T : CreateApplicationCommand> T.toImmutable(): GuildApplicationCommandOverwrite {
-        GuildApplicationCommandOverwrite(name, description)
     }
 
     internal fun toMulti(): BulkOverwriteGuildApplicationCommandsMulti {

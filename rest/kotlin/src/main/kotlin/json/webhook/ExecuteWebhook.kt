@@ -33,6 +33,7 @@ class ExecuteWebhook(
             .allowedMentions(allowedMentions?.toImmutable())
             .components(components?.let { it -> it.map { it.toImmutable() } })
             .attachments(attachments?.let { it -> it.map { it.toImmutable() } })
+            .flags(flags)
             .threadName(threadName)
             .build()
     }

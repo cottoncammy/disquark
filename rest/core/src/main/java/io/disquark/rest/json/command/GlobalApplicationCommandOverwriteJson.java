@@ -26,7 +26,7 @@ interface GlobalApplicationCommandOverwriteJson {
     @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableOptionalFilter.class)
     NullableOptional<Map<Locale, String>> nameLocalizations();
 
-    String description();
+    Optional<String> description();
 
     @JsonProperty("description_localizations")
     @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableOptionalFilter.class)

@@ -4,6 +4,8 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.function.Supplier;
 
+import javax.annotation.Nullable;
+
 import io.disquark.rest.request.AccessTokenSource;
 import io.disquark.rest.request.Requester;
 import io.disquark.rest.request.RequesterFactory;
@@ -64,6 +66,7 @@ public abstract class DiscordClient<T extends Response> {
             return this;
         }
 
+        @Nullable
         public GlobalRateLimiter getGlobalRateLimiter() {
             return globalRateLimiter;
         }
@@ -78,6 +81,7 @@ public abstract class DiscordClient<T extends Response> {
             return requesterFactory == null ? (RequesterFactory<R>) RequesterFactory.DEFAULT_HTTP_REQUESTER : requesterFactory;
         }
 
+        @Nullable
         public Builder<R, T> rateLimitStrategy(RateLimitStrategy<R> rateLimitStrategy) {
             this.rateLimitStrategy = requireNonNull(rateLimitStrategy, "rateLimitStrategy");
             return this;

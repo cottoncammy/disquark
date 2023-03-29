@@ -1,7 +1,9 @@
-package io.disquark.rest.interactions;
+package io.disquark.rest.interactions.callbacks;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import io.disquark.rest.interactions.DiscordInteractionsClient;
+import io.disquark.rest.interactions.RespondedInteraction;
 import io.disquark.rest.json.interaction.Interaction;
 import io.smallrye.mutiny.Uni;
 import io.smallrye.mutiny.operators.AbstractUni;
@@ -21,9 +23,9 @@ abstract class AbstractInteractionCallbackUni<T> extends AbstractUni<RespondedIn
     @JsonIgnore
     public abstract DiscordInteractionsClient<?> interactionsClient();
 
-    // TODO support file uploads
+    // TODO support file uploads & use codecs
     @JsonIgnore
-    private Uni<Void> serialize() {
+    protected Uni<Void> serialize() {
         return context().json(toResponse()).invoke(() -> context().put("responded", true));
     }
 

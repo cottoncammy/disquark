@@ -5,8 +5,6 @@ import static io.smallrye.mutiny.unchecked.Unchecked.consumer;
 import static java.util.Objects.requireNonNull;
 
 import java.net.URI;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Properties;
 import java.util.function.Supplier;
 
@@ -36,7 +34,6 @@ public class HttpClientRequester implements Requester<HttpResponse> {
 
     private final URI baseUrl;
     private final HttpClient httpClient;
-    private final Map<String, Codec> codecs;
     private final AccessTokenSource tokenSource;
     private final GlobalRateLimiter rateLimiter;
 
@@ -52,12 +49,10 @@ public class HttpClientRequester implements Requester<HttpResponse> {
     protected HttpClientRequester(
             URI baseUrl,
             HttpClient httpClient,
-            Map<String, Codec> codecs,
             AccessTokenSource tokenSource,
             GlobalRateLimiter rateLimiter) {
         this.baseUrl = baseUrl;
         this.httpClient = httpClient;
-        this.codecs = codecs;
         this.tokenSource = tokenSource;
         this.rateLimiter = rateLimiter;
     }
@@ -105,7 +100,7 @@ public class HttpClientRequester implements Requester<HttpResponse> {
                         }
 
                         String contentType = request.contentType().get();
-                        Codec codec = requireNonNull(codecs.get(contentType), String.format("%s codec", contentType));
+                        Codec codec = Codecs.getCodec(contentType);
                         log(LOG, Level.DEBUG, log -> log.debug("Serializing {} body for outgoing request {}",
                                 contentType, ctx.get(REQUEST_ID)));
 
@@ -140,7 +135,7 @@ public class HttpClientRequester implements Requester<HttpResponse> {
                     }
                     return Uni.createFrom().voidItem();
                 })
-                .map(res -> new HttpResponse(ctx.getOrElse(REQUEST_ID, FALLBACK_REQUEST_ID), codecs, res))
+                .map(res -> new HttpResponse(ctx.getOrElse(REQUEST_ID, FALLBACK_REQUEST_ID), res))
                 .call(response -> {
                     HttpClientResponse httpResponse = response.getRaw();
                     log(LOG, Level.DEBUG, log -> log.debug("Received {} - {} for outgoing request {}",
@@ -170,7 +165,6 @@ public class HttpClientRequester implements Requester<HttpResponse> {
 
     public static class Builder {
         protected final Vertx vertx;
-        protected final Map<String, Codec> codecs = new HashMap<>();
         protected final AccessTokenSource tokenSource;
         protected final GlobalRateLimiter rateLimiter;
 
@@ -193,24 +187,10 @@ public class HttpClientRequester implements Requester<HttpResponse> {
             return this;
         }
 
-        public Builder putCodec(String contentType, Codec codec) {
-            codecs.put(requireNonNull(contentType, "contentType"), requireNonNull(codec, "codec"));
-            return this;
-        }
-
-        public Builder putCodecs(Map<String, Codec> codecs) {
-            this.codecs.putAll(requireNonNull(codecs, "codecs"));
-            return this;
-        }
-
         public HttpClientRequester build() {
-            codecs.put("application/json", new JsonCodec());
-            codecs.put("multipart/form-data", new MultipartCodec());
-
             return new HttpClientRequester(
                     baseUrl == null ? URI.create("https://discord.com/api/v10") : baseUrl,
                     httpClient == null ? vertx.createHttpClient() : httpClient,
-                    codecs,
                     tokenSource,
                     rateLimiter);
         }
