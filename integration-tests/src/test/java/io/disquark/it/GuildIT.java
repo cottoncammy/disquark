@@ -4,13 +4,13 @@ import java.util.EnumSet;
 
 import io.disquark.it.config.ConfigValue;
 import io.disquark.rest.DiscordBotClient;
+import io.disquark.rest.json.Snowflake;
 import io.disquark.rest.json.channel.GuildChannelPosition;
 import io.disquark.rest.json.guild.Guild;
-import io.disquark.rest.json.role.GuildRolePosition;
 import io.disquark.rest.json.oauth2.AccessToken;
-import io.disquark.rest.oauth2.BearerTokenSource;
-import io.disquark.rest.json.Snowflake;
 import io.disquark.rest.json.oauth2.Scope;
+import io.disquark.rest.json.role.GuildRolePosition;
+import io.disquark.rest.oauth2.BearerTokenSource;
 import io.disquark.rest.response.DiscordException;
 import io.smallrye.mutiny.Uni;
 import io.smallrye.mutiny.helpers.test.UniAssertSubscriber;

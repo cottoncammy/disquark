@@ -3,8 +3,6 @@ package io.disquark.rest.kotlin.json.message
 import io.disquark.rest.json.Snowflake
 import io.disquark.rest.json.message.CreateMessageUni
 import io.disquark.rest.json.message.Message
-import io.disquark.rest.request.Request
-import io.disquark.rest.request.Requestable
 import io.disquark.rest.request.Requester
 
 class CreateMessage(
@@ -15,7 +13,7 @@ class CreateMessage(
     var messageReference: MessageReference? = null,
     var stickerIds: MutableList<Snowflake>? = null,
     var flags: MutableSet<Message.Flag>? = null,
-): CreateMessageDsl() {
+) : CreateMessageDsl() {
     internal fun toUni(): CreateMessageUni {
         return CreateMessageUni.builder()
             .requester(requester)

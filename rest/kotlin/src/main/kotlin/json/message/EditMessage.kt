@@ -4,7 +4,6 @@ import io.disquark.rest.json.Snowflake
 import io.disquark.rest.json.message.EditMessageUni
 import io.disquark.rest.json.message.Message
 import io.disquark.rest.kotlin.nullableoptional.toNullableOptional
-import io.disquark.rest.request.FileUpload
 import io.disquark.rest.request.Requester
 import java.util.*
 
@@ -13,7 +12,7 @@ class EditMessage(
     private val channelId: Snowflake,
     private val messageId: Snowflake,
     var flags: Optional<MutableSet<Message.Flag>>? = Optional.empty(),
-): EditMessageDsl() {
+) : EditMessageDsl() {
     internal fun toUni(): EditMessageUni {
         return EditMessageUni.builder()
             .requester(requester)

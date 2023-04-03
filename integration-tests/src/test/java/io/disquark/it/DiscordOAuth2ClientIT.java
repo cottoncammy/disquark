@@ -1,9 +1,9 @@
 package io.disquark.it;
 
 import io.disquark.it.config.ConfigValue;
+import io.disquark.rest.json.Snowflake;
 import io.disquark.rest.json.command.ApplicationCommandPermissions;
 import io.disquark.rest.oauth2.DiscordOAuth2Client;
-import io.disquark.rest.json.Snowflake;
 import io.smallrye.mutiny.helpers.test.UniAssertSubscriber;
 
 import org.junit.jupiter.api.Test;

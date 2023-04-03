@@ -4,8 +4,6 @@ import io.disquark.rest.json.Snowflake
 import io.disquark.rest.json.webhook.EditWebhookMessageUni
 import io.disquark.rest.kotlin.json.message.EditMessageDsl
 import io.disquark.rest.kotlin.nullableoptional.toNullableOptional
-import io.disquark.rest.request.Request
-import io.disquark.rest.request.Requestable
 import io.disquark.rest.request.Requester
 
 class EditWebhookMessage(
@@ -14,7 +12,7 @@ class EditWebhookMessage(
     private val webhookToken: String,
     private val messageId: Snowflake,
     var threadId: Snowflake? = null,
-): EditMessageDsl() {
+) : EditMessageDsl() {
     internal fun toUni(): EditWebhookMessageUni {
         return EditWebhookMessageUni.builder()
             .requester(requester)

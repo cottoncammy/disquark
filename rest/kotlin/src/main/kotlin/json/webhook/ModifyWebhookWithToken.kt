@@ -3,8 +3,6 @@ package io.disquark.rest.kotlin.json.webhook
 import io.disquark.rest.json.Snowflake
 import io.disquark.rest.json.webhook.ModifyWebhookWithTokenUni
 import io.disquark.rest.kotlin.nullableoptional.toNullableOptional
-import io.disquark.rest.request.Request
-import io.disquark.rest.request.Requestable
 import io.disquark.rest.request.Requester
 import io.vertx.mutiny.core.buffer.Buffer
 import java.util.*

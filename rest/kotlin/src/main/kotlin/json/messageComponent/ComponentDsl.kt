@@ -62,7 +62,7 @@ class Button(
     var customId: String? = null,
     var url: String? = null,
     var disabled: Boolean? = null,
-): Component {
+) : Component {
     override fun toImmutable(): ImmutableComponent {
         return ImmutableComponent(ImmutableComponent.Type.BUTTON)
             .withStyle(style.value)
@@ -91,7 +91,7 @@ class SelectMenu(
     var minValues: Int? = null,
     var maxValues: Int? = null,
     var disabled: Boolean? = null,
-): Component {
+) : Component {
     private val _options: MutableList<SelectOption>
         get() = options ?: mutableListOf<SelectOption>().also { options = it }
 
@@ -129,7 +129,7 @@ class TextInput(
     var required: Boolean? = null,
     var value: String? = null,
     var placeholder: String? = null,
-): Component {
+) : Component {
     override fun toImmutable(): ImmutableComponent {
         return ImmutableComponent(ImmutableComponent.Type.TEXT_INPUT)
             .withStyle(style.value)

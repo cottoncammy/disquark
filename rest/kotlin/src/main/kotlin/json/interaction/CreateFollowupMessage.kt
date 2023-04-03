@@ -13,7 +13,7 @@ class CreateFollowupMessage(
     var tts: Boolean? = null,
     var flags: MutableSet<Message.Flag>? = null,
     var threadName: String? = null,
-): CreateMessageDsl() {
+) : CreateMessageDsl() {
     internal fun toUni(): CreateFollowupMessageUni {
         return CreateFollowupMessageUni.builder()
             .requester(requester)

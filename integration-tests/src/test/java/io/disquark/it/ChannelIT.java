@@ -6,13 +6,13 @@ import java.util.List;
 import io.disquark.it.config.ConfigValue;
 import io.disquark.rest.DiscordBotClient;
 import io.disquark.rest.emoji.ReactionEmoji;
+import io.disquark.rest.json.Snowflake;
 import io.disquark.rest.json.channel.Channel;
 import io.disquark.rest.json.forum.ForumThreadMessageParams;
-import io.disquark.rest.json.oauth2.AccessToken;
-import io.disquark.rest.oauth2.BearerTokenSource;
-import io.disquark.rest.json.Snowflake;
 import io.disquark.rest.json.message.Message;
+import io.disquark.rest.json.oauth2.AccessToken;
 import io.disquark.rest.json.oauth2.Scope;
+import io.disquark.rest.oauth2.BearerTokenSource;
 import io.smallrye.mutiny.Uni;
 import io.smallrye.mutiny.helpers.test.UniAssertSubscriber;
 

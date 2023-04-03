@@ -1,7 +1,5 @@
 package io.disquark.it;
 
-import java.util.Map;
-
 import io.disquark.it.config.ConfigValue;
 import io.disquark.rest.DiscordBotClient;
 import io.disquark.rest.json.Snowflake;

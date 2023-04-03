@@ -10,7 +10,7 @@ class EditOriginalInteractionResponse(
     private val requester: Requester<*>,
     private val applicationId: Snowflake,
     private val interactionToken: String,
-): EditMessageDsl() {
+) : EditMessageDsl() {
     internal fun toUni(): EditOriginalInteractionResponseUni {
         return EditOriginalInteractionResponseUni.builder()
             .requester(requester)

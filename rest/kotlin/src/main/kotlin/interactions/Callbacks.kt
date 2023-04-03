@@ -25,7 +25,7 @@ class ResponseCallback<C : CompletableInteraction<D>, D>(
     private val interaction: C,
     var tts: Boolean? = null,
     var flags: MutableSet<Message.Flag>? = null,
-): CreateMessageDsl() {
+) : CreateMessageDsl() {
     internal fun toUni(): ResponseCallbackUni<D> {
         val uni: ResponseCallbackUni<D> = when (interaction) {
             is ApplicationCommandInteraction -> interaction.respond() as ResponseCallbackUni<D>
@@ -50,7 +50,7 @@ class UpdateMessageCallback(
     private val interaction: MessageComponentInteraction,
     var tts: Optional<Boolean>? = Optional.empty(),
     var flags: Optional<MutableSet<Message.Flag>>? = Optional.empty(),
-): EditMessageDsl() {
+) : EditMessageDsl() {
     internal fun toUni(): UpdateMessageCallbackUni {
         return UpdateMessageCallbackUni.builder()
             .from(interaction.edit())
@@ -68,7 +68,7 @@ class ModalCallback<C : CompletableInteraction<D>, D>(
     private val interaction: C,
     private val customId: String,
     private val title: String,
-): ComponentDsl() {
+) : ComponentDsl() {
     var components: MutableList<Component>?
         get() = _components?.getOrNull()
         set(value) {
@@ -91,7 +91,7 @@ class ModalCallback<C : CompletableInteraction<D>, D>(
     }
 }
 
-sealed class AutocompleteCallback<C : ApplicationCommandOption.Choice<T>, T>(private val interaction: ApplicationCommandAutocompleteInteraction):
+sealed class AutocompleteCallback<C : ApplicationCommandOption.Choice<T>, T>(private val interaction: ApplicationCommandAutocompleteInteraction) :
     ApplicationCommandOptionChoicesDsl<C, T> {
 
     override var choices: MutableList<C>? = null
@@ -105,19 +105,19 @@ sealed class AutocompleteCallback<C : ApplicationCommandOption.Choice<T>, T>(pri
     }
 }
 
-class AutocompleteStringOptionCallback(interaction: ApplicationCommandAutocompleteInteraction): AutocompleteCallback<StringOption.Choice, String>(interaction) {
+class AutocompleteStringOptionCallback(interaction: ApplicationCommandAutocompleteInteraction) : AutocompleteCallback<StringOption.Choice, String>(interaction) {
     override fun choice(name: String, value: String, init: ApplicationCommandOption.Choice<String>.() -> Unit) {
         +StringOption.Choice(name, value).apply(init)
     }
 }
 
-class AutocompleteIntOptionCallback(interaction: ApplicationCommandAutocompleteInteraction): AutocompleteCallback<IntOption.Choice, Int>(interaction) {
+class AutocompleteIntOptionCallback(interaction: ApplicationCommandAutocompleteInteraction) : AutocompleteCallback<IntOption.Choice, Int>(interaction) {
     override fun choice(name: String, value: Int, init: ApplicationCommandOption.Choice<Int>.() -> Unit) {
         +IntOption.Choice(name, value).apply(init)
     }
 }
 
-class AutocompleteDoubleOptionCallback(interaction: ApplicationCommandAutocompleteInteraction): AutocompleteCallback<DoubleOption.Choice, Double>(interaction) {
+class AutocompleteDoubleOptionCallback(interaction: ApplicationCommandAutocompleteInteraction) : AutocompleteCallback<DoubleOption.Choice, Double>(interaction) {
     override fun choice(name: String, value: Double, init: ApplicationCommandOption.Choice<Double>.() -> Unit) {
         +DoubleOption.Choice(name, value).apply(init)
     }

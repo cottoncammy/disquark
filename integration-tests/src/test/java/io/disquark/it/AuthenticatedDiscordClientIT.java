@@ -2,10 +2,10 @@ package io.disquark.it;
 
 import io.disquark.it.config.ConfigHelper;
 import io.disquark.rest.AuthenticatedDiscordClient;
+import io.disquark.rest.json.Snowflake;
 import io.disquark.rest.json.command.GlobalApplicationCommandOverwrite;
 import io.disquark.rest.json.command.GuildApplicationCommandOverwrite;
 import io.disquark.rest.oauth2.DiscordOAuth2Client;
-import io.disquark.rest.json.Snowflake;
 import io.smallrye.mutiny.helpers.test.UniAssertSubscriber;
 
 import org.junit.jupiter.api.BeforeAll;

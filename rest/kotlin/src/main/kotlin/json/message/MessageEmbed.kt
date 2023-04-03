@@ -1,7 +1,7 @@
 package io.disquark.rest.kotlin.json.message
 
-import io.disquark.rest.json.message.MessageEmbed as ImmutableMessageEmbed
 import java.time.Instant
+import io.disquark.rest.json.message.MessageEmbed as ImmutableMessageEmbed
 
 data class MessageEmbed(
     var title: String? = null,

@@ -4,8 +4,6 @@ import io.disquark.rest.json.Snowflake
 import io.disquark.rest.json.interaction.EditFollowupMessageUni
 import io.disquark.rest.kotlin.json.message.EditMessageDsl
 import io.disquark.rest.kotlin.nullableoptional.toNullableOptional
-import io.disquark.rest.request.Request
-import io.disquark.rest.request.Requestable
 import io.disquark.rest.request.Requester
 
 class EditFollowupMessage(
@@ -13,7 +11,7 @@ class EditFollowupMessage(
     private val applicationId: Snowflake,
     private val interactionToken: String,
     private val messageId: Snowflake,
-): EditMessageDsl() {
+) : EditMessageDsl() {
     internal fun toUni(): EditFollowupMessageUni {
         return EditFollowupMessageUni.builder()
             .requester(requester)

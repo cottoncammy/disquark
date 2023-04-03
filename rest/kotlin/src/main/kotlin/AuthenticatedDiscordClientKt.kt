@@ -5,9 +5,9 @@ import io.disquark.rest.json.Snowflake
 import io.disquark.rest.json.command.ApplicationCommand
 import io.disquark.rest.json.message.Message
 import io.disquark.rest.json.webhook.Webhook
-import io.disquark.rest.kotlin.interactions.editOriginalInteractionResponse
 import io.disquark.rest.kotlin.interactions.createFollowupMessage
 import io.disquark.rest.kotlin.interactions.editFollowupMessage
+import io.disquark.rest.kotlin.interactions.editOriginalInteractionResponse
 import io.disquark.rest.kotlin.json.command.*
 import io.disquark.rest.kotlin.json.interaction.CreateFollowupMessage
 import io.disquark.rest.kotlin.json.interaction.EditFollowupMessage

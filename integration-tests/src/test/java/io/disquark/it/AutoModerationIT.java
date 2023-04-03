@@ -33,7 +33,7 @@ class AutoModerationIT {
     @Order(2)
     void testCreateAutoModerationRule(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_GUILD_ID") Snowflake guildId) {
         autoModerationRuleId = botClient.createAutoModerationRule(guildId, "foo",
-                        AutoModerationRule.EventType.MESSAGE_SEND, AutoModerationRule.TriggerType.SPAM)
+                AutoModerationRule.EventType.MESSAGE_SEND, AutoModerationRule.TriggerType.SPAM)
                 .withActions(new AutoModerationAction(AutoModerationAction.Type.BLOCK_MESSAGE))
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .awaitItem()

@@ -1,5 +1,6 @@
 package io.disquark.rest.interactions;
 
+import io.disquark.rest.interactions.callbacks.AutocompleteCallbackUni;
 import io.disquark.rest.json.interaction.Interaction;
 import io.vertx.mutiny.ext.web.RoutingContext;
 

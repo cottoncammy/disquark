@@ -17,7 +17,7 @@ open class ApplicationCommandOption(
     private val description: String,
     var required: Boolean? = null,
     var autocomplete: Boolean? = null,
-): ApplicationCommandLocalizationsDsl() {
+) : ApplicationCommandLocalizationsDsl() {
     sealed class Choice<T>(
         protected val name: String,
         protected val value: T,
@@ -42,7 +42,7 @@ open class ApplicationCommandOption(
     }
 }
 
-class SubcommandGroupOption(name: String, description: String):
+class SubcommandGroupOption(name: String, description: String) :
     ApplicationCommandOption(ImmutableApplicationCommandOption.Type.SUBCOMMAND_GROUP, name, description),
     ApplicationCommandOptionsWithSubcommandDsl {
 
@@ -50,18 +50,18 @@ class SubcommandGroupOption(name: String, description: String):
 
     override fun toImmutable(): ImmutableApplicationCommandOption {
         return ImmutableApplicationCommandOption.copyOf(super.toImmutable())
-            .run { options?.map { it.toImmutable() }?.let{ withOptions(it) } ?: this }
+            .run { options?.map { it.toImmutable() }?.let { withOptions(it) } ?: this }
     }
 }
 
-class SubcommandOption(name: String, description: String):
+class SubcommandOption(name: String, description: String) :
     ApplicationCommandOption(ImmutableApplicationCommandOption.Type.SUBCOMMAND, name, description), ApplicationCommandOptionsDsl {
 
     override var options: MutableList<ApplicationCommandOption>? = null
 
     override fun toImmutable(): ImmutableApplicationCommandOption {
         return ImmutableApplicationCommandOption.copyOf(super.toImmutable())
-            .run { options?.map { it.toImmutable() }?.let{ withOptions(it) } ?: this }
+            .run { options?.map { it.toImmutable() }?.let { withOptions(it) } ?: this }
     }
 }
 
@@ -82,14 +82,14 @@ sealed class ApplicationCommandOptionWithChoicesDsl<C : ApplicationCommandOption
     type: ImmutableApplicationCommandOption.Type,
     name: String,
     description: String,
-): ApplicationCommandOption(type, name, description), ApplicationCommandOptionChoicesDsl<C, T> {
+) : ApplicationCommandOption(type, name, description), ApplicationCommandOptionChoicesDsl<C, T> {
     override var choices: MutableList<C>? = null
 }
 
-class StringOption(name: String, description: String, var minLength: Int? = null, var maxLength: Int? = null):
+class StringOption(name: String, description: String, var minLength: Int? = null, var maxLength: Int? = null) :
     ApplicationCommandOptionWithChoicesDsl<StringOption.Choice, String>(ImmutableApplicationCommandOption.Type.STRING, name, description) {
 
-    class Choice(name: String, value: String): ApplicationCommandOption.Choice<String>(name, value) {
+    class Choice(name: String, value: String) : ApplicationCommandOption.Choice<String>(name, value) {
         override fun toImmutable(): ImmutableApplicationCommandOptionChoice {
             return ImmutableApplicationCommandOptionChoice(name, TextNode(value))
                 .withNameLocalizations(nameLocalizations.toNullableOptional())
@@ -102,7 +102,7 @@ class StringOption(name: String, description: String, var minLength: Int? = null
 
     override fun toImmutable(): ImmutableApplicationCommandOption {
         return ImmutableApplicationCommandOption.copyOf(super.toImmutable())
-            .run { choices?.map{ it.toImmutable() }?.let { withChoices(it) } ?: this }
+            .run { choices?.map { it.toImmutable() }?.let { withChoices(it) } ?: this }
             .run { minLength?.let { withMinLength(it) } ?: this }
             .run { maxLength?.let { withMaxLength(it) } ?: this }
     }
@@ -114,18 +114,18 @@ sealed class NumberOption<C : ApplicationCommandOption.Choice<T>, T : Number>(
     description: String,
     var minValue: T? = null,
     var maxValue: T? = null,
-): ApplicationCommandOptionWithChoicesDsl<C, T>(type, name, description) {
+) : ApplicationCommandOptionWithChoicesDsl<C, T>(type, name, description) {
 
     override fun toImmutable(): ImmutableApplicationCommandOption {
         return ImmutableApplicationCommandOption.copyOf(super.toImmutable())
-            .run { choices?.map{ it.toImmutable() }?.let { withChoices(it) } ?: this }
+            .run { choices?.map { it.toImmutable() }?.let { withChoices(it) } ?: this }
             .run { minValue?.let { withMinValue(it.toDouble()) } ?: this }
             .run { maxValue?.let { withMaxValue(it.toDouble()) } ?: this }
     }
 }
 
-class IntOption(name: String, description: String): NumberOption<IntOption.Choice, Int>(ImmutableApplicationCommandOption.Type.INT, name, description) {
-    class Choice(name: String, value: Int): ApplicationCommandOption.Choice<Int>(name, value) {
+class IntOption(name: String, description: String) : NumberOption<IntOption.Choice, Int>(ImmutableApplicationCommandOption.Type.INT, name, description) {
+    class Choice(name: String, value: Int) : ApplicationCommandOption.Choice<Int>(name, value) {
         override fun toImmutable(): ImmutableApplicationCommandOptionChoice {
             return ImmutableApplicationCommandOptionChoice(name, IntNode(value))
                 .withNameLocalizations(nameLocalizations.toNullableOptional())
@@ -137,8 +137,8 @@ class IntOption(name: String, description: String): NumberOption<IntOption.Choic
     }
 }
 
-class DoubleOption(name: String, description: String): NumberOption<DoubleOption.Choice, Double>(ImmutableApplicationCommandOption.Type.DOUBLE, name, description) {
-    class Choice(name: String, value: Double): ApplicationCommandOption.Choice<Double>(name, value) {
+class DoubleOption(name: String, description: String) : NumberOption<DoubleOption.Choice, Double>(ImmutableApplicationCommandOption.Type.DOUBLE, name, description) {
+    class Choice(name: String, value: Double) : ApplicationCommandOption.Choice<Double>(name, value) {
         override fun toImmutable(): ImmutableApplicationCommandOptionChoice {
             return ImmutableApplicationCommandOptionChoice(name, DoubleNode(value))
                 .withNameLocalizations(nameLocalizations.toNullableOptional())
@@ -150,7 +150,7 @@ class DoubleOption(name: String, description: String): NumberOption<DoubleOption
     }
 }
 
-class ChannelOption(name: String, description: String, var channelTypes: MutableSet<Channel.Type>? = null):
+class ChannelOption(name: String, description: String, var channelTypes: MutableSet<Channel.Type>? = null) :
     ApplicationCommandOption(ImmutableApplicationCommandOption.Type.CHANNEL, name, description) {
 
     override fun toImmutable(): ImmutableApplicationCommandOption {

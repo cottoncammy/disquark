@@ -40,8 +40,8 @@ class GuildScheduledEventIT {
                 .id();
 
         guildScheduledEventId = botClient.createGuildScheduledEvent(guildId, "foo",
-                        GuildScheduledEvent.PrivacyLevel.GUILD_ONLY, Instant.now().plus(Duration.ofMinutes(30)),
-                        GuildScheduledEvent.EntityType.VOICE)
+                GuildScheduledEvent.PrivacyLevel.GUILD_ONLY, Instant.now().plus(Duration.ofMinutes(30)),
+                GuildScheduledEvent.EntityType.VOICE)
                 .withChannelId(voiceChannelId)
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .awaitItem()

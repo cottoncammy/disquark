@@ -13,7 +13,7 @@ import kotlin.jvm.optionals.getOrNull
 annotation class MessageDslMarker
 
 @MessageDslMarker
-sealed class MessageDsl: ComponentDsl(), FileUploadDsl {
+sealed class MessageDsl : ComponentDsl(), FileUploadDsl {
     override var files: MutableList<FileUpload> = mutableListOf()
 
     protected var _content: Optional<String>? = Optional.empty()
@@ -44,7 +44,7 @@ sealed class MessageDsl: ComponentDsl(), FileUploadDsl {
     }
 }
 
-abstract class CreateMessageDsl: MessageDsl() {
+abstract class CreateMessageDsl : MessageDsl() {
     var content: String?
         get() = _content?.getOrNull()
         set(value) {
@@ -76,7 +76,7 @@ abstract class CreateMessageDsl: MessageDsl() {
         }
 }
 
-abstract class EditMessageDsl: MessageDsl() {
+abstract class EditMessageDsl : MessageDsl() {
     var content: Optional<String>?
         get() = _content
         set(value) {

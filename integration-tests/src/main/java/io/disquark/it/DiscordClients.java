@@ -4,9 +4,9 @@ import java.util.EnumSet;
 
 import io.disquark.it.config.ConfigHelper;
 import io.disquark.rest.DiscordBotClient;
+import io.disquark.rest.json.oauth2.Scope;
 import io.disquark.rest.oauth2.BearerTokenSource;
 import io.disquark.rest.oauth2.DiscordOAuth2Client;
-import io.disquark.rest.json.oauth2.Scope;
 import io.vertx.mutiny.core.Vertx;
 
 public class DiscordClients {
