@@ -24,7 +24,7 @@ open class ApplicationCommandOption(
         var nameLocalizations: Optional<MutableMap<Locale, String>>? = null,
     ) {
         private val _nameLocalizations: MutableMap<Locale, String>
-            get() = nameLocalizations?.getOrNull() ?: mutableMapOf()
+            get() = nameLocalizations?.getOrNull() ?: mutableMapOf<Locale, String>().also { nameLocalizations = Optional.of(it) }
 
         fun nameLocalizations(init: MutableMap<Locale, String>.() -> Unit) {
             _nameLocalizations + mutableMapOf<Locale, String>().apply(init)
@@ -69,7 +69,7 @@ interface ApplicationCommandOptionChoicesDsl<C : ApplicationCommandOption.Choice
     var choices: MutableList<C>?
 
     private val _choices: MutableList<C>
-        get() = choices ?: mutableListOf()
+        get() = choices ?: mutableListOf<C>().also { choices = it }
 
     operator fun C.unaryPlus() {
         _choices + this

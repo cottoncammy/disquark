@@ -3,7 +3,7 @@ package io.disquark.rest;
 import static io.disquark.rest.interactions.dsl.InteractionSchema.ping;
 
 import io.disquark.rest.interactions.DiscordInteractionsClient;
-import io.disquark.rest.interactions.InteractionValidatorFactory;
+import io.disquark.rest.interactions.InteractionsValidatorFactory;
 import io.disquark.rest.json.interaction.Interaction;
 import io.disquark.rest.request.AccessTokenSource;
 import io.smallrye.mutiny.helpers.test.AssertSubscriber;
@@ -23,7 +23,7 @@ class InteractionsVerticleTest extends InteractionsTestBase {
         botClient = DiscordBotClient.builder(Vertx.vertx(), AccessTokenSource.DUMMY)
                 .interactionsClientOptions(new DiscordInteractionsClient.Options()
                         .setVerifyKey("foo")
-                        .setValidatorFactory(InteractionValidatorFactory.NO_OP))
+                        .setValidatorFactory(InteractionsValidatorFactory.NO_OP))
                 .build();
 
         botClient.on(ping());

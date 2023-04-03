@@ -61,9 +61,6 @@ interface GuildTemplateJson {
         @JsonProperty("icon_hash")
         Optional<String> iconHash();
 
-        @Deprecated
-        Optional<String> region();
-
         @JsonProperty("afk_channel_id")
         Optional<Snowflake> afkChannelId();
 

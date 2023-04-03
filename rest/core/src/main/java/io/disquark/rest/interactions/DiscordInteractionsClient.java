@@ -36,7 +36,7 @@ public class DiscordInteractionsClient<T extends Response> extends DiscordClient
     private final boolean handleCors;
     private final String interactionsUrl;
     private final boolean startHttpServer;
-    private final InteractionValidator validator;
+    private final InteractionsValidator validator;
     private final Supplier<HttpServer> httpServerSupplier;
 
     private volatile InteractionsVerticle verticle;
@@ -57,7 +57,7 @@ public class DiscordInteractionsClient<T extends Response> extends DiscordClient
             boolean handleCors,
             String interactionsUrl,
             boolean startHttpServer,
-            InteractionValidator validator,
+            InteractionsValidator validator,
             Supplier<HttpServer> httpServerSupplier) {
         super(vertx, requester);
         this.router = router;
@@ -151,7 +151,7 @@ public class DiscordInteractionsClient<T extends Response> extends DiscordClient
         protected String interactionsUrl;
         protected boolean startHttpServer = true;
         protected Supplier<HttpServer> httpServerSupplier;
-        protected InteractionValidatorFactory validatorFactory;
+        protected InteractionsValidatorFactory validatorFactory;
 
         protected Builder(Vertx vertx, String verifyKey) {
             super(vertx, AccessTokenSource.DUMMY);
@@ -201,7 +201,7 @@ public class DiscordInteractionsClient<T extends Response> extends DiscordClient
             return this;
         }
 
-        public Builder<T> validatorFactory(InteractionValidatorFactory validatorFactory) {
+        public Builder<T> validatorFactory(InteractionsValidatorFactory validatorFactory) {
             this.validatorFactory = requireNonNull(validatorFactory, "validatorFactory");
             return this;
         }
@@ -209,7 +209,7 @@ public class DiscordInteractionsClient<T extends Response> extends DiscordClient
         @Override
         public DiscordInteractionsClient<T> build() {
             if (validatorFactory == null) {
-                validatorFactory = InteractionValidatorFactory.NO_OP;
+                validatorFactory = InteractionsValidatorFactory.NO_OP;
 
                 boolean bouncyCastle = false;
                 try {
@@ -223,7 +223,7 @@ public class DiscordInteractionsClient<T extends Response> extends DiscordClient
                 if (bouncyCastle && Security.getProvider("BC") == null) {
                     LOG.warn("BouncyCastle JCE provider not installed: incoming interaction signatures will not be validated");
                 } else if (bouncyCastle) {
-                    validatorFactory = BouncyCastleInteractionValidator::new;
+                    validatorFactory = BouncyCastleInteractionsValidator::new;
                 }
             }
 
@@ -246,7 +246,7 @@ public class DiscordInteractionsClient<T extends Response> extends DiscordClient
         protected String interactionsUrl;
         protected boolean startHttpServer = true;
         protected Supplier<HttpServer> httpServerSupplier;
-        protected InteractionValidatorFactory validatorFactory;
+        protected InteractionsValidatorFactory validatorFactory;
 
         public Options setRouter(Router router) {
             this.router = requireNonNull(router, "router");
@@ -302,12 +302,12 @@ public class DiscordInteractionsClient<T extends Response> extends DiscordClient
             return httpServerSupplier;
         }
 
-        public Options setValidatorFactory(InteractionValidatorFactory validatorFactory) {
+        public Options setValidatorFactory(InteractionsValidatorFactory validatorFactory) {
             this.validatorFactory = requireNonNull(validatorFactory, "validatorFactory");
             return this;
         }
 
-        public InteractionValidatorFactory getValidatorFactory() {
+        public InteractionsValidatorFactory getValidatorFactory() {
             return validatorFactory;
         }
     }

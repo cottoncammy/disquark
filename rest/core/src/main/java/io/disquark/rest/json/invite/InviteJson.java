@@ -55,7 +55,7 @@ interface InviteJson {
     Optional<GuildScheduledEvent> guildScheduledEvent();
 
     @JsonUnwrapped
-    Optional<MetadataJson> metadata();
+    Optional<Invite.Metadata> metadata();
 
     enum TargetType {
         @JsonEnumDefaultValue

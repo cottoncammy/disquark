@@ -1,8 +1,8 @@
 package io.disquark.rest.request;
 
 import java.util.List;
-import java.util.Map;
 
+import io.disquark.rest.json.Snowflake;
 import io.disquark.rest.util.Tika;
 import io.netty.util.internal.StringUtil;
 import io.vertx.core.json.Json;
@@ -13,8 +13,8 @@ import io.vertx.mutiny.ext.web.multipart.MultipartForm;
 class MultipartCodec implements Codec {
     public static String CONTENT_TYPE = "multipart/form-data";
 
-    private void addFile(MultipartForm form, String paramName, Map.Entry<String, Buffer> file) {
-        form.binaryFileUpload(paramName, file.getKey(), file.getValue(), Tika.detect(file.getValue().getBytes()));
+    private void addFile(MultipartForm form, String paramName, FileUpload file) {
+        form.binaryFileUpload(paramName, file.getName(), file.getContent(), Tika.detect(file.getContent().getBytes()));
     }
 
     @Override
@@ -22,17 +22,17 @@ class MultipartCodec implements Codec {
         return CONTENT_TYPE;
     }
 
-    // TODO account for partialAttachmentIds
     @Override
     public Body serialize(Request request, MultiMap headers) {
         MultipartForm form = MultipartForm.create();
-        List<Map.Entry<String, Buffer>> files = request.files();
+        List<FileUpload> files = request.files();
 
-        if (files.size() == 1) {
+        if (request.endpoint().getUriTemplate().getUri().equals("/guilds/{guild.id}/stickers")) {
             addFile(form, "file", files.get(0));
         } else {
             for (int i = 0; i < files.size(); i++) {
-                addFile(form, String.format("files[%d]", i), files.get(i));
+                FileUpload file = files.get(i);
+                addFile(form, String.format("files[%d]", file.getId().map(Snowflake::getValue).orElse((long) i)), file);
             }
         }
 

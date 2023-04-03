@@ -25,7 +25,7 @@ abstract class ModifyStageInstance extends AbstractRequestUni<StageInstance> imp
     public abstract Optional<String> topic();
 
     @JsonProperty("privacy_level")
-    public abstract Optional<StageInstanceJson.PrivacyLevel> privacyLevel();
+    public abstract Optional<StageInstance.PrivacyLevel> privacyLevel();
 
     @Override
     public void subscribe(UniSubscriber<? super StageInstance> downstream) {

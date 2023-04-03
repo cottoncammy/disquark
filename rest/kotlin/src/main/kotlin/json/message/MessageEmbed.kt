@@ -35,9 +35,8 @@ data class MessageEmbed(
         }
     }
 
-    // TODO assign nullable collections in the get
     private val _fields: MutableList<Field>
-        get() = fields ?: mutableListOf()
+        get() = fields ?: mutableListOf<Field>().also { fields = it }
 
     operator fun Field.unaryPlus() {
         _fields + this

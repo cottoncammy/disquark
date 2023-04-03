@@ -4,8 +4,6 @@ import io.disquark.rest.json.Snowflake
 import io.disquark.rest.json.interaction.CreateFollowupMessageUni
 import io.disquark.rest.json.message.Message
 import io.disquark.rest.kotlin.json.message.CreateMessageDsl
-import io.disquark.rest.request.Request
-import io.disquark.rest.request.Requestable
 import io.disquark.rest.request.Requester
 
 class CreateFollowupMessage(

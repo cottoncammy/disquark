@@ -45,7 +45,7 @@ class InteractionsVerticle extends AbstractVerticle {
     private final String interactionsUrl;
     private final boolean startHttpServer;
     private final Supplier<HttpServer> httpServerSupplier;
-    private final InteractionValidator interactionValidator;
+    private final InteractionsValidator interactionsValidator;
     private final DiscordInteractionsClient<?> interactionsClient;
     private final BroadcastProcessor<RoutingContext> processor = BroadcastProcessor.create();
 
@@ -55,14 +55,14 @@ class InteractionsVerticle extends AbstractVerticle {
             String interactionsUrl,
             boolean startHttpServer,
             Supplier<HttpServer> httpServerSupplier,
-            InteractionValidator interactionValidator,
+            InteractionsValidator interactionsValidator,
             DiscordInteractionsClient<?> interactionsClient) {
         this.router = router;
         this.handleCors = handleCors;
         this.interactionsUrl = interactionsUrl;
         this.startHttpServer = startHttpServer;
         this.httpServerSupplier = httpServerSupplier;
-        this.interactionValidator = interactionValidator;
+        this.interactionsValidator = interactionsValidator;
         this.interactionsClient = interactionsClient;
     }
 
@@ -73,20 +73,20 @@ class InteractionsVerticle extends AbstractVerticle {
     @SuppressWarnings("unchecked")
     private Uni<?> handleRequest(RoutingContext context, Context ctx) {
         HttpServerRequest request = context.request();
-        if (LOG.isDebugEnabled()) {
-            ctx.put(REQUEST_ID, Integer.toHexString(request.hashCode()));
-        }
-
         return request.resume().body()
                 .ifNoItem().after(Duration.ofSeconds(3)).failWith(
                         new IllegalArgumentException("No request body received after timeout"))
                 .call(body -> {
+                    if (LOG.isDebugEnabled()) {
+                        ctx.put(REQUEST_ID, Integer.toHexString(request.hashCode()));
+                    }
+
                     log(LOG, Level.DEBUG, log -> log.debug("Received incoming request {} from {}:{} with body {}",
                             ctx.get(REQUEST_ID), request.remoteAddress().host(), request.remoteAddress().port(), body));
 
                     String signature = requireNonNull(request.getHeader("X-Signature-Ed25519"));
                     String timestamp = requireNonNull(request.getHeader("X-Signature-Timestamp"));
-                    if (!interactionValidator.validate(timestamp, body.toString(), signature)) {
+                    if (!interactionsValidator.validate(timestamp, body.toString(), signature)) {
                         return Uni.createFrom().failure(UnauthorizedException::new);
                     }
                     return Uni.createFrom().voidItem();

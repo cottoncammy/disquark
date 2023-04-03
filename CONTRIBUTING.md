@@ -14,7 +14,7 @@ git config --global user.name "Your Name"
 git config --global user.email your.email@example.com
 ```
 
-### Pull Request Etiquette
+## Pull Request Etiquette
 
 Contributions should be performed in your own fork of this repository, and should be submitted by opening a pull request. Before you submit a pull request though, please enable GitHub Actions in your fork and ensure that any code changes build in CI.
 

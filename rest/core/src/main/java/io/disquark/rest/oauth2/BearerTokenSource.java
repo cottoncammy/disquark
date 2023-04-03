@@ -10,6 +10,7 @@ import javax.annotation.Nullable;
 import io.disquark.rest.json.oauth2.AccessToken;
 import io.disquark.rest.json.oauth2.Scope;
 import io.disquark.rest.request.AccessTokenSource;
+import io.disquark.rest.util.UserAgentProvider;
 import io.smallrye.mutiny.Uni;
 import io.vertx.ext.auth.oauth2.OAuth2FlowType;
 import io.vertx.ext.auth.oauth2.OAuth2Options;
@@ -44,8 +45,7 @@ public class BearerTokenSource implements AccessTokenSource {
                 .setAuthorizationPath("/authorize")
                 .setTokenPath("/token")
                 .setRevocationPath("/token/revoke")
-                // TODO user agent
-                .setUserAgent(String.format("DiscordBot (%s, %s)", "https://github.com/cameronprater/discord-TODO", "0.1.0"));
+                .setUserAgent(UserAgentProvider.getUserAgent().await().indefinitely());
         return new Builder(requireNonNull(vertx, "vertx"), OAuth2Auth.create(vertx, options));
     }
 
@@ -69,8 +69,9 @@ public class BearerTokenSource implements AccessTokenSource {
         Uni<User> uni = Uni.createFrom().item(user);
         if (user != null) {
             if (user.expired()) {
-                LOG.debug("Refreshing expired access token");
-                uni = oAuth2.refresh(user).invoke(user -> this.user = user);
+                uni = Uni.createFrom().voidItem()
+                        .invoke(() -> LOG.debug("Refreshing expired access token"))
+                        .replaceWith(oAuth2.refresh(user)).invoke(user -> this.user = user);
             }
         } else {
             Oauth2Credentials credentials = new Oauth2Credentials().setFlow(flowType);
@@ -82,7 +83,6 @@ public class BearerTokenSource implements AccessTokenSource {
             uni = oAuth2.authenticate(credentials).invoke(user -> this.user = user);
         }
 
-        // TODO use codecs
         return uni.map(user -> user.principal().mapTo(AccessToken.class));
     }
 

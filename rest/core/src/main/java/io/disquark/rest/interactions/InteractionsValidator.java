@@ -1,9 +1,9 @@
 package io.disquark.rest.interactions;
 
-public abstract class InteractionValidator {
+public abstract class InteractionsValidator {
     protected final String verifyKey;
 
-    protected InteractionValidator(String verifyKey) {
+    protected InteractionsValidator(String verifyKey) {
         this.verifyKey = verifyKey;
     }
 

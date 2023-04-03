@@ -36,7 +36,7 @@ abstract class EditMessage extends AbstractRequestUni<Message> implements Multip
 
     public abstract NullableOptional<List<MessageEmbed>> embeds();
 
-    public abstract NullableOptional<EnumSet<MessageJson.Flag>> flags();
+    public abstract NullableOptional<EnumSet<Message.Flag>> flags();
 
     @JsonProperty("allowed_mentions")
     public abstract NullableOptional<AllowedMentions> allowedMentions();

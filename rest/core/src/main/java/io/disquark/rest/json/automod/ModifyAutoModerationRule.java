@@ -29,7 +29,7 @@ abstract class ModifyAutoModerationRule extends AbstractRequestUni<AutoModeratio
     public abstract Optional<String> name();
 
     @JsonProperty("event_type")
-    public abstract Optional<AutoModerationRuleJson.EventType> eventType();
+    public abstract Optional<AutoModerationRule.EventType> eventType();
 
     @JsonProperty("trigger_metadata")
     public abstract Optional<AutoModerationRule.TriggerMetadata> triggerMetadata();

@@ -2,26 +2,30 @@ package io.disquark.rest.kotlin.json.message
 
 import io.disquark.rest.kotlin.json.messageComponent.Component
 import io.disquark.rest.kotlin.json.messageComponent.ComponentDsl
+import io.disquark.rest.kotlin.request.FileUploadDsl
+import io.disquark.rest.request.FileUpload
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-// TODO create file upload dsl
+// TODO messageFlag unaryPlus
 
 @DslMarker
 annotation class MessageDslMarker
 
 @MessageDslMarker
-sealed class MessageDsl: ComponentDsl() {
+sealed class MessageDsl: ComponentDsl(), FileUploadDsl {
+    override var files: MutableList<FileUpload> = mutableListOf()
+
     protected var _content: Optional<String>? = Optional.empty()
     protected var _embeds: Optional<MutableList<MessageEmbed>>? = Optional.empty()
     protected var _allowedMentions: Optional<AllowedMentions>? = Optional.empty()
     protected var _attachments: Optional<MutableList<PartialAttachment>>? = Optional.empty()
 
     private val embeds: MutableList<MessageEmbed>
-        get() = _embeds?.getOrNull() ?: mutableListOf()
+        get() = _embeds?.getOrNull() ?: mutableListOf<MessageEmbed>().also { _embeds = Optional.of(it) }
 
     private val attachments: MutableList<PartialAttachment>
-        get() = _attachments?.getOrNull() ?: mutableListOf()
+        get() = _attachments?.getOrNull() ?: mutableListOf<PartialAttachment>().also { _attachments = Optional.of(it) }
 
     operator fun MessageEmbed.unaryPlus() {
         embeds + this

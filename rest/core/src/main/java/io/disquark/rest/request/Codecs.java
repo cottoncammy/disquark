@@ -29,7 +29,6 @@ public class Codecs {
         if (System.getSecurityManager() != null) {
             return AccessController.doPrivileged((PrivilegedAction<ClassLoader>) systemCl::get);
         }
-
         return systemCl.get();
     }
 
@@ -38,7 +37,6 @@ public class Codecs {
             return AccessController
                     .doPrivileged((PrivilegedAction<ClassLoader>) () -> Thread.currentThread().getContextClassLoader());
         }
-
         return Thread.currentThread().getContextClassLoader();
     }
 
@@ -50,10 +48,9 @@ public class Codecs {
             } else if (contentType.equals(MultipartCodec.CONTENT_TYPE)) {
                 codec = MULTIPART_CODEC;
             } else {
-                throw new NoSuchElementException("No Codec implementation registered for content type " + contentType);
+                throw new NoSuchElementException("No codec implementation registered for content type " + contentType);
             }
         }
-
         return codec;
     }
 

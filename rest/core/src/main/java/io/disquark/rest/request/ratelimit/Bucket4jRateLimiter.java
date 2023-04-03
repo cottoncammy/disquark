@@ -52,10 +52,10 @@ public class Bucket4jRateLimiter extends GlobalRateLimiter {
 
     private <T> Uni<T> rateLimit(Uni<T> upstream, boolean app, Context ctx) {
         Bucket bucket = getBucket(app);
-        LOG.debug("Acquiring bucket token for outgoing {} request {}, {} tokens available",
-                getLogString(app), ctx.getOrElse(REQUEST_ID, FALLBACK_REQUEST_ID), bucket.getAvailableTokens());
-
-        return Uni.createFrom().item(supplier(() -> bucket.asBlocking().tryConsume(1, 10)))
+        return Uni.createFrom().voidItem()
+                .invoke(() -> LOG.debug("Acquiring bucket token for outgoing {} request {}, {} tokens available",
+                        getLogString(app), ctx.getOrElse(REQUEST_ID, FALLBACK_REQUEST_ID), bucket.getAvailableTokens()))
+                .replaceWith(supplier(() -> bucket.asBlocking().tryConsume(1, 10)))
                 .runSubscriptionOn(Infrastructure.getDefaultWorkerPool())
                 .call(consumed -> {
                     if (!consumed) {

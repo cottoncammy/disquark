@@ -402,34 +402,34 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public Uni<Void> addThreadMember(Snowflake channelId, Snowflake userId) {
-        return deferredUni(
-                () -> requester.request(new EmptyRequest(HttpMethod.PUT, "/channels/{channel.id}/thread-members/{user.id}",
-                        variables("channel.id", requireNonNull(channelId, "channelId").getValue(),
-                                "user.id", requireNonNull(userId, "userId").getValue()))))
+        return deferredUni(() -> requester.request(new EmptyRequest(HttpMethod.PUT,
+                "/channels/{channel.id}/thread-members/{user.id}",
+                variables("channel.id", requireNonNull(channelId, "channelId").getValue(),
+                        "user.id", requireNonNull(userId, "userId").getValue()))))
                 .replaceWithVoid();
     }
 
     public Uni<Void> leaveThread(Snowflake channelId) {
-        return deferredUni(
-                () -> requester.request(new EmptyRequest(HttpMethod.DELETE, "/channels/{channel.id}/thread-members/@me",
-                        variables("channel.id", requireNonNull(channelId, "channelId").getValue()))))
+        return deferredUni(() -> requester.request(new EmptyRequest(HttpMethod.DELETE,
+                "/channels/{channel.id}/thread-members/@me",
+                variables("channel.id", requireNonNull(channelId, "channelId").getValue()))))
                 .replaceWithVoid();
     }
 
     public Uni<Void> removeThreadMember(Snowflake channelId, Snowflake userId) {
-        return deferredUni(
-                () -> requester.request(new EmptyRequest(HttpMethod.DELETE, "/channels/{channel.id}/thread-members/{user.id}",
-                        variables("channel.id", requireNonNull(channelId, "channelId").getValue(),
-                                "user.id", requireNonNull(userId, "userId").getValue()))))
+        return deferredUni(() -> requester.request(new EmptyRequest(HttpMethod.DELETE,
+                "/channels/{channel.id}/thread-members/{user.id}",
+                variables("channel.id", requireNonNull(channelId, "channelId").getValue(),
+                        "user.id", requireNonNull(userId, "userId").getValue()))))
                 .replaceWithVoid();
     }
 
     public Uni<ThreadMember> getThreadMember(Snowflake channelId, Snowflake userId, boolean withMember) {
-        return deferredUni(
-                () -> requester.request(new EmptyRequest("/channels/{channel.id}/thread-members/{user.id}{?with_member}",
-                        variables("channel.id", requireNonNull(channelId, "channelId").getValue(),
-                                "user.id", requireNonNull(userId, "userId").getValue(),
-                                "with_member", withMember))))
+        return deferredUni(() -> requester.request(new EmptyRequest(
+                "/channels/{channel.id}/thread-members/{user.id}{?with_member}",
+                variables("channel.id", requireNonNull(channelId, "channelId").getValue(),
+                        "user.id", requireNonNull(userId, "userId").getValue(),
+                        "with_member", withMember))))
                 .flatMap(res -> res.as(ThreadMember.class));
     }
 

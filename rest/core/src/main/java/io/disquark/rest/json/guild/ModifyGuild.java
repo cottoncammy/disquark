@@ -37,8 +37,6 @@ abstract class ModifyGuild extends AbstractRequestUni<Guild> implements Auditabl
 
     public abstract NullableOptional<String> name();
 
-    public abstract NullableOptional<String> region();
-
     @JsonProperty("verification_level")
     public abstract NullableOptional<Guild.VerificationLevel> verificationLevel();
 
@@ -74,7 +72,7 @@ abstract class ModifyGuild extends AbstractRequestUni<Guild> implements Auditabl
 
     @JsonInclude(Include.NON_ABSENT)
     @JsonProperty("system_channel_flags")
-    public abstract Optional<EnumSet<GuildJson.SystemChannelFlag>> systemChannelFlags();
+    public abstract Optional<EnumSet<Guild.SystemChannelFlag>> systemChannelFlags();
 
     @JsonProperty("rules_channel_id")
     public abstract NullableOptional<Snowflake> rulesChannelId();
@@ -86,7 +84,7 @@ abstract class ModifyGuild extends AbstractRequestUni<Guild> implements Auditabl
     public abstract NullableOptional<Locale> preferredLocale();
 
     @JsonInclude(Include.NON_ABSENT)
-    public abstract Optional<List<GuildJson.Feature>> features();
+    public abstract Optional<List<Guild.Feature>> features();
 
     public abstract NullableOptional<String> description();
 

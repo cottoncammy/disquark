@@ -40,9 +40,6 @@ interface GuildJson {
     @JsonProperty("owner_id")
     Snowflake ownerId();
 
-    @Deprecated
-    Optional<String> region();
-
     @JsonProperty("afk_channel_id")
     Optional<Snowflake> afkChannelId();
 

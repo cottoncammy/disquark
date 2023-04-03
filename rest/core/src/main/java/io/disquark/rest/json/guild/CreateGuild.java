@@ -23,9 +23,6 @@ abstract class CreateGuild extends AbstractRequestUni<Guild> {
 
     public abstract String name();
 
-    @Deprecated
-    public abstract Optional<String> region();
-
     @JsonSerialize(contentUsing = ImageDataSerializer.class)
     public abstract Optional<Buffer> icon();
 

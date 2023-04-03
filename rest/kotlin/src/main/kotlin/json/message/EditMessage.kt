@@ -4,6 +4,7 @@ import io.disquark.rest.json.Snowflake
 import io.disquark.rest.json.message.EditMessageUni
 import io.disquark.rest.json.message.Message
 import io.disquark.rest.kotlin.nullableoptional.toNullableOptional
+import io.disquark.rest.request.FileUpload
 import io.disquark.rest.request.Requester
 import java.util.*
 

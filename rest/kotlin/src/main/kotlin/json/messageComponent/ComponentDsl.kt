@@ -13,7 +13,7 @@ abstract class ComponentDsl {
     protected var _components: Optional<MutableList<Component>>? = Optional.empty()
 
     private val components: MutableList<Component>
-        get() = _components?.getOrNull() ?: mutableListOf()
+        get() = _components?.getOrNull() ?: mutableListOf<Component>().also { _components = Optional.of(it) }
 
     operator fun Component.unaryPlus() {
         components + this
@@ -24,7 +24,6 @@ abstract class ComponentDsl {
     }
 }
 
-// TODO make this internal
 sealed interface Component {
     fun toImmutable(): ImmutableComponent
 }
@@ -94,7 +93,7 @@ class SelectMenu(
     var disabled: Boolean? = null,
 ): Component {
     private val _options: MutableList<SelectOption>
-        get() = options ?: mutableListOf()
+        get() = options ?: mutableListOf<SelectOption>().also { options = it }
 
     operator fun SelectOption.unaryPlus() {
         _options + this

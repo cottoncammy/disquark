@@ -6,9 +6,9 @@ import io.disquark.rest.util.Hex;
 
 import org.bouncycastle.math.ec.rfc8032.Ed25519;
 
-class BouncyCastleInteractionValidator extends InteractionValidator {
+class BouncyCastleInteractionsValidator extends InteractionsValidator {
 
-    BouncyCastleInteractionValidator(String verifyKey) {
+    BouncyCastleInteractionsValidator(String verifyKey) {
         super(verifyKey);
     }
 
