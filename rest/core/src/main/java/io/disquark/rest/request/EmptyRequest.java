@@ -2,13 +2,11 @@ package io.disquark.rest.request;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import javax.annotation.Nullable;
 
 import io.vertx.core.http.HttpMethod;
-import io.vertx.mutiny.core.buffer.Buffer;
 import io.vertx.mutiny.uritemplate.Variables;
 
 public class EmptyRequest implements Request {
@@ -55,7 +53,7 @@ public class EmptyRequest implements Request {
     }
 
     @Override
-    public List<Map.Entry<String, Buffer>> files() {
+    public List<FileUpload> files() {
         return Collections.emptyList();
     }
 

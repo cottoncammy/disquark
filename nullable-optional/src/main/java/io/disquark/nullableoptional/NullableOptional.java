@@ -28,7 +28,7 @@ public class NullableOptional<T> {
     }
 
     public boolean isNull() {
-        return optional.isEmpty();
+        return optional == null;
     }
 
     public Optional<T> toOptional() {

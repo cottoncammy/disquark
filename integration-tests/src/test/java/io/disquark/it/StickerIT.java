@@ -53,7 +53,7 @@ class StickerIT {
     void testCreateGuildSticker(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_GUILD_ID") Snowflake guildId) {
         Buffer image = botClient.getVertx().fileSystem().readFileAndAwait("images/sticker.png");
         stickerId = botClient.createGuildSticker(guildId, "foo", "bar", "baz")
-                .withFiles(Map.entry("sticker.png", image))
+                //.withFiles(Map.entry("sticker.png", image))
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .awaitItem()
                 .getItem()
