@@ -1,6 +1,5 @@
 package io.disquark.rest.interactions;
 
-import io.disquark.rest.interactions.callbacks.PongCallbackUni;
 import io.disquark.rest.json.interaction.Interaction;
 import io.smallrye.mutiny.Uni;
 import io.vertx.mutiny.ext.web.RoutingContext;

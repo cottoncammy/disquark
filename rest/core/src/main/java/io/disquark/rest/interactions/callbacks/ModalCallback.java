@@ -20,6 +20,6 @@ abstract class ModalCallback<T> extends AbstractInteractionCallbackUni<T> {
 
     @Override
     protected Interaction.Response<?> toResponse() {
-        return new Interaction.Response<>(Interaction.CallbackType.MODAL).withData(this);
+        return new Interaction.Response<ModalCallback<T>>(Interaction.CallbackType.MODAL).withData(this);
     }
 }

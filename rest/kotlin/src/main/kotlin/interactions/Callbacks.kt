@@ -4,13 +4,9 @@ package io.disquark.rest.kotlin.interactions
 
 import io.disquark.rest.interactions.ApplicationCommandAutocompleteInteraction
 import io.disquark.rest.interactions.ApplicationCommandInteraction
-import io.disquark.rest.interactions.AutocompleteCallbackUni
 import io.disquark.rest.interactions.CompletableInteraction
 import io.disquark.rest.interactions.MessageComponentInteraction
-import io.disquark.rest.interactions.ModalCallbackUni
 import io.disquark.rest.interactions.ModalSubmitInteraction
-import io.disquark.rest.interactions.ResponseCallbackUni
-import io.disquark.rest.interactions.UpdateMessageCallbackUni
 import io.disquark.rest.json.message.Message
 import io.disquark.rest.kotlin.json.command.*
 import io.disquark.rest.kotlin.json.message.CreateMessageDsl

@@ -13,7 +13,7 @@ abstract class DeferResponseCallback<T> extends AbstractInteractionCallbackUni<T
 
     @Override
     protected Interaction.Response<?> toResponse() {
-        Interaction.Response<?> response = new Interaction.Response<>(
+        Interaction.Response<Interaction.CallbackData> response = new Interaction.Response<>(
                 Interaction.CallbackType.DEFERRED_CHANNEL_MESSAGE_WITH_SOURCE);
         return ephemeral() ? response.withData(Interaction.CallbackData.of().withFlags(EnumSet.of(Message.Flag.EPHEMERAL)))
                 : response;
