@@ -35,7 +35,7 @@ interface TeamJson {
     interface MemberJson {
 
         @JsonProperty("membership_state")
-        MembershipState membershipState();
+        Team.MembershipState membershipState();
 
         List<String> permissions();
 

@@ -42,12 +42,12 @@ interface GuildScheduledEventJson {
     Optional<Instant> scheduledEndTime();
 
     @JsonProperty("privacy_level")
-    PrivacyLevel privacyLevel();
+    GuildScheduledEvent.PrivacyLevel privacyLevel();
 
-    Status status();
+    GuildScheduledEvent.Status status();
 
     @JsonProperty("entity_type")
-    EntityType entityType();
+    GuildScheduledEvent.EntityType entityType();
 
     @JsonProperty("entity_id")
     Optional<Snowflake> entityId();

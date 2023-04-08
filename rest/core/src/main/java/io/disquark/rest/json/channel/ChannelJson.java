@@ -32,7 +32,7 @@ interface ChannelJson {
 
     Snowflake id();
 
-    Type type();
+    Channel.Type type();
 
     @JsonProperty("guild_id")
     Optional<Snowflake> guildId();
@@ -79,7 +79,7 @@ interface ChannelJson {
     Optional<String> rtcRegion();
 
     @JsonProperty("video_quality_mode")
-    Optional<VideoQualityMode> videoQualityMode();
+    Optional<Channel.VideoQualityMode> videoQualityMode();
 
     @JsonProperty("message_count")
     OptionalInt messageCount();
@@ -97,7 +97,7 @@ interface ChannelJson {
 
     Optional<EnumSet<PermissionFlag>> permissions();
 
-    Optional<EnumSet<Flag>> flags();
+    Optional<EnumSet<Channel.Flag>> flags();
 
     @JsonProperty("total_message_sent")
     OptionalInt totalMessageSent();
@@ -188,7 +188,7 @@ interface ChannelJson {
 
         Snowflake id();
 
-        Type type();
+        Channel.Overwrite.Type type();
 
         Optional<EnumSet<PermissionFlag>> allow();
 

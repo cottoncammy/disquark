@@ -61,7 +61,7 @@ interface AuditLogJson {
         Snowflake id();
 
         @JsonProperty("action_type")
-        Event actionType();
+        AuditLog.Event actionType();
 
         Optional<AuditEntryInfo> options();
 

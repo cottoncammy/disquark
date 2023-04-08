@@ -13,7 +13,7 @@ abstract class AutocompleteCallback extends AbstractInteractionCallbackUni<Inter
 
     @Override
     protected Interaction.Response<?> toResponse() {
-        return new Interaction.Response<AutocompleteCallback>(Interaction.CallbackType.APPLICATION_COMMAND_AUTOCOMPLETE_RESULT)
+        return new Interaction.Response<>(Interaction.CallbackType.APPLICATION_COMMAND_AUTOCOMPLETE_RESULT)
                 .withData(this);
     }
 }

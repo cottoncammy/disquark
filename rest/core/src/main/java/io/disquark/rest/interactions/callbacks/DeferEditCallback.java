@@ -8,6 +8,6 @@ abstract class DeferEditCallback extends AbstractInteractionCallbackUni<Interact
 
     @Override
     protected Interaction.Response<?> toResponse() {
-        return new Interaction.Response<DeferEditCallback>(Interaction.CallbackType.DEFERRED_UPDATE_MESSAGE);
+        return new Interaction.Response<>(Interaction.CallbackType.DEFERRED_UPDATE_MESSAGE);
     }
 }

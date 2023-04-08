@@ -17,8 +17,9 @@ abstract class AbstractInteractionCallbackUni<T> extends AbstractUni<RespondedIn
     @JsonIgnore
     public abstract RoutingContext context();
 
+    // no type parameters, Immutables bug
     @JsonIgnore
-    public abstract Interaction<T> interaction();
+    public abstract Interaction interaction();
 
     @JsonIgnore
     public abstract DiscordInteractionsClient<?> interactionsClient();
@@ -32,7 +33,7 @@ abstract class AbstractInteractionCallbackUni<T> extends AbstractUni<RespondedIn
     @Override
     public void subscribe(UniSubscriber<? super RespondedInteraction<T>> downstream) {
         serialize()
-                .replaceWith(new RespondedInteraction<>(interaction(), interactionsClient()))
+                .replaceWith(new RespondedInteraction<>((Interaction<T>) interaction(), interactionsClient()))
                 .subscribe().withSubscriber(downstream);
     }
 

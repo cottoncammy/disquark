@@ -18,7 +18,7 @@ import org.immutables.value.Value.Enclosing;
 @JsonDeserialize(as = AutoModerationAction.class)
 interface AutoModerationActionJson {
 
-    Type type();
+    AutoModerationAction.Type type();
 
     Optional<AutoModerationAction.Metadata> metadata();
 

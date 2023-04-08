@@ -32,7 +32,7 @@ interface ApplicationCommandJson {
 
     Snowflake id();
 
-    Optional<Type> type();
+    Optional<ApplicationCommand.Type> type();
 
     @JsonProperty("application_id")
     Snowflake applicationId();
@@ -88,7 +88,7 @@ interface ApplicationCommandJson {
     @JsonDeserialize(as = ApplicationCommand.Option.class)
     interface OptionJson {
 
-        Type type();
+        ApplicationCommand.Option.Type type();
 
         String name();
 

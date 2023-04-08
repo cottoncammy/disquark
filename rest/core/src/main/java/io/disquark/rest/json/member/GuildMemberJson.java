@@ -36,7 +36,7 @@ interface GuildMemberJson {
 
     boolean mute();
 
-    EnumSet<Flag> flags();
+    EnumSet<GuildMember.Flag> flags();
 
     Optional<Boolean> pending();
 

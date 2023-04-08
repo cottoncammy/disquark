@@ -25,7 +25,7 @@ interface StageInstanceJson {
     String topic();
 
     @JsonProperty("privacy_level")
-    PrivacyLevel privacyLevel();
+    StageInstance.PrivacyLevel privacyLevel();
 
     @JsonProperty("guild_scheduled_event_id")
     Optional<Snowflake> guildScheduledEventId();

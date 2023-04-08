@@ -20,7 +20,7 @@ interface WebhookJson {
 
     Snowflake id();
 
-    Type type();
+    Webhook.Type type();
 
     @JsonProperty("guild_id")
     Optional<Snowflake> guildId();

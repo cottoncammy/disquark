@@ -13,7 +13,7 @@ interface ApplicationCommandPermissionsJson {
 
     Snowflake id();
 
-    Type type();
+    ApplicationCommandPermissions.Type type();
 
     boolean permission();
 

@@ -30,7 +30,7 @@ interface ApplicationRoleConnectionJson {
     @JsonDeserialize(as = ApplicationRoleConnection.Metadata.class)
     interface MetadataJson {
 
-        Type type();
+        ApplicationRoleConnection.Metadata.Type type();
 
         String key();
 

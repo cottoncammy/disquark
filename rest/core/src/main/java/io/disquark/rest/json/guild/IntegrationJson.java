@@ -40,7 +40,7 @@ interface IntegrationJson {
     Optional<Boolean> enableEmoticons();
 
     @JsonProperty("expire_behavior")
-    Optional<ExpireBehavior> expireBehavior();
+    Optional<Integration.ExpireBehavior> expireBehavior();
 
     @JsonProperty("expire_grace_period")
     OptionalInt expireGracePeriod();

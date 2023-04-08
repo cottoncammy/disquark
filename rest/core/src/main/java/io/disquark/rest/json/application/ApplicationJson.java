@@ -62,7 +62,7 @@ interface ApplicationJson {
     @JsonProperty("cover_image")
     Optional<String> coverImage();
 
-    Optional<EnumSet<Flag>> flags();
+    Optional<EnumSet<Application.Flag>> flags();
 
     Optional<List<String>> tags();
 

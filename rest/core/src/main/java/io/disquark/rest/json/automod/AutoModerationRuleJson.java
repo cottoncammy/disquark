@@ -30,10 +30,10 @@ interface AutoModerationRuleJson {
     Snowflake creatorId();
 
     @JsonProperty("event_type")
-    EventType eventType();
+    AutoModerationRule.EventType eventType();
 
     @JsonProperty("trigger_type")
-    TriggerType triggerType();
+    AutoModerationRule.TriggerType triggerType();
 
     @JsonProperty("trigger_metadata")
     AutoModerationRule.TriggerMetadata triggerMetadata();
@@ -78,7 +78,7 @@ interface AutoModerationRuleJson {
         @JsonProperty("regex_patterns")
         Optional<List<String>> regexPatterns();
 
-        Optional<List<KeywordPresetType>> presets();
+        Optional<List<AutoModerationRule.KeywordPresetType>> presets();
 
         @JsonProperty("allow_list")
         Optional<List<String>> allowList();

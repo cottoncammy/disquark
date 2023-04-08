@@ -27,10 +27,10 @@ interface StickerJson {
 
     String tags();
 
-    Type type();
+    Sticker.Type type();
 
     @JsonProperty("format_type")
-    FormatType formatType();
+    Sticker.FormatType formatType();
 
     Optional<Boolean> available();
 

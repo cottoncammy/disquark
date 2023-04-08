@@ -31,7 +31,7 @@ abstract class ResponseCallback<T> extends AbstractInteractionCallbackUni<T> {
 
     @Override
     protected Interaction.Response<?> toResponse() {
-        return new Interaction.Response<ResponseCallback<T>>(Interaction.CallbackType.CHANNEL_MESSAGE_WITH_SOURCE)
+        return new Interaction.Response<>(Interaction.CallbackType.CHANNEL_MESSAGE_WITH_SOURCE)
                 .withData(this);
     }
 }

@@ -36,7 +36,7 @@ interface InteractionJson<T> {
     @JsonProperty("application_id")
     Snowflake applicationId();
 
-    Type type();
+    Interaction.Type type();
 
     Optional<T> data();
 
@@ -225,7 +225,7 @@ interface InteractionJson<T> {
     @ImmutableJson
     interface ResponseJson<T> {
 
-        CallbackType type();
+        Interaction.CallbackType type();
 
         Optional<T> data();
     }

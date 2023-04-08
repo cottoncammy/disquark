@@ -14,7 +14,7 @@ import io.disquark.rest.json.Snowflake;
 @JsonDeserialize(as = AllowedMentions.class)
 interface AllowedMentionsJson {
 
-    Optional<List<Type>> parse();
+    Optional<List<AllowedMentions.Type>> parse();
 
     Optional<List<Snowflake>> roles();
 

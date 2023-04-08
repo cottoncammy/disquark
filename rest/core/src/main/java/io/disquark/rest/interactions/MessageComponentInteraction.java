@@ -1,5 +1,9 @@
 package io.disquark.rest.interactions;
 
+import io.disquark.rest.interactions.callbacks.DeferEditCallbackUni;
+import io.disquark.rest.interactions.callbacks.ModalCallbackUni;
+import io.disquark.rest.interactions.callbacks.ResponseCallbackUni;
+import io.disquark.rest.interactions.callbacks.UpdateMessageCallbackUni;
 import io.disquark.rest.json.interaction.Interaction;
 import io.smallrye.mutiny.Uni;
 import io.vertx.mutiny.ext.web.RoutingContext;

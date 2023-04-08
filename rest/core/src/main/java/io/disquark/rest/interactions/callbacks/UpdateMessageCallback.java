@@ -35,6 +35,6 @@ abstract class UpdateMessageCallback extends AbstractInteractionCallbackUni<Inte
 
     @Override
     protected Interaction.Response<?> toResponse() {
-        return new Interaction.Response<UpdateMessageCallback>(Interaction.CallbackType.UPDATE_MESSAGE).withData(this);
+        return new Interaction.Response<>(Interaction.CallbackType.UPDATE_MESSAGE).withData(this);
     }
 }

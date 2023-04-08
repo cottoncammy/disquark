@@ -17,7 +17,7 @@ import io.disquark.rest.json.emoji.Emoji;
 @JsonDeserialize(as = Component.class)
 interface ComponentJson {
 
-    Type type();
+    Component.Type type();
 
     Optional<List<Component>> components();
 

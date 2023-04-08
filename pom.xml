@@ -52,7 +52,7 @@
         <bouncycastle.version>1.72</bouncycastle.version>
         <bucket4j-version>8.1.1</bucket4j-version>
         <caffeine.version>3.1.2</caffeine.version>
-        <immutables.version>2.9.3</immutables.version>
+        <immutables.version>2.9.4-SNAPSHOT</immutables.version>
         <jackson.version>2.14.2</jackson.version>
         <jakarta-annotations.version>2.1.1</jakarta-annotations.version>
         <jsr305.version>3.0.2</jsr305.version>
@@ -115,7 +115,7 @@
                 <type>pom</type>
             </dependency>
             <dependency>
-                <groupId>org.immutables</groupId>
+                <groupId>io.disquark.immutables</groupId>
                 <artifactId>bom</artifactId>
                 <version>${immutables.version}</version>
                 <scope>import</scope>

@@ -53,22 +53,22 @@ interface GuildJson {
     Optional<Snowflake> widgetChannelId();
 
     @JsonProperty("verification_level")
-    VerificationLevel verificationLevel();
+    Guild.VerificationLevel verificationLevel();
 
     @JsonProperty("default_message_notifications")
-    DefaultMessageNotificationLevel defaultMessageNotifications();
+    Guild.DefaultMessageNotificationLevel defaultMessageNotifications();
 
     @JsonProperty("explicit_content_filter")
-    ExplicitContentFilterLevel explicitContentFilter();
+    Guild.ExplicitContentFilterLevel explicitContentFilter();
 
     List<Role> roles();
 
     List<Emoji> emojis();
 
-    List<Feature> features();
+    List<Guild.Feature> features();
 
     @JsonProperty("mfa_level")
-    MfaLevel mfaLevel();
+    Guild.MfaLevel mfaLevel();
 
     @JsonProperty("application_id")
     Optional<Snowflake> applicationId();
@@ -77,7 +77,7 @@ interface GuildJson {
     Optional<Snowflake> systemChannelId();
 
     @JsonProperty("system_channel_flags")
-    EnumSet<SystemChannelFlag> systemChannelFlags();
+    EnumSet<Guild.SystemChannelFlag> systemChannelFlags();
 
     @JsonProperty("rules_channel_id")
     Optional<Snowflake> rulesChannelId();
@@ -96,7 +96,7 @@ interface GuildJson {
     Optional<String> banner();
 
     @JsonProperty("premium_tier")
-    PremiumTier premiumTier();
+    Guild.PremiumTier premiumTier();
 
     @JsonProperty("premium_subscription_count")
     OptionalInt premiumSubscriptionCount();
@@ -120,7 +120,7 @@ interface GuildJson {
     Optional<WelcomeScreen> welcomeScreen();
 
     @JsonProperty("nsfw_level")
-    NsfwLevel nsfwLevel();
+    Guild.NsfwLevel nsfwLevel();
 
     Optional<List<Sticker>> stickers();
 

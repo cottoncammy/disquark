@@ -34,7 +34,7 @@ interface InviteJson {
     Optional<User> inviter();
 
     @JsonProperty("target_type")
-    Optional<TargetType> targetType();
+    Optional<Invite.TargetType> targetType();
 
     @JsonProperty("target_user")
     Optional<User> targetUser();

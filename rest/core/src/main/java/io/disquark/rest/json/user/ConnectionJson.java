@@ -19,7 +19,7 @@ interface ConnectionJson {
 
     String name();
 
-    Service type();
+    Connection.Service type();
 
     Optional<Boolean> revoked();
 
@@ -36,7 +36,7 @@ interface ConnectionJson {
     @JsonProperty("two_way_link")
     boolean twoWayLink();
 
-    VisibilityType visibility();
+    Connection.VisibilityType visibility();
 
     enum Service {
         @JsonEnumDefaultValue

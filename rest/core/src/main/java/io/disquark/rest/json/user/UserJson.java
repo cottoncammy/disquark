@@ -44,13 +44,13 @@ interface UserJson {
 
     Optional<String> email();
 
-    Optional<EnumSet<Flag>> flags();
+    Optional<EnumSet<User.Flag>> flags();
 
     @JsonProperty("premium_type")
-    Optional<PremiumType> premiumType();
+    Optional<User.PremiumType> premiumType();
 
     @JsonProperty("public_flags")
-    Optional<EnumSet<Flag>> publicFlags();
+    Optional<EnumSet<User.Flag>> publicFlags();
 
     enum Flag implements FlagEnum {
         STAFF(0),

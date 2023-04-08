@@ -70,7 +70,7 @@ interface MessageJson {
     @JsonProperty("webhook_id")
     Optional<Snowflake> webhookId();
 
-    Type type();
+    Message.Type type();
 
     Optional<Message.Activity> activity();
 
@@ -82,7 +82,7 @@ interface MessageJson {
     @JsonProperty("message_reference")
     Optional<Message.Reference> messageReference();
 
-    Optional<EnumSet<Flag>> flags();
+    Optional<EnumSet<Message.Flag>> flags();
 
     @JsonProperty("referenced_message")
     Optional<Message> referencedMessage();
@@ -152,7 +152,7 @@ interface MessageJson {
     @JsonDeserialize(as = Message.Activity.class)
     interface ActivityJson {
 
-        Type type();
+        Message.Activity.Type type();
 
         @JsonProperty("party_id")
         Optional<String> partyId();
