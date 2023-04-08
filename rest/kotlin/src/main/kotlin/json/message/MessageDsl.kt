@@ -7,8 +7,6 @@ import io.disquark.rest.request.FileUpload
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-// TODO messageFlag unaryPlus
-
 @DslMarker
 annotation class MessageDslMarker
 

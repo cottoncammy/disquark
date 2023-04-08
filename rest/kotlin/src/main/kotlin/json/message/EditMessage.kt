@@ -21,9 +21,10 @@ class EditMessage(
             .content(content.toNullableOptional())
             .embeds(embeds?.map { it -> it.map { it.toImmutable() } }.toNullableOptional())
             .allowedMentions(allowedMentions?.map { it.toImmutable() }.toNullableOptional())
-            .flags(flags)
+            .flags(flags?.map { EnumSet.copyOf(it) }.toNullableOptional())
             .components(components?.map { it -> it.map { it.toImmutable() } }.toNullableOptional())
             .attachments(attachments?.map { it -> it.map { it.toImmutable() } }.toNullableOptional())
+            .files(files)
             .build()
     }
 }

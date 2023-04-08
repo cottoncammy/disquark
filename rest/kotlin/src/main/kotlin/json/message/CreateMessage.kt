@@ -4,6 +4,7 @@ import io.disquark.rest.json.Snowflake
 import io.disquark.rest.json.message.CreateMessageUni
 import io.disquark.rest.json.message.Message
 import io.disquark.rest.request.Requester
+import java.util.*
 
 class CreateMessage(
     private val requester: Requester<*>,
@@ -26,7 +27,8 @@ class CreateMessage(
             .components(components?.let { it -> it.map { it.toImmutable() } })
             .stickerIds(stickerIds)
             .attachments(attachments?.let { it -> it.map { it.toImmutable() } })
-            .flags(flags)
+            .flags(flags?.let { EnumSet.copyOf(it) })
+            .files(files)
             .build()
     }
 }

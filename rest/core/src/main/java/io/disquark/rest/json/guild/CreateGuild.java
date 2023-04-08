@@ -15,6 +15,7 @@ import io.disquark.rest.json.role.Role;
 import io.disquark.rest.request.AbstractRequestUni;
 import io.disquark.rest.request.Endpoint;
 import io.disquark.rest.request.Request;
+import io.smallrye.mutiny.subscription.UniSubscriber;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.mutiny.core.buffer.Buffer;
 
@@ -50,6 +51,11 @@ abstract class CreateGuild extends AbstractRequestUni<Guild> {
 
     @JsonProperty("system_channel_flags")
     public abstract Optional<EnumSet<Guild.SystemChannelFlag>> systemChannelFlags();
+
+    @Override
+    public void subscribe(UniSubscriber<? super Guild> downstream) {
+        requester().request(asRequest()).flatMap(res -> res.as(Guild.class)).subscribe().withSubscriber(downstream);
+    }
 
     @Override
     public Request asRequest() {

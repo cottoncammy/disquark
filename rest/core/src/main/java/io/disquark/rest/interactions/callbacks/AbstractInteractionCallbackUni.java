@@ -30,6 +30,7 @@ abstract class AbstractInteractionCallbackUni<T> extends AbstractUni<RespondedIn
         return context().json(toResponse()).invoke(() -> context().put("responded", true));
     }
 
+    // TODO this is bugged
     @Override
     public void subscribe(UniSubscriber<? super RespondedInteraction<T>> downstream) {
         serialize()

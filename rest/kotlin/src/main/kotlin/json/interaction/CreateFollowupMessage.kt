@@ -5,6 +5,7 @@ import io.disquark.rest.json.interaction.CreateFollowupMessageUni
 import io.disquark.rest.json.message.Message
 import io.disquark.rest.kotlin.json.message.CreateMessageDsl
 import io.disquark.rest.request.Requester
+import java.util.EnumSet
 
 class CreateFollowupMessage(
     private val requester: Requester<*>,
@@ -25,8 +26,9 @@ class CreateFollowupMessage(
             .allowedMentions(allowedMentions?.toImmutable())
             .components(components?.let { it -> it.map { it.toImmutable() } })
             .attachments(attachments?.let { it -> it.map { it.toImmutable() } })
-            .flags(flags)
+            .flags(flags?.let { EnumSet.copyOf(it) })
             .threadName(threadName)
+            .files(files)
             .build()
     }
 }

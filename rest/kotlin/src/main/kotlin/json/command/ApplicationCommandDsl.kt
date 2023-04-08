@@ -6,6 +6,7 @@ import io.disquark.rest.json.Snowflake
 import io.disquark.rest.json.command.*
 import io.disquark.rest.kotlin.nullableoptional.toNullableOptional
 import io.disquark.rest.request.Requester
+import java.util.EnumSet
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
@@ -118,7 +119,7 @@ sealed class CreateApplicationCommand(
             .nameLocalizations(nameLocalizations?.getOrNull())
             .description(description)
             .descriptionLocalizations(descriptionLocalizations?.getOrNull())
-            .defaultMemberPermissions(defaultMemberPermissions?.getOrNull())
+            .defaultMemberPermissions(defaultMemberPermissions?.map { EnumSet.copyOf(it) }?.getOrNull())
             .dmPermission(dmPermission)
             .type(type)
             .nsfw(nsfw)
@@ -130,7 +131,7 @@ sealed class CreateApplicationCommand(
             .withNameLocalizations(nameLocalizations.toNullableOptional())
             .run { description?.let { withDescription(it) } ?: this }
             .withDescriptionLocalizations(descriptionLocalizations.toNullableOptional())
-            .withDefaultMemberPermissions(defaultMemberPermissions.toNullableOptional())
+            .withDefaultMemberPermissions(defaultMemberPermissions?.map { EnumSet.copyOf(it) }.toNullableOptional())
             .run { type?.let { withType(it) } ?: this }
             .run { nsfw?.let { withNsfw(it) } ?: this }
             .run { dmPermission?.let { withDmPermission(it) } ?: this }
@@ -145,8 +146,7 @@ sealed class CreateApplicationCommand(
             .nameLocalizations(nameLocalizations?.getOrNull())
             .description(description)
             .descriptionLocalizations(descriptionLocalizations?.getOrNull())
-            .defaultMemberPermissions(defaultMemberPermissions?.getOrNull())
-            .dmPermission(dmPermission)
+            .defaultMemberPermissions(defaultMemberPermissions?.map { EnumSet.copyOf(it) }?.getOrNull())
             .type(type)
             .nsfw(nsfw)
             .build()
@@ -157,7 +157,7 @@ sealed class CreateApplicationCommand(
             .withNameLocalizations(nameLocalizations.toNullableOptional())
             .run { description?.let { withDescription(it) } ?: this }
             .withDescriptionLocalizations(descriptionLocalizations.toNullableOptional())
-            .withDefaultMemberPermissions(defaultMemberPermissions.toNullableOptional())
+            .withDefaultMemberPermissions(defaultMemberPermissions?.map { EnumSet.copyOf(it) }.toNullableOptional())
             .run { type?.let { withType(it) } ?: this }
             .run { nsfw?.let { withNsfw(it) } ?: this }
     }
@@ -276,7 +276,7 @@ class EditGlobalApplicationCommand(requester: Requester<*>, applicationId: Snowf
             .description(description)
             .descriptionLocalizations(descriptionLocalizations.toNullableOptional())
             .options(options?.map { it.toImmutable() })
-            .defaultMemberPermissions(defaultMemberPermissions.toNullableOptional())
+            .defaultMemberPermissions(defaultMemberPermissions?.map { EnumSet.copyOf(it) }.toNullableOptional())
             .dmPermission(dmPermission)
             .nsfw(nsfw)
             .build()
@@ -298,8 +298,7 @@ class EditGuildApplicationCommand(requester: Requester<*>, applicationId: Snowfl
             .description(description)
             .descriptionLocalizations(descriptionLocalizations.toNullableOptional())
             .options(options?.map { it.toImmutable() })
-            .defaultMemberPermissions(defaultMemberPermissions.toNullableOptional())
-            .dmPermission(dmPermission)
+            .defaultMemberPermissions(defaultMemberPermissions?.map { EnumSet.copyOf(it) }.toNullableOptional())
             .nsfw(nsfw)
             .build()
     }

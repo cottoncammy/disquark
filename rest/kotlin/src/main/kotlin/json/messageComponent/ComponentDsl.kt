@@ -86,7 +86,7 @@ class SelectMenu(
     val type: SelectMenuType,
     var customId: String,
     var options: MutableList<SelectOption>? = null,
-    var channelTypes: MutableSet<Channel.Type>? = null,
+    var channelTypes: MutableList<Channel.Type>? = null,
     var placeholder: String? = null,
     var minValues: Int? = null,
     var maxValues: Int? = null,

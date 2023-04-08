@@ -40,7 +40,7 @@ class ResponseCallback<C : CompletableInteraction<D>, D>(
             .content(content)
             .embeds(embeds?.let { it -> it.map { it.toImmutable() } })
             .allowedMentions(allowedMentions?.toImmutable())
-            .flags(flags)
+            .flags(flags?.let { EnumSet.copyOf(it) })
             .attachments(attachments?.let { it -> it.map { it.toImmutable() } })
             .build()
     }
@@ -58,8 +58,9 @@ class UpdateMessageCallback(
             .content(content.toNullableOptional())
             .embeds(embeds?.map { it -> it.map { it.toImmutable() } }.toNullableOptional())
             .allowedMentions(allowedMentions?.map { it.toImmutable() }.toNullableOptional())
-            .flags(flags.toNullableOptional())
+            .flags(flags?.map { EnumSet.copyOf(it) }.toNullableOptional())
             .components(components?.map { it -> it.map { it.toImmutable() } }.toNullableOptional())
+            .attachments(attachments?.map { it -> it.map { it.toImmutable() } }.toNullableOptional())
             .build()
     }
 }

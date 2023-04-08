@@ -11,6 +11,7 @@ import io.disquark.rest.json.interaction.Interaction;
 import io.disquark.rest.json.message.AllowedMentions;
 import io.disquark.rest.json.message.Message;
 import io.disquark.rest.json.message.MessageEmbed;
+import io.disquark.rest.json.message.PartialAttachment;
 import io.disquark.rest.json.messagecomponent.Component;
 
 @ImmutableUni
@@ -28,6 +29,8 @@ abstract class ResponseCallback<T> extends AbstractInteractionCallbackUni<T> {
     public abstract Optional<EnumSet<Message.Flag>> flags();
 
     public abstract Optional<List<Component>> components();
+
+    public abstract Optional<List<PartialAttachment>> attachments();
 
     @Override
     protected Interaction.Response<?> toResponse() {

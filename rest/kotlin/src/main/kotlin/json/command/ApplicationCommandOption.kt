@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.node.TextNode
 import io.disquark.rest.json.Locale
 import io.disquark.rest.json.channel.Channel
 import io.disquark.rest.kotlin.nullableoptional.toNullableOptional
+import java.util.EnumSet
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 import io.disquark.rest.json.command.ApplicationCommand.Option as ImmutableApplicationCommandOption
@@ -43,7 +44,7 @@ open class ApplicationCommandOption(
 }
 
 class SubcommandGroupOption(name: String, description: String) :
-    ApplicationCommandOption(ImmutableApplicationCommandOption.Type.SUBCOMMAND_GROUP, name, description),
+    ApplicationCommandOption(ImmutableApplicationCommandOption.Type.SUB_COMMAND_GROUP, name, description),
     ApplicationCommandOptionsWithSubcommandDsl {
 
     override var options: MutableList<ApplicationCommandOption>? = null
@@ -55,7 +56,7 @@ class SubcommandGroupOption(name: String, description: String) :
 }
 
 class SubcommandOption(name: String, description: String) :
-    ApplicationCommandOption(ImmutableApplicationCommandOption.Type.SUBCOMMAND, name, description), ApplicationCommandOptionsDsl {
+    ApplicationCommandOption(ImmutableApplicationCommandOption.Type.SUB_COMMAND, name, description), ApplicationCommandOptionsDsl {
 
     override var options: MutableList<ApplicationCommandOption>? = null
 
@@ -124,7 +125,7 @@ sealed class NumberOption<C : ApplicationCommandOption.Choice<T>, T : Number>(
     }
 }
 
-class IntOption(name: String, description: String) : NumberOption<IntOption.Choice, Int>(ImmutableApplicationCommandOption.Type.INT, name, description) {
+class IntOption(name: String, description: String) : NumberOption<IntOption.Choice, Int>(ImmutableApplicationCommandOption.Type.INTEGER, name, description) {
     class Choice(name: String, value: Int) : ApplicationCommandOption.Choice<Int>(name, value) {
         override fun toImmutable(): ImmutableApplicationCommandOptionChoice {
             return ImmutableApplicationCommandOptionChoice(name, IntNode(value))
@@ -137,7 +138,7 @@ class IntOption(name: String, description: String) : NumberOption<IntOption.Choi
     }
 }
 
-class DoubleOption(name: String, description: String) : NumberOption<DoubleOption.Choice, Double>(ImmutableApplicationCommandOption.Type.DOUBLE, name, description) {
+class DoubleOption(name: String, description: String) : NumberOption<DoubleOption.Choice, Double>(ImmutableApplicationCommandOption.Type.NUMBER, name, description) {
     class Choice(name: String, value: Double) : ApplicationCommandOption.Choice<Double>(name, value) {
         override fun toImmutable(): ImmutableApplicationCommandOptionChoice {
             return ImmutableApplicationCommandOptionChoice(name, DoubleNode(value))
@@ -150,7 +151,7 @@ class DoubleOption(name: String, description: String) : NumberOption<DoubleOptio
     }
 }
 
-class ChannelOption(name: String, description: String, var channelTypes: MutableSet<Channel.Type>? = null) :
+class ChannelOption(name: String, description: String, var channelTypes: MutableList<Channel.Type>? = null) :
     ApplicationCommandOption(ImmutableApplicationCommandOption.Type.CHANNEL, name, description) {
 
     override fun toImmutable(): ImmutableApplicationCommandOption {

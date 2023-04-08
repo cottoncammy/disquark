@@ -21,6 +21,7 @@ class EditOriginalInteractionResponse(
             .allowedMentions(allowedMentions?.map { it.toImmutable() }.toNullableOptional())
             .components(components?.map { it -> it.map { it.toImmutable() } }.toNullableOptional())
             .attachments(attachments?.map { it -> it.map { it.toImmutable() } }.toNullableOptional())
+            .files(files)
             .build()
     }
 }

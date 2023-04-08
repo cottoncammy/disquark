@@ -9,7 +9,7 @@ interface FileUploadDsl {
         files + this
     }
 
-    suspend fun fileUpload(block: suspend () -> FileUpload) {
-        +block()
+    suspend fun fileUpload(init: suspend () -> FileUpload) {
+        +init()
     }
 }
