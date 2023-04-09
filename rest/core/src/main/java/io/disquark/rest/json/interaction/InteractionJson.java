@@ -43,6 +43,8 @@ interface InteractionJson<T> {
     @JsonProperty("guild_id")
     Optional<Snowflake> guildId();
 
+    Optional<Interaction.PartialChannel> channel();
+
     @JsonProperty("channel_id")
     Optional<Snowflake> channelId();
 

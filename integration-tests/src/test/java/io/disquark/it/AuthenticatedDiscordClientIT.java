@@ -100,7 +100,7 @@ class AuthenticatedDiscordClientIT {
     @Order(5)
     void testBulkOverwriteGlobalApplicationCommands(AuthenticatedDiscordClient<?> discordClient) {
         discordClient.bulkOverwriteGlobalApplicationCommands(applicationId)
-                .withGlobalApplicationCommandOverwrites(new GlobalApplicationCommandOverwrite("bar").withDescription("foo bar"))
+                .withOverwrites(new GlobalApplicationCommandOverwrite("bar").withDescription("foo bar"))
                 .collect().asList()
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .awaitItem()
@@ -156,7 +156,7 @@ class AuthenticatedDiscordClientIT {
     @Order(10)
     void testBulkOverwriteGuildApplicationCommands(AuthenticatedDiscordClient<?> discordClient) {
         discordClient.bulkOverwriteGuildApplicationCommands(applicationId, guildId)
-                .withGuildApplicationCommandOverwrites(new GuildApplicationCommandOverwrite("bar").withDescription("foo bar"))
+                .withOverwrites(new GuildApplicationCommandOverwrite("bar").withDescription("foo bar"))
                 .collect().asList()
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .awaitItem()

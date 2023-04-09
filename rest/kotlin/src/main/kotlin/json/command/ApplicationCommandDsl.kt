@@ -3,7 +3,15 @@ package io.disquark.rest.kotlin.json.command
 import io.disquark.rest.json.Locale
 import io.disquark.rest.json.PermissionFlag
 import io.disquark.rest.json.Snowflake
-import io.disquark.rest.json.command.*
+import io.disquark.rest.json.command.ApplicationCommand
+import io.disquark.rest.json.command.BulkOverwriteGlobalApplicationCommandsMulti
+import io.disquark.rest.json.command.BulkOverwriteGuildApplicationCommandsMulti
+import io.disquark.rest.json.command.CreateGlobalApplicationCommandUni
+import io.disquark.rest.json.command.CreateGuildApplicationCommandUni
+import io.disquark.rest.json.command.EditGlobalApplicationCommandUni
+import io.disquark.rest.json.command.EditGuildApplicationCommandUni
+import io.disquark.rest.json.command.GlobalApplicationCommandOverwrite
+import io.disquark.rest.json.command.GuildApplicationCommandOverwrite
 import io.disquark.rest.kotlin.nullableoptional.toNullableOptional
 import io.disquark.rest.request.Requester
 import java.util.EnumSet

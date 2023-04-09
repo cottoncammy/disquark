@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.node.TextNode
 import io.disquark.rest.json.Locale
 import io.disquark.rest.json.channel.Channel
 import io.disquark.rest.kotlin.nullableoptional.toNullableOptional
-import java.util.EnumSet
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 import io.disquark.rest.json.command.ApplicationCommand.Option as ImmutableApplicationCommandOption

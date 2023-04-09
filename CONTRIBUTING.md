@@ -2,11 +2,7 @@
 
 Contributions of any kind are welcome, including small documentation fixes. If the change is large in scope, you should consult the maintainers in an issue first. Before you get started on your contribution, please fully read this page. 
 
-## Legal
-
-All contributions are licensed under the [Mozilla Public License Version 2.0](https://www.mozilla.org/en-US/MPL/2.0/).
-
-## Prerequisites
+## Git Authorship
 
 Before you commit, make sure that you have Git authorship correctly set up on your machine:
 ```

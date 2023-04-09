@@ -12,7 +12,11 @@ import io.disquark.rest.interactions.callbacks.ModalCallbackUni
 import io.disquark.rest.interactions.callbacks.ResponseCallbackUni
 import io.disquark.rest.interactions.callbacks.UpdateMessageCallbackUni
 import io.disquark.rest.json.message.Message
-import io.disquark.rest.kotlin.json.command.*
+import io.disquark.rest.kotlin.json.command.ApplicationCommandOption
+import io.disquark.rest.kotlin.json.command.ApplicationCommandOptionChoicesDsl
+import io.disquark.rest.kotlin.json.command.DoubleOption
+import io.disquark.rest.kotlin.json.command.IntOption
+import io.disquark.rest.kotlin.json.command.StringOption
 import io.disquark.rest.kotlin.json.message.CreateMessageDsl
 import io.disquark.rest.kotlin.json.message.EditMessageDsl
 import io.disquark.rest.kotlin.json.messageComponent.Component
@@ -42,6 +46,7 @@ class ResponseCallback<C : CompletableInteraction<D>, D>(
             .allowedMentions(allowedMentions?.toImmutable())
             .flags(flags?.let { EnumSet.copyOf(it) })
             .attachments(attachments?.let { it -> it.map { it.toImmutable() } })
+            .files(files)
             .build()
     }
 }
@@ -61,6 +66,7 @@ class UpdateMessageCallback(
             .flags(flags?.map { EnumSet.copyOf(it) }.toNullableOptional())
             .components(components?.map { it -> it.map { it.toImmutable() } }.toNullableOptional())
             .attachments(attachments?.map { it -> it.map { it.toImmutable() } }.toNullableOptional())
+            .files(files)
             .build()
     }
 }

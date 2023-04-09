@@ -84,7 +84,7 @@ class GuildIT {
         botClient.getGuildChannels(guildId)
                 .toUni()
                 .call(channel -> botClient.modifyGuildChannelPositions(guildId)
-                        .withGuildChannelPositions(new GuildChannelPosition(channel.id()).withPosition(1)))
+                        .withPositions(new GuildChannelPosition(channel.id()).withPosition(1)))
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .awaitItem()
                 .assertCompleted();
@@ -253,7 +253,7 @@ class GuildIT {
     @Order(22)
     void testModifyGuildRolePositions(DiscordBotClient<?> botClient) {
         botClient.modifyGuildRolePositions(guildId)
-                .withGuildRolePositions(new GuildRolePosition(roleId).withPosition(1))
+                .withPositions(new GuildRolePosition(roleId).withPosition(1))
                 .collect().asList()
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .awaitItem()

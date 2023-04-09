@@ -150,12 +150,11 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
 
     public UpdateApplicationRoleConnectionMetadataRecordsMulti updateApplicationRoleConnectionMetadataRecords(
             Snowflake applicationId) {
-        return (UpdateApplicationRoleConnectionMetadataRecordsMulti) deferredMulti(
-                () -> new UpdateApplicationRoleConnectionMetadataRecordsMulti(requester, applicationId));
+        return new UpdateApplicationRoleConnectionMetadataRecordsMulti(requester, applicationId);
     }
 
     public GetGuildAuditLogUni getGuildAuditLog(Snowflake guildId) {
-        return (GetGuildAuditLogUni) deferredUni(() -> new GetGuildAuditLogUni(requester, guildId));
+        return new GetGuildAuditLogUni(requester, guildId);
     }
 
     public Multi<AutoModerationRule> listAutoModerationRulesForGuild(Snowflake guildId) {
@@ -175,13 +174,11 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
 
     public CreateAutoModerationRuleUni createAutoModerationRule(Snowflake guildId, String name,
             AutoModerationRule.EventType eventType, AutoModerationRule.TriggerType triggerType) {
-        return (CreateAutoModerationRuleUni) deferredUni(
-                () -> new CreateAutoModerationRuleUni(requester, guildId, name, eventType, triggerType));
+        return new CreateAutoModerationRuleUni(requester, guildId, name, eventType, triggerType);
     }
 
     public ModifyAutoModerationRuleUni modifyAutoModerationRule(Snowflake guildId, Snowflake autoModerationRuleId) {
-        return (ModifyAutoModerationRuleUni) deferredUni(
-                () -> new ModifyAutoModerationRuleUni(requester, guildId, autoModerationRuleId));
+        return new ModifyAutoModerationRuleUni(requester, guildId, autoModerationRuleId);
     }
 
     public Uni<Void> deleteAutoModerationRule(Snowflake guildId, Snowflake autoModerationRuleId,
@@ -201,15 +198,15 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public ModifyDmChannelUni modifyDmChannel(Snowflake channelId) {
-        return (ModifyDmChannelUni) deferredUni(() -> new ModifyDmChannelUni(requester, channelId));
+        return new ModifyDmChannelUni(requester, channelId);
     }
 
     public ModifyGuildChannelUni modifyGuildChannel(Snowflake channelId) {
-        return (ModifyGuildChannelUni) deferredUni(() -> new ModifyGuildChannelUni(requester, channelId));
+        return new ModifyGuildChannelUni(requester, channelId);
     }
 
     public ModifyThreadUni modifyThread(Snowflake channelId) {
-        return (ModifyThreadUni) deferredUni(() -> new ModifyThreadUni(requester, channelId));
+        return new ModifyThreadUni(requester, channelId);
     }
 
     public Uni<Channel> deleteOrCloseChannel(Snowflake channelId, @Nullable String auditLogReason) {
@@ -219,7 +216,7 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public GetChannelMessagesMulti getChannelMessages(Snowflake channelId) {
-        return (GetChannelMessagesMulti) deferredMulti(() -> new GetChannelMessagesMulti(requester, channelId));
+        return new GetChannelMessagesMulti(requester, channelId);
     }
 
     public Uni<Message> getChannelMessage(Snowflake channelId, Snowflake messageId) {
@@ -230,7 +227,7 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public CreateMessageUni createMessage(Snowflake channelId) {
-        return (CreateMessageUni) deferredUni(() -> new CreateMessageUni(requester, channelId));
+        return new CreateMessageUni(requester, channelId);
     }
 
     public Uni<Message> crosspostMessage(Snowflake channelId, Snowflake messageId) {
@@ -270,7 +267,7 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public GetReactionsMulti getReactions(Snowflake channelId, Snowflake messageId, ReactionEmoji emoji) {
-        return (GetReactionsMulti) deferredMulti(() -> new GetReactionsMulti(requester, channelId, messageId, emoji));
+        return new GetReactionsMulti(requester, channelId, messageId, emoji);
     }
 
     public Uni<Void> deleteAllReactions(Snowflake channelId, Snowflake messageId) {
@@ -291,7 +288,7 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public EditMessageUni editMessage(Snowflake channelId, Snowflake messageId) {
-        return (EditMessageUni) deferredUni(() -> new EditMessageUni(requester, channelId, messageId));
+        return new EditMessageUni(requester, channelId, messageId);
     }
 
     public Uni<Void> deleteMessage(Snowflake channelId, Snowflake messageId, @Nullable String auditLogReason) {
@@ -304,13 +301,12 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public BulkDeleteMessagesUni bulkDeleteMessages(Snowflake channelId) {
-        return (BulkDeleteMessagesUni) deferredUni(() -> new BulkDeleteMessagesUni(requester, channelId));
+        return new BulkDeleteMessagesUni(requester, channelId);
     }
 
     public EditChannelPermissionsUni editChannelPermissions(Snowflake channelId, Snowflake overwriteId,
             Channel.Overwrite.Type type) {
-        return (EditChannelPermissionsUni) deferredUni(
-                () -> new EditChannelPermissionsUni(requester, channelId, overwriteId, type));
+        return new EditChannelPermissionsUni(requester, channelId, overwriteId, type);
     }
 
     public Multi<Invite> getChannelInvites(Snowflake channelId) {
@@ -321,7 +317,7 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public CreateChannelInviteUni createChannelInvite(Snowflake channelId) {
-        return (CreateChannelInviteUni) deferredUni(() -> new CreateChannelInviteUni(requester, channelId));
+        return new CreateChannelInviteUni(requester, channelId);
     }
 
     public Uni<Void> deleteChannelPermission(Snowflake channelId, Snowflake overwriteId, @Nullable String auditLogReason) {
@@ -368,8 +364,7 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public GroupDmAddRecipientUni groupDmAddRecipient(Snowflake channelId, Snowflake userId, String accessToken) {
-        return (GroupDmAddRecipientUni) deferredUni(
-                () -> new GroupDmAddRecipientUni(requester, channelId, userId, accessToken));
+        return new GroupDmAddRecipientUni(requester, channelId, userId, accessToken);
     }
 
     public Uni<Void> groupDmRemoveRecipient(Snowflake channelId, Snowflake userId) {
@@ -381,18 +376,16 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public StartThreadFromMessageUni startThreadFromMessage(Snowflake channelId, Snowflake messageId, String name) {
-        return (StartThreadFromMessageUni) deferredUni(
-                () -> new StartThreadFromMessageUni(requester, channelId, messageId, name));
+        return new StartThreadFromMessageUni(requester, channelId, messageId, name);
     }
 
     public StartThreadWithoutMessageUni startThreadWithoutMessage(Snowflake channelId, String name) {
-        return (StartThreadWithoutMessageUni) deferredUni(() -> new StartThreadWithoutMessageUni(requester, channelId, name));
+        return new StartThreadWithoutMessageUni(requester, channelId, name);
     }
 
     public StartThreadInForumChannelUni startThreadInForumChannel(Snowflake channelId, String name,
             ForumThreadMessageParams message) {
-        return (StartThreadInForumChannelUni) deferredUni(
-                () -> new StartThreadInForumChannelUni(requester, channelId, name, message));
+        return new StartThreadInForumChannelUni(requester, channelId, name, message);
     }
 
     public Uni<Void> joinThread(Snowflake channelId) {
@@ -434,22 +427,22 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public ListThreadMembersMulti listThreadMembers(Snowflake channelId) {
-        return (ListThreadMembersMulti) deferredMulti(() -> new ListThreadMembersMulti(requester, channelId));
+        return new ListThreadMembersMulti(requester, channelId);
     }
 
     public ListThreadsUni listPublicArchivedThreads(Snowflake channelId) {
-        return (ListThreadsUni) deferredUni(() -> new ListThreadsUni(requester,
-                "/channels/{channel.id}/threads/archived/public{?before,limit}", channelId));
+        return new ListThreadsUni(requester,
+                "/channels/{channel.id}/threads/archived/public{?before,limit}", channelId);
     }
 
     public ListThreadsUni listPrivateArchivedThreads(Snowflake channelId) {
-        return (ListThreadsUni) deferredUni(() -> new ListThreadsUni(requester,
-                "/channels/{channel.id}/threads/archived/private{?before,limit}", channelId));
+        return new ListThreadsUni(requester,
+                "/channels/{channel.id}/threads/archived/private{?before,limit}", channelId);
     }
 
     public ListThreadsUni listJoinedPrivateArchivedThreads(Snowflake channelId) {
-        return (ListThreadsUni) deferredUni(() -> new ListThreadsUni(requester,
-                "/channels/{channel.id}/users/@me/threads/archived/private{?before,limit}", channelId));
+        return new ListThreadsUni(requester,
+                "/channels/{channel.id}/users/@me/threads/archived/private{?before,limit}", channelId);
     }
 
     public Multi<Emoji> listGuildEmojis(Snowflake guildId) {
@@ -467,11 +460,11 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public CreateGuildEmojiUni createGuildEmoji(Snowflake guildId, String name, Buffer image) {
-        return (CreateGuildEmojiUni) deferredUni(() -> new CreateGuildEmojiUni(requester, guildId, name, image));
+        return new CreateGuildEmojiUni(requester, guildId, name, image);
     }
 
     public ModifyGuildEmojiUni modifyGuildEmoji(Snowflake guildId, Snowflake emojiId) {
-        return (ModifyGuildEmojiUni) deferredUni(() -> new ModifyGuildEmojiUni(requester, guildId, emojiId));
+        return new ModifyGuildEmojiUni(requester, guildId, emojiId);
     }
 
     public Uni<Void> deleteGuildEmoji(Snowflake guildId, Snowflake emojiId, @Nullable String auditLogReason) {
@@ -483,7 +476,7 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public CreateGuildUni createGuild(String name) {
-        return (CreateGuildUni) deferredUni(() -> new CreateGuildUni(requester, name));
+        return new CreateGuildUni(requester, name);
     }
 
     public Uni<Guild> getGuild(Snowflake guildId, boolean withCounts) {
@@ -499,7 +492,7 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public ModifyGuildUni modifyGuild(Snowflake guildId) {
-        return (ModifyGuildUni) deferredUni(() -> new ModifyGuildUni(requester, guildId));
+        return new ModifyGuildUni(requester, guildId);
     }
 
     public Uni<Void> deleteGuild(Snowflake guildId) {
@@ -516,11 +509,11 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public CreateGuildChannelUni createGuildChannel(Snowflake guildId, String name) {
-        return (CreateGuildChannelUni) deferredUni(() -> new CreateGuildChannelUni(requester, guildId, name));
+        return new CreateGuildChannelUni(requester, guildId, name);
     }
 
     public ModifyGuildChannelPositionsUni modifyGuildChannelPositions(Snowflake guildId) {
-        return (ModifyGuildChannelPositionsUni) deferredUni(() -> new ModifyGuildChannelPositionsUni(requester, guildId));
+        return new ModifyGuildChannelPositionsUni(requester, guildId);
     }
 
     public Uni<ListThreadsResult> listActiveGuildThreads(Snowflake guildId) {
@@ -537,23 +530,23 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public ListGuildMembersMulti listGuildMembers(Snowflake guildId) {
-        return (ListGuildMembersMulti) deferredMulti(() -> new ListGuildMembersMulti(requester, guildId));
+        return new ListGuildMembersMulti(requester, guildId);
     }
 
     public SearchGuildMembersMulti searchGuildMembers(Snowflake guildId, String query) {
-        return (SearchGuildMembersMulti) deferredMulti(() -> new SearchGuildMembersMulti(requester, guildId, query));
+        return new SearchGuildMembersMulti(requester, guildId, query);
     }
 
     public AddGuildMemberUni addGuildMember(Snowflake guildId, Snowflake userId, String accessToken) {
-        return (AddGuildMemberUni) deferredUni(() -> new AddGuildMemberUni(requester, guildId, userId, accessToken));
+        return new AddGuildMemberUni(requester, guildId, userId, accessToken);
     }
 
     public ModifyGuildMemberUni modifyGuildMember(Snowflake guildId, Snowflake userId) {
-        return (ModifyGuildMemberUni) deferredUni(() -> new ModifyGuildMemberUni(requester, guildId, userId));
+        return new ModifyGuildMemberUni(requester, guildId, userId);
     }
 
     public ModifyCurrentMemberUni modifyCurrentMember(Snowflake guildId) {
-        return (ModifyCurrentMemberUni) deferredUni(() -> new ModifyCurrentMemberUni(requester, guildId));
+        return new ModifyCurrentMemberUni(requester, guildId);
     }
 
     public Uni<Void> addGuildMemberRole(Snowflake guildId, Snowflake userId, Snowflake roleId,
@@ -587,7 +580,7 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public GetGuildBansMulti getGuildBans(Snowflake guildId) {
-        return (GetGuildBansMulti) deferredMulti(() -> new GetGuildBansMulti(requester, guildId));
+        return new GetGuildBansMulti(requester, guildId);
     }
 
     public Uni<Guild.Ban> getGuildBan(Snowflake guildId, Snowflake userId) {
@@ -598,7 +591,7 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public CreateGuildBanUni createGuildBan(Snowflake guildId, Snowflake userId) {
-        return (CreateGuildBanUni) deferredUni(() -> new CreateGuildBanUni(requester, guildId, userId));
+        return new CreateGuildBanUni(requester, guildId, userId);
     }
 
     public Uni<Void> removeGuildBan(Snowflake guildId, Snowflake userId, @Nullable String auditLogReason) {
@@ -617,19 +610,19 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public CreateGuildRoleUni createGuildRole(Snowflake guildId) {
-        return (CreateGuildRoleUni) deferredUni(() -> new CreateGuildRoleUni(requester, guildId));
+        return new CreateGuildRoleUni(requester, guildId);
     }
 
     public ModifyGuildRolePositionsMulti modifyGuildRolePositions(Snowflake guildId) {
-        return (ModifyGuildRolePositionsMulti) deferredMulti(() -> new ModifyGuildRolePositionsMulti(requester, guildId));
+        return new ModifyGuildRolePositionsMulti(requester, guildId);
     }
 
     public ModifyGuildRoleUni modifyGuildRole(Snowflake guildId, Snowflake roleId) {
-        return (ModifyGuildRoleUni) deferredUni(() -> new ModifyGuildRoleUni(requester, guildId, roleId));
+        return new ModifyGuildRoleUni(requester, guildId, roleId);
     }
 
     public ModifyGuildMfaLevelUni modifyGuildMfaLevel(Snowflake guildId, Guild.MfaLevel level) {
-        return (ModifyGuildMfaLevelUni) deferredUni(() -> new ModifyGuildMfaLevelUni(requester, guildId, level));
+        return new ModifyGuildMfaLevelUni(requester, guildId, level);
     }
 
     public Uni<Void> deleteGuildRole(Snowflake guildId, Snowflake roleId, @Nullable String auditLogReason) {
@@ -641,11 +634,11 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public GetGuildPruneCountUni getGuildPruneCount(Snowflake guildId) {
-        return (GetGuildPruneCountUni) deferredUni(() -> new GetGuildPruneCountUni(requester, guildId));
+        return new GetGuildPruneCountUni(requester, guildId);
     }
 
     public BeginGuildPruneUni beginGuildPrune(Snowflake guildId) {
-        return (BeginGuildPruneUni) deferredUni(() -> new BeginGuildPruneUni(requester, guildId));
+        return new BeginGuildPruneUni(requester, guildId);
     }
 
     public Multi<VoiceRegion> getGuildVoiceRegions(Snowflake guildId) {
@@ -685,7 +678,7 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public ModifyGuildWidgetUni modifyGuildWidget(Snowflake guildId) {
-        return (ModifyGuildWidgetUni) deferredUni(() -> new ModifyGuildWidgetUni(requester, guildId));
+        return new ModifyGuildWidgetUni(requester, guildId);
     }
 
     public Uni<GuildWidget> getGuildWidget(Snowflake guildId) {
@@ -707,15 +700,15 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public ModifyGuildWelcomeScreenUni modifyGuildWelcomeScreen(Snowflake guildId) {
-        return (ModifyGuildWelcomeScreenUni) deferredUni(() -> new ModifyGuildWelcomeScreenUni(requester, guildId));
+        return new ModifyGuildWelcomeScreenUni(requester, guildId);
     }
 
     public ModifyCurrentUserVoiceStateUni modifyCurrentUserVoiceState(Snowflake guildId) {
-        return (ModifyCurrentUserVoiceStateUni) deferredUni(() -> new ModifyCurrentUserVoiceStateUni(requester, guildId));
+        return new ModifyCurrentUserVoiceStateUni(requester, guildId);
     }
 
     public ModifyUserVoiceStateUni modifyUserVoiceState(Snowflake guildId, Snowflake userId, Snowflake channelId) {
-        return (ModifyUserVoiceStateUni) deferredUni(() -> new ModifyUserVoiceStateUni(requester, guildId, userId, channelId));
+        return new ModifyUserVoiceStateUni(requester, guildId, userId, channelId);
     }
 
     public Multi<GuildScheduledEvent> listScheduledEventsForGuild(Snowflake guildId, boolean withUserCount) {
@@ -728,8 +721,7 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     public CreateGuildScheduledEventUni createGuildScheduledEvent(Snowflake guildId, String name,
             GuildScheduledEvent.PrivacyLevel privacyLevel, Instant scheduledStartTime,
             GuildScheduledEvent.EntityType entityType) {
-        return (CreateGuildScheduledEventUni) deferredUni(
-                () -> new CreateGuildScheduledEventUni(requester, guildId, name, privacyLevel, scheduledStartTime, entityType));
+        return new CreateGuildScheduledEventUni(requester, guildId, name, privacyLevel, scheduledStartTime, entityType);
     }
 
     public Uni<GuildScheduledEvent> getGuildScheduledEvent(Snowflake guildId, Snowflake guildScheduledEventId,
@@ -743,8 +735,7 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public ModifyGuildScheduledEventUni modifyGuildScheduledEvent(Snowflake guildId, Snowflake guildScheduledEventId) {
-        return (ModifyGuildScheduledEventUni) deferredUni(
-                () -> new ModifyGuildScheduledEventUni(requester, guildId, guildScheduledEventId));
+        return new ModifyGuildScheduledEventUni(requester, guildId, guildScheduledEventId);
     }
 
     public Uni<Void> deleteGuildScheduledEvent(Snowflake guildId, Snowflake guildScheduledEventId) {
@@ -757,8 +748,7 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public GetGuildScheduledEventUsersMulti getGuildScheduledEventUsers(Snowflake guildId, Snowflake guildScheduledEventId) {
-        return (GetGuildScheduledEventUsersMulti) deferredMulti(
-                () -> new GetGuildScheduledEventUsersMulti(requester, guildId, guildScheduledEventId));
+        return new GetGuildScheduledEventUsersMulti(requester, guildId, guildScheduledEventId);
     }
 
     public Uni<GuildTemplate> getGuildTemplate(String templateCode) {
@@ -768,8 +758,7 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public CreateGuildFromGuildTemplateUni createGuildFromGuildTemplate(String templateCode, String name) {
-        return (CreateGuildFromGuildTemplateUni) deferredUni(
-                () -> new CreateGuildFromGuildTemplateUni(requester, templateCode, name));
+        return new CreateGuildFromGuildTemplateUni(requester, templateCode, name);
     }
 
     public Multi<GuildTemplate> getGuildTemplates(Snowflake guildId) {
@@ -780,7 +769,7 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public CreateGuildTemplateUni createGuildTemplate(Snowflake guildId, String name) {
-        return (CreateGuildTemplateUni) deferredUni(() -> new CreateGuildTemplateUni(requester, guildId, name));
+        return new CreateGuildTemplateUni(requester, guildId, name);
     }
 
     public Uni<GuildTemplate> syncGuildTemplate(Snowflake guildId, String templateCode) {
@@ -792,7 +781,7 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public ModifyGuildTemplateUni modifyGuildTemplate(Snowflake guildId, String templateCode) {
-        return (ModifyGuildTemplateUni) deferredUni(() -> new ModifyGuildTemplateUni(requester, guildId, templateCode));
+        return new ModifyGuildTemplateUni(requester, guildId, templateCode);
     }
 
     public Uni<Void> deleteGuildTemplate(Snowflake guildId, String templateCode) {
@@ -804,7 +793,7 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public GetInviteUni getInvite(String inviteCode) {
-        return (GetInviteUni) deferredUni(() -> new GetInviteUni(requester, inviteCode));
+        return new GetInviteUni(requester, inviteCode);
     }
 
     public Uni<Invite> deleteInvite(String inviteCode, @Nullable String auditLogReason) {
@@ -814,7 +803,7 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public CreateStageInstanceUni createStageInstance(Snowflake channelId, String topic) {
-        return (CreateStageInstanceUni) deferredUni(() -> new CreateStageInstanceUni(requester, channelId, topic));
+        return new CreateStageInstanceUni(requester, channelId, topic);
     }
 
     public Uni<StageInstance> getStageInstance(Snowflake channelId) {
@@ -824,7 +813,7 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public ModifyStageInstanceUni modifyStageInstance(Snowflake channelId) {
-        return (ModifyStageInstanceUni) deferredUni(() -> new ModifyStageInstanceUni(requester, channelId));
+        return new ModifyStageInstanceUni(requester, channelId);
     }
 
     public Uni<Void> deleteStageInstance(Snowflake channelId, @Nullable String auditLogReason) {
@@ -861,12 +850,11 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public CreateGuildStickerUni createGuildSticker(Snowflake guildId, String name, String description, String tags) {
-        return (CreateGuildStickerUni) deferredUni(
-                () -> new CreateGuildStickerUni(requester, guildId, name, description, tags));
+        return new CreateGuildStickerUni(requester, guildId, name, description, tags);
     }
 
     public ModifyGuildStickerUni modifyGuildSticker(Snowflake guildId, Snowflake stickerId) {
-        return (ModifyGuildStickerUni) deferredUni(() -> new ModifyGuildStickerUni(requester, guildId, stickerId));
+        return new ModifyGuildStickerUni(requester, guildId, stickerId);
     }
 
     public Uni<Void> deleteGuildSticker(Snowflake guildId, Snowflake stickerId, @Nullable String auditLogReason) {
@@ -879,7 +867,7 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public ModifyCurrentUserUni modifyCurrentUser() {
-        return (ModifyCurrentUserUni) deferredUni(() -> new ModifyCurrentUserUni(requester));
+        return new ModifyCurrentUserUni(requester);
     }
 
     public Uni<User> getUser(Snowflake userId) {
@@ -905,7 +893,7 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public CreateWebhookUni createWebhook(Snowflake channelId, String name) {
-        return (CreateWebhookUni) deferredUni(() -> new CreateWebhookUni(requester, channelId, name));
+        return new CreateWebhookUni(requester, channelId, name);
     }
 
     public Multi<Webhook> getChannelWebhooks(Snowflake channelId) {
@@ -929,7 +917,7 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
     }
 
     public ModifyWebhookUni modifyWebhook(Snowflake webhookId) {
-        return (ModifyWebhookUni) deferredUni(() -> new ModifyWebhookUni(requester, webhookId));
+        return new ModifyWebhookUni(requester, webhookId);
     }
 
     public Uni<Void> deleteWebhook(Snowflake webhookId, @Nullable String auditLogReason) {

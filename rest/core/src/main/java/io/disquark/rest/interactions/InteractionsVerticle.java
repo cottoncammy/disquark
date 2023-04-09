@@ -126,7 +126,8 @@ class InteractionsVerticle extends AbstractVerticle {
                             return Uni.createFrom().failure(IllegalStateException::new);
                     }
                 })
-                .onFailure(is(NullPointerException.class, DecodeException.class)).call(e -> {
+                .onFailure(is(NullPointerException.class, DecodeException.class).and(x -> !context.response().ended()))
+                .call(e -> {
                     log(LOG, Level.WARN, log -> log.warn("Request body mapping failed for incoming request {}: {}",
                             ctx.get(REQUEST_ID), e.getMessage()));
 
@@ -206,7 +207,7 @@ class InteractionsVerticle extends AbstractVerticle {
         return processor.onItem().transformToUniAndMerge(context -> {
             Interaction<D> interaction = context.get("interaction");
             if (!schema.validate(interaction)
-                    || (interaction.type() != Interaction.Type.PING && context.get("responded", false))) {
+                    || (interaction.type() != Interaction.Type.PING && context.response().ended())) {
                 return Uni.createFrom().nullItem();
             }
             return Uni.createFrom().item(schema.getCompletableInteraction(context, interaction, interactionsClient));

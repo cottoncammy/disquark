@@ -3,6 +3,7 @@ package io.disquark.it;
 import io.disquark.it.config.ConfigValue;
 import io.disquark.rest.DiscordBotClient;
 import io.disquark.rest.json.Snowflake;
+import io.disquark.rest.request.FileUpload;
 import io.smallrye.mutiny.helpers.test.UniAssertSubscriber;
 import io.vertx.mutiny.core.buffer.Buffer;
 
@@ -51,7 +52,7 @@ class StickerIT {
     void testCreateGuildSticker(DiscordBotClient<?> botClient, @ConfigValue("DISCORD_GUILD_ID") Snowflake guildId) {
         Buffer image = botClient.getVertx().fileSystem().readFileAndAwait("images/sticker.png");
         stickerId = botClient.createGuildSticker(guildId, "foo", "bar", "baz")
-                //.withFiles(Map.entry("sticker.png", image))
+                .withFiles(new FileUpload("sticker.png", image))
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .awaitItem()
                 .getItem()

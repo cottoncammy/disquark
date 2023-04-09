@@ -68,8 +68,7 @@ public abstract class AuthenticatedDiscordClient<T extends Response> extends Dis
     }
 
     public CreateGlobalApplicationCommandUni createGlobalApplicationCommand(Snowflake applicationId, String name) {
-        return (CreateGlobalApplicationCommandUni) deferredUni(
-                () -> new CreateGlobalApplicationCommandUni(requester, applicationId, name));
+        return new CreateGlobalApplicationCommandUni(requester, applicationId, name);
     }
 
     public Uni<ApplicationCommand> getGlobalApplicationCommand(Snowflake applicationId, Snowflake commandId) {
@@ -80,8 +79,7 @@ public abstract class AuthenticatedDiscordClient<T extends Response> extends Dis
     }
 
     public EditGlobalApplicationCommandUni editGlobalApplicationCommand(Snowflake applicationId, Snowflake commandId) {
-        return (EditGlobalApplicationCommandUni) deferredUni(
-                () -> new EditGlobalApplicationCommandUni(requester, applicationId, commandId));
+        return new EditGlobalApplicationCommandUni(requester, applicationId, commandId);
     }
 
     public Uni<Void> deleteGlobalApplicationCommand(Snowflake applicationId, Snowflake commandId) {
@@ -93,8 +91,7 @@ public abstract class AuthenticatedDiscordClient<T extends Response> extends Dis
     }
 
     public BulkOverwriteGlobalApplicationCommandsMulti bulkOverwriteGlobalApplicationCommands(Snowflake applicationId) {
-        return (BulkOverwriteGlobalApplicationCommandsMulti) deferredMulti(
-                () -> new BulkOverwriteGlobalApplicationCommandsMulti(requester, applicationId));
+        return new BulkOverwriteGlobalApplicationCommandsMulti(requester, applicationId);
     }
 
     public Multi<ApplicationCommand> getGuildApplicationCommands(Snowflake applicationId, Snowflake guildId,
@@ -110,8 +107,7 @@ public abstract class AuthenticatedDiscordClient<T extends Response> extends Dis
 
     public CreateGuildApplicationCommandUni createGuildApplicationCommand(Snowflake applicationId, Snowflake guildId,
             String name) {
-        return (CreateGuildApplicationCommandUni) deferredUni(
-                () -> new CreateGuildApplicationCommandUni(requester, applicationId, guildId, name));
+        return new CreateGuildApplicationCommandUni(requester, applicationId, guildId, name);
     }
 
     public Uni<ApplicationCommand> getGuildApplicationCommand(Snowflake applicationId, Snowflake guildId, Snowflake commandId) {
@@ -125,8 +121,7 @@ public abstract class AuthenticatedDiscordClient<T extends Response> extends Dis
 
     public EditGuildApplicationCommandUni editGuildApplicationCommand(Snowflake applicationId, Snowflake guildId,
             Snowflake commandId) {
-        return (EditGuildApplicationCommandUni) deferredUni(
-                () -> new EditGuildApplicationCommandUni(requester, applicationId, guildId, commandId));
+        return new EditGuildApplicationCommandUni(requester, applicationId, guildId, commandId);
     }
 
     public Uni<Void> deleteGuildApplicationCommand(Snowflake applicationId, Snowflake guildId, Snowflake commandId) {
@@ -140,8 +135,7 @@ public abstract class AuthenticatedDiscordClient<T extends Response> extends Dis
 
     public BulkOverwriteGuildApplicationCommandsMulti bulkOverwriteGuildApplicationCommands(Snowflake applicationId,
             Snowflake guildId) {
-        return (BulkOverwriteGuildApplicationCommandsMulti) deferredMulti(
-                () -> new BulkOverwriteGuildApplicationCommandsMulti(requester, applicationId, guildId));
+        return new BulkOverwriteGuildApplicationCommandsMulti(requester, applicationId, guildId);
     }
 
     public Multi<GuildApplicationCommandPermissions> getGuildApplicationCommandPermissions(Snowflake applicationId,

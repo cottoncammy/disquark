@@ -8,7 +8,16 @@ import io.disquark.rest.json.webhook.Webhook
 import io.disquark.rest.kotlin.interactions.createFollowupMessage
 import io.disquark.rest.kotlin.interactions.editFollowupMessage
 import io.disquark.rest.kotlin.interactions.editOriginalInteractionResponse
-import io.disquark.rest.kotlin.json.command.*
+import io.disquark.rest.kotlin.json.command.BulkOverwriteGlobalApplicationCommands
+import io.disquark.rest.kotlin.json.command.BulkOverwriteGuildApplicationCommands
+import io.disquark.rest.kotlin.json.command.CreateGlobalChatInputCommand
+import io.disquark.rest.kotlin.json.command.CreateGlobalMessageCommand
+import io.disquark.rest.kotlin.json.command.CreateGlobalUserCommand
+import io.disquark.rest.kotlin.json.command.CreateGuildChatInputCommand
+import io.disquark.rest.kotlin.json.command.CreateGuildMessageCommand
+import io.disquark.rest.kotlin.json.command.CreateGuildUserCommand
+import io.disquark.rest.kotlin.json.command.EditGlobalApplicationCommand
+import io.disquark.rest.kotlin.json.command.EditGuildApplicationCommand
 import io.disquark.rest.kotlin.json.interaction.CreateFollowupMessage
 import io.disquark.rest.kotlin.json.interaction.EditFollowupMessage
 import io.disquark.rest.kotlin.json.interaction.EditOriginalInteractionResponse

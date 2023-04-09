@@ -15,13 +15,13 @@ import io.disquark.rest.json.channel.Channel;
 import io.disquark.rest.request.AbstractRequestUni;
 import io.disquark.rest.request.Auditable;
 import io.disquark.rest.request.Endpoint;
-import io.disquark.rest.request.MultipartRequest;
 import io.disquark.rest.request.Request;
 import io.smallrye.mutiny.subscription.UniSubscriber;
 import io.vertx.core.http.HttpMethod;
 
+// TODO returns a channel with a nested message
 @ImmutableUni
-abstract class StartThreadInForumChannel extends AbstractRequestUni<Channel> implements Auditable, MultipartRequest {
+abstract class StartThreadInForumChannel extends AbstractRequestUni<Channel> implements Auditable {
 
     @JsonIgnore
     public abstract Snowflake channelId();
@@ -51,7 +51,7 @@ abstract class StartThreadInForumChannel extends AbstractRequestUni<Channel> imp
                 .variables(variables("channel.id", channelId().getValue()))
                 .body(this)
                 .auditLogReason(auditLogReason())
-                .files(files())
+                .files(message().files())
                 .build();
     }
 }

@@ -13,9 +13,12 @@ import io.disquark.rest.json.message.Message;
 import io.disquark.rest.json.message.MessageEmbed;
 import io.disquark.rest.json.message.PartialAttachment;
 import io.disquark.rest.json.messagecomponent.Component;
+import io.disquark.rest.request.Endpoint;
+import io.disquark.rest.request.Request;
+import io.vertx.core.http.HttpMethod;
 
 @ImmutableUni
-abstract class ResponseCallback<T> extends AbstractInteractionCallbackUni<T> {
+abstract class ResponseCallback<T> extends MultipartCallback<T> {
 
     public abstract Optional<Boolean> tts();
 
@@ -31,6 +34,16 @@ abstract class ResponseCallback<T> extends AbstractInteractionCallbackUni<T> {
     public abstract Optional<List<Component>> components();
 
     public abstract Optional<List<PartialAttachment>> attachments();
+
+    // use a fake request object so we can reuse codec
+    @Override
+    protected Request toRequest() {
+        return Request.builder()
+                .endpoint(Endpoint.create(HttpMethod.GET, ""))
+                .body(this)
+                .files(files())
+                .build();
+    }
 
     @Override
     protected Interaction.Response<?> toResponse() {

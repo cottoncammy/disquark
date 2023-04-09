@@ -12,7 +12,6 @@ import io.disquark.rest.request.RequesterFactory;
 import io.disquark.rest.request.ratelimit.GlobalRateLimiter;
 import io.disquark.rest.request.ratelimit.RateLimitStrategy;
 import io.disquark.rest.response.Response;
-import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
 import io.vertx.mutiny.core.Vertx;
 
@@ -27,10 +26,6 @@ public abstract class DiscordClient<T extends Response> {
 
     protected <T> Uni<T> deferredUni(Supplier<Uni<? extends T>> uni) {
         return Uni.createFrom().deferred(uni);
-    }
-
-    protected <T> Multi<T> deferredMulti(Supplier<Multi<? extends T>> multi) {
-        return Multi.createFrom().deferred(multi);
     }
 
     public Vertx getVertx() {

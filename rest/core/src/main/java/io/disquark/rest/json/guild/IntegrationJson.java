@@ -57,7 +57,7 @@ interface IntegrationJson {
 
     Optional<Boolean> revoked();
 
-    Optional<Application> application();
+    Optional<Integration.Application> application();
 
     Optional<List<Scope>> scopes();
 

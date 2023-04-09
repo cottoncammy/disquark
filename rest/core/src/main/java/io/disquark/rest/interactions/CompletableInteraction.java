@@ -36,7 +36,6 @@ public abstract class CompletableInteraction<T> {
     }
 
     protected ModalCallbackUni<T> popUpModal(String customId, String title) {
-        return (ModalCallbackUni<T>) Uni.createFrom().deferred(() -> new ModalCallbackUni<T>(context, interaction,
-                interactionsClient, customId, title));
+        return new ModalCallbackUni<>(context, interaction, interactionsClient, customId, title);
     }
 }

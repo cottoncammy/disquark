@@ -68,7 +68,7 @@ class ChannelIT {
                 .map(AccessToken::accessToken);
 
         dmChannelId = botClient.createDm(userId2)
-                .call(channel -> tokenUni.call(token -> botClient.groupDmAddRecipient(channel.id(), userId, token, null)))
+                .call(channel -> tokenUni.call(token -> botClient.groupDmAddRecipient(channel.id(), userId, token)))
                 .call(channel -> botClient.modifyDmChannel(channel.id()).withName("foo"))
                 .call(channel -> botClient.deleteOrCloseChannel(channel.id(), null))
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
@@ -322,8 +322,7 @@ class ChannelIT {
     @Order(27)
     void testStartThreadInForumChannel(DiscordBotClient<?> botClient,
             @ConfigValue("DISCORD_FORUM_CHANNEL_ID") Snowflake forumChannelId) {
-        botClient.startThreadInForumChannel(forumChannelId, "foo")
-                .withMessage(ForumThreadMessageParams.of().withContent("Hello World!"))
+        botClient.startThreadInForumChannel(forumChannelId, "foo", ForumThreadMessageParams.of().withContent("Hello World!"))
                 .subscribe().withSubscriber(UniAssertSubscriber.create())
                 .awaitItem()
                 .assertCompleted();

@@ -24,17 +24,20 @@ abstract class AbstractInteractionCallbackUni<T> extends AbstractUni<RespondedIn
     @JsonIgnore
     public abstract DiscordInteractionsClient<?> interactionsClient();
 
-    // TODO support file uploads & use codecs
     @JsonIgnore
     protected Uni<Void> serialize() {
-        return context().json(toResponse()).invoke(() -> context().put("responded", true));
+        return context().json(toResponse());
     }
 
-    // TODO this is bugged
     @Override
+    @SuppressWarnings("unchecked")
     public void subscribe(UniSubscriber<? super RespondedInteraction<T>> downstream) {
-        serialize()
-                .replaceWith(new RespondedInteraction<>((Interaction<T>) interaction(), interactionsClient()))
+        Uni<Void> uni = Uni.createFrom().voidItem();
+        if (!context().response().ended()) {
+            uni = serialize();
+        }
+
+        uni.replaceWith(new RespondedInteraction<>((Interaction<T>) interaction(), interactionsClient()))
                 .subscribe().withSubscriber(downstream);
     }
 

@@ -6,13 +6,14 @@ import io.disquark.rest.json.interaction.Interaction
 import io.disquark.rest.kotlin.json.command.ApplicationCommandOption
 import io.smallrye.mutiny.Uni
 
+@Suppress("UNCHECKED_CAST")
 inline fun <C : ApplicationCommandOption.Choice<T>, reified T> ApplicationCommandAutocompleteInteraction.suggestChoices(init: AutocompleteCallback<C, T>.() -> Unit): Uni<RespondedInteraction<Interaction.ApplicationCommandData>> {
-    val callback = when {
-        T::class == String::class -> AutocompleteStringOptionCallback(this)
-        T::class == Int::class -> AutocompleteIntOptionCallback(this)
-        T::class == Double::class -> AutocompleteDoubleOptionCallback(this)
+    val callback: AutocompleteCallback<C, T>? = when {
+        T::class == String::class -> AutocompleteStringOptionCallback(this) as AutocompleteCallback<C, T>
+        T::class == Int::class -> AutocompleteIntOptionCallback(this) as AutocompleteCallback<C, T>
+        T::class == Double::class -> AutocompleteDoubleOptionCallback(this) as AutocompleteCallback<C, T>
         else -> null
     }
 
-    return callback?.toUni() ?: Uni.createFrom().failure(IllegalStateException())
+    return callback?.apply(init)?.toUni() ?: Uni.createFrom().failure(IllegalStateException())
 }

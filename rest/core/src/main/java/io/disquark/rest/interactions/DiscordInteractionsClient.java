@@ -89,58 +89,55 @@ public class DiscordInteractionsClient<T extends Response> extends DiscordClient
 
     @Override
     public Uni<Message> getOriginalInteractionResponse(Snowflake applicationId, String interactionToken) {
-        return requester.request(new EmptyRequest(
+        return deferredUni(() -> requester.request(new EmptyRequest(
                 "/webhooks/{application.id}/{interaction.token}/messages/@original", false,
                 variables("application.id", requireNonNull(applicationId, "applicationId").getValue(),
-                        "interaction.token", requireNonNull(interactionToken, "interactionToken"))))
+                        "interaction.token", requireNonNull(interactionToken, "interactionToken")))))
                 .flatMap(res -> res.as(Message.class));
     }
 
     @Override
     public EditOriginalInteractionResponseUni editOriginalInteractionResponse(Snowflake applicationId,
             String interactionToken) {
-        return (EditOriginalInteractionResponseUni) Uni.createFrom()
-                .deferred(() -> new EditOriginalInteractionResponseUni(requester, applicationId, interactionToken));
+        return new EditOriginalInteractionResponseUni(requester, applicationId, interactionToken);
     }
 
     @Override
     public Uni<Void> deleteOriginalInteractionResponse(Snowflake applicationId, String interactionToken) {
-        return requester.request(new EmptyRequest(HttpMethod.DELETE,
+        return deferredUni(() -> requester.request(new EmptyRequest(HttpMethod.DELETE,
                 "/webhooks/{application.id}/{interaction.token}/messages/@original", false,
                 variables("application.id", requireNonNull(applicationId, "applicationId").getValue(),
-                        "interaction.token", requireNonNull(interactionToken, "interactionToken"))))
+                        "interaction.token", requireNonNull(interactionToken, "interactionToken")))))
                 .replaceWithVoid();
     }
 
     @Override
     public CreateFollowupMessageUni createFollowupMessage(Snowflake applicationId, String interactionToken) {
-        return (CreateFollowupMessageUni) Uni.createFrom()
-                .deferred(() -> new CreateFollowupMessageUni(requester, applicationId, interactionToken));
+        return new CreateFollowupMessageUni(requester, applicationId, interactionToken);
     }
 
     @Override
     public Uni<Message> getFollowupMessage(Snowflake applicationId, String interactionToken, Snowflake messageId) {
-        return requester.request(new EmptyRequest(
+        return deferredUni(() -> requester.request(new EmptyRequest(
                 "/webhooks/{application.id}/{interaction.token}/messages/{message.id}", false,
                 variables("application.id", requireNonNull(applicationId, "applicationId").getValue(),
                         "interaction.token", requireNonNull(interactionToken, "interactionToken"), "message.id",
-                        requireNonNull(messageId, "messageId").getValue())))
+                        requireNonNull(messageId, "messageId").getValue()))))
                 .flatMap(res -> res.as(Message.class));
     }
 
     @Override
     public EditFollowupMessageUni editFollowupMessage(Snowflake applicationId, String interactionToken, Snowflake messageId) {
-        return (EditFollowupMessageUni) Uni.createFrom()
-                .deferred(() -> new EditFollowupMessageUni(requester, applicationId, interactionToken, messageId));
+        return new EditFollowupMessageUni(requester, applicationId, interactionToken, messageId);
     }
 
     @Override
     public Uni<Void> deleteFollowupMessage(Snowflake applicationId, String interactionToken, Snowflake messageId) {
-        return requester.request(new EmptyRequest(HttpMethod.DELETE,
+        return deferredUni(() -> requester.request(new EmptyRequest(HttpMethod.DELETE,
                 "/webhooks/{application.id}/{interaction.token}/messages/{message.id}", false,
                 variables("application.id", requireNonNull(applicationId, "applicationId").getValue(),
                         "interaction.token", requireNonNull(interactionToken, "interactionToken"), "message.id",
-                        requireNonNull(messageId, "messageId").getValue())))
+                        requireNonNull(messageId, "messageId").getValue()))))
                 .replaceWithVoid();
     }
 
