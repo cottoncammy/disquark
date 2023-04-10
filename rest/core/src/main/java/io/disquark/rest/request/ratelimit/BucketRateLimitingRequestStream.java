@@ -16,8 +16,6 @@ class BucketRateLimitingRequestStream {
     private final Requester<HttpResponse> requester;
     private final UnicastProcessor<CompletableRequest> processor = UnicastProcessor.create();
 
-    private volatile boolean subscribed;
-
     public BucketRateLimitingRequestStream(BucketCacheKey bucketKey, Requester<HttpResponse> requester) {
         this.bucketKey = bucketKey;
         this.requester = requester;
@@ -27,22 +25,14 @@ class BucketRateLimitingRequestStream {
         processor.onNext(request);
     }
 
-    // TODO fix race condition
     public void subscribe() {
-        LOG.debug("Subscribing to request stream for buckets matching key {}", bucketKey);
         Uni.createFrom().voidItem()
-                .invoke(() -> subscribed = true)
+                .invoke(() -> LOG.debug("Subscribing to request stream for buckets matching key {}", bucketKey))
                 .onItem().transformToMulti(x -> processor)
-                .ifNoItem().after(Duration.ofSeconds(30)).recoverWithCompletion()
-                .onCompletion().invoke(() -> {
-                    LOG.debug("Unsubscribing from stream: no requests received for buckets matching key {} after timeout",
-                            bucketKey);
-                    subscribed = false;
-                })
+                .ifNoItem().after(Duration.ofSeconds(40)).recoverWithCompletion()
+                .onCompletion()
+                .invoke(() -> LOG.debug(
+                        "Unsubscribing from stream: no requests received for buckets matching key {} after timeout", bucketKey))
                 .subscribe().withSubscriber(new BucketRateLimitingRequestSubscriber(bucketKey, requester));
-    }
-
-    public boolean isSubscribed() {
-        return subscribed;
     }
 }

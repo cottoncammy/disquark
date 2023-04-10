@@ -12,7 +12,7 @@ import org.immutables.value.Value.Style.ImplementationVisibility;
 @Target(ElementType.TYPE)
 @NullableOptionalEncodingEnabled
 @JsonSerialize
-@Style(of = "new", typeImmutable = "*Multi", visibility = ImplementationVisibility.PUBLIC, optionalAcceptNullable = true, allMandatoryParameters = true)
+@Style(of = "new", typeImmutable = "*Multi", visibility = ImplementationVisibility.PUBLIC, optionalAcceptNullable = true, allMandatoryParameters = true, copyMandatoryAttributes = false)
 @Documented
 public @interface ImmutableMulti {
 }

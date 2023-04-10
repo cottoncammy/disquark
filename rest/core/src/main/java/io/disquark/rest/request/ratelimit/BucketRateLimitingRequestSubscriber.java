@@ -60,19 +60,25 @@ class BucketRateLimitingRequestSubscriber implements MultiSubscriber<Completable
                 });
     }
 
-    private Duration getResetAfterDuration() {
-        return Duration.between(Instant.now(), Instant.now().plusSeconds(resetAfter));
-    }
+    private void eventually() {
+        Duration resetAfterDuration = Duration.between(Instant.now(), Instant.now().plusSeconds(resetAfter));
+        Uni<Void> uni = Uni.createFrom().voidItem();
+        if (!resetAfterDuration.isZero() && !resetAfterDuration.isNegative()) {
+            LOG.debug("Delaying demand signal for next request for buckets matching key {} by {}s",
+                    bucketKey, resetAfterDuration.getSeconds());
 
-    private void request() {
-        LOG.debug("Signalling demand for next request for buckets matching key {}", bucketKey);
-        subscription.request(1);
+            uni = uni.onItem().delayIt().by(resetAfterDuration);
+        }
+
+        uni.subscribe().with(x -> {
+            LOG.debug("Signalling demand for next request for buckets matching key {}", bucketKey);
+            subscription.request(1);
+        });
     }
 
     @Override
     public void onItem(CompletableRequest item) {
         Promise<HttpResponse> promise = item.getResponsePromise();
-
         Uni.createFrom().context(ctx -> request(item.getRequest(), ctx))
                 .call(response -> {
                     String bucket = response.getHeader("X-RateLimit-Bucket");
@@ -80,7 +86,7 @@ class BucketRateLimitingRequestSubscriber implements MultiSubscriber<Completable
                         if (bucketKey.getTopLevelResourceValue().isPresent()) {
                             bucket += '-' + bucketKey.getTopLevelResourceValue().get();
                         }
-                        return Uni.createFrom().item(bucket).invoke(item.getBucketConsumer());
+                        return Uni.createFrom().item(bucket).invoke(item.getBucketCallback());
                     }
 
                     LOG.debug("Request matching bucket key {} didn't return a bucket value", bucketKey);
@@ -102,20 +108,9 @@ class BucketRateLimitingRequestSubscriber implements MultiSubscriber<Completable
                     }
                     return Uni.createFrom().voidItem();
                 })
-                .onItem().invoke(res -> promise.complete(res))
-                .onItemOrFailure().call(() -> {
-                    Duration resetAfter = getResetAfterDuration();
-                    if (!resetAfter.isZero() && !resetAfter.isNegative()) {
-                        LOG.debug("Delaying demand signal for next request for buckets matching key {} by {}s",
-                                bucketKey, resetAfter.getSeconds());
-
-                        return Uni.createFrom().voidItem().onItem().delayIt().by(resetAfter).invoke(this::request);
-                    }
-                    return Uni.createFrom().voidItem().invoke(this::request);
-                })
+                .eventually(this::eventually)
                 .subscribe()
-                .with(x -> {
-                }, promise::fail);
+                .with(promise::complete, promise::fail);
     }
 
     @Override

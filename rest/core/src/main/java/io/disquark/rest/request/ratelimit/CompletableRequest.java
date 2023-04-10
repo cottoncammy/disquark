@@ -8,20 +8,20 @@ import io.vertx.mutiny.core.Promise;
 
 class CompletableRequest {
     private final Request request;
-    private final Consumer<String> bucketConsumer;
+    private final Consumer<String> bucketCallback;
     private final Promise<HttpResponse> responsePromise = Promise.promise();
 
-    public CompletableRequest(Request request, Consumer<String> bucketConsumer) {
+    public CompletableRequest(Request request, Consumer<String> bucketCallback) {
         this.request = request;
-        this.bucketConsumer = bucketConsumer;
+        this.bucketCallback = bucketCallback;
     }
 
     public Request getRequest() {
         return request;
     }
 
-    public Consumer<String> getBucketConsumer() {
-        return bucketConsumer;
+    public Consumer<String> getBucketCallback() {
+        return bucketCallback;
     }
 
     public Promise<HttpResponse> getResponsePromise() {

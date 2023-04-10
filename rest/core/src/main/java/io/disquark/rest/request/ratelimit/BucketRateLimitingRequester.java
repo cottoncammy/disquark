@@ -30,7 +30,7 @@ public class BucketRateLimitingRequester implements Requester<HttpResponse> {
                 }))
                 .build();
         this.requestStreamCache = cacheBuilder()
-                .expireAfterAccess(Duration.ofSeconds(30))
+                .expireAfterAccess(Duration.ofSeconds(20))
                 .evictionListener(((k, v, cause) -> {
                     LOG.debug("Request stream for bucket {} was removed from cache, cause: {}", k, cause);
                 }))
@@ -38,7 +38,7 @@ public class BucketRateLimitingRequester implements Requester<HttpResponse> {
     }
 
     private Caffeine<Object, Object> cacheBuilder() {
-        return Caffeine.newBuilder().executor(Infrastructure.getDefaultExecutor());
+        return Caffeine.newBuilder().executor(Infrastructure.getDefaultWorkerPool());
     }
 
     private BucketRateLimitingRequestStream getRequestStream(BucketCacheKey key) {
@@ -51,12 +51,9 @@ public class BucketRateLimitingRequester implements Requester<HttpResponse> {
         if (requestStream == null) {
             LOG.debug("Creating new request stream for bucket key {}", key);
             requestStream = new BucketRateLimitingRequestStream(key, requester);
+            requestStream.subscribe();
         } else {
             LOG.debug("Fetched existing request stream matching bucket {} for key {}", bucket, key);
-        }
-
-        if (!requestStream.isSubscribed()) {
-            requestStream.subscribe();
         }
 
         return requestStream;
@@ -71,7 +68,7 @@ public class BucketRateLimitingRequester implements Requester<HttpResponse> {
         BucketCacheKey key = BucketCacheKey.create(request);
         BucketRateLimitingRequestStream requestStream = getRequestStream(key);
 
-        Consumer<String> bucketConsumer = bucket -> {
+        Consumer<String> bucketCallback = bucket -> {
             bucketCache.get(key, k -> {
                 LOG.debug("Caching bucket value {} for key {}", bucket, key);
                 return bucket;
@@ -83,7 +80,7 @@ public class BucketRateLimitingRequester implements Requester<HttpResponse> {
             });
         };
 
-        CompletableRequest completableRequest = new CompletableRequest(request, bucketConsumer);
+        CompletableRequest completableRequest = new CompletableRequest(request, bucketCallback);
         requestStream.onNext(completableRequest);
 
         return completableRequest.getResponsePromise().future()
