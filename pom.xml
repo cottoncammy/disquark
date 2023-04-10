@@ -78,7 +78,7 @@
         <properties-plugin.version>1.1.0</properties-plugin.version>
         <resources-plugin.version>3.3.0</resources-plugin.version>
         <source-plugin.version>3.2.1</source-plugin.version>
-        <surefire-plugin.version>${failsafe-plugin.version}</surefire-plugin.version>
+        <surefire-plugin.version>3.0.0</surefire-plugin.version>
         <versions-plugin.version>2.14.2</versions-plugin.version>
     </properties>
 
