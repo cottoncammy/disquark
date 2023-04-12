@@ -61,40 +61,40 @@ interface ApplicationCommandOptionsDsl {
         (options ?: mutableListOf()) + this
     }
 
-    fun stringOption(name: String, description: String, init: StringOption.() -> Unit) {
-        +StringOption(name, description).apply(init)
+    fun stringOption(name: String, description: String, init: (StringOption.() -> Unit)? = null) {
+        +StringOption(name, description).apply { init?.let { init() } }
     }
 
-    fun intOption(name: String, description: String, init: IntOption.() -> Unit) {
-        +IntOption(name, description).apply(init)
+    fun intOption(name: String, description: String, init: (IntOption.() -> Unit)? = null) {
+        +IntOption(name, description).apply { init?.let { init() } }
     }
 
-    fun booleanOption(name: String, description: String, init: ApplicationCommandOption.() -> Unit) {
-        +ApplicationCommandOption(ApplicationCommand.Option.Type.BOOLEAN, name, description).apply(init)
+    fun booleanOption(name: String, description: String, init: (ApplicationCommandOption.() -> Unit)? = null) {
+        +ApplicationCommandOption(ApplicationCommand.Option.Type.BOOLEAN, name, description).apply { init?.let { init() } }
     }
 
-    fun userOption(name: String, description: String, init: ApplicationCommandOption.() -> Unit) {
-        +ApplicationCommandOption(ApplicationCommand.Option.Type.USER, name, description).apply(init)
+    fun userOption(name: String, description: String, init: (ApplicationCommandOption.() -> Unit)? = null) {
+        +ApplicationCommandOption(ApplicationCommand.Option.Type.USER, name, description).apply { init?.let { init() } }
     }
 
-    fun channelOption(name: String, description: String, init: ChannelOption.() -> Unit) {
-        +ChannelOption(name, description).apply(init)
+    fun channelOption(name: String, description: String, init: (ChannelOption.() -> Unit)? = null) {
+        +ChannelOption(name, description).apply { init?.let { init() } }
     }
 
-    fun roleOption(name: String, description: String, init: ApplicationCommandOption.() -> Unit) {
-        +ApplicationCommandOption(ApplicationCommand.Option.Type.ROLE, name, description).apply(init)
+    fun roleOption(name: String, description: String, init: (ApplicationCommandOption.() -> Unit)? = null) {
+        +ApplicationCommandOption(ApplicationCommand.Option.Type.ROLE, name, description).apply { init?.let { init() } }
     }
 
-    fun mentionableOption(name: String, description: String, init: ApplicationCommandOption.() -> Unit) {
-        +ApplicationCommandOption(ApplicationCommand.Option.Type.MENTIONABLE, name, description).apply(init)
+    fun mentionableOption(name: String, description: String, init: (ApplicationCommandOption.() -> Unit)? = null) {
+        +ApplicationCommandOption(ApplicationCommand.Option.Type.MENTIONABLE, name, description).apply { init?.let { init() } }
     }
 
-    fun doubleOption(name: String, description: String, init: DoubleOption.() -> Unit) {
-        +DoubleOption(name, description).apply(init)
+    fun doubleOption(name: String, description: String, init: (DoubleOption.() -> Unit)? = null) {
+        +DoubleOption(name, description).apply { init?.let { init() } }
     }
 
-    fun attachmentOption(name: String, description: String, init: ApplicationCommandOption.() -> Unit) {
-        +ApplicationCommandOption(ApplicationCommand.Option.Type.ATTACHMENT, name, description).apply(init)
+    fun attachmentOption(name: String, description: String, init: (ApplicationCommandOption.() -> Unit)? = null) {
+        +ApplicationCommandOption(ApplicationCommand.Option.Type.ATTACHMENT, name, description).apply { init?.let { init() } }
     }
 }
 
@@ -172,7 +172,7 @@ sealed class CreateApplicationCommand(
 }
 
 sealed class CreateApplicationCommandWithOptions(requester: Requester<*>, applicationId: Snowflake, name: String) :
-    CreateApplicationCommand(requester, applicationId, name), ApplicationCommandOptionsDsl {
+    CreateApplicationCommand(requester, applicationId, name), ApplicationCommandOptionsWithSubcommandGroupDsl {
 
     override var options: MutableList<ApplicationCommandOption>? = null
 
@@ -335,12 +335,12 @@ class BulkOverwriteGlobalApplicationCommands(requester: Requester<*>, applicatio
         chatInputCommand(CreateGlobalChatInputCommand(requester, applicationId, name).apply(init))
     }
 
-    fun userCommand(name: String, init: CreateGlobalUserCommand.() -> Unit) {
-        userCommand(CreateGlobalUserCommand(requester, applicationId, name).apply(init))
+    fun userCommand(name: String, init: (CreateGlobalUserCommand.() -> Unit)? = null) {
+        userCommand(CreateGlobalUserCommand(requester, applicationId, name).apply { init?.let { init() } })
     }
 
-    fun messageCommand(name: String, init: CreateGlobalMessageCommand.() -> Unit) {
-        messageCommand(CreateGlobalMessageCommand(requester, applicationId, name).apply(init))
+    fun messageCommand(name: String, init: (CreateGlobalMessageCommand.() -> Unit)? = null) {
+        messageCommand(CreateGlobalMessageCommand(requester, applicationId, name).apply { init?.let { init() } })
     }
 
     internal fun toMulti(): BulkOverwriteGlobalApplicationCommandsMulti {
@@ -359,12 +359,12 @@ class BulkOverwriteGuildApplicationCommands(requester: Requester<*>, application
         chatInputCommand(CreateGuildChatInputCommand(requester, applicationId, guildId, name).apply(init))
     }
 
-    fun userCommand(name: String, init: CreateGuildUserCommand.() -> Unit) {
-        userCommand(CreateGuildUserCommand(requester, applicationId, guildId, name).apply(init))
+    fun userCommand(name: String, init: (CreateGuildUserCommand.() -> Unit)? = null) {
+        userCommand(CreateGuildUserCommand(requester, applicationId, guildId, name).apply { init?.let { init() } })
     }
 
-    fun messageCommand(name: String, init: CreateGuildMessageCommand.() -> Unit) {
-        messageCommand(CreateGuildMessageCommand(requester, applicationId, guildId, name).apply(init))
+    fun messageCommand(name: String, init: (CreateGuildMessageCommand.() -> Unit)? = null) {
+        messageCommand(CreateGuildMessageCommand(requester, applicationId, guildId, name).apply { init?.let { init() } })
     }
 
     internal fun toMulti(): BulkOverwriteGuildApplicationCommandsMulti {

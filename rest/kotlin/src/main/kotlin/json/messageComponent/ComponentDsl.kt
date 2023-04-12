@@ -37,8 +37,8 @@ object ActionRow : ComponentDsl(), Component {
         +SelectMenu(type, customId).apply(init)
     }
 
-    fun textInput(style: TextInputStyle, customId: String, label: String, init: TextInput.() -> Unit) {
-        +TextInput(style, customId, label).apply(init)
+    fun textInput(style: TextInputStyle, customId: String, label: String, init: (TextInput.() -> Unit)? = null) {
+        +TextInput(style, customId, label).apply { init?.let { init() } }
     }
 
     override fun toImmutable(): ImmutableComponent {
@@ -99,8 +99,8 @@ class SelectMenu(
         _options + this
     }
 
-    fun option(label: String, value: String, init: SelectOption.() -> Unit) {
-        +SelectOption(label, value).apply(init)
+    fun option(label: String, value: String, init: (SelectOption.() -> Unit)? = null) {
+        +SelectOption(label, value).apply { init?.let { init() } }
     }
 
     override fun toImmutable(): ImmutableComponent {

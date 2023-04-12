@@ -113,19 +113,19 @@ sealed class AutocompleteCallback<C : ApplicationCommandOption.Choice<T>, T>(pri
 }
 
 class AutocompleteStringOptionCallback(interaction: ApplicationCommandAutocompleteInteraction) : AutocompleteCallback<StringOption.Choice, String>(interaction) {
-    override fun choice(name: String, value: String, init: ApplicationCommandOption.Choice<String>.() -> Unit) {
-        +StringOption.Choice(name, value).apply(init)
+    override fun choice(name: String, value: String, init: (ApplicationCommandOption.Choice<String>.() -> Unit)?) {
+        +StringOption.Choice(name, value).apply { init?.let { init() } }
     }
 }
 
 class AutocompleteIntOptionCallback(interaction: ApplicationCommandAutocompleteInteraction) : AutocompleteCallback<IntOption.Choice, Int>(interaction) {
-    override fun choice(name: String, value: Int, init: ApplicationCommandOption.Choice<Int>.() -> Unit) {
-        +IntOption.Choice(name, value).apply(init)
+    override fun choice(name: String, value: Int, init: (ApplicationCommandOption.Choice<Int>.() -> Unit)?) {
+        +IntOption.Choice(name, value).apply { init?.let { init() } }
     }
 }
 
 class AutocompleteDoubleOptionCallback(interaction: ApplicationCommandAutocompleteInteraction) : AutocompleteCallback<DoubleOption.Choice, Double>(interaction) {
-    override fun choice(name: String, value: Double, init: ApplicationCommandOption.Choice<Double>.() -> Unit) {
-        +DoubleOption.Choice(name, value).apply(init)
+    override fun choice(name: String, value: Double, init: (ApplicationCommandOption.Choice<Double>.() -> Unit)?) {
+        +DoubleOption.Choice(name, value).apply { init?.let { init() } }
     }
 }

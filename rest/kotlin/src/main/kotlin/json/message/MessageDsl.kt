@@ -1,5 +1,6 @@
 package io.disquark.rest.kotlin.json.message
 
+import io.disquark.rest.json.Snowflake
 import io.disquark.rest.kotlin.json.messageComponent.Component
 import io.disquark.rest.kotlin.json.messageComponent.ComponentDsl
 import io.disquark.rest.kotlin.request.FileUploadDsl
@@ -39,6 +40,10 @@ sealed class MessageDsl : ComponentDsl(), FileUploadDsl {
 
     operator fun PartialAttachment.unaryPlus() {
         attachments + this
+    }
+
+    fun attachment(id: Snowflake, filename: String? = null, description: String? = null) {
+        +PartialAttachment(id, filename, description)
     }
 }
 

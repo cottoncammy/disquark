@@ -35,11 +35,11 @@ import io.smallrye.mutiny.Uni
 fun <T : Response> AuthenticatedDiscordClient<T>.createGlobalChatInputCommand(applicationId: Snowflake, name: String, init: CreateGlobalChatInputCommand.() -> Unit): Uni<ApplicationCommand> =
     CreateGlobalChatInputCommand(requester, applicationId, name).apply(init).toUni()
 
-fun <T : Response> AuthenticatedDiscordClient<T>.createGlobalUserCommand(applicationId: Snowflake, name: String, init: CreateGlobalUserCommand.() -> Unit): Uni<ApplicationCommand> =
-    CreateGlobalUserCommand(requester, applicationId, name).apply(init).toUni()
+fun <T : Response> AuthenticatedDiscordClient<T>.createGlobalUserCommand(applicationId: Snowflake, name: String, init: (CreateGlobalUserCommand.() -> Unit)? = null): Uni<ApplicationCommand> =
+    CreateGlobalUserCommand(requester, applicationId, name).apply { init?.let { init() } }.toUni()
 
-fun <T : Response> AuthenticatedDiscordClient<T>.createGlobalMessageCommand(applicationId: Snowflake, name: String, init: CreateGlobalMessageCommand.() -> Unit): Uni<ApplicationCommand> =
-    CreateGlobalMessageCommand(requester, applicationId, name).apply(init).toUni()
+fun <T : Response> AuthenticatedDiscordClient<T>.createGlobalMessageCommand(applicationId: Snowflake, name: String, init: (CreateGlobalMessageCommand.() -> Unit)? = null): Uni<ApplicationCommand> =
+    CreateGlobalMessageCommand(requester, applicationId, name).apply { init?.let { init() } }.toUni()
 
 fun <T : Response> AuthenticatedDiscordClient<T>.editGlobalApplicationCommand(applicationId: Snowflake, commandId: Snowflake, init: EditGlobalApplicationCommand.() -> Unit): Uni<ApplicationCommand> =
     EditGlobalApplicationCommand(requester, applicationId, commandId).apply(init).toUni()
@@ -50,11 +50,11 @@ fun <T : Response> AuthenticatedDiscordClient<T>.bulkOverwriteGlobalApplicationC
 fun <T : Response> AuthenticatedDiscordClient<T>.createGuildChatInputCommand(applicationId: Snowflake, guildId: Snowflake, name: String, init: CreateGuildChatInputCommand.() -> Unit): Uni<ApplicationCommand> =
     CreateGuildChatInputCommand(requester, applicationId, guildId, name).apply(init).toUni()
 
-fun <T : Response> AuthenticatedDiscordClient<T>.createGuildUserCommand(applicationId: Snowflake, guildId: Snowflake, name: String, init: CreateGuildUserCommand.() -> Unit): Uni<ApplicationCommand> =
-    CreateGuildUserCommand(requester, applicationId, guildId, name).apply(init).toUni()
+fun <T : Response> AuthenticatedDiscordClient<T>.createGuildUserCommand(applicationId: Snowflake, guildId: Snowflake, name: String, init: (CreateGuildUserCommand.() -> Unit)? = null): Uni<ApplicationCommand> =
+    CreateGuildUserCommand(requester, applicationId, guildId, name).apply { init?.let { init() } }.toUni()
 
-fun <T : Response> AuthenticatedDiscordClient<T>.createGuildMessageCommand(applicationId: Snowflake, guildId: Snowflake, name: String, init: CreateGuildMessageCommand.() -> Unit): Uni<ApplicationCommand> =
-    CreateGuildMessageCommand(requester, applicationId, guildId, name).apply(init).toUni()
+fun <T : Response> AuthenticatedDiscordClient<T>.createGuildMessageCommand(applicationId: Snowflake, guildId: Snowflake, name: String, init: (CreateGuildMessageCommand.() -> Unit)? = null): Uni<ApplicationCommand> =
+    CreateGuildMessageCommand(requester, applicationId, guildId, name).apply { init?.let { init() } }.toUni()
 
 fun <T : Response> AuthenticatedDiscordClient<T>.editGuildApplicationCommand(applicationId: Snowflake, guildId: Snowflake, commandId: Snowflake, init: EditGuildApplicationCommand.() -> Unit): Uni<ApplicationCommand> =
     EditGuildApplicationCommand(requester, applicationId, guildId, commandId).apply(init).toUni()

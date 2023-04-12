@@ -75,7 +75,7 @@ interface ApplicationCommandOptionChoicesDsl<C : ApplicationCommandOption.Choice
         _choices + this
     }
 
-    fun choice(name: String, value: T, init: ApplicationCommandOption.Choice<T>.() -> Unit)
+    fun choice(name: String, value: T, init: (ApplicationCommandOption.Choice<T>.() -> Unit)? = null)
 }
 
 sealed class ApplicationCommandOptionWithChoicesDsl<C : ApplicationCommandOption.Choice<T>, T>(
@@ -96,8 +96,8 @@ class StringOption(name: String, description: String, var minLength: Int? = null
         }
     }
 
-    override fun choice(name: String, value: String, init: ApplicationCommandOption.Choice<String>.() -> Unit) {
-        +Choice(name, value).apply(init)
+    override fun choice(name: String, value: String, init: (ApplicationCommandOption.Choice<String>.() -> Unit)?) {
+        +Choice(name, value).apply { init?.let { init() } }
     }
 
     override fun toImmutable(): ImmutableApplicationCommandOption {
@@ -132,8 +132,8 @@ class IntOption(name: String, description: String) : NumberOption<IntOption.Choi
         }
     }
 
-    override fun choice(name: String, value: Int, init: ApplicationCommandOption.Choice<Int>.() -> Unit) {
-        +Choice(name, value).apply(init)
+    override fun choice(name: String, value: Int, init: (ApplicationCommandOption.Choice<Int>.() -> Unit)?) {
+        +Choice(name, value).apply { init?.let { init() } }
     }
 }
 
@@ -145,8 +145,8 @@ class DoubleOption(name: String, description: String) : NumberOption<DoubleOptio
         }
     }
 
-    override fun choice(name: String, value: Double, init: ApplicationCommandOption.Choice<Double>.() -> Unit) {
-        +Choice(name, value).apply(init)
+    override fun choice(name: String, value: Double, init: (ApplicationCommandOption.Choice<Double>.() -> Unit)?) {
+        +Choice(name, value).apply { init?.let { init() } }
     }
 }
 
