@@ -15,6 +15,7 @@
 
     <properties>
         <kotlin.version>1.8.10</kotlin.version>
+        <dokka-plugin.version>1.8.10</dokka-plugin.version>
         <ktlint-plugin.version>1.16.0</ktlint-plugin.version>
     </properties>
 
@@ -70,7 +71,7 @@
             <plugin>
                 <groupId>org.jetbrains.dokka</groupId>
                 <artifactId>dokka-maven-plugin</artifactId>
-                <version>${kotlin.version}</version>
+                <version>${dokka-plugin.version}</version>
                 <configuration>
                     <jdkVersion>${maven.compiler.release}</jdkVersion>
                 </configuration>

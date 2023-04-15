@@ -36,6 +36,7 @@ import io.disquark.rest.json.guild.CreateGuildUni;
 import io.disquark.rest.json.guild.GetGuildBansMulti;
 import io.disquark.rest.json.guild.GetGuildPruneCountUni;
 import io.disquark.rest.json.guild.Guild;
+import io.disquark.rest.json.guild.GuildOnboarding;
 import io.disquark.rest.json.guild.GuildVanityUrl;
 import io.disquark.rest.json.guild.GuildWidget;
 import io.disquark.rest.json.guild.Integration;
@@ -701,6 +702,12 @@ public class DiscordBotClient<T extends Response> extends AuthenticatedDiscordCl
 
     public ModifyGuildWelcomeScreenUni modifyGuildWelcomeScreen(Snowflake guildId) {
         return new ModifyGuildWelcomeScreenUni(requester, guildId);
+    }
+
+    public Uni<GuildOnboarding> getGuildOnboarding(Snowflake guildId) {
+        return deferredUni(() -> requester.request(new EmptyRequest("/guilds/{guild.id}/onboarding",
+                variables("guild.id", requireNonNull(guildId, "guildId").getValue()))))
+                .flatMap(res -> res.as(GuildOnboarding.class));
     }
 
     public ModifyCurrentUserVoiceStateUni modifyCurrentUserVoiceState(Snowflake guildId) {

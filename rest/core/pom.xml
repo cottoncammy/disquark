@@ -31,6 +31,16 @@
         </dependency>
         <dependency>
             <groupId>io.smallrye.reactive</groupId>
+            <artifactId>mutiny</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>io.smallrye.common</groupId>
+                    <artifactId>smallrye-common-annotation</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>io.smallrye.reactive</groupId>
             <artifactId>smallrye-mutiny-vertx-auth-oauth2</artifactId>
         </dependency>
         <dependency>
@@ -49,6 +59,7 @@
             <groupId>org.apache.tika</groupId>
             <artifactId>tika-core</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.bouncycastle</groupId>
             <artifactId>bcprov-jdk18on</artifactId>
@@ -64,10 +75,6 @@
             <groupId>io.disquark</groupId>
             <artifactId>disquark-nullable-optional</artifactId>
             <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.vertx</groupId>
-            <artifactId>vertx-core</artifactId>
         </dependency>
         <dependency>
             <groupId>io.disquark.immutables</groupId>

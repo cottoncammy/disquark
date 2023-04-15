@@ -76,6 +76,7 @@ interface ApplicationJson {
     Optional<String> roleConnectionsVerificationUrl();
 
     enum Flag implements FlagEnum {
+        APPLICATION_AUTO_MODERATION_RULE_CREATE_BADGE(6),
         GATEWAY_PRESENCE(12),
         GATEWAY_PRESENCE_LIMITED(13),
         GATEWAY_GUILD_MEMBERS(14),

@@ -28,7 +28,6 @@ jobs:
         run: |
             ./mvnw -B -s .github/mvn-ci-settings.xml -DnewVersion="${VERSION}" \
               versions:set
-            ./mvnw -B -s .github/mvn-ci-settings.xml -pl docs
             ./mvnw -B -s .github/mvn-ci-settings.xml -Prelease verify
 
             git config user.name "GitHub Actions"

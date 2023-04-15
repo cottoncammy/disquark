@@ -58,17 +58,6 @@ jobs:
           distribution: temurin
           java-version: 11
           cache: maven
-      - name: Check docs
-        id: check-docs
-        run: |
-          ./mvnw -B -s .github/mvn-ci-settings.xml -pl docs
-          echo "diffs=git diff --name-only" >> ${GITHUB_OUTPUT}
-      - name: Fail job (if diffs)
-        if: steps.check-docs.outputs.diffs != ''
-        uses: actions/github-script@v6
-        with:
-          script: |
-            core.setFailed('uncommitted mkdocs.yml Maven property changes')
       - name: Maven release
         env:
           OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}

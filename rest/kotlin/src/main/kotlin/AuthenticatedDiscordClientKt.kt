@@ -26,6 +26,7 @@ import io.disquark.rest.kotlin.json.webhook.ExecuteWebhook
 import io.disquark.rest.kotlin.json.webhook.ModifyWebhookWithToken
 import io.disquark.rest.kotlin.webhook.deleteWebhookMessage
 import io.disquark.rest.kotlin.webhook.editWebhookMessage
+import io.disquark.rest.kotlin.webhook.executeWebhook
 import io.disquark.rest.kotlin.webhook.getWebhookMessage
 import io.disquark.rest.kotlin.webhook.modifyWebhookWithToken
 import io.disquark.rest.response.Response
@@ -75,7 +76,7 @@ fun <T : Response> AuthenticatedDiscordClient<T>.modifyWebhookWithToken(webhookI
     webhookClient.modifyWebhookWithToken(webhookId, webhookToken, init)
 
 fun <T : Response> AuthenticatedDiscordClient<T>.executeWebhook(webhookId: Snowflake, webhookToken: String, init: ExecuteWebhook.() -> Unit): Uni<Message?> =
-    executeWebhook(webhookId, webhookToken, init)
+    webhookClient.executeWebhook(webhookId, webhookToken, init)
 
 fun <T : Response> AuthenticatedDiscordClient<T>.getWebhookMessage(webhookId: Snowflake, webhookToken: String, messageId: Snowflake, threadId: Snowflake? = null): Uni<Message> =
     webhookClient.getWebhookMessage(webhookId, webhookToken, messageId, threadId)
