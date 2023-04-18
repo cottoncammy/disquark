@@ -1,0 +1,4 @@
+contact_links:
+  - name: Question
+    url: https://github.com/cottoncammy/disquark/discussions
+    about: Ask a question using GitHub Discussions
