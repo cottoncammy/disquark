@@ -115,7 +115,7 @@ suspend fun main() {
 
 By default, the web server launched by DisQuark will listen for incoming interactions on `localhost:80`.
 
-**Verification of incoming interactions requires the `org.bouncycastle:bcprov-jdk18on` dependency to be installed and for the `BouncyCastleProvider` to be configured as Java's `java.security.Provider` in your application. Incoming interactions won't have their signatures verified if you don't setup a `BouncyCastleProvider` or change the default `InteractionsValidator`.**
+Verification of incoming interactions requires the `org.bouncycastle:bcprov-jdk18on` dependency to be installed and for the `BouncyCastleProvider` to be configured as Java's `java.security.Provider` in your application. **Incoming interactions won't have their signatures verified if you don't setup a `BouncyCastleProvider` or change the default `InteractionsValidator`.**
 
 ```java
 class MyApp {
@@ -129,7 +129,7 @@ class MyApp {
 }
 ```
 
-**It's strongly recommended to use DisQuark along with our [Quarkiverse extension](https://github.com/quarkiverse/quarkus-disquark) which minimizes the boilerplate needed to listen and respond to interactions.**
+**It's strongly recommended to use DisQuark with our [Quarkiverse extension](https://github.com/quarkiverse/quarkus-disquark) which minimizes the boilerplate needed to listen and respond to interactions.**
 
 ## Client Configuration
 
