@@ -119,10 +119,14 @@ Verification of incoming interactions requires the `org.bouncycastle:bcprov-jdk1
 
 ```java
 class MyApp {
+    static {
+        Security.addProvider(new BouncyCastleProvider());
+    }
+    
     public static void main(String[] args) {
         var botClient = DiscordBotClient.create(Vertx.vertx(), "TOKEN");
         
-        botClient.on(applicationCommand().name("foo").with(option().type(ApplicationCommand.Option.Type.SUB_COMMAND).name("bar").with(option().type(ApplicationCommand.Option.Type.STRING).name("baz"))))
+        botClient.on(applicationCommand().name("foo").with(option().type(ApplicationCommand.Option.Type.SUB_COMMAND).name("bar").with(option().name("baz"))))
             .onItem().transformToUniAndMerge(interaction -> interaction.respond().withContent("Hello World!"))
             .onItem().ignoreAsUni().await().indefinitely();
     }
