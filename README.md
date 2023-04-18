@@ -113,7 +113,9 @@ suspend fun main() {
 
 ### Listening and responding to incoming interactions via HTTP
 
-Verification of incoming interactions requires the `org.bouncycastle:bcprov-jdk18on` dependency by default. If not installed, incoming interactions won't have their signatures verified. By default, the web server launched by DisQuark will listen for incoming interactions on `localhost:80`.
+By default, the web server launched by DisQuark will listen for incoming interactions on `localhost:80`.
+
+**Verification of incoming interactions requires the `org.bouncycastle:bcprov-jdk18on` dependency to be installed and for the `BouncyCastleProvider` to be configured as Java's `java.security.Provider` in your application. Incoming interactions won't have their signatures verified if you don't setup a `BouncyCastleProvider` or change the default `InteractionsValidator`.**
 
 ```java
 class MyApp {
@@ -128,6 +130,38 @@ class MyApp {
 ```
 
 **It's strongly recommended to use DisQuark along with our [Quarkiverse extension](https://github.com/quarkiverse/quarkus-disquark) which minimizes the boilerplate needed to listen and respond to interactions.**
+
+## Client Configuration
+
+DisQuark clients expose several configuration options via `Builder`s accessible from corresponding static `builder` methods.
+
+### Token source
+
+You can configure your client's `AccessTokenSource` to receive your access token asynchronously from an alternative source.
+
+### Rate limit configuration
+
+You can change the `RateLimitStrategy` and the `GlobalRateLimiter` implementation used by DisQuark to avoid being rate limited by Discord's API. There are pre-configured strategies to disable rate limiting logic or to only apply bucket or global rate limiting logic. This can be useful when you are creating a distributed application and want to sychronize rate limiting logic across your DisQuark application instances.
+
+### Requester factory
+
+You can change the `RequesterFactory` used to construct a `Requester` instance that performs the actual request logic to Discord. This is useful if you need to configure the underlying `HttpClient` used by the default `Requester` or if you want to provide a different implementation altogether.
+
+### Logging
+
+Logging in DisQuark is provided by the SLF4J API. Install an implementation using your preferred build tool and configure it appropriately to receive trace- and debug-level logs from your application.
+
+### Interactions client configuration
+
+The following configuration options are available for applications leveraging HTTP interactions:
+
+* `router` - the Vert.x `Router` instance used to setup the interactions handler
+* `verifyKey` - your Discord application's public key used to verify incoming interaction signatures, lazily fetched if not provided
+* `handleCors` - whether to install a CORS handler to the `Router` to accept incoming `POST` requests from `discord.com`, `true` by default
+* `interactionsUrl` - the relative URL to receive interactions from, `/` by default
+* `startHttpServer` - whether to construct and start an `HttpServer` when listening for incoming interactions, `true` by default
+* `httpServerSupplier` - the factory used to construct the `HttpServer` if `startHttpServer` is enabled
+* `validatorFactory` - the factory used to construct an `InteractionsValidator` implementation from the `verifyKey`
 
 ## Using Snapshots
 
