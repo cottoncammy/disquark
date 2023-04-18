@@ -1,0 +1,18 @@
+Configuration:
+  name: Config
+  thresholdFilter:
+    level: trace
+  appenders:
+    Console:
+      name: Console
+      PatternLayout:
+        pattern: "%highlight{%d %p %c (%t) %m%ex%n}"
+
+  Loggers:
+    logger:
+      - name: io.disquark
+        level: trace
+    Root:
+      level: debug
+      AppenderRef:
+        ref: Console
