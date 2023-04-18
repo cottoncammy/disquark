@@ -6,7 +6,7 @@
     <parent>
         <groupId>io.disquark</groupId>
         <artifactId>disquark-parent</artifactId>
-        <version>999-SNAPSHOT</version>
+        <version>0.1.0</version>
     </parent>
 
     <artifactId>disquark-integration-tests</artifactId>
