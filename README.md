@@ -38,10 +38,6 @@ DisQuark's API should not be considered stable for now.
 
 **DisQuark currently does not support Discord's Gateway or Voice APIs**. Interest in the project will determine whether time is invested to develop corresponding modules. For now, the project's development efforts are focused on improving and maintaining the REST module.
 
-## Quarkus Extension
-
-It's strongly recommended to use DisQuark along with our [Quarkiverse extension](https://github.com/quarkiverse/quarkus-disquark) which minimizes the boilerplate needed to develop HTTP interactions with DisQuark.
-
 ## Examples
 
 ### Creating a message
@@ -66,11 +62,72 @@ Using `io.disquark:disquark-rest-kotlin`:
 suspend fun main() {
     val botClient = DiscordBotClient.create(Vertx.vertx(), "TOKEN") 
     
-    botClient.createMessage(Snowflake(0L)) {
+    botClient.createMessage(channelId = Snowflake(0L)) {
         content = "Hello World!"
     }.awaitSuspending()
 }
 ```
+
+### Creating application commands
+
+Using `io.disquark:disquark-rest`:
+
+```java
+class MyApp {
+    public static void main(String[] args) {
+        var botClient = DiscordBotClient.create(Vertx.vertx(), "TOKEN");
+       
+        botClient.bulkOverwriteGlobalApplicationCommands(new Snowflake(0L))
+                .withOverwrites(new GlobalApplicationCommandOverwrite("foo")
+                    .withType(ApplicationCommand.Type.CHAT_INPUT)
+                    .withDescription("Foo commands")
+                    .withOptions(List.of(
+                        new ApplicationCommand.Option(ApplicationCommand.Option.Type.SUB_COMMAND, "bar", "Foo bar command")
+                            .withOptions(List.of(
+                                new ApplicationCommand.Option(ApplicationCommand.Option.Type.STRING, "baz", "Baz option")
+                                    .withRequired(true)))))
+                 ).subscribe().with(x -> {});
+    }
+}
+```
+
+Using `io.disquark:disquark-rest-kotlin`:
+
+```kotlin
+suspend fun main() {
+    val botClient = DiscordBotClient.create(Vertx.vertx(), "TOKEN") 
+    
+    botClient.bulkOverwriteGlobalApplicationCommands(applicationId = Snowflake(0L)) {
+        chatInputCommand(name = "foo") {
+            description = "Foo commands"
+            
+            subcommand(name = "bar", description = "Foo bar command") {
+                stringOption(name = "baz", description = "Baz option") {
+                    required = true
+                }
+            }
+        }
+    }.onItem().ignoreAsUni().awaitSuspending()
+}
+```
+
+### Listening and responding to incoming interactions via HTTP
+
+Verification of incoming interactions requires the `org.bouncycastle:bcprov-jdk18on` dependency by default. If not installed, incoming interactions won't have their signatures verified. By default, the web server launched by DisQuark will listen for incoming interactions on `localhost:80`.
+
+```java
+class MyApp {
+    public static void main(String[] args) {
+        var botClient = DiscordBotClient.create(Vertx.vertx(), "TOKEN");
+        
+        botClient.on(applicationCommand().name("foo").with(option().type(ApplicationCommand.Option.Type.SUB_COMMAND).name("bar").with(option().type(ApplicationCommand.Option.Type.STRING).name("baz"))))
+            .onItem().transformToUniAndMerge(interaction -> interaction.respond().withContent("Hello World!"))
+            .onItem().ignoreAsUni().await().indefinitely();
+    }
+}
+```
+
+**It's strongly recommended to use DisQuark along with our [Quarkiverse extension](https://github.com/quarkiverse/quarkus-disquark) which minimizes the boilerplate needed to listen and respond to interactions.**
 
 ## Using Snapshots
 
