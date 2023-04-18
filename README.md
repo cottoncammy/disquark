@@ -141,7 +141,7 @@ You can configure your client's `AccessTokenSource` to receive your access token
 
 ### Rate limit configuration
 
-You can change the `RateLimitStrategy` and the `GlobalRateLimiter` implementation used by DisQuark to avoid being rate limited by Discord's API. There are pre-configured strategies to disable rate limiting logic or to only apply bucket or global rate limiting logic. This can be useful when you are creating a distributed application and want to sychronize rate limiting logic across your DisQuark application instances.
+You can change the `RateLimitStrategy` and the `GlobalRateLimiter` implementation used by DisQuark to avoid being rate limited by Discord's API. There are pre-configured strategies to disable rate limiting logic or to only apply bucket or global rate limiting logic. This can be useful when you are creating a distributed application and want to synchronize rate limiting logic across your DisQuark application instances.
 
 ### Requester factory
 
