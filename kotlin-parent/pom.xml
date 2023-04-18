@@ -78,7 +78,7 @@
                 <executions>
                     <execution>
                         <id>dokka</id>
-                        <phase>package</phase>
+                        <phase>compile</phase>
                         <goals>
                             <goal>dokka</goal>
                         </goals>
@@ -95,6 +95,7 @@
                             <goal>jar</goal>
                         </goals>
                         <configuration>
+                            <classifier>dokka</classifier>
                             <classesDirectory>${project.build.directory}/dokka</classesDirectory>
                             <skipIfEmpty>true</skipIfEmpty>
                         </configuration>
