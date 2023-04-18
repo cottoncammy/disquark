@@ -95,9 +95,7 @@
                             <goal>jar</goal>
                         </goals>
                         <configuration>
-                            <classifier>dokka</classifier>
                             <classesDirectory>${project.build.directory}/dokka</classesDirectory>
-                            <finalName>javadoc</finalName>
                             <skipIfEmpty>true</skipIfEmpty>
                         </configuration>
                     </execution>
