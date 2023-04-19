@@ -204,7 +204,8 @@ interface MessageJson {
         EPHEMERAL(6),
         LOADING(7),
         FAILED_TO_MENTION_SOME_ROLES_IN_THREAD(8),
-        SUPPRESS_NOTIFICATIONS(12);
+        SUPPRESS_NOTIFICATIONS(12),
+        IS_VOICE_MESSAGE(13);
 
         private final int value;
 
@@ -271,5 +272,10 @@ interface MessageJson {
         OptionalInt width();
 
         Optional<Boolean> ephemeral();
+
+        @JsonProperty("duration_secs")
+        Optional<Float> durationSecs();
+
+        Optional<String> waveform();
     }
 }
