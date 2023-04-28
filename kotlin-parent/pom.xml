@@ -14,7 +14,7 @@
     <packaging>pom</packaging>
 
     <properties>
-        <kotlin.version>1.8.10</kotlin.version>
+        <kotlin.version>1.8.21</kotlin.version>
         <dokka-plugin.version>1.8.10</dokka-plugin.version>
         <ktlint-plugin.version>1.16.0</ktlint-plugin.version>
     </properties>
